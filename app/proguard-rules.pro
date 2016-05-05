@@ -1,17 +1,28 @@
-# Add project specific ProGuard rules here.
-# By default, the flags in this file are appended to flags specified
-# in /Users/adam/Library/Android/sdk/tools/proguard/proguard-android.txt
-# You can edit the include path and order by changing the proguardFiles
-# directive in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Onegini Mobile Security Platform Android application proguard configuration
 
-# Add any project specific keep options here:
+-printmapping build/obfuscation-mapping.map
+-printseeds build/seeds.txt
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+-dontwarn retrofit.**
+-dontwarn android.test.**
+-dontwarn com.squareup.okhttp.**
+-dontwarn okio.**
+-dontwarn org.bouncycastle.**
+-dontwarn org.spongycastle.**
+-dontwarn rx.*
+
+-keep class com.onegini.mobile.sdk.android.library.internal.* { *; }
+-keep class * implements com.onegini.mobile.sdk.android.library.model.OneginiClientConfigModel { *; }
+
+-keep interface retrofit.** { *; }
+-keep class retrofit.* { *; }
+-keep class com.squareup.okhttp.** { *; }
+-keep class com.google.gson.** { *; }
+-keep class com.google.inject.* { *; }
+-keep class org.apache.http.* { *; }
+-keep class org.apache.james.mime4j.* { *; }
+-keep class javax.inject.* { *; }
+-keep class sun.misc.Unsafe { *; }
+-keep class org.spongycastle.jcajce.provider.** { *; }
+
+-keepattributes Signature,InnerClasses,EnclosingMethod
