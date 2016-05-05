@@ -1,0 +1,2 @@
+configurations.create("default")
+artifacts.add("default", file('og-ocra-100.00.00.jar'))

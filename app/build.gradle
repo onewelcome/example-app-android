@@ -1,0 +1,57 @@
+apply plugin: 'com.android.application'
+
+android {
+  compileSdkVersion 23
+  buildToolsVersion "23.0.3"
+
+  defaultConfig {
+    applicationId "com.onegini.mobile.exampleapp"
+    minSdkVersion 16
+    targetSdkVersion 23
+    versionCode 1
+    versionName "1.0"
+    multiDexEnabled true
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+  dexOptions {
+    incremental true
+    javaMaxHeapSize "4g"
+  }
+}
+
+dependencies {
+  // Onegini SDK v5.02.00
+  compile project(':OneginiSDK')
+
+  // Ocra 100.00.00
+  compile project(':Ocra')
+
+  // Google Support
+  compile 'com.android.support:appcompat-v7:23.3.0'
+
+  // Http Client
+  compile 'com.squareup.okhttp:okhttp:2.4.0'
+  compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
+
+  // Rest Client
+  compile 'com.squareup.retrofit:retrofit:1.9.0'
+
+  // Google cloud messaging (GCM)
+  compile 'com.google.android.gms:play-services-base:8.4.0'
+  compile 'com.google.android.gms:play-services-gcm:8.4.0'
+
+  // Spongy castle
+  compile 'com.madgag.spongycastle:core:1.54.0.0'
+  compile 'com.madgag.spongycastle:prov:1.54.0.0'
+  compile 'com.madgag.spongycastle:pg:1.54.0.0'
+  compile 'com.madgag.spongycastle:pkix:1.54.0.0'
+  compile 'com.nimbusds:nimbus-jose-jwt:3.6'
+
+  // Support for multidex
+  compile 'com.android.support:multidex:1.0.1'
+}
