@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -31,13 +32,13 @@ public class LoginActivity extends Activity {
     ButterKnife.bind(this);
 
     initLoginButtonListener();
+    setProgressbarVisibility(false);
   }
 
   @Override
   protected void onResume() {
     super.onResume();
     setupLoginButtonText();
-    setProgressbarVisibility(false);
   }
 
   private void setProgressbarVisibility(final boolean isVisible) {
@@ -80,13 +81,14 @@ public class LoginActivity extends Activity {
     OneginiSDK.getOneginiClient(this).authorize(new String[]{ "read" }, new OneginiAuthorizationHandler() {
       @Override
       public void authorizationSuccess() {
-        // Show user is logged in.
+        PinActivity.setRemainingFailedAttempts(0);
         DashboardActivity.startActivity(LoginActivity.this);
       }
 
       @Override
       public void authorizationError() {
         // Show error a general error occurred.
+        showToast("authorizationError");
       }
 
       @Override
@@ -112,11 +114,14 @@ public class LoginActivity extends Activity {
       @Override
       public void authorizationErrorInvalidGrant(final int remaining) {
         // Show error the token was invalid, user should authorize again.
+        setProgressbarVisibility(true);
+        PinActivity.setRemainingFailedAttempts(remaining);
+        authenticateUser();
       }
 
       @Override
       public void authorizationErrorNotAuthenticated() {
-        // Show error the client crentials used are invalid, user should authorize again.
+        // Show error the client credentials used are invalid, user should authorize again.
       }
 
       @Override
@@ -136,7 +141,10 @@ public class LoginActivity extends Activity {
 
       @Override
       public void authorizationErrorTooManyPinFailures() {
-        // Show error the wrong pin was used for too many times, the user should authorize again.
+        PinActivity.setRemainingFailedAttempts(0);
+        showToast("authorizationErrorTooManyPinFailures");
+        setupLoginButtonText();
+        setProgressbarVisibility(false);
       }
 
       @Override
@@ -146,8 +154,12 @@ public class LoginActivity extends Activity {
 
       @Override
       public void authorizationErrorUnsupportedOS() {
-        // Show error the device is using usupported OS version, the user should upgrade his OS.
+        // Show error the device is using unsupported OS version, the user should upgrade his OS.
       }
     });
+  }
+
+  private void showToast(final String message) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
   }
 }
