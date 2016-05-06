@@ -5,7 +5,6 @@ import java.util.Arrays;
 import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.service.storage.AuthenticationStorage;
 import com.onegini.mobile.exampleapp.view.activity.PinActivity;
 import com.onegini.mobile.sdk.android.library.OneginiClient;
 import com.onegini.mobile.sdk.android.library.exception.OneginiClientNotValidatedException;
@@ -15,13 +14,11 @@ import com.onegini.mobile.sdk.android.library.utils.dialogs.OneginiCreatePinDial
 public class CreatePinDialog implements OneginiCreatePinDialog {
 
   public static OneginiPinProvidedHandler oneginiPinProvidedHandler;
-  private final AuthenticationStorage authenticationStorage;
 
   private Context applicationContext;
 
   public CreatePinDialog(final Context context) {
     applicationContext = context.getApplicationContext();
-    authenticationStorage = new AuthenticationStorage(applicationContext);
   }
 
   @Override
@@ -99,7 +96,6 @@ public class CreatePinDialog implements OneginiCreatePinDialog {
       final boolean pinsEqual = Arrays.equals(this.pin, pin);
       nullifyPinArray();
       if (pinsEqual) {
-        authenticationStorage.setPinCode(pin);
         originalHandler.onPinProvided(pin);
       } else {
         notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), applicationContext.getString(R.string.pin_error_not_equal));

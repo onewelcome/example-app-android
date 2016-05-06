@@ -32,22 +32,12 @@ public class PinKeyboard {
 
   private void initPinDigitButton(final TableLayout keyboardLayout, final int buttonId, final int buttonValue) {
     final Button pinButton = (Button) keyboardLayout.findViewById(buttonId);
-    pinButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(final View v) {
-        onDigitKeyClicked(buttonValue);
-      }
-    });
+    pinButton.setOnClickListener(v -> onDigitKeyClicked(buttonValue));
   }
 
   private void initPinDeleteButton(final TableLayout keyboardLayout, final int buttonId) {
     deleteButton = (ImageButton) keyboardLayout.findViewById(buttonId);
-    deleteButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(final View v) {
-        onDeleteKeyClicked();
-      }
-    });
+    deleteButton.setOnClickListener(v -> onDeleteKeyClicked());
   }
 
   private void onDigitKeyClicked(final int digit) {
