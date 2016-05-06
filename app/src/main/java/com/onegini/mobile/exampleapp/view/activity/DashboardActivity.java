@@ -9,12 +9,15 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
+import com.onegini.mobile.sdk.android.library.OneginiClient;
+import com.onegini.mobile.sdk.android.library.handlers.OneginiDisconnectHandler;
+import com.onegini.mobile.sdk.android.library.handlers.OneginiLogoutHandler;
 
 public class DashboardActivity extends AppCompatActivity {
 
   public static void startActivity(@NonNull final Activity context) {
-    final Intent contactDetailsIntent = new Intent(context, DashboardActivity.class);
-    context.startActivity(contactDetailsIntent);
+    final Intent intent = new Intent(context, DashboardActivity.class);
+    context.startActivity(intent);
     context.finish();
   }
 
@@ -23,17 +26,45 @@ public class DashboardActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_dashboard);
     ButterKnife.bind(this);
-
   }
 
   @OnClick(R.id.button_logout)
   public void logout() {
-    showToast("logout");
+    OneginiClient.getInstance().logout(
+        new OneginiLogoutHandler() {
+          @Override
+          public void logoutSuccess() {
+            // Go to login screen
+            LoginActivity.startActivity(DashboardActivity.this);
+          }
+
+          @Override
+          public void logoutError() {
+            // Ignore failure and return to login screen
+            LoginActivity.startActivity(DashboardActivity.this);
+          }
+        }
+    );
   }
 
   @OnClick(R.id.button_disconnect)
   public void disconnect() {
-    showToast("disconnect");
+    OneginiClient.getInstance().disconnect(
+
+        new OneginiDisconnectHandler() {
+          @Override
+          public void disconnectSuccess() {
+            // Go to login screen
+            LoginActivity.startActivity(DashboardActivity.this);
+          }
+
+          @Override
+          public void disconnectError() {
+            // Ignore failure and return to login screen
+            LoginActivity.startActivity(DashboardActivity.this);
+          }
+        }
+    );
   }
 
   @OnClick(R.id.button_get_user_profile)
