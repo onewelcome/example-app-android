@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.sdk.android.library.OneginiClient;
@@ -78,7 +79,7 @@ public class LoginActivity extends Activity {
   }
 
   private void authenticateUser() {
-    OneginiSDK.getOneginiClient(this).authorize(new String[]{ "read" }, new OneginiAuthorizationHandler() {
+    OneginiSDK.getOneginiClient(this).authorize(Constants.DEFAULT_SCOPES, new OneginiAuthorizationHandler() {
       @Override
       public void authorizationSuccess() {
         PinActivity.setRemainingFailedAttempts(0);
