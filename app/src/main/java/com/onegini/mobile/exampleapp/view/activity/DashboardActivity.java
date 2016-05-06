@@ -28,6 +28,7 @@ public class DashboardActivity extends AppCompatActivity {
     ButterKnife.bind(this);
   }
 
+  @SuppressWarnings("unused")
   @OnClick(R.id.button_logout)
   public void logout() {
     OneginiClient.getInstance().logout(
@@ -47,6 +48,7 @@ public class DashboardActivity extends AppCompatActivity {
     );
   }
 
+  @SuppressWarnings("unused")
   @OnClick(R.id.button_disconnect)
   public void disconnect() {
     OneginiClient.getInstance().disconnect(
@@ -67,6 +69,7 @@ public class DashboardActivity extends AppCompatActivity {
     );
   }
 
+  @SuppressWarnings("unused")
   @OnClick(R.id.button_get_user_profile)
   public void getUserProfileData() {
     showToast("getUserProfileData");

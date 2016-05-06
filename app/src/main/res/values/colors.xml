@@ -9,4 +9,5 @@
   <color name="blue">#008FCE</color>
   <color name="light_blue">#00A3EA</color>
   <color name="dark_blue">#02587D</color>
+  <color name="dashboard_background">#F2F2F2</color>
 </resources>
