@@ -13,4 +13,7 @@
   <string name="pin_error_not_equal">PIN was not the same, choose PIN</string>
   <string name="pin_error_similar">Too many similar digits</string>
   <string name="pin_title_enter_pin">Enter PIN</string>
+  <string name="btn_logout_label">Logout</string>
+  <string name="btn_disconnect_label">Disconnect device</string>
+  <string name="btn_get_user_profile_data_label">Get User Profile</string>
 </resources>

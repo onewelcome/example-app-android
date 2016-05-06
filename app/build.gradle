@@ -39,6 +39,7 @@ dependencies {
 
   // Google Support
   compile 'com.android.support:appcompat-v7:23.3.0'
+  compile 'com.android.support:cardview-v7:23.3.0'
 
   // Http Client
   compile 'com.squareup.okhttp:okhttp:2.4.0'
