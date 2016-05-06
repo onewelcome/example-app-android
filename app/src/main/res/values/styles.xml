@@ -8,4 +8,17 @@
     <item name="colorAccent">@color/colorAccent</item>
   </style>
 
+  <style name="ButtonStyle" parent="Widget.AppCompat.Button.Borderless">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">48dp</item>
+    <item name="android:background">#FFF</item>
+    <item name="android:gravity">center</item>
+  </style>
+
+  <style name="BigBlueButtonStyle" parent="ButtonStyle">
+    <item name="android:textColor">#FFF</item>
+    <item name="android:background">@drawable/blue_button</item>
+    <item name="android:textSize">18sp</item>
+  </style>
+
 </resources>
