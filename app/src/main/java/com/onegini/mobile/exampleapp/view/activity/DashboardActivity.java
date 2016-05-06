@@ -52,7 +52,6 @@ public class DashboardActivity extends AppCompatActivity {
   @OnClick(R.id.button_disconnect)
   public void disconnect() {
     OneginiClient.getInstance().disconnect(
-
         new OneginiDisconnectHandler() {
           @Override
           public void disconnectSuccess() {
