@@ -15,7 +15,7 @@ public class CreatePinDialog implements OneginiCreatePinDialog {
 
   public static OneginiPinProvidedHandler oneginiPinProvidedHandler;
 
-  private Context applicationContext;
+  private final Context applicationContext;
 
   public CreatePinDialog(final Context context) {
     applicationContext = context.getApplicationContext();

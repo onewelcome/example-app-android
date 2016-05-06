@@ -11,7 +11,7 @@ public class CurrentPinDialog implements OneginiCurrentPinDialog {
 
   public static OneginiPinProvidedHandler oneginiPinProvidedHandler;
 
-  private Context applicationContext;
+  private final Context applicationContext;
 
   public CurrentPinDialog(final Context context) {
     applicationContext = context.getApplicationContext();
@@ -21,11 +21,7 @@ public class CurrentPinDialog implements OneginiCurrentPinDialog {
   public void getCurrentPin(final OneginiPinProvidedHandler pinProvidedHandler) {
     PinActivity.setIsCreatePinFlow(false);
     oneginiPinProvidedHandler = pinProvidedHandler;
-    notifyActivity();
-  }
-
-  private void notifyActivity() {
-      startPinActivity();
+    startPinActivity();
   }
 
   private void startPinActivity() {

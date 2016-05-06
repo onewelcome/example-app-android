@@ -36,7 +36,7 @@
       android:layout_centerHorizontal="true"
       android:layout_marginTop="60dp"
       android:fontFamily="sans-serif-medium"
-      android:text="Enter PIN"
+      android:text="@string/pin_title_enter_pin"
       android:textColor="@color/dark_text"
       android:textSize="20sp"/>
 

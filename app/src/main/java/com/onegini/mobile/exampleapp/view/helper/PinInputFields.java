@@ -5,9 +5,9 @@ import com.onegini.mobile.exampleapp.R;
 
 public class PinInputFields {
 
-  private int EMPTY_FIELD_RESOURCE_ID = R.drawable.circle_empty;
-  private int FOCUSED_FIELD_RESOURCE_ID = R.drawable.circle_focused;
-  private int FILLED_FIELD_RESOURCE_ID = R.drawable.circle_filled;
+  private final int EMPTY_FIELD_RESOURCE_ID = R.drawable.circle_empty;
+  private final int FOCUSED_FIELD_RESOURCE_ID = R.drawable.circle_focused;
+  private final int FILLED_FIELD_RESOURCE_ID = R.drawable.circle_filled;
 
   private final ImageView[] pinInputs;
   private final int pinLength;

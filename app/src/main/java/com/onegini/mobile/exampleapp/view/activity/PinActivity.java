@@ -71,7 +71,6 @@ public class PinActivity extends Activity {
   @Override
   public void onBackPressed() {
     // we don't want to be able to go back from the pin screen
-    return;
   }
 
   private void initialize() {
@@ -133,7 +132,7 @@ public class PinActivity extends Activity {
     if (isCreatePinFlow && isNotBlank(screenMessage)) {
       errorTextView.setText(screenMessage);
       errorTextView.setVisibility(View.VISIBLE);
-    } else if (isCreatePinFlow == false && remainingFailedAttempts > 0) {
+    } else if (!isCreatePinFlow && remainingFailedAttempts > 0) {
       errorTextView.setText(getString(R.string.pin_error_invalid_pin, remainingFailedAttempts));
       errorTextView.setVisibility(View.VISIBLE);
     } else {
