@@ -1,4 +1,4 @@
-package com.onegini.mobile.exampleapp.view;
+package com.onegini.mobile.exampleapp.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -81,6 +81,7 @@ public class LoginActivity extends Activity {
       @Override
       public void authorizationSuccess() {
         // Show user is logged in.
+        DashboardActivity.startActivity(LoginActivity.this);
       }
 
       @Override

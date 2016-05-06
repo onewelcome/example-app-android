@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <LinearLayout
+      android:id="@+id/pin_keyboard_container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_marginLeft="30dp"
+      android:layout_marginRight="30dp"
+      android:orientation="vertical">
+
+    <include
+        android:id="@+id/pin_keyboard"
+        layout="@layout/pin_keyboard"/>
+
+    <Button
+        android:id="@+id/pin_deny_button"
+        style="@style/PinKeyboardKeyButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_marginTop="1dp"
+        android:text="@string/pin_deny_button_label"
+        android:visibility="gone"/>
+
+  </LinearLayout>
+
+  <TextView
+      android:id="@+id/pin_title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="60dp"
+      android:fontFamily="sans-serif-medium"
+      android:text="Enter PIN"
+      android:textColor="@color/dark_text"
+      android:textSize="20sp"/>
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_above="@+id/pin_keyboard_container"
+      android:layout_below="@+id/pin_title">
+
+
+    <LinearLayout
+        android:id="@+id/pin_inputs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+
+      <ImageView
+          android:id="@+id/pin_input_0"
+          style="@style/PinInputFieldStyle"
+          android:src="@drawable/circle_focused"/>
+
+      <ImageView
+          android:id="@+id/pin_input_1"
+          style="@style/PinInputFieldStyle"
+          android:src="@drawable/circle_empty"/>
+
+      <ImageView
+          android:id="@+id/pin_input_2"
+          style="@style/PinInputFieldStyle"
+          android:src="@drawable/circle_empty"/>
+
+      <ImageView
+          android:id="@+id/pin_input_3"
+          style="@style/PinInputFieldStyle"
+          android:src="@drawable/circle_empty"/>
+
+      <ImageView
+          android:id="@+id/pin_input_4"
+          style="@style/PinInputFieldStyle"
+          android:src="@drawable/circle_empty"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/pin_error_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pin_inputs"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/red"
+        android:textSize="16sp"
+        tools:text="Lorem ipsum"/>
+
+  </RelativeLayout>
+
+</RelativeLayout>
