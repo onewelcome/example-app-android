@@ -8,7 +8,6 @@ import com.onegini.mobile.sdk.android.library.utils.dialogs.OneginiCreatePinDial
 public class OneginiSDK {
 
   public static OneginiClient getOneginiClient(final Context context) {
-
     OneginiClient oneginiClient = OneginiClient.getInstance();
     if (oneginiClient == null) {
       // will throw OneginiConfigNotFoundException if OneginiConfigModel class can't be found

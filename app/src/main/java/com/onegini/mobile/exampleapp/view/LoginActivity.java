@@ -30,7 +30,6 @@ public class LoginActivity extends Activity {
     setContentView(R.layout.activity_login);
     ButterKnife.bind(this);
 
-    loginButton.setVisibility(View.VISIBLE);
     initLoginButtonListener();
   }
 
@@ -38,6 +37,7 @@ public class LoginActivity extends Activity {
   protected void onResume() {
     super.onResume();
     setupLoginButtonText();
+    setProgressbarVisibility(false);
   }
 
   private void setProgressbarVisibility(final boolean isVisible) {
@@ -57,7 +57,7 @@ public class LoginActivity extends Activity {
   }
 
   private void onButtonClicked() {
-//    setProgressbarVisibility(true);
+    setProgressbarVisibility(true);
     authenticateUser();
   }
 
@@ -67,9 +67,6 @@ public class LoginActivity extends Activity {
 
     final Uri uri = intent.getData();
     handleRedirection(uri);
-
-//    final Uri redirectUri = Uri.parse("https://idp-demo.onegini.com/");
-//    OneginiSDK.getOneginiClient(this).handleAuthorizationCallback(redirectUri);
   }
 
   private void handleRedirection(final Uri uri) {
