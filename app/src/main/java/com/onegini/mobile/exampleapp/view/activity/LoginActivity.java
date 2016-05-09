@@ -90,6 +90,7 @@ public class LoginActivity extends Activity {
 
   private void authenticateUser() {
     OneginiSDK.getOneginiClient(this).authorize(Constants.DEFAULT_SCOPES, new OneginiAuthorizationHandler() {
+
       @Override
       public void authorizationSuccess() {
         PinActivity.setRemainingFailedAttempts(0);

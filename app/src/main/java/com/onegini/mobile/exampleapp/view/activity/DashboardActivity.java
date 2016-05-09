@@ -6,19 +6,29 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
+import com.onegini.mobile.exampleapp.model.Person;
+import com.onegini.mobile.exampleapp.network.PersonService;
 import com.onegini.mobile.sdk.android.library.OneginiClient;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiDisconnectHandler;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiLogoutHandler;
+import rx.Subscription;
 
 public class DashboardActivity extends AppCompatActivity {
 
+  @SuppressWarnings({ "WeakerAccess" })
   @Bind(R.id.toolbar)
   Toolbar toolbar;
+  @SuppressWarnings({ "WeakerAccess" })
+  @Bind(R.id.tv_user_profile_info)
+  TextView userInfoTextView;
+
+  private Subscription subscription;
 
   public static void startActivity(@NonNull final Activity context) {
     final Intent intent = new Intent(context, DashboardActivity.class);
@@ -43,16 +53,19 @@ public class DashboardActivity extends AppCompatActivity {
           @Override
           public void logoutSuccess() {
             // Go to login screen
+            showToast("logoutSuccess");
             LoginActivity.startActivity(DashboardActivity.this);
           }
 
           @Override
           public void logoutError() {
             // Ignore failure and return to login screen
+            showToast("logoutError");
             LoginActivity.startActivity(DashboardActivity.this);
           }
         }
     );
+
   }
 
   @SuppressWarnings("unused")
@@ -63,12 +76,14 @@ public class DashboardActivity extends AppCompatActivity {
           @Override
           public void disconnectSuccess() {
             // Go to login screen
+            showToast("disconnectSuccess");
             LoginActivity.startActivity(DashboardActivity.this);
           }
 
           @Override
           public void disconnectError() {
             // Ignore failure and return to login screen
+            showToast("disconnectError");
             LoginActivity.startActivity(DashboardActivity.this);
           }
         }
@@ -78,7 +93,17 @@ public class DashboardActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_get_user_profile)
   public void getUserProfileData() {
-    showToast("getUserProfileData");
+    subscription = PersonService.getInstance(this)
+        .getPerson()
+        .subscribe(this::onPersonFetched, throwable -> onPersonFetchFail());
+  }
+
+  private void onPersonFetchFail() {
+    showToast("onPersonFetchFail");
+  }
+
+  private void onPersonFetched(final Person person) {
+    userInfoTextView.setText(person.getPersonFullInfo());
   }
 
   private void showToast(final String message) {
@@ -95,5 +120,13 @@ public class DashboardActivity extends AppCompatActivity {
       actionBar.setDisplayUseLogoEnabled(true);
       actionBar.setDisplayShowTitleEnabled(false);
     }
+  }
+
+  @Override
+  public void onDestroy() {
+    if (subscription != null) {
+      subscription.unsubscribe();
+    }
+    super.onDestroy();
   }
 }

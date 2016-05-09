@@ -64,4 +64,7 @@ dependencies {
 
   // DI for views
   compile 'com.jakewharton:butterknife:7.0.1'
+
+  // RxJava
+  compile 'io.reactivex:rxandroid:1.1.0'
 }

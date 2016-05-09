@@ -11,7 +11,7 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   private final String appScheme = "oneginiexample";
   private final String appVersion = "1.0.0";
   private final String baseURL = "https://tokenserver-demo-test.onegini.com";
-  private final String resourceBaseURL = "https://tokenserver-demo-test.onegini.com";
+  private final String resourceBaseURL = "https://resourcegateway-demo-test.onegini.com";
   private final String keystoreHash = "fb3b032b76817fa9056806e397624eca98b0004ee9b396458f272741cd61d946";
   private final int maxPinFailures = 3;
 
