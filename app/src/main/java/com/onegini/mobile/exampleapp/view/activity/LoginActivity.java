@@ -21,13 +21,13 @@ import com.onegini.mobile.sdk.android.library.handlers.OneginiAuthorizationHandl
 
 public class LoginActivity extends Activity {
 
-  @SuppressWarnings({ "WeakerAccess" })
+  @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.login_button)
   Button loginButton;
-  @SuppressWarnings({ "WeakerAccess" })
+  @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.progress_bar_login)
   ProgressBar progressBar;
-  @SuppressWarnings({ "WeakerAccess" })
+  @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.layout_login_content)
   RelativeLayout layoutLoginContent;
 

@@ -34,8 +34,10 @@ public class PinActivity extends Activity {
     PinActivity.remainingFailedAttempts = remainingFailedAttempts;
   }
 
+  @SuppressWarnings("unused")
   @Bind(R.id.pin_title)
   TextView screenTitleTextView;
+  @SuppressWarnings("unused")
   @Bind(R.id.pin_error_message)
   TextView errorTextView;
   private final ImageView[] pinInputs = new ImageView[MAX_DIGITS];

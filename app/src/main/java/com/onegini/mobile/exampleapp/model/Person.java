@@ -3,10 +3,13 @@ package com.onegini.mobile.exampleapp.model;
 import com.google.gson.annotations.SerializedName;
 import com.onegini.mobile.exampleapp.Constants;
 
+@SuppressWarnings("unused")
 public class Person {
 
+  @SuppressWarnings("unused")
   @SerializedName("person_id")
   private String id;
+  @SuppressWarnings("unused")
   @SerializedName("first_name")
   private String firstName;
   @SuppressWarnings("unused")

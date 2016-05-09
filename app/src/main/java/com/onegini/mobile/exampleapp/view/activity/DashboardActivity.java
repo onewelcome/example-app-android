@@ -21,10 +21,10 @@ import rx.Subscription;
 
 public class DashboardActivity extends AppCompatActivity {
 
-  @SuppressWarnings({ "WeakerAccess" })
+  @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.toolbar)
   Toolbar toolbar;
-  @SuppressWarnings({ "WeakerAccess" })
+  @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.tv_user_profile_info)
   TextView userInfoTextView;
 
