@@ -145,10 +145,7 @@ public class PinActivity extends Activity {
   }
 
   private boolean isBlank(final String string) {
-    if (string == null || string.length() == 0) {
-      return true;
-    }
-    return false;
+    return string == null || string.length() == 0;
   }
 
   private void resetView() {

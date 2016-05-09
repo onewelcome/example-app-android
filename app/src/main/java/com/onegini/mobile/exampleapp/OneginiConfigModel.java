@@ -3,6 +3,7 @@ package com.onegini.mobile.exampleapp;
 import android.os.Build;
 import com.onegini.mobile.sdk.android.library.model.OneginiClientConfigModel;
 
+@SuppressWarnings({ "unused", "WeakerAccess" })
 public class OneginiConfigModel implements OneginiClientConfigModel {
 
   private final String appIdentifier = "ExampleApp";
