@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
@@ -14,6 +16,9 @@ import com.onegini.mobile.sdk.android.library.handlers.OneginiDisconnectHandler;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiLogoutHandler;
 
 public class DashboardActivity extends AppCompatActivity {
+
+  @Bind(R.id.toolbar)
+  Toolbar toolbar;
 
   public static void startActivity(@NonNull final Activity context) {
     final Intent intent = new Intent(context, DashboardActivity.class);
@@ -26,6 +31,8 @@ public class DashboardActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_dashboard);
     ButterKnife.bind(this);
+
+    setupActionBar();
   }
 
   @SuppressWarnings("unused")
@@ -76,5 +83,17 @@ public class DashboardActivity extends AppCompatActivity {
 
   private void showToast(final String message) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+  }
+
+  private void setupActionBar() {
+    setSupportActionBar(toolbar);
+
+    android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+    if (actionBar != null) {
+      actionBar.setDisplayShowHomeEnabled(true);
+      actionBar.setLogo(R.mipmap.ic_launcher);
+      actionBar.setDisplayUseLogoEnabled(true);
+      actionBar.setDisplayShowTitleEnabled(false);
+    }
   }
 }

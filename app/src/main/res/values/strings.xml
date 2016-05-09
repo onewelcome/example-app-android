@@ -1,6 +1,5 @@
 <resources>
-  <string name="app_name">ExampleApp</string>
-  <string name="login_app_name">Example App</string>
+  <string name="app_name">Example App</string>
   <string name="btn_login_label">LOG IN</string>
   <string name="btn_register_label">REGISTER</string>
   <string name="pin_deny_button_label">Deny</string>

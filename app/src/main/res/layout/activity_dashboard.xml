@@ -1,42 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:card_view="http://schemas.android.com/apk/res-auto"
-              android:background="@color/dashboard_background"
-              android:padding="@dimen/activity_horizontal_margin"
+              xmlns:app="http://schemas.android.com/tools"
               android:layout_height="match_parent"
-              android:layout_width="match_parent">
+              android:layout_width="match_parent"
+              android:background="@color/dashboard_background"
+              android:orientation="vertical">
+
+  <android.support.v7.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="?attr/colorPrimary"
+      app:contentInsetLeft="0dp"
+      app:contentInsetStart="0dp"
+      android:elevation="4dp"
+      android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+      app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:id="@+id/toolbar_title"/>
+
+  </android.support.v7.widget.Toolbar>
 
   <android.support.v7.widget.CardView
       xmlns:card_view="http://schemas.android.com/apk/res-auto"
       android:id="@+id/card_view"
+      android:layout_margin="@dimen/activity_margin"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       card_view:cardCornerRadius="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_margin="@dimen/activity_margin"
         android:layout_height="wrap_content"
         android:orientation="vertical">
       <Button
           android:id="@+id/button_logout"
-          style="@style/BigBlueButtonStyle"
+          style="@style/ButtonStyle"
           android:layout_marginBottom="20dp"
-          android:layout_marginLeft="80dp"
+          android:layout_gravity="right"
           android:text="@string/btn_logout_label"/>
 
       <Button
           android:id="@+id/button_disconnect"
-          style="@style/BigBlueButtonStyle"
-          android:layout_marginBottom="120dp"
-          android:layout_marginLeft="80dp"
+          style="@style/ButtonStyle"
+          android:layout_marginBottom="80dp"
+          android:layout_gravity="right"
           android:text="@string/btn_disconnect_label"/>
 
       <Button
           android:id="@+id/button_get_user_profile"
-          style="@style/BigBlueButtonStyle"
-          android:layout_marginLeft="40dp"
-          android:layout_marginRight="40dp"
+          style="@style/ButtonStyle"
           android:text="@string/btn_get_user_profile_data_label"/>
     </LinearLayout>
   </android.support.v7.widget.CardView>
