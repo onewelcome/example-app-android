@@ -81,9 +81,9 @@ public class PinActivity extends Activity {
   }
 
   private void parseIntent() {
-    final Intent intent = getIntent();
-    screenMessage = intent.getStringExtra(EXTRA_MESSAGE);
-    screenTitle = intent.getStringExtra(EXTRA_TITLE);
+    final Bundle extras = getIntent().getExtras();
+    screenMessage = extras.getString(EXTRA_MESSAGE, "");
+    screenTitle = extras.getString(EXTRA_TITLE, "");
   }
 
   private void initListeners() {

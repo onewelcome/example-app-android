@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
@@ -42,7 +43,6 @@ public class LoginActivity extends Activity {
     setContentView(R.layout.activity_login);
     ButterKnife.bind(this);
 
-    initLoginButtonListener();
     setProgressbarVisibility(false);
   }
 
@@ -64,11 +64,9 @@ public class LoginActivity extends Activity {
     loginButton.setText(buttonLabel);
   }
 
-  private void initLoginButtonListener() {
-    loginButton.setOnClickListener(v -> onButtonClicked());
-  }
-
-  private void onButtonClicked() {
+  @SuppressWarnings("unused")
+  @OnClick(R.id.login_button)
+  public void onButtonClicked() {
     setProgressbarVisibility(true);
     authenticateUser();
   }
@@ -76,9 +74,7 @@ public class LoginActivity extends Activity {
   @Override
   public void onNewIntent(final Intent intent) {
     super.onNewIntent(intent);
-
-    final Uri uri = intent.getData();
-    handleRedirection(uri);
+    handleRedirection(intent.getData());
   }
 
   private void handleRedirection(final Uri uri) {
@@ -106,21 +102,25 @@ public class LoginActivity extends Activity {
       @Override
       public void authorizationException(final Exception exception) {
         // Show error an exception occurred, for example the storage was corrupted.
+        showToast("authorizationException: "+exception.getMessage());
       }
 
       @Override
       public void authorizationErrorInvalidRequest() {
         // Show error the requests send by the SDK were not accepted by the Token Server.
+        showToast("authorizationErrorInvalidRequest");
       }
 
       @Override
       public void authorizationErrorClientRegistrationFailed() {
         // Show error the device was not able to perform DCR, potential timing issue or the current app version is not supported anymore.
+        showToast("authorizationErrorClientRegistrationFailed");
       }
 
       @Override
       public void authorizationErrorInvalidState() {
         // Show error the callback failed due to an invalid state param, retry the operation.
+        showToast("authorizationErrorInvalidState");
       }
 
       @Override
@@ -134,27 +134,31 @@ public class LoginActivity extends Activity {
       @Override
       public void authorizationErrorNotAuthenticated() {
         // Show error the client credentials used are invalid, user should authorize again.
+        showToast("authorizationErrorNotAuthenticated");
       }
 
       @Override
       public void authorizationErrorInvalidScope() {
         // Show error the requested scope is invalid and not available for this client.
+        showToast("authorizationErrorInvalidScope");
       }
 
       @Override
       public void authorizationErrorNotAuthorized() {
         // Show error the application is not authorized to perform this operation.
+        showToast("authorizationErrorNotAuthorized");
       }
 
       @Override
       public void authorizationErrorInvalidGrantType() {
         // Show error the operation requested by the application is not supported by the token server.
+        showToast("authorizationErrorInvalidGrantType");
       }
 
       @Override
       public void authorizationErrorTooManyPinFailures() {
-        PinActivity.setRemainingFailedAttempts(0);
         showToast("authorizationErrorTooManyPinFailures");
+        PinActivity.setRemainingFailedAttempts(0);
         setupLoginButtonText();
         setProgressbarVisibility(false);
       }
@@ -162,11 +166,13 @@ public class LoginActivity extends Activity {
       @Override
       public void authorizationErrorInvalidApplication() {
         // Show error the application uses wrong version and the update is needed.
+        showToast("authorizationErrorInvalidApplication");
       }
 
       @Override
       public void authorizationErrorUnsupportedOS() {
         // Show error the device is using unsupported OS version, the user should upgrade his OS.
+        showToast("authorizationErrorUnsupportedOS");
       }
     });
   }

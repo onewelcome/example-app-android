@@ -28,7 +28,6 @@ public class CurrentPinDialog implements OneginiCurrentPinDialog {
     final Intent intent = new Intent(applicationContext, PinActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.putExtra(PinActivity.EXTRA_TITLE, applicationContext.getString(R.string.pin_title_enter_pin));
-    intent.putExtra(PinActivity.EXTRA_MESSAGE, "");
     applicationContext.startActivity(intent);
   }
 }
