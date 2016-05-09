@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -20,12 +21,21 @@ import com.onegini.mobile.sdk.android.library.handlers.OneginiAuthorizationHandl
 
 public class LoginActivity extends Activity {
 
+  @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.login_button)
   Button loginButton;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.progress_bar_login)
   ProgressBar progressBar;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.layout_login_content)
   RelativeLayout layoutLoginContent;
+
+  public static void startActivity(@NonNull final Activity context) {
+    final Intent intent = new Intent(context, LoginActivity.class);
+    context.startActivity(intent);
+    context.finish();
+  }
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -76,6 +86,7 @@ public class LoginActivity extends Activity {
 
   private void authenticateUser() {
     OneginiSDK.getOneginiClient(this).authorize(Constants.DEFAULT_SCOPES, new OneginiAuthorizationHandler() {
+
       @Override
       public void authorizationSuccess() {
         PinActivity.setRemainingFailedAttempts(0);
