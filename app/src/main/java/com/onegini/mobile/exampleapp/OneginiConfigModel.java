@@ -3,7 +3,6 @@ package com.onegini.mobile.exampleapp;
 import android.os.Build;
 import com.onegini.mobile.sdk.android.library.model.OneginiClientConfigModel;
 
-@SuppressWarnings({ "unused", "WeakerAccess" })
 public class OneginiConfigModel implements OneginiClientConfigModel {
 
   private final String appIdentifier = "ExampleApp";
@@ -12,7 +11,7 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   private final String appVersion = "1.0.0";
   private final String baseURL = "https://tokenserver-demo-test.onegini.com";
   private final String resourceBaseURL = "https://resourcegateway-demo-test.onegini.com";
-  private final String keystoreHash = "fb3b032b76817fa9056806e397624eca98b0004ee9b396458f272741cd61d946";
+  private final String keystoreHash = "b41bdf46dcace3ec5a16900abb91b6d395082e46f04ab3fccf6b616dab507bc1";
   private final int maxPinFailures = 3;
 
   @Override
