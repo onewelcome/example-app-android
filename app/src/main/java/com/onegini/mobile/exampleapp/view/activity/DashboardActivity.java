@@ -11,12 +11,14 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.Person;
 import com.onegini.mobile.exampleapp.network.PersonService;
 import com.onegini.mobile.sdk.android.library.OneginiClient;
-import com.onegini.mobile.sdk.android.library.handlers.OneginiDisconnectHandler;
+import com.onegini.mobile.sdk.android.library.handlers.OneginiDeregisterUserProfileHandler;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiLogoutHandler;
+import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 import rx.Subscription;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -65,25 +67,29 @@ public class DashboardActivity extends AppCompatActivity {
           }
         }
     );
-
   }
 
   @SuppressWarnings("unused")
-  @OnClick(R.id.button_disconnect)
-  public void disconnect() {
-    OneginiClient.getInstance().disconnect(
-        new OneginiDisconnectHandler() {
+  @OnClick(R.id.button_deregister_user)
+  public void deregisterUser() {
+    UserProfile userProfile = OneginiSDK.getOneginiClient(this).getAuthenticatedUserProfile();
+    if (userProfile == null) {
+      showToast("userProfile == null");
+      return;
+    }
+
+    OneginiClient.getInstance().deregisterUser(userProfile, new OneginiDeregisterUserProfileHandler() {
           @Override
-          public void disconnectSuccess() {
+          public void onSuccess() {
             // Go to login screen
-            showToast("disconnectSuccess");
+            showToast("deregisterUserSuccess");
             LoginActivity.startActivity(DashboardActivity.this);
           }
 
           @Override
-          public void disconnectError() {
+          public void onRequestError() {
             // Ignore failure and return to login screen
-            showToast("disconnectError");
+            showToast("deregisterUserError");
             LoginActivity.startActivity(DashboardActivity.this);
           }
         }
