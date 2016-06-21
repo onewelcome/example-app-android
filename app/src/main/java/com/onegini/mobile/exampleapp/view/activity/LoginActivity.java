@@ -17,7 +17,8 @@ import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.sdk.android.library.OneginiClient;
-import com.onegini.mobile.sdk.android.library.handlers.OneginiAuthorizationHandler;
+import com.onegini.mobile.sdk.android.library.handlers.OneginiAuthenticationHandler;
+import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 
 public class LoginActivity extends Activity {
 
@@ -52,25 +53,6 @@ public class LoginActivity extends Activity {
     setupLoginButtonText();
   }
 
-  private void setProgressbarVisibility(final boolean isVisible) {
-    progressBar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-
-    layoutLoginContent.setVisibility(isVisible ? View.GONE : View.VISIBLE);
-    loginButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
-  }
-
-  private void setupLoginButtonText() {
-    final String buttonLabel = OneginiSDK.getOneginiClient(this).isRegistered() ? getString(R.string.btn_login_label) : getString(R.string.btn_register_label);
-    loginButton.setText(buttonLabel);
-  }
-
-  @SuppressWarnings("unused")
-  @OnClick(R.id.login_button)
-  public void onButtonClicked() {
-    setProgressbarVisibility(true);
-    authenticateUser();
-  }
-
   @Override
   public void onNewIntent(final Intent intent) {
     super.onNewIntent(intent);
@@ -84,97 +66,196 @@ public class LoginActivity extends Activity {
     }
   }
 
-  private void authenticateUser() {
-    OneginiSDK.getOneginiClient(this).authorize(Constants.DEFAULT_SCOPES, new OneginiAuthorizationHandler() {
+  @SuppressWarnings("unused")
+  @OnClick(R.id.login_button)
+  public void onButtonClicked() {
+    setProgressbarVisibility(true);
+
+    OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
+    UserProfile userProfile = oneginiClient.getAuthenticatedUserProfile();
+    if (oneginiClient.isRegistered() && userProfile != null) {
+      loginUser(userProfile);
+    } else {
+      registerUser();
+    }
+  }
+
+
+  private void registerUser() {
+    OneginiSDK.getOneginiClient(this).registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
 
       @Override
-      public void authorizationSuccess() {
+      public void authenticationSuccess(final UserProfile userProfile) {
         PinActivity.setRemainingFailedAttempts(0);
+        loginUser(userProfile);
+      }
+
+      @Override
+      public void authenticationError() {
+        showToast("authenticationError");
+      }
+
+      @Override
+      public void authenticationException(final Exception e) {
+        showToast("authenticationException");
+      }
+
+      @Override
+      public void authenticationErrorInvalidRequest() {
+        showToast("authenticationErrorInvalidRequest");
+      }
+
+      @Override
+      public void authenticationErrorClientRegistrationFailed() {
+        showToast("authenticationErrorClientRegistrationFailed");
+      }
+
+      @Override
+      public void authenticationErrorInvalidState() {
+        showToast("authenticationErrorInvalidState");
+      }
+
+      @Override
+      public void authenticationErrorInvalidGrant(final int remaining) {
+        // Show error the token was invalid, user should authorize again.
+        setProgressbarVisibility(true);
+        PinActivity.setRemainingFailedAttempts(remaining);
+        registerUser();
+      }
+
+      @Override
+      public void authenticationErrorNotAuthenticated() {
+        showToast("authenticationErrorNotAuthenticated");
+      }
+
+      @Override
+      public void authenticationErrorInvalidScope() {
+        showToast("authenticationErrorInvalidScope");
+      }
+
+      @Override
+      public void authenticationErrorNotAuthorized() {
+        showToast("authenticationErrorNotAuthorized");
+      }
+
+      @Override
+      public void authenticationErrorInvalidGrantType() {
+        showToast("authenticationErrorInvalidGrantType");
+      }
+
+      @Override
+      public void authenticationErrorTooManyPinFailures() {
+        showToast("authenticationErrorTooManyPinFailures");
+      }
+
+      @Override
+      public void authenticationErrorInvalidApplication() {
+        showToast("authenticationErrorInvalidApplication");
+      }
+
+      @Override
+      public void authenticationErrorUnsupportedOS() {
+        showToast("authenticationErrorUnsupportedOS");
+      }
+
+      @Override
+      public void authenticationErrorInvalidProfile() {
+        showToast("authenticationErrorInvalidProfile");
+      }
+    });
+  }
+
+  private void loginUser(UserProfile userProfile) {
+    OneginiSDK.getOneginiClient(this).authenticateUser(userProfile, Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
+      @Override
+      public void authenticationSuccess(final UserProfile userProfileSuccessfullyAuthenticated) {
         DashboardActivity.startActivity(LoginActivity.this);
       }
 
       @Override
-      public void authorizationError() {
-        // Show error a general error occurred.
-        showToast("authorizationError");
+      public void authenticationError() {
+        showToast("authenticationError");
       }
 
       @Override
-      public void authorizationException(final Exception exception) {
-        // Show error an exception occurred, for example the storage was corrupted.
-        showToast("authorizationException: "+exception.getMessage());
+      public void authenticationException(final Exception e) {
+        showToast("authenticationException");
       }
 
       @Override
-      public void authorizationErrorInvalidRequest() {
-        // Show error the requests send by the SDK were not accepted by the Token Server.
-        showToast("authorizationErrorInvalidRequest");
+      public void authenticationErrorInvalidRequest() {
+        showToast("authenticationErrorInvalidRequest");
       }
 
       @Override
-      public void authorizationErrorClientRegistrationFailed() {
-        // Show error the device was not able to perform DCR, potential timing issue or the current app version is not supported anymore.
-        showToast("authorizationErrorClientRegistrationFailed");
+      public void authenticationErrorClientRegistrationFailed() {
+        showToast("authenticationErrorClientRegistrationFailed");
       }
 
       @Override
-      public void authorizationErrorInvalidState() {
-        // Show error the callback failed due to an invalid state param, retry the operation.
-        showToast("authorizationErrorInvalidState");
+      public void authenticationErrorInvalidState() {
+        showToast("authenticationErrorInvalidState");
       }
 
       @Override
-      public void authorizationErrorInvalidGrant(final int remaining) {
-        // Show error the token was invalid, user should authorize again.
+      public void authenticationErrorInvalidGrant(final int remaining) {
         setProgressbarVisibility(true);
         PinActivity.setRemainingFailedAttempts(remaining);
-        authenticateUser();
+        loginUser(userProfile);
       }
 
       @Override
-      public void authorizationErrorNotAuthenticated() {
-        // Show error the client credentials used are invalid, user should authorize again.
-        showToast("authorizationErrorNotAuthenticated");
+      public void authenticationErrorNotAuthenticated() {
+        showToast("authenticationErrorNotAuthenticated");
       }
 
       @Override
-      public void authorizationErrorInvalidScope() {
-        // Show error the requested scope is invalid and not available for this client.
-        showToast("authorizationErrorInvalidScope");
+      public void authenticationErrorInvalidScope() {
+        showToast("authenticationErrorInvalidScope");
       }
 
       @Override
-      public void authorizationErrorNotAuthorized() {
-        // Show error the application is not authorized to perform this operation.
-        showToast("authorizationErrorNotAuthorized");
+      public void authenticationErrorNotAuthorized() {
+        showToast("authenticationErrorNotAuthorized");
       }
 
       @Override
-      public void authorizationErrorInvalidGrantType() {
-        // Show error the operation requested by the application is not supported by the token server.
-        showToast("authorizationErrorInvalidGrantType");
+      public void authenticationErrorInvalidGrantType() {
+        showToast("authenticationErrorInvalidGrantType");
       }
 
       @Override
-      public void authorizationErrorTooManyPinFailures() {
-        showToast("authorizationErrorTooManyPinFailures");
-        PinActivity.setRemainingFailedAttempts(0);
-        setupLoginButtonText();
-        setProgressbarVisibility(false);
+      public void authenticationErrorTooManyPinFailures() {
+        showToast("authenticationErrorTooManyPinFailures");
       }
 
       @Override
-      public void authorizationErrorInvalidApplication() {
-        // Show error the application uses wrong version and the update is needed.
-        showToast("authorizationErrorInvalidApplication");
+      public void authenticationErrorInvalidApplication() {
+        showToast("authenticationErrorInvalidApplication");
       }
 
       @Override
-      public void authorizationErrorUnsupportedOS() {
-        // Show error the device is using unsupported OS version, the user should upgrade his OS.
-        showToast("authorizationErrorUnsupportedOS");
+      public void authenticationErrorUnsupportedOS() {
+        showToast("authenticationErrorUnsupportedOS");
+      }
+
+      @Override
+      public void authenticationErrorInvalidProfile() {
+        showToast("authenticationErrorInvalidProfile");
       }
     });
+  }
+
+  private void setProgressbarVisibility(final boolean isVisible) {
+    progressBar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+
+    layoutLoginContent.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+    loginButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+  }
+
+  private void setupLoginButtonText() {
+    final String buttonLabel = OneginiSDK.getOneginiClient(this).isRegistered() ? getString(R.string.btn_login_label) : getString(R.string.btn_register_label);
+    loginButton.setText(buttonLabel);
   }
 
   private void showToast(final String message) {
