@@ -5,6 +5,7 @@ import android.content.Intent;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.activity.PinActivity;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiPinProvidedHandler;
+import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 import com.onegini.mobile.sdk.android.library.utils.dialogs.OneginiCurrentPinDialog;
 
 public class CurrentPinDialog implements OneginiCurrentPinDialog {
@@ -18,7 +19,7 @@ public class CurrentPinDialog implements OneginiCurrentPinDialog {
   }
 
   @Override
-  public void getCurrentPin(final OneginiPinProvidedHandler pinProvidedHandler) {
+  public void getCurrentPin(final UserProfile userProfile, final OneginiPinProvidedHandler pinProvidedHandler) {
     PinActivity.setIsCreatePinFlow(false);
     oneginiPinProvidedHandler = pinProvidedHandler;
     startPinActivity();
