@@ -71,6 +71,10 @@ public class LoginActivity extends Activity {
   public void onButtonClicked() {
     setProgressbarVisibility(true);
 
+    loginOrRegisterUser();
+  }
+
+  private void loginOrRegisterUser() {
     OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
     UserProfile userProfile = oneginiClient.getAuthenticatedUserProfile();
     if (oneginiClient.isRegistered() && userProfile != null) {
@@ -79,7 +83,6 @@ public class LoginActivity extends Activity {
       registerUser();
     }
   }
-
 
   private void registerUser() {
     OneginiSDK.getOneginiClient(this).registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
