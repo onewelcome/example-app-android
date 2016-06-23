@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -16,11 +18,12 @@ import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
+import com.onegini.mobile.exampleapp.view.dialog.GetUserNameDialog;
 import com.onegini.mobile.sdk.android.library.OneginiClient;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends FragmentActivity {
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.login_button)
@@ -45,6 +48,8 @@ public class LoginActivity extends Activity {
     ButterKnife.bind(this);
 
     setProgressbarVisibility(false);
+
+    askUserForName(null);
   }
 
   @Override
@@ -90,7 +95,7 @@ public class LoginActivity extends Activity {
       @Override
       public void authenticationSuccess(final UserProfile userProfile) {
         PinActivity.setRemainingFailedAttempts(0);
-        loginUser(userProfile);
+        askUserForName(userProfile);
       }
 
       @Override
@@ -166,6 +171,11 @@ public class LoginActivity extends Activity {
         showToast("authenticationErrorInvalidProfile");
       }
     });
+  }
+
+  private void askUserForName(final UserProfile userProfile) {
+    DialogFragment newFragment = new GetUserNameDialog();
+    newFragment.show(getSupportFragmentManager(), GetUserNameDialog.TAG);
   }
 
   private void loginUser(UserProfile userProfile) {
