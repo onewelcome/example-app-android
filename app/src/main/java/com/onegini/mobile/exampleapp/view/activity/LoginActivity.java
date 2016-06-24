@@ -1,16 +1,20 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,7 +22,9 @@ import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.view.dialog.GetUserNameDialog;
+import com.onegini.mobile.exampleapp.util.LocalStorage;
+import com.onegini.mobile.exampleapp.model.User;
+import com.onegini.mobile.exampleapp.view.GetUserNameView;
 import com.onegini.mobile.sdk.android.library.OneginiClient;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
@@ -26,8 +32,20 @@ import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 public class LoginActivity extends FragmentActivity {
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.label)
+  TextView label;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.get_user_name_view)
+  GetUserNameView getUserNameView;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.users_spinner)
+  Spinner usersSpinner;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.login_button)
   Button loginButton;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.register_button)
+  Button registerButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.progress_bar_login)
   ProgressBar progressBar;
@@ -47,15 +65,26 @@ public class LoginActivity extends FragmentActivity {
     setContentView(R.layout.activity_login);
     ButterKnife.bind(this);
 
-    setProgressbarVisibility(false);
-
-    askUserForName(null);
+    setupUserInterface();
   }
 
-  @Override
-  protected void onResume() {
-    super.onResume();
-    setupLoginButtonText();
+  private void setupUserInterface() {
+    setProgressbarVisibility(false);
+
+    if (isRegisteredAtLeastOneUser()) {
+      setupUsersSpinner();
+      loginButton.setVisibility(View.VISIBLE);
+    }
+    registerButton.setVisibility(View.VISIBLE);
+  }
+
+  private void setupUsersSpinner() {
+    usersSpinner.setVisibility(View.VISIBLE);
+    List<String> users = LocalStorage.getUsersNames(this);
+    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, users);
+    spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+    usersSpinner.setAdapter(spinnerArrayAdapter);
   }
 
   @Override
@@ -73,20 +102,43 @@ public class LoginActivity extends FragmentActivity {
 
   @SuppressWarnings("unused")
   @OnClick(R.id.login_button)
-  public void onButtonClicked() {
+  public void loginButtonClicked() {
     setProgressbarVisibility(true);
 
-    loginOrRegisterUser();
+    String selectedUserName = (String) usersSpinner.getSelectedItem();
+    User user = LocalStorage.getUserByName(this, selectedUserName);
+    loginUser(user.getUserProfile());
   }
 
-  private void loginOrRegisterUser() {
+  @SuppressWarnings("unused")
+  @OnClick(R.id.register_button)
+  public void registerButtonClicked() {
+    setProgressbarVisibility(true);
+
+    registerUser();
+  }
+
+  private boolean isRegisteredAtLeastOneUser() {
     OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
     UserProfile userProfile = oneginiClient.getAuthenticatedUserProfile();
     if (oneginiClient.isRegistered() && userProfile != null) {
-      loginUser(userProfile);
+      return true;
     } else {
-      registerUser();
+      return false;
     }
+  }
+
+  private void askUserForName(final UserProfile userProfile) {
+    setProgressbarVisibility(false);
+    usersSpinner.setVisibility(View.INVISIBLE);
+    label.setText(getString(R.string.enter_name));
+    getUserNameView.setup(userProfile);
+    loginButton.setText(getString(R.string.confirm));
+    loginButton.setOnClickListener(v -> {
+      User user = getUserNameView.getUser();
+      LocalStorage.saveUser(user, this);
+      goToDashboard();
+    });
   }
 
   private void registerUser() {
@@ -173,16 +225,12 @@ public class LoginActivity extends FragmentActivity {
     });
   }
 
-  private void askUserForName(final UserProfile userProfile) {
-    DialogFragment newFragment = new GetUserNameDialog();
-    newFragment.show(getSupportFragmentManager(), GetUserNameDialog.TAG);
-  }
 
   private void loginUser(UserProfile userProfile) {
-    OneginiSDK.getOneginiClient(this).authenticateUser(userProfile, Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
+    OneginiSDK.getOneginiClient(this).authenticateUser(userProfile, new OneginiAuthenticationHandler() {
       @Override
       public void authenticationSuccess(final UserProfile userProfileSuccessfullyAuthenticated) {
-        DashboardActivity.startActivity(LoginActivity.this);
+        goToDashboard();
       }
 
       @Override
@@ -259,16 +307,18 @@ public class LoginActivity extends FragmentActivity {
     });
   }
 
+  private void goToDashboard() {
+    DashboardActivity.startActivity(LoginActivity.this);
+  }
+
   private void setProgressbarVisibility(final boolean isVisible) {
     progressBar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
 
     layoutLoginContent.setVisibility(isVisible ? View.GONE : View.VISIBLE);
-    loginButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
-  }
-
-  private void setupLoginButtonText() {
-    final String buttonLabel = OneginiSDK.getOneginiClient(this).isRegistered() ? getString(R.string.btn_login_label) : getString(R.string.btn_register_label);
-    loginButton.setText(buttonLabel);
+    if (isRegisteredAtLeastOneUser()) {
+      loginButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+    }
+    registerButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
   }
 
   private void showToast(final String message) {
