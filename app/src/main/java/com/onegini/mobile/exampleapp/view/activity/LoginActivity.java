@@ -1,6 +1,7 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
 import java.util.List;
+import java.util.Set;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -94,7 +95,7 @@ public class LoginActivity extends FragmentActivity {
   }
 
   private void handleRedirection(final Uri uri) {
-    final OneginiClient client = OneginiSDK.getOneginiClient(this);
+    final OneginiClient client = OneginiSDK.getOneginiClient(getApplicationContext());
     if (uri != null && uri.getScheme().equals(client.getConfigModel().getAppScheme())) {
       client.handleAuthorizationCallback(uri);
     }
@@ -119,9 +120,8 @@ public class LoginActivity extends FragmentActivity {
   }
 
   private boolean isRegisteredAtLeastOneUser() {
-    OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    UserProfile userProfile = oneginiClient.getAuthenticatedUserProfile();
-    if (oneginiClient.isRegistered() && userProfile != null) {
+    Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(getApplicationContext()).getUserProfiles();
+    if (userProfiles.size() > 0) {
       return true;
     } else {
       return false;
@@ -142,7 +142,7 @@ public class LoginActivity extends FragmentActivity {
   }
 
   private void registerUser() {
-    OneginiSDK.getOneginiClient(this).registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
+    OneginiSDK.getOneginiClient(getApplicationContext()).registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
 
       @Override
       public void authenticationSuccess(final UserProfile userProfile) {
@@ -227,7 +227,7 @@ public class LoginActivity extends FragmentActivity {
 
 
   private void loginUser(UserProfile userProfile) {
-    OneginiSDK.getOneginiClient(this).authenticateUser(userProfile, new OneginiAuthenticationHandler() {
+    OneginiSDK.getOneginiClient(getApplicationContext()).authenticateUser(userProfile, new OneginiAuthenticationHandler() {
       @Override
       public void authenticationSuccess(final UserProfile userProfileSuccessfullyAuthenticated) {
         goToDashboard();

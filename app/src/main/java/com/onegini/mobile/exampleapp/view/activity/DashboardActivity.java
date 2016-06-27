@@ -73,7 +73,7 @@ public class DashboardActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_deregister_user)
   public void deregisterUser() {
-    UserProfile userProfile = OneginiSDK.getOneginiClient(this).getAuthenticatedUserProfile();
+    UserProfile userProfile = OneginiSDK.getOneginiClient(getApplicationContext()).getAuthenticatedUserProfile();
     if (userProfile == null) {
       showToast("userProfile == null");
       return;
