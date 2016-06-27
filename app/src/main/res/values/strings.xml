@@ -17,4 +17,5 @@
   <string name="btn_get_user_profile_data_label">Get User Profile</string>
   <string name="enter_name">Please enter your name</string>
   <string name="confirm">Confirm</string>
+  <string name="name_edit_text_label">Name</string>
 </resources>

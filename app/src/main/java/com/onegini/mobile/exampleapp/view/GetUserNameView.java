@@ -19,7 +19,7 @@ public class GetUserNameView extends RelativeLayout {
     LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     mInflater.inflate(R.layout.get_user_name_view, this, true);
 
-    editText = (EditText) findViewById(R.id.edit_text_name);
+    editText = (EditText) findViewById(R.id.name_edit_text);
   }
 
   public void setup(final UserProfile userProfile) {
