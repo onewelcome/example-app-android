@@ -15,7 +15,8 @@
     <string name="btn_logout_label">Logout</string>
     <string name="btn_deregister_user_label">Deregister user</string>
     <string name="btn_get_user_profile_data_label">Get User Profile</string>
-    <string name="enter_name">Please enter your name</string>
     <string name="confirm">Confirm</string>
-    <string name="name_edit_text_label">Name</string>
+    <string name="name_edit_text_label">Please enter your name</string>
+    <string name="name_edit_text_hint">Name</string>
+    <string name="create_profile_submit">CREATE PROFILE</string>
 </resources>

@@ -14,17 +14,17 @@ import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 
 public class LocalStorageUtil {
   private static final String PREFS_NAME = "local_storage";
-  private static final String EMPTY = "empty";
+  private static final String EMPTY = "";
 
   public static void saveUser(final Context context, final User user) {
-    SharedPreferences.Editor editor = context.getSharedPreferences(PREFS_NAME, 0).edit();
+    final SharedPreferences.Editor editor = context.getSharedPreferences(PREFS_NAME, 0).edit();
     editor.putString(user.getUserProfile().getProfileId(), user.getName());
     editor.apply();
   }
 
   private static String getUserName(final Context context, final UserProfile userProfile) {
-    SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
-    String userName = settings.getString(userProfile.getProfileId(), EMPTY);
+    final SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
+    final String userName = settings.getString(userProfile.getProfileId(), EMPTY);
 
     return userName;
   }
@@ -52,8 +52,8 @@ public class LocalStorageUtil {
   }
 
   public static void removeUser(final Context context, final UserProfile userProfile) {
-    SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-    SharedPreferences.Editor editor = mySPrefs.edit();
+    final SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+    final SharedPreferences.Editor editor = mySPrefs.edit();
     editor.remove(userProfile.getProfileId());
     editor.apply();
   }

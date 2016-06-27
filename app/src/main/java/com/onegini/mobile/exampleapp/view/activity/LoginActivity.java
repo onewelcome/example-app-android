@@ -5,7 +5,6 @@ import java.util.Set;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -20,13 +19,10 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.util.LocalStorageUtil;
 import com.onegini.mobile.exampleapp.model.User;
-import com.onegini.mobile.exampleapp.view.GetUserNameView;
-import com.onegini.mobile.sdk.android.library.OneginiClient;
+import com.onegini.mobile.exampleapp.util.LocalStorageUtil;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 
@@ -35,9 +31,6 @@ public class LoginActivity extends FragmentActivity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.label)
   TextView label;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.get_user_name_view)
-  GetUserNameView getUserNameView;
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.users_spinner)
   Spinner usersSpinner;
@@ -69,19 +62,6 @@ public class LoginActivity extends FragmentActivity {
     setupUserInterface();
   }
 
-  @Override
-  public void onNewIntent(final Intent intent) {
-    super.onNewIntent(intent);
-    handleRedirection(intent.getData());
-  }
-
-  private void handleRedirection(final Uri uri) {
-    final OneginiClient client = OneginiSDK.getOneginiClient(getApplicationContext());
-    if (uri != null && uri.getScheme().equals(client.getConfigModel().getAppScheme())) {
-      client.handleAuthorizationCallback(uri);
-    }
-  }
-
   @SuppressWarnings("unused")
   @OnClick(R.id.login_button)
   public void loginButtonClicked() {
@@ -95,9 +75,9 @@ public class LoginActivity extends FragmentActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.register_button)
   public void registerButtonClicked() {
-    setProgressbarVisibility(true);
-
-    registerUser();
+    final Intent intent = new Intent(this, RegistrationActivity.class);
+    startActivity(intent);
+    finish();
   }
 
   private void setupUserInterface() {
@@ -119,107 +99,8 @@ public class LoginActivity extends FragmentActivity {
     usersSpinner.setAdapter(spinnerArrayAdapter);
   }
 
-  private void registerUser() {
-    OneginiSDK.getOneginiClient(getApplicationContext()).registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
-
-      @Override
-      public void authenticationSuccess(final UserProfile userProfile) {
-        PinActivity.setRemainingFailedAttempts(0);
-        askUserForName(userProfile);
-      }
-
-      @Override
-      public void authenticationError() {
-        showToast("authenticationError");
-      }
-
-      @Override
-      public void authenticationException(final Exception e) {
-        showToast("authenticationException");
-      }
-
-      @Override
-      public void authenticationErrorInvalidRequest() {
-        showToast("authenticationErrorInvalidRequest");
-      }
-
-      @Override
-      public void authenticationErrorClientRegistrationFailed() {
-        showToast("authenticationErrorClientRegistrationFailed");
-      }
-
-      @Override
-      public void authenticationErrorInvalidState() {
-        showToast("authenticationErrorInvalidState");
-      }
-
-      @Override
-      public void authenticationErrorInvalidGrant(final int remaining) {
-        // Show error the token was invalid, user should authorize again.
-        setProgressbarVisibility(true);
-        PinActivity.setRemainingFailedAttempts(remaining);
-        registerUser();
-      }
-
-      @Override
-      public void authenticationErrorNotAuthenticated() {
-        showToast("authenticationErrorNotAuthenticated");
-      }
-
-      @Override
-      public void authenticationErrorInvalidScope() {
-        showToast("authenticationErrorInvalidScope");
-      }
-
-      @Override
-      public void authenticationErrorNotAuthorized() {
-        showToast("authenticationErrorNotAuthorized");
-      }
-
-      @Override
-      public void authenticationErrorInvalidGrantType() {
-        showToast("authenticationErrorInvalidGrantType");
-      }
-
-      @Override
-      public void authenticationErrorTooManyPinFailures() {
-        showToast("authenticationErrorTooManyPinFailures");
-      }
-
-      @Override
-      public void authenticationErrorInvalidApplication() {
-        showToast("authenticationErrorInvalidApplication");
-      }
-
-      @Override
-      public void authenticationErrorUnsupportedOS() {
-        showToast("authenticationErrorUnsupportedOS");
-      }
-
-      @Override
-      public void authenticationErrorInvalidProfile() {
-        showToast("authenticationErrorInvalidProfile");
-      }
-    });
-  }
-
-  private void askUserForName(final UserProfile userProfile) {
-    setProgressbarVisibility(false);
-    usersSpinner.setVisibility(View.INVISIBLE);
-
-    label.setText(getString(R.string.enter_name));
-    getUserNameView.setup(userProfile);
-
-    loginButton.setText(getString(R.string.confirm));
-    loginButton.setOnClickListener(v -> {
-      User user = getUserNameView.getUser();
-      LocalStorageUtil.saveUser(getApplicationContext(), user);
-      goToDashboard();
-    });
-  }
-
   private void loginUser(final UserProfile userProfile) {
-    OneginiSDK.getOneginiClient(getApplicationContext()).authenticateUser(userProfile, new OneginiAuthenticationHandler() {
+    OneginiSDK.getOneginiClient(this).authenticateUser(userProfile, new OneginiAuthenticationHandler() {
       @Override
       public void authenticationSuccess(final UserProfile userProfileSuccessfullyAuthenticated) {
         goToDashboard();
@@ -305,7 +186,7 @@ public class LoginActivity extends FragmentActivity {
   }
 
   private boolean isRegisteredAtLeastOneUser() {
-    Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(getApplicationContext()).getUserProfiles();
+    final Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(this).getUserProfiles();
     return userProfiles.size() > 0;
   }
 

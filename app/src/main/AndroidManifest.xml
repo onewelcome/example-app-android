@@ -23,13 +23,18 @@
         android:name=".view.activity.LoginActivity"
         android:launchMode="singleTask"
         android:screenOrientation="portrait">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="oneginiexample"/>
-      </intent-filter>
     </activity>
+      <activity
+          android:name=".view.activity.RegistrationActivity"
+          android:launchMode="singleTask"
+          android:screenOrientation="portrait">
+          <intent-filter>
+              <action android:name="android.intent.action.VIEW"/>
+              <category android:name="android.intent.category.DEFAULT"/>
+              <category android:name="android.intent.category.BROWSABLE"/>
+              <data android:scheme="oneginiexample"/>
+          </intent-filter>
+      </activity>
     <activity
         android:name=".view.activity.PinActivity"
         android:screenOrientation="portrait"/>
