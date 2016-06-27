@@ -5,32 +5,24 @@ import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 
 public class User {
 
-  private String name;
+  private final String name;
+  private final UserProfile userProfile;
 
-  private UserProfile userProfile;
-
-  public User(final UserProfile userProfile) {
-    setUserProfile(userProfile);
-  }
-
-  public User(final UserProfile userProfile, final String userName) {
-    setUserProfile(userProfile);
-    setName(userName);
+  public User(final UserProfile userProfile, final String name) {
+    this.userProfile = userProfile;
+    this.name = name;
   }
 
   public UserProfile getUserProfile() {
     return userProfile;
   }
 
-  public void setName(final String name) {
-    this.name = name;
-  }
-
   public String getName() {
     return name;
   }
 
-  public void setUserProfile(final UserProfile userProfile) {
-    this.userProfile = userProfile;
+  @Override
+  public String toString() {
+    return name + " (id: " + userProfile.getProfileId() + ")";
   }
 }

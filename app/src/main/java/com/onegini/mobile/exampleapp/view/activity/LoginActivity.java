@@ -1,12 +1,11 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,7 +21,7 @@ import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
-import com.onegini.mobile.exampleapp.util.LocalStorageUtil;
+import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 
@@ -47,18 +46,19 @@ public class LoginActivity extends FragmentActivity {
   @Bind(R.id.layout_login_content)
   RelativeLayout layoutLoginContent;
 
-  public static void startActivity(@NonNull final Activity context) {
-    final Intent intent = new Intent(context, LoginActivity.class);
-    context.startActivity(intent);
-    context.finish();
-  }
+  private List<User> listOfUsers = new ArrayList<>();
+  private UserStorage userStorage;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
     ButterKnife.bind(this);
+  }
 
+  @Override
+  protected void onResume() {
+    super.onResume();
     setupUserInterface();
   }
 
@@ -66,9 +66,7 @@ public class LoginActivity extends FragmentActivity {
   @OnClick(R.id.login_button)
   public void loginButtonClicked() {
     setProgressbarVisibility(true);
-
-    String selectedUserName = (String) usersSpinner.getSelectedItem();
-    User user = LocalStorageUtil.getUserByName(getApplicationContext(), selectedUserName);
+    final User user = listOfUsers.get(usersSpinner.getSelectedItemPosition());
     loginUser(user.getUserProfile());
   }
 
@@ -81,6 +79,7 @@ public class LoginActivity extends FragmentActivity {
   }
 
   private void setupUserInterface() {
+    prepareListOfProfiles();
     setProgressbarVisibility(false);
 
     if (isRegisteredAtLeastOneUser()) {
@@ -92,10 +91,8 @@ public class LoginActivity extends FragmentActivity {
 
   private void setupUsersSpinner() {
     usersSpinner.setVisibility(View.VISIBLE);
-    List<String> users = LocalStorageUtil.getUsersNames(getApplicationContext());
-    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, users);
+    final ArrayAdapter<User> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listOfUsers);
     spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
     usersSpinner.setAdapter(spinnerArrayAdapter);
   }
 
@@ -103,7 +100,7 @@ public class LoginActivity extends FragmentActivity {
     OneginiSDK.getOneginiClient(this).authenticateUser(userProfile, new OneginiAuthenticationHandler() {
       @Override
       public void authenticationSuccess(final UserProfile userProfileSuccessfullyAuthenticated) {
-        goToDashboard();
+        startDashboardActivity();
       }
 
       @Override
@@ -181,8 +178,10 @@ public class LoginActivity extends FragmentActivity {
   }
 
 
-  private void goToDashboard() {
-    DashboardActivity.startActivity(LoginActivity.this);
+  private void startDashboardActivity() {
+    final Intent intent = new Intent(this, DashboardActivity.class);
+    startActivity(intent);
+    finish();
   }
 
   private boolean isRegisteredAtLeastOneUser() {
@@ -197,6 +196,16 @@ public class LoginActivity extends FragmentActivity {
     layoutLoginContent.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     if (isRegisteredAtLeastOneUser()) {
       loginButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+    }
+  }
+
+  private void prepareListOfProfiles() {
+    final Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(this).getUserProfiles();
+    listOfUsers = new ArrayList<>(userProfiles.size());
+    userStorage = new UserStorage(this);
+
+    for (final UserProfile userProfile : userProfiles) {
+      listOfUsers.add(userStorage.loadUser(userProfile));
     }
   }
 

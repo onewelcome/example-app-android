@@ -1,9 +1,7 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,7 +14,7 @@ import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.Person;
 import com.onegini.mobile.exampleapp.network.PersonService;
-import com.onegini.mobile.exampleapp.util.LocalStorageUtil;
+import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.library.OneginiClient;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiDeregisterUserProfileHandler;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiLogoutHandler;
@@ -33,12 +31,6 @@ public class DashboardActivity extends AppCompatActivity {
   TextView userInfoTextView;
 
   private Subscription subscription;
-
-  public static void startActivity(@NonNull final Activity context) {
-    final Intent intent = new Intent(context, DashboardActivity.class);
-    context.startActivity(intent);
-    context.finish();
-  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +50,14 @@ public class DashboardActivity extends AppCompatActivity {
           public void logoutSuccess() {
             // Go to login screen
             showToast("logoutSuccess");
-            LoginActivity.startActivity(DashboardActivity.this);
+            startLoginActivity();
           }
 
           @Override
           public void logoutError() {
             // Ignore failure and return to login screen
             showToast("logoutError");
-            LoginActivity.startActivity(DashboardActivity.this);
+            startLoginActivity();
           }
         }
     );
@@ -83,17 +75,14 @@ public class DashboardActivity extends AppCompatActivity {
     OneginiClient.getInstance().deregisterUser(userProfile, new OneginiDeregisterUserProfileHandler() {
           @Override
           public void onSuccess() {
-            // Go to login screen
-            showToast("deregisterUserSuccess");
-            LocalStorageUtil.removeUser(getApplicationContext(), userProfile);
-            LoginActivity.startActivity(DashboardActivity.this);
+            onUserDeregistered(userProfile);
           }
 
           @Override
           public void onRequestError() {
             // Ignore failure and return to login screen
             showToast("deregisterUserError");
-            LoginActivity.startActivity(DashboardActivity.this);
+            startLoginActivity();
           }
         }
     );
@@ -137,5 +126,19 @@ public class DashboardActivity extends AppCompatActivity {
       subscription.unsubscribe();
     }
     super.onDestroy();
+  }
+
+  private void onUserDeregistered(final UserProfile userProfile) {
+    showToast("deregisterUserSuccess");
+    final UserStorage userStorage = new UserStorage(this);
+    userStorage.removeUser(userProfile);
+
+    startLoginActivity();
+  }
+
+  private void startLoginActivity() {
+    final Intent intent = new Intent(this, LoginActivity.class);
+    startActivity(intent);
+    finish();
   }
 }

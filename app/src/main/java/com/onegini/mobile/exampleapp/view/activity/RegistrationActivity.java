@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
@@ -21,7 +20,7 @@ import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
-import com.onegini.mobile.exampleapp.util.LocalStorageUtil;
+import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.library.OneginiClient;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
@@ -166,17 +165,25 @@ public class RegistrationActivity extends Activity {
   @SuppressWarnings("unused")
   @OnClick(R.id.create_profile_button)
   public void onCreateProfileClick() {
-    final String name = nameEditText.getText().toString().trim();
-    final User user = new User(registeredProfile, name);
-    LocalStorageUtil.saveUser(this, user);
-
-    final Intent intent = new Intent(this, DashboardActivity.class);
-    startActivity(intent);
-    finish();
+    storeUserProfile();
+    startDashboardActivity();
   }
 
   private void showToast(final String message) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+  }
+
+  private void storeUserProfile() {
+    final String name = nameEditText.getText().toString().trim();
+    final User user = new User(registeredProfile, name);
+    final UserStorage userStorage = new UserStorage(this);
+    userStorage.saveUser(user);
+  }
+
+  private void startDashboardActivity() {
+    final Intent intent = new Intent(this, DashboardActivity.class);
+    startActivity(intent);
+    finish();
   }
 
   private class ProfileNameChangeListener implements TextWatcher {
