@@ -15,6 +15,7 @@ import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.Person;
 import com.onegini.mobile.exampleapp.network.PersonService;
+import com.onegini.mobile.exampleapp.util.LocalStorage;
 import com.onegini.mobile.sdk.android.library.OneginiClient;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiDeregisterUserProfileHandler;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiLogoutHandler;
@@ -83,6 +84,7 @@ public class DashboardActivity extends AppCompatActivity {
           public void onSuccess() {
             // Go to login screen
             showToast("deregisterUserSuccess");
+            LocalStorage.removeUser(DashboardActivity.this, userProfile);
             LoginActivity.startActivity(DashboardActivity.this);
           }
 

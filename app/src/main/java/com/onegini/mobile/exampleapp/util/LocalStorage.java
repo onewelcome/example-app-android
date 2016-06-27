@@ -6,6 +6,7 @@ import java.util.Set;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.model.User;
@@ -63,5 +64,12 @@ public class LocalStorage {
     }
 
     return null;
+  }
+
+  public static void removeUser(final Context context, final UserProfile userProfile) {
+    SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+    SharedPreferences.Editor editor = mySPrefs.edit();
+    editor.remove(userProfile.getProfileId());
+    editor.apply();
   }
 }
