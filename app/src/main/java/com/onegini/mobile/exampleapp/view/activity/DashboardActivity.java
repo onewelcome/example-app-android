@@ -13,6 +13,7 @@ import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.Person;
+import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.network.PersonService;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.library.OneginiClient;
@@ -29,16 +30,20 @@ public class DashboardActivity extends AppCompatActivity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.tv_user_profile_info)
   TextView userInfoTextView;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.dashboard_welcome_text)
+  TextView dashboardWelcomeText;
 
   private Subscription subscription;
+  private UserStorage userStorage;
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_dashboard);
     ButterKnife.bind(this);
-
-    setupActionBar();
+    userStorage = new UserStorage(this);
+    setupView();
   }
 
   @SuppressWarnings("unused")
@@ -66,7 +71,8 @@ public class DashboardActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_deregister_user)
   public void deregisterUser() {
-    UserProfile userProfile = OneginiSDK.getOneginiClient(getApplicationContext()).getAuthenticatedUserProfile();
+    final UserProfile userProfile = OneginiSDK.getOneginiClient(getApplicationContext())
+        .getAuthenticatedUserProfile();
     if (userProfile == null) {
       showToast("userProfile == null");
       return;
@@ -108,6 +114,18 @@ public class DashboardActivity extends AppCompatActivity {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
   }
 
+  private void setupView() {
+    setupActionBar();
+    setupWelcomeText();
+  }
+
+  private void setupWelcomeText() {
+    final UserProfile userProfile = OneginiSDK.getOneginiClient(this)
+        .getAuthenticatedUserProfile();
+    final User user = userStorage.loadUser(userProfile);
+    dashboardWelcomeText.setText(getString(R.string.dashboard_welcome, user.getName()));
+  }
+
   private void setupActionBar() {
     setSupportActionBar(toolbar);
 
@@ -130,7 +148,6 @@ public class DashboardActivity extends AppCompatActivity {
 
   private void onUserDeregistered(final UserProfile userProfile) {
     showToast("deregisterUserSuccess");
-    final UserStorage userStorage = new UserStorage(this);
     userStorage.removeUser(userProfile);
 
     startLoginActivity();
