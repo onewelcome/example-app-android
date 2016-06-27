@@ -23,7 +23,7 @@ import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.util.LocalStorage;
+import com.onegini.mobile.exampleapp.util.LocalStorageUtil;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.view.GetUserNameView;
 import com.onegini.mobile.sdk.android.library.OneginiClient;
@@ -69,25 +69,6 @@ public class LoginActivity extends FragmentActivity {
     setupUserInterface();
   }
 
-  private void setupUserInterface() {
-    setProgressbarVisibility(false);
-
-    if (isRegisteredAtLeastOneUser()) {
-      setupUsersSpinner();
-      loginButton.setVisibility(View.VISIBLE);
-    }
-    registerButton.setVisibility(View.VISIBLE);
-  }
-
-  private void setupUsersSpinner() {
-    usersSpinner.setVisibility(View.VISIBLE);
-    List<String> users = LocalStorage.getUsersNames(this);
-    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, users);
-    spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-    usersSpinner.setAdapter(spinnerArrayAdapter);
-  }
-
   @Override
   public void onNewIntent(final Intent intent) {
     super.onNewIntent(intent);
@@ -107,7 +88,7 @@ public class LoginActivity extends FragmentActivity {
     setProgressbarVisibility(true);
 
     String selectedUserName = (String) usersSpinner.getSelectedItem();
-    User user = LocalStorage.getUserByName(this, selectedUserName);
+    User user = LocalStorageUtil.getUserByName(getApplicationContext(), selectedUserName);
     loginUser(user.getUserProfile());
   }
 
@@ -119,26 +100,23 @@ public class LoginActivity extends FragmentActivity {
     registerUser();
   }
 
-  private boolean isRegisteredAtLeastOneUser() {
-    Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(getApplicationContext()).getUserProfiles();
-    if (userProfiles.size() > 0) {
-      return true;
-    } else {
-      return false;
+  private void setupUserInterface() {
+    setProgressbarVisibility(false);
+
+    if (isRegisteredAtLeastOneUser()) {
+      setupUsersSpinner();
+      loginButton.setVisibility(View.VISIBLE);
     }
+    registerButton.setVisibility(View.VISIBLE);
   }
 
-  private void askUserForName(final UserProfile userProfile) {
-    setProgressbarVisibility(false);
-    usersSpinner.setVisibility(View.INVISIBLE);
-    label.setText(getString(R.string.enter_name));
-    getUserNameView.setup(userProfile);
-    loginButton.setText(getString(R.string.confirm));
-    loginButton.setOnClickListener(v -> {
-      User user = getUserNameView.getUser();
-      LocalStorage.saveUser(user, this);
-      goToDashboard();
-    });
+  private void setupUsersSpinner() {
+    usersSpinner.setVisibility(View.VISIBLE);
+    List<String> users = LocalStorageUtil.getUsersNames(getApplicationContext());
+    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, users);
+    spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+    usersSpinner.setAdapter(spinnerArrayAdapter);
   }
 
   private void registerUser() {
@@ -225,8 +203,22 @@ public class LoginActivity extends FragmentActivity {
     });
   }
 
+  private void askUserForName(final UserProfile userProfile) {
+    setProgressbarVisibility(false);
+    usersSpinner.setVisibility(View.INVISIBLE);
 
-  private void loginUser(UserProfile userProfile) {
+    label.setText(getString(R.string.enter_name));
+    getUserNameView.setup(userProfile);
+
+    loginButton.setText(getString(R.string.confirm));
+    loginButton.setOnClickListener(v -> {
+      User user = getUserNameView.getUser();
+      LocalStorageUtil.saveUser(getApplicationContext(), user);
+      goToDashboard();
+    });
+  }
+
+  private void loginUser(final UserProfile userProfile) {
     OneginiSDK.getOneginiClient(getApplicationContext()).authenticateUser(userProfile, new OneginiAuthenticationHandler() {
       @Override
       public void authenticationSuccess(final UserProfile userProfileSuccessfullyAuthenticated) {
@@ -307,18 +299,24 @@ public class LoginActivity extends FragmentActivity {
     });
   }
 
+
   private void goToDashboard() {
     DashboardActivity.startActivity(LoginActivity.this);
+  }
+
+  private boolean isRegisteredAtLeastOneUser() {
+    Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(getApplicationContext()).getUserProfiles();
+    return userProfiles.size() > 0;
   }
 
   private void setProgressbarVisibility(final boolean isVisible) {
     progressBar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
 
+    registerButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     layoutLoginContent.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     if (isRegisteredAtLeastOneUser()) {
       loginButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     }
-    registerButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
   }
 
   private void showToast(final String message) {

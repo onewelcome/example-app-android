@@ -9,7 +9,7 @@ public class User {
 
   private UserProfile userProfile;
 
-  public User(final  UserProfile userProfile) {
+  public User(final UserProfile userProfile) {
     setUserProfile(userProfile);
   }
 

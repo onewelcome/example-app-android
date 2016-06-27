@@ -12,31 +12,17 @@ import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 
-public class LocalStorage {
+public class LocalStorageUtil {
   private static final String PREFS_NAME = "local_storage";
   private static final String EMPTY = "empty";
 
-  public static void saveUser(final User user, Context context) {
+  public static void saveUser(final Context context, final User user) {
     SharedPreferences.Editor editor = context.getSharedPreferences(PREFS_NAME, 0).edit();
     editor.putString(user.getUserProfile().getProfileId(), user.getName());
     editor.apply();
   }
 
-  public static List<User> getUsers(Context context) {
-    final Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(context).getUserProfiles();
-    final List<User> users = new ArrayList<>();
-    String userName;
-    for (UserProfile userProfile : userProfiles) {
-      userName = getUserName(context, userProfile);
-      if (!userName.equals(EMPTY)) {
-        users.add(new User(userProfile, userName));
-        Log.d(PREFS_NAME, userName);
-      }
-    }
-    return users;
-  }
-
-  private static String getUserName(Context context, UserProfile userProfile) {
+  private static String getUserName(final Context context, final UserProfile userProfile) {
     SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
     String userName = settings.getString(userProfile.getProfileId(), EMPTY);
 
@@ -62,7 +48,6 @@ public class LocalStorage {
         return new User(userProfile, userName);
       }
     }
-
     return null;
   }
 
@@ -71,5 +56,19 @@ public class LocalStorage {
     SharedPreferences.Editor editor = mySPrefs.edit();
     editor.remove(userProfile.getProfileId());
     editor.apply();
+  }
+
+  private static List<User> getUsers(final Context context) {
+    final Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(context).getUserProfiles();
+    final List<User> users = new ArrayList<>();
+    String userName;
+    for (UserProfile userProfile : userProfiles) {
+      userName = getUserName(context, userProfile);
+      if (!userName.equals(EMPTY)) {
+        users.add(new User(userProfile, userName));
+        Log.d(PREFS_NAME, userName);
+      }
+    }
+    return users;
   }
 }
