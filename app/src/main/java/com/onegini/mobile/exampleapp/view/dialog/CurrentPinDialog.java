@@ -15,9 +15,11 @@ public class CurrentPinDialog implements OneginiCurrentPinDialog {
   public static OneginiPinProvidedHandler oneginiPinProvidedHandler;
 
   private final Context context;
+  private final UserStorage userStorage;
 
   public CurrentPinDialog(final Context context) {
     this.context = context;
+    userStorage = new UserStorage(context);
   }
 
   @Override
@@ -32,7 +34,6 @@ public class CurrentPinDialog implements OneginiCurrentPinDialog {
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.putExtra(PinActivity.EXTRA_TITLE, context.getString(R.string.pin_title_enter_pin));
 
-    UserStorage userStorage = new UserStorage(context);
     final User user = userStorage.loadUser(userProfile);
     intent.putExtra(PinActivity.EXTRA_USER_NAME, user.getName());
 
