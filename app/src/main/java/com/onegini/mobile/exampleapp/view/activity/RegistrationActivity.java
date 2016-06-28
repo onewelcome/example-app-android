@@ -50,8 +50,17 @@ public class RegistrationActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_registration);
     ButterKnife.bind(this);
-    nameEditText.addTextChangedListener(new ProfileNameChangeListener());
+
+    setupUserInterface();
     registerUser();
+  }
+
+  private void setupUserInterface() {
+    createProfileButton.setEnabled(false);
+    layoutRegisterContent.setVisibility(View.GONE);
+    progressBar.setVisibility(View.VISIBLE);
+    userProfileDebugText.setText("");
+    nameEditText.addTextChangedListener(new ProfileNameChangeListener());
   }
 
   @Override
@@ -68,10 +77,6 @@ public class RegistrationActivity extends Activity {
   }
 
   private void registerUser() {
-    layoutRegisterContent.setVisibility(View.GONE);
-    progressBar.setVisibility(View.VISIBLE);
-    userProfileDebugText.setText("");
-
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
     oneginiClient.registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
 
@@ -202,9 +207,9 @@ public class RegistrationActivity extends Activity {
     public void afterTextChanged(final Editable s) {
       final String name = s.toString().trim();
       if (name.isEmpty()) {
-        createProfileButton.setVisibility(View.INVISIBLE);
+        createProfileButton.setEnabled(false);
       } else {
-        createProfileButton.setVisibility(View.VISIBLE);
+        createProfileButton.setEnabled(true);
       }
     }
   }
