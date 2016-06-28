@@ -1,5 +1,9 @@
 package com.onegini.mobile.exampleapp.storage;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.onegini.mobile.exampleapp.model.User;
@@ -29,5 +33,15 @@ public class UserStorage {
     final SharedPreferences.Editor editor = sharedPreferences.edit();
     editor.remove(userProfile.getProfileId());
     editor.apply();
+  }
+
+  public List<User> loadUsers(final Set<UserProfile> userProfiles) {
+    final List<User> listOfUsers = new ArrayList<>(userProfiles.size());
+
+    for (final UserProfile userProfile : userProfiles) {
+      listOfUsers.add(loadUser(userProfile));
+    }
+
+    return listOfUsers;
   }
 }

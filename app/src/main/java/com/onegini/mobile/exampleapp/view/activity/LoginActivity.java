@@ -202,12 +202,8 @@ public class LoginActivity extends Activity {
 
   private void prepareListOfProfiles() {
     final Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(this).getUserProfiles();
-    listOfUsers = new ArrayList<>(userProfiles.size());
     userStorage = new UserStorage(this);
-
-    for (final UserProfile userProfile : userProfiles) {
-      listOfUsers.add(userStorage.loadUser(userProfile));
-    }
+    listOfUsers = userStorage.loadUsers(userProfiles);
   }
 
   private void showToast(final String message) {
