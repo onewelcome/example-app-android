@@ -19,5 +19,5 @@
     <string name="name_edit_text_label">Please enter your name</string>
     <string name="name_edit_text_hint">Name</string>
     <string name="create_profile_submit">CREATE PROFILE</string>
-    <string name="dashboard_welcome">Hello, %1$s!</string>
+    <string name="welcome_user_text">Hello, %1$s!</string>
 </resources>

@@ -29,12 +29,21 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/welcome_user_text"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        style="@style/Base.TextAppearance.AppCompat.Headline"
+        android:text="@string/welcome_user_text"/>
+
+    <TextView
         android:id="@+id/pin_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="100dp"
         android:fontFamily="sans-serif-medium"
         android:text="@string/pin_title_enter_pin"
         android:textColor="@color/dark_text"

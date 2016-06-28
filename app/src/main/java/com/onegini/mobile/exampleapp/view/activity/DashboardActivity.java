@@ -123,7 +123,7 @@ public class DashboardActivity extends AppCompatActivity {
     final UserProfile userProfile = OneginiSDK.getOneginiClient(this)
         .getAuthenticatedUserProfile();
     final User user = userStorage.loadUser(userProfile);
-    dashboardWelcomeText.setText(getString(R.string.dashboard_welcome, user.getName()));
+    dashboardWelcomeText.setText(getString(R.string.welcome_user_text, user.getName()));
   }
 
   private void setupActionBar() {
