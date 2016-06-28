@@ -42,8 +42,9 @@ public class DashboardActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_dashboard);
     ButterKnife.bind(this);
+
     userStorage = new UserStorage(this);
-    setupView();
+    setupUserInterface();
   }
 
   @SuppressWarnings("unused")
@@ -71,8 +72,7 @@ public class DashboardActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_deregister_user)
   public void deregisterUser() {
-    final UserProfile userProfile = OneginiSDK.getOneginiClient(getApplicationContext())
-        .getAuthenticatedUserProfile();
+    final UserProfile userProfile = OneginiSDK.getOneginiClient(getApplicationContext()).getAuthenticatedUserProfile();
     if (userProfile == null) {
       showToast("userProfile == null");
       return;
@@ -114,7 +114,7 @@ public class DashboardActivity extends AppCompatActivity {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
   }
 
-  private void setupView() {
+  private void setupUserInterface() {
     setupActionBar();
     setupWelcomeText();
   }

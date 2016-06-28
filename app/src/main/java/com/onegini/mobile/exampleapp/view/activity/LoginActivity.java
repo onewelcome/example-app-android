@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,7 +25,7 @@ import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 
-public class LoginActivity extends FragmentActivity {
+public class LoginActivity extends Activity {
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.label)
@@ -66,6 +66,7 @@ public class LoginActivity extends FragmentActivity {
   @OnClick(R.id.login_button)
   public void loginButtonClicked() {
     setProgressbarVisibility(true);
+
     final User user = listOfUsers.get(usersSpinner.getSelectedItemPosition());
     loginUser(user.getUserProfile());
   }
@@ -79,10 +80,10 @@ public class LoginActivity extends FragmentActivity {
   }
 
   private void setupUserInterface() {
-    prepareListOfProfiles();
     setProgressbarVisibility(false);
 
     if (isRegisteredAtLeastOneUser()) {
+      prepareListOfProfiles();
       setupUsersSpinner();
       loginButton.setVisibility(View.VISIBLE);
     }
@@ -91,6 +92,7 @@ public class LoginActivity extends FragmentActivity {
 
   private void setupUsersSpinner() {
     usersSpinner.setVisibility(View.VISIBLE);
+
     final ArrayAdapter<User> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listOfUsers);
     spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     usersSpinner.setAdapter(spinnerArrayAdapter);
@@ -176,7 +178,6 @@ public class LoginActivity extends FragmentActivity {
       }
     });
   }
-
 
   private void startDashboardActivity() {
     final Intent intent = new Intent(this, DashboardActivity.class);

@@ -54,7 +54,7 @@ public class PinActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_pin);
     ButterKnife.bind(this);
-    initPinInputs();
+
     initialize();
   }
 
@@ -76,6 +76,7 @@ public class PinActivity extends Activity {
   }
 
   private void initialize() {
+    initPinInputs();
     parseIntent();
     initListeners();
     initLayout();
