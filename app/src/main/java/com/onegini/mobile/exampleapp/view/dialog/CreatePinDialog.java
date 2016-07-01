@@ -9,6 +9,7 @@ import com.onegini.mobile.exampleapp.view.activity.PinActivity;
 import com.onegini.mobile.sdk.android.library.OneginiClient;
 import com.onegini.mobile.sdk.android.library.exception.OneginiClientNotValidatedException;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiPinProvidedHandler;
+import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 import com.onegini.mobile.sdk.android.library.utils.dialogs.OneginiCreatePinDialog;
 
 public class CreatePinDialog implements OneginiCreatePinDialog {
@@ -22,7 +23,7 @@ public class CreatePinDialog implements OneginiCreatePinDialog {
   }
 
   @Override
-  public void createPin(final OneginiPinProvidedHandler pinProvidedHandler) {
+  public void createPin(final UserProfile userProfile, final OneginiPinProvidedHandler pinProvidedHandler) {
     PinActivity.setIsCreatePinFlow(true);
     notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), "");
     oneginiPinProvidedHandler = new PinWithConfirmationHandler(pinProvidedHandler);

@@ -11,9 +11,10 @@ public class OneginiSDK {
     OneginiClient oneginiClient = OneginiClient.getInstance();
     if (oneginiClient == null) {
       // will throw OneginiConfigNotFoundException if OneginiConfigModel class can't be found
-      oneginiClient = OneginiClient.setupInstance(context);
-      oneginiClient.setCreatePinDialog(new CreatePinDialog(context));
-      oneginiClient.setCurrentPinDialog(new CurrentPinDialog(context));
+      final Context applicationContext = context.getApplicationContext();
+      oneginiClient = OneginiClient.setupInstance(applicationContext);
+      oneginiClient.setCreatePinDialog(new CreatePinDialog(applicationContext));
+      oneginiClient.setCurrentPinDialog(new CurrentPinDialog(applicationContext));
     }
     return oneginiClient;
   }

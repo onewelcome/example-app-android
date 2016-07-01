@@ -22,6 +22,7 @@ public class PinActivity extends Activity {
 
   public static final String EXTRA_TITLE = "title";
   public static final String EXTRA_MESSAGE = "message";
+  public static final String EXTRA_USER_NAME = "user_name";
 
   private static boolean isCreatePinFlow = false;
   private static int remainingFailedAttempts = 0;
@@ -34,6 +35,9 @@ public class PinActivity extends Activity {
     PinActivity.remainingFailedAttempts = remainingFailedAttempts;
   }
 
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.welcome_user_text)
+  TextView welcomeTextView;
   @SuppressWarnings("unused")
   @Bind(R.id.pin_title)
   TextView screenTitleTextView;
@@ -44,6 +48,7 @@ public class PinActivity extends Activity {
 
   private String screenTitle;
   private String screenMessage;
+  private String userName;
 
   private PinKeyboard pinKeyboard;
   private PinInputFields pinInputFields;
@@ -54,7 +59,7 @@ public class PinActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_pin);
     ButterKnife.bind(this);
-    initPinInputs();
+
     initialize();
   }
 
@@ -76,6 +81,7 @@ public class PinActivity extends Activity {
   }
 
   private void initialize() {
+    initPinInputs();
     parseIntent();
     initListeners();
     initLayout();
@@ -84,8 +90,9 @@ public class PinActivity extends Activity {
 
   private void parseIntent() {
     final Bundle extras = getIntent().getExtras();
-    screenMessage = extras.getString(EXTRA_MESSAGE, "");
     screenTitle = extras.getString(EXTRA_TITLE, "");
+    screenMessage = extras.getString(EXTRA_MESSAGE, "");
+    userName = extras.getString(EXTRA_USER_NAME, "");
   }
 
   private void initListeners() {
@@ -118,8 +125,17 @@ public class PinActivity extends Activity {
   }
 
   private void updateTexts() {
+    updateWelcomeText();
     updateTitleText();
     updateErrorText();
+  }
+
+  private void updateWelcomeText() {
+    if (isNotBlank(userName)) {
+      welcomeTextView.setText(getString(R.string.welcome_user_text,userName));
+    } else {
+      welcomeTextView.setVisibility(View.INVISIBLE);
+    }
   }
 
   private void updateTitleText() {

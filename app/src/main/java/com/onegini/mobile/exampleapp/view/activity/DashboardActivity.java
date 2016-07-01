@@ -1,9 +1,8 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
@@ -11,12 +10,16 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.Person;
+import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.network.PersonService;
+import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.library.OneginiClient;
-import com.onegini.mobile.sdk.android.library.handlers.OneginiDisconnectHandler;
+import com.onegini.mobile.sdk.android.library.handlers.OneginiDeregisterUserProfileHandler;
 import com.onegini.mobile.sdk.android.library.handlers.OneginiLogoutHandler;
+import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 import rx.Subscription;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -27,22 +30,21 @@ public class DashboardActivity extends AppCompatActivity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.tv_user_profile_info)
   TextView userInfoTextView;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.dashboard_welcome_text)
+  TextView dashboardWelcomeText;
 
   private Subscription subscription;
-
-  public static void startActivity(@NonNull final Activity context) {
-    final Intent intent = new Intent(context, DashboardActivity.class);
-    context.startActivity(intent);
-    context.finish();
-  }
+  private UserStorage userStorage;
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_dashboard);
     ButterKnife.bind(this);
 
-    setupActionBar();
+    userStorage = new UserStorage(this);
+    setupUserInterface();
   }
 
   @SuppressWarnings("unused")
@@ -54,37 +56,39 @@ public class DashboardActivity extends AppCompatActivity {
           public void logoutSuccess() {
             // Go to login screen
             showToast("logoutSuccess");
-            LoginActivity.startActivity(DashboardActivity.this);
+            startLoginActivity();
           }
 
           @Override
           public void logoutError() {
             // Ignore failure and return to login screen
             showToast("logoutError");
-            LoginActivity.startActivity(DashboardActivity.this);
+            startLoginActivity();
           }
         }
     );
-
   }
 
   @SuppressWarnings("unused")
-  @OnClick(R.id.button_disconnect)
-  public void disconnect() {
-    OneginiClient.getInstance().disconnect(
-        new OneginiDisconnectHandler() {
+  @OnClick(R.id.button_deregister_user)
+  public void deregisterUser() {
+    final UserProfile userProfile = OneginiSDK.getOneginiClient(getApplicationContext()).getAuthenticatedUserProfile();
+    if (userProfile == null) {
+      showToast("userProfile == null");
+      return;
+    }
+
+    OneginiClient.getInstance().deregisterUser(userProfile, new OneginiDeregisterUserProfileHandler() {
           @Override
-          public void disconnectSuccess() {
-            // Go to login screen
-            showToast("disconnectSuccess");
-            LoginActivity.startActivity(DashboardActivity.this);
+          public void onSuccess() {
+            onUserDeregistered(userProfile);
           }
 
           @Override
-          public void disconnectError() {
+          public void onRequestError() {
             // Ignore failure and return to login screen
-            showToast("disconnectError");
-            LoginActivity.startActivity(DashboardActivity.this);
+            showToast("deregisterUserError");
+            startLoginActivity();
           }
         }
     );
@@ -110,10 +114,22 @@ public class DashboardActivity extends AppCompatActivity {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
   }
 
+  private void setupUserInterface() {
+    setupActionBar();
+    setupWelcomeText();
+  }
+
+  private void setupWelcomeText() {
+    final UserProfile userProfile = OneginiSDK.getOneginiClient(this)
+        .getAuthenticatedUserProfile();
+    final User user = userStorage.loadUser(userProfile);
+    dashboardWelcomeText.setText(getString(R.string.welcome_user_text, user.getName()));
+  }
+
   private void setupActionBar() {
     setSupportActionBar(toolbar);
 
-    android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+    final ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {
       actionBar.setDisplayShowHomeEnabled(true);
       actionBar.setLogo(R.mipmap.ic_launcher);
@@ -128,5 +144,18 @@ public class DashboardActivity extends AppCompatActivity {
       subscription.unsubscribe();
     }
     super.onDestroy();
+  }
+
+  private void onUserDeregistered(final UserProfile userProfile) {
+    showToast("deregisterUserSuccess");
+    userStorage.removeUser(userProfile);
+
+    startLoginActivity();
+  }
+
+  private void startLoginActivity() {
+    final Intent intent = new Intent(this, LoginActivity.class);
+    startActivity(intent);
+    finish();
   }
 }
