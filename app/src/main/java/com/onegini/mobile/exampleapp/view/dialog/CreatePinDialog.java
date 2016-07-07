@@ -4,13 +4,13 @@ import java.util.Arrays;
 
 import android.content.Context;
 import android.content.Intent;
+import com.onegini.mobile.android.sdk.OneginiClient;
+import com.onegini.mobile.android.sdk.dialogs.OneginiCreatePinDialog;
+import com.onegini.mobile.android.sdk.exception.OneginiClientNotValidatedException;
+import com.onegini.mobile.android.sdk.handlers.OneginiPinProvidedHandler;
+import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.activity.PinActivity;
-import com.onegini.mobile.sdk.android.library.OneginiClient;
-import com.onegini.mobile.sdk.android.library.exception.OneginiClientNotValidatedException;
-import com.onegini.mobile.sdk.android.library.handlers.OneginiPinProvidedHandler;
-import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
-import com.onegini.mobile.sdk.android.library.utils.dialogs.OneginiCreatePinDialog;
 
 public class CreatePinDialog implements OneginiCreatePinDialog {
 
