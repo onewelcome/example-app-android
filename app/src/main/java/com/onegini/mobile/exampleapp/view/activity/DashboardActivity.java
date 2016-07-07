@@ -10,16 +10,16 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.onegini.mobile.android.sdk.OneginiClient;
+import com.onegini.mobile.android.sdk.handlers.OneginiDeregisterUserProfileHandler;
+import com.onegini.mobile.android.sdk.handlers.OneginiLogoutHandler;
+import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.Person;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.network.PersonService;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
-import com.onegini.mobile.sdk.android.library.OneginiClient;
-import com.onegini.mobile.sdk.android.library.handlers.OneginiDeregisterUserProfileHandler;
-import com.onegini.mobile.sdk.android.library.handlers.OneginiLogoutHandler;
-import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 import rx.Subscription;
 
 public class DashboardActivity extends AppCompatActivity {

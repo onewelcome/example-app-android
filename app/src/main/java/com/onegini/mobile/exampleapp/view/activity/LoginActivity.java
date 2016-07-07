@@ -18,12 +18,12 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.onegini.mobile.android.sdk.handlers.OneginiAuthenticationHandler;
+import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
-import com.onegini.mobile.sdk.android.library.handlers.OneginiAuthenticationHandler;
-import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 
 public class LoginActivity extends Activity {
 
