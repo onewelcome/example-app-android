@@ -2,13 +2,13 @@ package com.onegini.mobile.exampleapp.view.dialog;
 
 import android.content.Context;
 import android.content.Intent;
+import com.onegini.mobile.android.sdk.dialogs.OneginiCurrentPinDialog;
+import com.onegini.mobile.android.sdk.handlers.OneginiPinProvidedHandler;
+import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.view.activity.PinActivity;
-import com.onegini.mobile.sdk.android.library.handlers.OneginiPinProvidedHandler;
-import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
-import com.onegini.mobile.sdk.android.library.utils.dialogs.OneginiCurrentPinDialog;
 
 public class CurrentPinDialog implements OneginiCurrentPinDialog {
 
