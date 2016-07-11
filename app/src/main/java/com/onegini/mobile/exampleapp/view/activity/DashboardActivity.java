@@ -16,7 +16,7 @@ import com.onegini.mobile.android.sdk.handlers.OneginiLogoutHandler;
 import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.model.Person;
+import com.onegini.mobile.exampleapp.model.Profile;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.network.PersonService;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
@@ -106,8 +106,8 @@ public class DashboardActivity extends AppCompatActivity {
     showToast("onPersonFetchFail");
   }
 
-  private void onPersonFetched(final Person person) {
-    userInfoTextView.setText(person.getPersonFullInfo());
+  private void onPersonFetched(final Profile profile) {
+    userInfoTextView.setText(profile.getPersonFullInfo());
   }
 
   private void showToast(final String message) {
