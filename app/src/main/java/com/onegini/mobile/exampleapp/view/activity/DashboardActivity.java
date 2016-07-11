@@ -50,7 +50,7 @@ public class DashboardActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_logout)
   public void logout() {
-    OneginiClient.getInstance().logout(
+    OneginiClient.getInstance().getUserClient().logout(
         new OneginiLogoutHandler() {
           @Override
           public void logoutSuccess() {
@@ -72,13 +72,13 @@ public class DashboardActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_deregister_user)
   public void deregisterUser() {
-    final UserProfile userProfile = OneginiSDK.getOneginiClient(getApplicationContext()).getAuthenticatedUserProfile();
+    final UserProfile userProfile = OneginiSDK.getOneginiClient(getApplicationContext()).getUserClient().getAuthenticatedUserProfile();
     if (userProfile == null) {
       showToast("userProfile == null");
       return;
     }
 
-    OneginiClient.getInstance().deregisterUser(userProfile, new OneginiDeregisterUserProfileHandler() {
+    OneginiClient.getInstance().getUserClient().deregisterUser(userProfile, new OneginiDeregisterUserProfileHandler() {
           @Override
           public void onSuccess() {
             onUserDeregistered(userProfile);
@@ -120,8 +120,7 @@ public class DashboardActivity extends AppCompatActivity {
   }
 
   private void setupWelcomeText() {
-    final UserProfile userProfile = OneginiSDK.getOneginiClient(this)
-        .getAuthenticatedUserProfile();
+    final UserProfile userProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
     final User user = userStorage.loadUser(userProfile);
     dashboardWelcomeText.setText(getString(R.string.welcome_user_text, user.getName()));
   }

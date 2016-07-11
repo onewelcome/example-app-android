@@ -81,7 +81,7 @@ public class CreatePinDialog implements OneginiCreatePinDialog {
     private void firstPinProvided(final char[] pin) {
       boolean isPinValid = false;
       try {
-        isPinValid = OneginiClient.getInstance().isPinValid(pin, CreatePinDialog.this);
+        isPinValid = OneginiClient.getInstance().getUserClient().isPinValid(pin, CreatePinDialog.this);
       } catch (final OneginiClientNotValidatedException e) {
 
       }

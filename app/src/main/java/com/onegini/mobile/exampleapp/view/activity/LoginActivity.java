@@ -99,7 +99,7 @@ public class LoginActivity extends Activity {
   }
 
   private void loginUser(final UserProfile userProfile) {
-    OneginiSDK.getOneginiClient(this).authenticateUser(userProfile, new OneginiAuthenticationHandler() {
+    OneginiSDK.getOneginiClient(this).getUserClient().authenticateUser(userProfile, new OneginiAuthenticationHandler() {
       @Override
       public void authenticationSuccess(final UserProfile userProfileSuccessfullyAuthenticated) {
         startDashboardActivity();
@@ -186,7 +186,7 @@ public class LoginActivity extends Activity {
   }
 
   private boolean isRegisteredAtLeastOneUser() {
-    final Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(this).getUserProfiles();
+    final Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(this).getUserClient().getUserProfiles();
     return userProfiles.size() > 0;
   }
 
@@ -201,7 +201,7 @@ public class LoginActivity extends Activity {
   }
 
   private void prepareListOfProfiles() {
-    final Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(this).getUserProfiles();
+    final Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(this).getUserClient().getUserProfiles();
     userStorage = new UserStorage(this);
     listOfUsers = userStorage.loadUsers(userProfiles);
   }

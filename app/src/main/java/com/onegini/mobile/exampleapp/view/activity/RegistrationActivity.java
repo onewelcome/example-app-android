@@ -78,7 +78,7 @@ public class RegistrationActivity extends Activity {
 
   private void registerUser() {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    oneginiClient.registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
+    oneginiClient.getUserClient().registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
 
       @Override
       public void authenticationSuccess(final UserProfile userProfile) {
