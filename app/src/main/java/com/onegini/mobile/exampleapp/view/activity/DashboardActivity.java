@@ -10,7 +10,7 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.onegini.mobile.android.sdk.OneginiClient;
+import com.onegini.mobile.android.sdk.client.OneginiClient;
 import com.onegini.mobile.android.sdk.handlers.OneginiDeregisterUserProfileHandler;
 import com.onegini.mobile.android.sdk.handlers.OneginiLogoutHandler;
 import com.onegini.mobile.android.sdk.model.entity.UserProfile;

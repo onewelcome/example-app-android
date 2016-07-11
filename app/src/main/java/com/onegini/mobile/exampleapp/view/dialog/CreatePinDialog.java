@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.android.sdk.OneginiClient;
+import com.onegini.mobile.android.sdk.client.OneginiClient;
 import com.onegini.mobile.android.sdk.dialogs.OneginiCreatePinDialog;
 import com.onegini.mobile.android.sdk.exception.OneginiClientNotValidatedException;
 import com.onegini.mobile.android.sdk.handlers.OneginiPinProvidedHandler;
