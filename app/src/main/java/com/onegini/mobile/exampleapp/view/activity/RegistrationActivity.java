@@ -72,13 +72,13 @@ public class RegistrationActivity extends Activity {
   private void handleRedirection(final Uri uri) {
     final OneginiClient client = OneginiSDK.getOneginiClient(getApplicationContext());
     if (uri != null && uri.getScheme().equals(client.getConfigModel().getAppScheme())) {
-      client.handleAuthorizationCallback(uri);
+      client.getUserClient().handleAuthorizationCallback(uri);
     }
   }
 
   private void registerUser() {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    oneginiClient.registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
+    oneginiClient.getUserClient().registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
 
       @Override
       public void authenticationSuccess(final UserProfile userProfile) {

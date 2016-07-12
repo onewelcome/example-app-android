@@ -1,7 +1,7 @@
 package com.onegini.mobile.exampleapp.network;
 
 import android.content.Context;
-import com.onegini.mobile.exampleapp.model.Person;
+import com.onegini.mobile.exampleapp.model.Profile;
 import com.onegini.mobile.exampleapp.network.client.PersonClient;
 import com.onegini.mobile.exampleapp.network.client.SecuredClient;
 import rx.Observable;
@@ -24,7 +24,7 @@ public class PersonService {
     personClient = SecuredClient.prepareSecuredClient(PersonClient.class, context);
   }
 
-  public Observable<Person> getPerson() {
+  public Observable<Profile> getPerson() {
     return personClient.getPerson()
         .observeOn(AndroidSchedulers.mainThread());
   }
