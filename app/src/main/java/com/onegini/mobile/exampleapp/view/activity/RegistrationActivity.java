@@ -16,7 +16,7 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.onegini.mobile.android.sdk.OneginiClient;
+import com.onegini.mobile.android.sdk.client.OneginiClient;
 import com.onegini.mobile.android.sdk.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.Constants;
@@ -72,13 +72,13 @@ public class RegistrationActivity extends Activity {
   private void handleRedirection(final Uri uri) {
     final OneginiClient client = OneginiSDK.getOneginiClient(getApplicationContext());
     if (uri != null && client.getConfigModel().getRedirectUri().startsWith(uri.getScheme())) {
-      client.handleAuthorizationCallback(uri);
+      client.getUserClient().handleAuthorizationCallback(uri);
     }
   }
 
   private void registerUser() {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    oneginiClient.registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
+    oneginiClient.getUserClient().registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
 
       @Override
       public void authenticationSuccess(final UserProfile userProfile) {

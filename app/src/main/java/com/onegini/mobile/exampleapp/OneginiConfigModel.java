@@ -65,18 +65,8 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   }
 
   @Override
-  public boolean shouldStoreCookies() {
-    return false;
-  }
-
-  @Override
   public int getMaxPinFailures() {
     return maxPinFailures;
-  }
-
-  @Override
-  public int getHttpClientTimeout() {
-    return 60000;
   }
 
   @Override
@@ -89,8 +79,6 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
         ", baseURL='" + baseURL + "'" +
         ", maxPinFailures='" + maxPinFailures + "'" +
         ", resourceBaseURL='" + resourceBaseURL + "'" +
-        ", keyStoreHash='" + getKeyStoreHash() + "'" +
-        ", idTokenRequested='" + shouldGetIdToken() + "'" +
         "}";
   }
 }
