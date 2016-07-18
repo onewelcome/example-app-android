@@ -1,7 +1,7 @@
 package com.onegini.mobile.exampleapp;
 
 import android.content.Context;
-import com.onegini.mobile.android.sdk.OneginiClient;
+import com.onegini.mobile.android.sdk.client.OneginiClient;
 import com.onegini.mobile.exampleapp.view.dialog.CreatePinDialog;
 import com.onegini.mobile.exampleapp.view.dialog.CurrentPinDialog;
 
