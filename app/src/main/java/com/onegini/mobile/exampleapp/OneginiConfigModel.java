@@ -5,12 +5,13 @@ import com.onegini.mobile.android.sdk.model.OneginiClientConfigModel;
 
 public class OneginiConfigModel implements OneginiClientConfigModel {
 
-  private final String appIdentifier = "ExampleApp-SDKAND36";
+  private final String appIdentifier = "ExampleApp";
   private final String appPlatform = "android";
+  private final String appScheme = "oneginiexample";
   private final String appVersion = "1.0.0";
-  private final String baseURL = "https://onegini-msp-snapshot.test.onegini.io";
-  private final String resourceBaseURL = "https://onegini-msp-snapshot.test.onegini.io";
-  private final String keystoreHash = "e85f366f32bab3174e06958bde82c6a1449d5be17ba46ec5f9d0b9a39dc43817";
+  private final String baseURL = "https://tokenserver-demo-test.onegini.com";
+  private final String resourceBaseURL = "https://resourcegateway-demo-test.onegini.com";
+  private final String keystoreHash = "b41bdf46dcace3ec5a16900abb91b6d395082e46f04ab3fccf6b616dab507bc1";
   private final int maxPinFailures = 3;
 
   @Override
@@ -21,6 +22,11 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   @Override
   public String getAppPlatform() {
     return appPlatform;
+  }
+
+  @Override
+  public String getAppScheme() {
+    return appScheme;
   }
 
   @Override
@@ -78,6 +84,7 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
     return "ConfigModel{" +
         "  appIdentifier='" + appIdentifier + "'" +
         ", appPlatform='" + appPlatform + "'" +
+        ", appScheme='" + appScheme + "'" +
         ", appVersion='" + appVersion + "'" +
         ", baseURL='" + baseURL + "'" +
         ", maxPinFailures='" + maxPinFailures + "'" +
