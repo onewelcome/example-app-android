@@ -19,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.android.sdk.handlers.OneginiAuthenticationHandler;
+import com.onegini.mobile.android.sdk.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
@@ -100,81 +101,23 @@ public class LoginActivity extends Activity {
 
   private void loginUser(final UserProfile userProfile) {
     OneginiSDK.getOneginiClient(this).getUserClient().authenticateUser(userProfile, new OneginiAuthenticationHandler() {
+
       @Override
-      public void authenticationSuccess(final UserProfile userProfileSuccessfullyAuthenticated) {
+      public void onSuccess(final UserProfile userProfile) {
         startDashboardActivity();
       }
 
       @Override
-      public void authenticationError() {
-        showToast("authenticationError");
-      }
-
-      @Override
-      public void authenticationException(final Exception e) {
-        showToast("authenticationException");
-      }
-
-      @Override
-      public void authenticationErrorInvalidRequest() {
-        showToast("authenticationErrorInvalidRequest");
-      }
-
-      @Override
-      public void authenticationErrorClientRegistrationFailed() {
-        showToast("authenticationErrorClientRegistrationFailed");
-      }
-
-      @Override
-      public void authenticationErrorInvalidState() {
-        showToast("authenticationErrorInvalidState");
-      }
-
-      @Override
-      public void authenticationErrorInvalidGrant(final int remaining) {
+      public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
         setProgressbarVisibility(true);
-        PinActivity.setRemainingFailedAttempts(remaining);
-        loginUser(userProfile);
-      }
 
-      @Override
-      public void authenticationErrorNotAuthenticated() {
-        showToast("authenticationErrorNotAuthenticated");
-      }
-
-      @Override
-      public void authenticationErrorInvalidScope() {
-        showToast("authenticationErrorInvalidScope");
-      }
-
-      @Override
-      public void authenticationErrorNotAuthorized() {
-        showToast("authenticationErrorNotAuthorized");
-      }
-
-      @Override
-      public void authenticationErrorInvalidGrantType() {
-        showToast("authenticationErrorInvalidGrantType");
-      }
-
-      @Override
-      public void authenticationErrorTooManyPinFailures() {
-        showToast("authenticationErrorTooManyPinFailures");
-      }
-
-      @Override
-      public void authenticationErrorInvalidApplication() {
-        showToast("authenticationErrorInvalidApplication");
-      }
-
-      @Override
-      public void authenticationErrorUnsupportedOS() {
-        showToast("authenticationErrorUnsupportedOS");
-      }
-
-      @Override
-      public void authenticationErrorInvalidProfile() {
-        showToast("authenticationErrorInvalidProfile");
+        if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.SERVER_NOT_REACHABLE) {
+          showToast("Server not reachable");
+        } else if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.USER_DEREGISTERED) {
+          showToast("User deregistered");
+        } else {
+          showToast("Login error: " + oneginiAuthenticationError.getErrorDescription());
+        }
       }
     });
   }

@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.android.sdk.client.OneginiClient;
 import com.onegini.mobile.android.sdk.handlers.OneginiAuthenticationHandler;
+import com.onegini.mobile.android.sdk.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -81,7 +82,7 @@ public class RegistrationActivity extends Activity {
     oneginiClient.getUserClient().registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
 
       @Override
-      public void authenticationSuccess(final UserProfile userProfile) {
+      public void onSuccess(final UserProfile userProfile) {
         PinActivity.setRemainingFailedAttempts(0);
         registeredProfile = userProfile;
         userProfileDebugText.setText(userProfile.getProfileId());
@@ -89,77 +90,30 @@ public class RegistrationActivity extends Activity {
       }
 
       @Override
-      public void authenticationError() {
-        showToast("authenticationError");
-      }
-
-      @Override
-      public void authenticationException(final Exception e) {
-        showToast("authenticationException");
-      }
-
-      @Override
-      public void authenticationErrorInvalidRequest() {
-        showToast("authenticationErrorInvalidRequest");
-      }
-
-      @Override
-      public void authenticationErrorClientRegistrationFailed() {
-        showToast("authenticationErrorClientRegistrationFailed");
-      }
-
-      @Override
-      public void authenticationErrorInvalidState() {
-        showToast("authenticationErrorInvalidState");
-      }
-
-      @Override
-      public void authenticationErrorInvalidGrant(final int remaining) {
-        // Show error the token was invalid, user should authorize again.
-        PinActivity.setRemainingFailedAttempts(remaining);
-        registerUser();
-      }
-
-      @Override
-      public void authenticationErrorNotAuthenticated() {
-        showToast("authenticationErrorNotAuthenticated");
-      }
-
-      @Override
-      public void authenticationErrorInvalidScope() {
-        showToast("authenticationErrorInvalidScope");
-      }
-
-      @Override
-      public void authenticationErrorNotAuthorized() {
-        showToast("authenticationErrorNotAuthorized");
-      }
-
-      @Override
-      public void authenticationErrorInvalidGrantType() {
-        showToast("authenticationErrorInvalidGrantType");
-      }
-
-      @Override
-      public void authenticationErrorTooManyPinFailures() {
-        showToast("authenticationErrorTooManyPinFailures");
-      }
-
-      @Override
-      public void authenticationErrorInvalidApplication() {
-        showToast("authenticationErrorInvalidApplication");
-      }
-
-      @Override
-      public void authenticationErrorUnsupportedOS() {
-        showToast("authenticationErrorUnsupportedOS");
-      }
-
-      @Override
-      public void authenticationErrorInvalidProfile() {
-        showToast("authenticationErrorInvalidProfile");
+      public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
+        // Check errors relevant for your application and handle them in different manner
+        if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.ACTION_CANCELED) {
+          showToast("Registration was cancelled");
+        } else if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.NETWORK_CONNECTIVITY_PROBLEM) {
+          showToast("No internet connection.");
+        } else if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.OUTDATED_APP) {
+          showToast("Please update application in order to use.");
+        } else if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.GENERAL_ERROR) {
+          handleGeneralError(oneginiAuthenticationError);
+        } else {
+          // General error handling for other, less relevant errors
+          showToast(oneginiAuthenticationError.getErrorDescription());
+        }
       }
     });
+  }
+
+  private void handleGeneralError(final OneginiAuthenticationError oneginiAuthenticationError) {
+    showToast("General error: " + oneginiAuthenticationError.getErrorDescription() + ". Check logcat for more details.");
+    Exception exception = oneginiAuthenticationError.getException();
+    if (exception != null) {
+      exception.printStackTrace();
+    }
   }
 
   private void askForProfileName() {
@@ -175,7 +129,7 @@ public class RegistrationActivity extends Activity {
   }
 
   private void showToast(final String message) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
   }
 
   private void storeUserProfile() {

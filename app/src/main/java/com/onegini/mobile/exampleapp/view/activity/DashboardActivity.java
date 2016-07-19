@@ -13,6 +13,8 @@ import butterknife.OnClick;
 import com.onegini.mobile.android.sdk.client.OneginiClient;
 import com.onegini.mobile.android.sdk.handlers.OneginiDeregisterUserProfileHandler;
 import com.onegini.mobile.android.sdk.handlers.OneginiLogoutHandler;
+import com.onegini.mobile.android.sdk.handlers.error.OneginiDeregistrationError;
+import com.onegini.mobile.android.sdk.handlers.error.OneginiLogoutError;
 import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
@@ -50,48 +52,65 @@ public class DashboardActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_logout)
   public void logout() {
-    OneginiClient.getInstance().getUserClient().logout(
+    OneginiSDK.getOneginiClient(getApplicationContext()).getUserClient().logout(
         new OneginiLogoutHandler() {
           @Override
-          public void logoutSuccess() {
+          public void onSuccess() {
             // Go to login screen
             showToast("logoutSuccess");
             startLoginActivity();
           }
 
           @Override
-          public void logoutError() {
-            // Ignore failure and return to login screen
-            showToast("logoutError");
-            startLoginActivity();
+          public void onError(final OneginiLogoutError oneginiLogoutError) {
+            handleLogoutError(oneginiLogoutError);
           }
         }
     );
   }
 
+  private void handleLogoutError(final OneginiLogoutError oneginiLogoutError) {
+    if (oneginiLogoutError.getErrorType() == OneginiLogoutError.LOCAL_LOGOUT) {
+      showToast("The user was only logged out on the device. The access token has not been invalidated on the server-side.");
+    } else if (oneginiLogoutError.getErrorType() == OneginiLogoutError.GENERAL_ERROR) {
+      // General error handling for other, less relevant errors
+      showToast("Logout error: " + oneginiLogoutError.getErrorDescription());
+    }
+    startLoginActivity();
+  }
+
   @SuppressWarnings("unused")
   @OnClick(R.id.button_deregister_user)
   public void deregisterUser() {
-    final UserProfile userProfile = OneginiSDK.getOneginiClient(getApplicationContext()).getUserClient().getAuthenticatedUserProfile();
+    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(getApplicationContext());
+    final UserProfile userProfile = oneginiClient.getUserClient().getAuthenticatedUserProfile();
     if (userProfile == null) {
       showToast("userProfile == null");
       return;
     }
 
-    OneginiClient.getInstance().getUserClient().deregisterUser(userProfile, new OneginiDeregisterUserProfileHandler() {
+    oneginiClient.getUserClient().deregisterUser(userProfile, new OneginiDeregisterUserProfileHandler() {
           @Override
           public void onSuccess() {
             onUserDeregistered(userProfile);
           }
 
           @Override
-          public void onRequestError() {
-            // Ignore failure and return to login screen
-            showToast("deregisterUserError");
-            startLoginActivity();
+          public void onError(final OneginiDeregistrationError oneginiDeregistrationError) {
+            handleDeregistrationError(oneginiDeregistrationError);
           }
         }
     );
+  }
+
+  private void handleDeregistrationError(final OneginiDeregistrationError oneginiDeregistrationError) {
+    if (oneginiDeregistrationError.getErrorType() == OneginiDeregistrationError.LOCAL_DEREGISTRATION) {
+      showToast("The user was only logged out on the device. The access token has not been invalidated on the server-side.");
+    } else if (oneginiDeregistrationError.getErrorType() == OneginiDeregistrationError.GENERAL_ERROR) {
+      // General error handling for other, less relevant errors
+      showToast("Logout error: " + oneginiDeregistrationError.getErrorDescription());
+    }
+    startLoginActivity();
   }
 
   @SuppressWarnings("unused")

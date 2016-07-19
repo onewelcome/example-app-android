@@ -4,11 +4,11 @@ import java.util.Arrays;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 import com.onegini.mobile.android.sdk.dialogs.OneginiCreatePinDialog;
-import com.onegini.mobile.android.sdk.exception.OneginiClientNotValidatedException;
 import com.onegini.mobile.android.sdk.handlers.OneginiPinProvidedHandler;
+import com.onegini.mobile.android.sdk.handlers.error.OneginiPinValidationError;
 import com.onegini.mobile.android.sdk.model.entity.UserProfile;
-import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.activity.PinActivity;
 
@@ -29,32 +29,40 @@ public class CreatePinDialog implements OneginiCreatePinDialog {
     oneginiPinProvidedHandler = new PinWithConfirmationHandler(pinProvidedHandler);
   }
 
-  @Override
-  public void pinBlackListed() {
-    notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), applicationContext.getString(R.string.pin_error_blacklisted));
-  }
-
-  @Override
-  public void pinShouldNotBeASequence() {
-    notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), applicationContext.getString(R.string.pin_error_sequence));
-  }
-
-  @Override
-  public void pinShouldNotUseSimilarDigits(final int maxSimilar) {
-    notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), applicationContext.getString(R.string.pin_error_similar));
-  }
-
-  @Override
-  public void pinTooShort() {
-    notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), applicationContext.getString(R.string.pin_error_too_short));
-  }
-
   private void notifyActivity(final String title, final String message) {
     final Intent intent = new Intent(applicationContext, PinActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.putExtra(PinActivity.EXTRA_TITLE, title);
     intent.putExtra(PinActivity.EXTRA_MESSAGE, message);
     applicationContext.startActivity(intent);
+  }
+
+  @Override
+  public void onSuccess() {
+    Toast.makeText(applicationContext, "onSuccess", Toast.LENGTH_LONG).show();
+  }
+
+  @Override
+  public void onError(final OneginiPinValidationError oneginiPinValidationError) {
+    int errorType = oneginiPinValidationError.getErrorType();
+
+    switch (errorType) {
+      case OneginiPinValidationError.PIN_TOO_SHORT:
+        notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), applicationContext.getString(R.string.pin_error_too_short));
+        break;
+      case OneginiPinValidationError.PIN_BLACKLISTED:
+        notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), applicationContext.getString(R.string.pin_error_blacklisted));
+        break;
+      case OneginiPinValidationError.PIN_IS_A_SEQUENCE:
+        notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), applicationContext.getString(R.string.pin_error_sequence));
+        break;
+      case OneginiPinValidationError.PIN_USES_SIMILAR_DIGITS:
+        notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), applicationContext.getString(R.string.pin_error_similar));
+        break;
+      default:
+        // TODO add general error handling
+        break;
+    }
   }
 
   /**
@@ -79,18 +87,8 @@ public class CreatePinDialog implements OneginiCreatePinDialog {
     }
 
     private void firstPinProvided(final char[] pin) {
-      boolean isPinValid = false;
-      try {
-        isPinValid = OneginiSDK.getOneginiClient(applicationContext).getUserClient().isPinValid(pin, CreatePinDialog.this);
-      } catch (final OneginiClientNotValidatedException e) {
-
-      }
-
-      // if pin is not valid, then the SDK will call one of error methods, like OneginiCreatePinDialog#pinpinBlackListed()
-      if (isPinValid) {
-        this.pin = pin;
-        notifyActivity(applicationContext.getString(R.string.pin_title_verify_pin), "");
-      }
+      notifyActivity(applicationContext.getString(R.string.pin_title_verify_pin), "");
+      this.pin = pin;
     }
 
     public void secondPinProvided(final char[] pin) {
