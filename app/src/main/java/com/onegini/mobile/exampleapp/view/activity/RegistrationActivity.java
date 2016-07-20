@@ -91,21 +91,32 @@ public class RegistrationActivity extends Activity {
 
       @Override
       public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
-        // Check errors relevant for your application and handle them in different manner
-        if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.ACTION_CANCELED) {
-          showToast("Registration was cancelled");
-        } else if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.NETWORK_CONNECTIVITY_PROBLEM) {
-          showToast("No internet connection.");
-        } else if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.OUTDATED_APP) {
-          showToast("Please update application in order to use.");
-        } else if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.GENERAL_ERROR) {
-          handleGeneralError(oneginiAuthenticationError);
-        } else {
-          // General error handling for other, less relevant errors
-          showToast(oneginiAuthenticationError.getErrorDescription());
-        }
+        handleRegistrationErrors(oneginiAuthenticationError);
       }
     });
+  }
+
+  private void handleRegistrationErrors(final OneginiAuthenticationError oneginiAuthenticationError) {
+    int errorType = oneginiAuthenticationError.getErrorType();
+
+    switch (errorType) {
+      case OneginiAuthenticationError.ACTION_CANCELED:
+        showToast("Registration was cancelled");
+        break;
+      case OneginiAuthenticationError.NETWORK_CONNECTIVITY_PROBLEM:
+        showToast("No internet connection.");
+        break;
+      case OneginiAuthenticationError.OUTDATED_APP:
+        showToast("Please update application in order to use.");
+        break;
+      case OneginiAuthenticationError.GENERAL_ERROR:
+        break;
+      default:
+        // General error handling for other, less relevant errors
+        showToast(oneginiAuthenticationError.getErrorDescription());
+        handleGeneralError(oneginiAuthenticationError);
+        break;
+    }
   }
 
   private void handleGeneralError(final OneginiAuthenticationError oneginiAuthenticationError) {
