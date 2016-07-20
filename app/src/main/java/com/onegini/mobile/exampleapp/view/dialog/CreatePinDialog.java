@@ -16,22 +16,22 @@ public class CreatePinDialog implements OneginiCreatePinDialog {
 
   public static OneginiPinProvidedHandler oneginiPinProvidedHandler;
 
-  private final Context applicationContext;
+  private final Context context;
 
   public CreatePinDialog(final Context context) {
-    applicationContext = context.getApplicationContext();
+    this.context = context;
   }
 
   @Override
   public void createPin(final UserProfile userProfile, final OneginiPinProvidedHandler pinProvidedHandler) {
     PinActivity.setIsCreatePinFlow(true);
-    notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), "");
+    notifyActivity(context.getString(R.string.pin_title_choose_pin), "");
     oneginiPinProvidedHandler = new PinWithConfirmationHandler(pinProvidedHandler);
   }
 
   @Override
   public void onSuccess() {
-    Toast.makeText(applicationContext, "onSuccess", Toast.LENGTH_LONG).show();
+    Toast.makeText(context, "CreatePinDialog#onSuccess", Toast.LENGTH_LONG).show();
   }
 
   @Override
@@ -40,16 +40,16 @@ public class CreatePinDialog implements OneginiCreatePinDialog {
 
     switch (errorType) {
       case OneginiPinValidationError.PIN_TOO_SHORT:
-        notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), applicationContext.getString(R.string.pin_error_too_short));
+        notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_too_short));
         break;
       case OneginiPinValidationError.PIN_BLACKLISTED:
-        notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), applicationContext.getString(R.string.pin_error_blacklisted));
+        notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_blacklisted));
         break;
       case OneginiPinValidationError.PIN_IS_A_SEQUENCE:
-        notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), applicationContext.getString(R.string.pin_error_sequence));
+        notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_sequence));
         break;
       case OneginiPinValidationError.PIN_USES_SIMILAR_DIGITS:
-        notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), applicationContext.getString(R.string.pin_error_similar));
+        notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_similar));
         break;
       default:
         // TODO add general error handling
@@ -58,11 +58,11 @@ public class CreatePinDialog implements OneginiCreatePinDialog {
   }
 
   private void notifyActivity(final String title, final String message) {
-    final Intent intent = new Intent(applicationContext, PinActivity.class);
+    final Intent intent = new Intent(context, PinActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.putExtra(PinActivity.EXTRA_TITLE, title);
     intent.putExtra(PinActivity.EXTRA_MESSAGE, message);
-    applicationContext.startActivity(intent);
+    context.startActivity(intent);
   }
 
   /**
@@ -87,8 +87,8 @@ public class CreatePinDialog implements OneginiCreatePinDialog {
     }
 
     private void firstPinProvided(final char[] pin) {
-      notifyActivity(applicationContext.getString(R.string.pin_title_verify_pin), "");
       this.pin = pin;
+      notifyActivity(context.getString(R.string.pin_title_verify_pin), "");
     }
 
     public void secondPinProvided(final char[] pin) {
@@ -97,7 +97,7 @@ public class CreatePinDialog implements OneginiCreatePinDialog {
       if (pinsEqual) {
         originalHandler.onPinProvided(pin);
       } else {
-        notifyActivity(applicationContext.getString(R.string.pin_title_choose_pin), applicationContext.getString(R.string.pin_error_not_equal));
+        notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_not_equal));
       }
     }
 
