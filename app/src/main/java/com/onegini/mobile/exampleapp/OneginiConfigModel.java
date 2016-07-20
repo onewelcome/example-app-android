@@ -5,9 +5,9 @@ import com.onegini.mobile.android.sdk.model.OneginiClientConfigModel;
 
 public class OneginiConfigModel implements OneginiClientConfigModel {
 
-  private final String appIdentifier = "ExampleApp-SDKAND36";
+  private final String appIdentifier = "ExampleApp";
   private final String appPlatform = "android";
-  private final String redirectionUri = "appscheme://loginsuccess";
+  private final String redirectionUri = "oneginiexample://loginsuccess";
   private final String appVersion = "1.0.0";
   private final String baseURL = "https://onegini-msp-snapshot.test.onegini.io";
   private final String resourceBaseURL = "https://onegini-msp-snapshot.test.onegini.io";
