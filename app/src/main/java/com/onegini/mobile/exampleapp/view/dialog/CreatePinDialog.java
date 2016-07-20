@@ -29,14 +29,6 @@ public class CreatePinDialog implements OneginiCreatePinDialog {
     oneginiPinProvidedHandler = new PinWithConfirmationHandler(pinProvidedHandler);
   }
 
-  private void notifyActivity(final String title, final String message) {
-    final Intent intent = new Intent(applicationContext, PinActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    intent.putExtra(PinActivity.EXTRA_TITLE, title);
-    intent.putExtra(PinActivity.EXTRA_MESSAGE, message);
-    applicationContext.startActivity(intent);
-  }
-
   @Override
   public void onSuccess() {
     Toast.makeText(applicationContext, "onSuccess", Toast.LENGTH_LONG).show();
@@ -63,6 +55,14 @@ public class CreatePinDialog implements OneginiCreatePinDialog {
         // TODO add general error handling
         break;
     }
+  }
+
+  private void notifyActivity(final String title, final String message) {
+    final Intent intent = new Intent(applicationContext, PinActivity.class);
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    intent.putExtra(PinActivity.EXTRA_TITLE, title);
+    intent.putExtra(PinActivity.EXTRA_MESSAGE, message);
+    applicationContext.startActivity(intent);
   }
 
   /**
