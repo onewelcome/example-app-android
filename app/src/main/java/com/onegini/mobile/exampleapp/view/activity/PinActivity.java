@@ -132,7 +132,7 @@ public class PinActivity extends Activity {
 
   private void updateWelcomeText() {
     if (isNotBlank(userName)) {
-      welcomeTextView.setText(getString(R.string.welcome_user_text,userName));
+      welcomeTextView.setText(getString(R.string.welcome_user_text, userName));
     } else {
       welcomeTextView.setVisibility(View.INVISIBLE);
     }
@@ -174,9 +174,9 @@ public class PinActivity extends Activity {
 
   private void callHandler(final char[] pin) {
     if (isCreatePinFlow) {
-      CreatePinDialog.oneginiPinProvidedHandler.onPinProvided(pin);
+      CreatePinDialog.oneginiPinCallback.acceptAuthenticationRequest(pin);
     } else {
-      CurrentPinDialog.oneginiPinProvidedHandler.onPinProvided(pin);
+      CurrentPinDialog.oneginiPinCallback.acceptAuthenticationRequest(pin);
     }
     finish();
   }

@@ -2,31 +2,23 @@ package com.onegini.mobile.exampleapp.view.dialog;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.android.sdk.dialogs.OneginiCurrentPinDialog;
-import com.onegini.mobile.android.sdk.handlers.OneginiPinProvidedHandler;
+import com.onegini.mobile.android.sdk.handlers.request.OneginiPinAuthenticationRequestHandler;
+import com.onegini.mobile.android.sdk.handlers.request.callback.OneginiPinCallback;
 import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.view.activity.PinActivity;
 
-public class CurrentPinDialog implements OneginiCurrentPinDialog {
+public class CurrentPinDialog implements OneginiPinAuthenticationRequestHandler {
 
-  public static OneginiPinProvidedHandler oneginiPinProvidedHandler;
-
+  public static OneginiPinCallback oneginiPinCallback;
   private final Context context;
   private final UserStorage userStorage;
 
   public CurrentPinDialog(final Context context) {
     this.context = context;
     userStorage = new UserStorage(context);
-  }
-
-  @Override
-  public void getCurrentPin(final UserProfile userProfile, final OneginiPinProvidedHandler pinProvidedHandler) {
-    PinActivity.setIsCreatePinFlow(false);
-    oneginiPinProvidedHandler = pinProvidedHandler;
-    startPinActivity(userProfile);
   }
 
   private void startPinActivity(final UserProfile userProfile) {
@@ -38,5 +30,24 @@ public class CurrentPinDialog implements OneginiCurrentPinDialog {
     intent.putExtra(PinActivity.EXTRA_USER_NAME, user.getName());
 
     context.startActivity(intent);
+  }
+
+  @Override
+  public void startAuthentication(final UserProfile userProfile, final OneginiPinCallback oneginiPinCallback) {
+    CurrentPinDialog.oneginiPinCallback = oneginiPinCallback;
+
+    PinActivity.setIsCreatePinFlow(false);
+    startPinActivity(userProfile);
+  }
+
+  @Override
+  public void onNextAuthenticationAttempt(int failedAttemptsCount, int maxAttemptsCount) {
+
+  }
+
+  @Override
+  public void finishAuthentication() {
+    PinActivity.setIsCreatePinFlow(false);
+
   }
 }
