@@ -14,12 +14,12 @@ import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.activity.PinActivity;
 
-public class CreatePinDialog implements OneginiCreatePinRequestHandler {
+public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
 
   public static PinWithConfirmationHandler oneginiVerifyPinCallback;
   private final Context context;
 
-  public CreatePinDialog(final Context context) {
+  public CreatePinRequestHandler(final Context context) {
     this.context = context;
   }
 
@@ -36,7 +36,7 @@ public class CreatePinDialog implements OneginiCreatePinRequestHandler {
     PinActivity.setIsCreatePinFlow(true);
     notifyActivity(context.getString(R.string.pin_title_choose_pin), "");
 
-    CreatePinDialog.oneginiVerifyPinCallback = new PinWithConfirmationHandler(oneginiPinCallback);
+    CreatePinRequestHandler.oneginiVerifyPinCallback = new PinWithConfirmationHandler(oneginiPinCallback);
   }
 
   @Override
@@ -46,7 +46,7 @@ public class CreatePinDialog implements OneginiCreatePinRequestHandler {
 
   @Override
   public void finishPinCreation() {
-    Toast.makeText(context, "CreatePinDialog#finishPinCreation", Toast.LENGTH_LONG).show();
+    Toast.makeText(context, "CreatePinRequestHandler#finishPinCreation", Toast.LENGTH_LONG).show();
   }
 
   /**

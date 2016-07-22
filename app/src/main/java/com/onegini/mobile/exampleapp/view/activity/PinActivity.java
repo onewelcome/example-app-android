@@ -11,8 +11,8 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.view.dialog.CreatePinDialog;
-import com.onegini.mobile.exampleapp.view.dialog.CurrentPinDialog;
+import com.onegini.mobile.exampleapp.view.dialog.CreatePinRequestHandler;
+import com.onegini.mobile.exampleapp.view.dialog.PinAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.helper.PinInputFields;
 import com.onegini.mobile.exampleapp.view.helper.PinKeyboard;
 
@@ -174,9 +174,9 @@ public class PinActivity extends Activity {
 
   private void callHandler(final char[] pin) {
     if (isCreatePinFlow) {
-      CreatePinDialog.oneginiVerifyPinCallback.onPinProvided(pin);
+      CreatePinRequestHandler.oneginiVerifyPinCallback.onPinProvided(pin);
     } else {
-      CurrentPinDialog.oneginiPinCallback.acceptAuthenticationRequest(pin);
+      PinAuthenticationRequestHandler.oneginiPinCallback.acceptAuthenticationRequest(pin);
     }
     finish();
   }

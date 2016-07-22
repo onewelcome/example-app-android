@@ -10,13 +10,13 @@ import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.view.activity.PinActivity;
 
-public class CurrentPinDialog implements OneginiPinAuthenticationRequestHandler {
+public class PinAuthenticationRequestHandler implements OneginiPinAuthenticationRequestHandler {
 
   public static OneginiPinCallback oneginiPinCallback;
   private final Context context;
   private final UserStorage userStorage;
 
-  public CurrentPinDialog(final Context context) {
+  public PinAuthenticationRequestHandler(final Context context) {
     this.context = context;
     userStorage = new UserStorage(context);
   }
@@ -34,7 +34,7 @@ public class CurrentPinDialog implements OneginiPinAuthenticationRequestHandler 
 
   @Override
   public void startAuthentication(final UserProfile userProfile, final OneginiPinCallback oneginiPinCallback) {
-    CurrentPinDialog.oneginiPinCallback = oneginiPinCallback;
+    PinAuthenticationRequestHandler.oneginiPinCallback = oneginiPinCallback;
 
     PinActivity.setIsCreatePinFlow(false);
     startPinActivity(userProfile);
