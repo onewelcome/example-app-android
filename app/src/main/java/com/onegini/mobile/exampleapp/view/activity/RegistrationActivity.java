@@ -71,7 +71,7 @@ public class RegistrationActivity extends Activity {
   }
 
   private void handleRedirection(final Uri uri) {
-    final OneginiClient client = OneginiSDK.getOneginiClient(this);
+    final OneginiClient client = OneginiSDK.getOneginiClient(getApplicationContext());
     if (uri != null && client.getConfigModel().getRedirectUri().startsWith(uri.getScheme())) {
       client.getUserClient().handleAuthorizationCallback(uri);
     }
