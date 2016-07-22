@@ -22,7 +22,7 @@ public class SplashScreenActivity extends Activity {
   }
 
   private void setupOneginiSDK() {
-    OneginiSDK.getOneginiClient(getApplicationContext());
+    OneginiSDK.getOneginiClient(this);
   }
 
   private void startLoginActivity() {
