@@ -52,7 +52,7 @@ public class DashboardActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_logout)
   public void logout() {
-    OneginiSDK.getOneginiClient(getApplicationContext()).getUserClient().logout(
+    OneginiSDK.getOneginiClient(this).getUserClient().logout(
         new OneginiLogoutHandler() {
           @Override
           public void onSuccess() {
@@ -82,7 +82,7 @@ public class DashboardActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_deregister_user)
   public void deregisterUser() {
-    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(getApplicationContext());
+    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
     final UserProfile userProfile = oneginiClient.getUserClient().getAuthenticatedUserProfile();
     if (userProfile == null) {
       showToast("userProfile == null");

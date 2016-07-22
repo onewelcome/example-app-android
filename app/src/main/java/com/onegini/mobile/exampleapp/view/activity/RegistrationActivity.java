@@ -71,8 +71,8 @@ public class RegistrationActivity extends Activity {
   }
 
   private void handleRedirection(final Uri uri) {
-    final OneginiClient client = OneginiSDK.getOneginiClient(getApplicationContext());
-    if (uri != null && uri.getScheme().equals(client.getConfigModel().getAppScheme())) {
+    final OneginiClient client = OneginiSDK.getOneginiClient(this);
+    if (uri != null && client.getConfigModel().getRedirectUri().startsWith(uri.getScheme())) {
       client.getUserClient().handleAuthorizationCallback(uri);
     }
   }
@@ -97,8 +97,7 @@ public class RegistrationActivity extends Activity {
   }
 
   private void handleRegistrationErrors(final OneginiAuthenticationError oneginiAuthenticationError) {
-    int errorType = oneginiAuthenticationError.getErrorType();
-
+    final int errorType = oneginiAuthenticationError.getErrorType();
     switch (errorType) {
       case OneginiAuthenticationError.ACTION_CANCELED:
         showToast("Registration was cancelled");
@@ -113,18 +112,22 @@ public class RegistrationActivity extends Activity {
         break;
       default:
         // General error handling for other, less relevant errors
-        showToast(oneginiAuthenticationError.getErrorDescription());
         handleGeneralError(oneginiAuthenticationError);
         break;
     }
   }
 
   private void handleGeneralError(final OneginiAuthenticationError oneginiAuthenticationError) {
-    showToast("General error: " + oneginiAuthenticationError.getErrorDescription() + ". Check logcat for more details.");
-    Exception exception = oneginiAuthenticationError.getException();
+    final StringBuilder stringBuilder = new StringBuilder("General error: ");
+    stringBuilder.append(oneginiAuthenticationError.getErrorDescription());
+
+    final Exception exception = oneginiAuthenticationError.getException();
     if (exception != null) {
+      stringBuilder.append(" Check logcat for more details.");
       exception.printStackTrace();
     }
+
+    showToast(stringBuilder.toString());
   }
 
   private void askForProfileName() {

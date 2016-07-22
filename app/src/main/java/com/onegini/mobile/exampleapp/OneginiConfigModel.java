@@ -7,7 +7,7 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
 
   private final String appIdentifier = "ExampleApp";
   private final String appPlatform = "android";
-  private final String appScheme = "oneginiexample";
+  private final String redirectUri = "oneginiexample://loginsuccess";
   private final String appVersion = "1.0.0";
   private final String baseURL = "https://onegini-msp-snapshot.test.onegini.io";
   private final String resourceBaseURL = "https://onegini-msp-snapshot.test.onegini.io";
@@ -25,8 +25,8 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   }
 
   @Override
-  public String getAppScheme() {
-    return appScheme;
+  public String getRedirectUri() {
+    return redirectUri;
   }
 
   @Override
@@ -74,7 +74,7 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
     return "ConfigModel{" +
         "  appIdentifier='" + appIdentifier + "'" +
         ", appPlatform='" + appPlatform + "'" +
-        ", appScheme='" + appScheme + "'" +
+        ", redirectUri='" + redirectUri + "'" +
         ", appVersion='" + appVersion + "'" +
         ", baseURL='" + baseURL + "'" +
         ", maxPinFailures='" + maxPinFailures + "'" +
