@@ -16,7 +16,7 @@ import com.onegini.mobile.exampleapp.view.activity.PinActivity;
 
 public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
 
-  public static PinWithConfirmationHandler oneginiVerifyPinCallback;
+  public static PinWithConfirmationHandler oneginiPinCallback;
   private final Context context;
 
   public CreatePinRequestHandler(final Context context) {
@@ -36,7 +36,7 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
     PinActivity.setIsCreatePinFlow(true);
     notifyActivity(context.getString(R.string.pin_title_choose_pin), "");
 
-    CreatePinRequestHandler.oneginiVerifyPinCallback = new PinWithConfirmationHandler(oneginiPinCallback);
+    CreatePinRequestHandler.oneginiPinCallback = new PinWithConfirmationHandler(oneginiPinCallback);
   }
 
   @Override
@@ -59,6 +59,14 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
 
     public PinWithConfirmationHandler(final OneginiPinCallback originalHandler) {
       this.originalHandler = originalHandler;
+    }
+
+    public void onPinProvided(final char[] pin) {
+      if (isPinSet()) {
+        secondPinProvided(pin);
+      } else {
+        firstPinProvided(pin);
+      }
     }
 
     private void firstPinProvided(final char[] pin) {
@@ -96,14 +104,6 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
         pin[i] = '\0';
       }
       pin = null;
-    }
-
-    public void onPinProvided(final char[] pin) {
-      if (isPinSet()) {
-        secondPinProvided(pin);
-      } else {
-        firstPinProvided(pin);
-      }
     }
   }
 
