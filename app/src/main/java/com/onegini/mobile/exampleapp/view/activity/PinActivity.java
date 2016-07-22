@@ -174,7 +174,7 @@ public class PinActivity extends Activity {
 
   private void callHandler(final char[] pin) {
     if (isCreatePinFlow) {
-      CreatePinDialog.oneginiPinCallback.acceptAuthenticationRequest(pin);
+      CreatePinDialog.oneginiVerifyPinCallback.onPinProvided(pin);
     } else {
       CurrentPinDialog.oneginiPinCallback.acceptAuthenticationRequest(pin);
     }

@@ -4,18 +4,20 @@ import java.util.Arrays;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
+import com.onegini.mobile.android.sdk.handlers.OneginiPinValidationHandler;
 import com.onegini.mobile.android.sdk.handlers.error.OneginiPinValidationError;
 import com.onegini.mobile.android.sdk.handlers.request.OneginiCreatePinRequestHandler;
 import com.onegini.mobile.android.sdk.handlers.request.callback.OneginiPinCallback;
 import com.onegini.mobile.android.sdk.model.entity.UserProfile;
+import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.activity.PinActivity;
 
 public class CreatePinDialog implements OneginiCreatePinRequestHandler {
 
-  public static OneginiPinCallback oneginiPinCallback;
+  public static PinWithConfirmationHandler oneginiVerifyPinCallback;
   private final Context context;
-  private PinWithConfirmationHandler oneginiPinProvidedHandler;
 
   public CreatePinDialog(final Context context) {
     this.context = context;
@@ -34,44 +36,23 @@ public class CreatePinDialog implements OneginiCreatePinRequestHandler {
     PinActivity.setIsCreatePinFlow(true);
     notifyActivity(context.getString(R.string.pin_title_choose_pin), "");
 
-    CreatePinDialog.oneginiPinCallback = oneginiPinCallback;
-
-    oneginiPinProvidedHandler = new PinWithConfirmationHandler(oneginiPinCallback);
-
+    CreatePinDialog.oneginiVerifyPinCallback = new PinWithConfirmationHandler(oneginiPinCallback);
   }
 
   @Override
   public void onNextPinCreationAttempt(final OneginiPinValidationError oneginiPinValidationError) {
-    int errorType = oneginiPinValidationError.getErrorType();
-
-    switch (errorType) {
-      case OneginiPinValidationError.PIN_TOO_SHORT:
-        notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_too_short));
-        break;
-      case OneginiPinValidationError.PIN_BLACKLISTED:
-        notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_blacklisted));
-        break;
-      case OneginiPinValidationError.PIN_IS_A_SEQUENCE:
-        notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_sequence));
-        break;
-      case OneginiPinValidationError.PIN_USES_SIMILAR_DIGITS:
-        notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_similar));
-        break;
-      default:
-        // TODO add general error handling
-        break;
-    }
+    handlePinValidationError(oneginiPinValidationError);
   }
 
   @Override
   public void finishPinCreation() {
-
+    Toast.makeText(context, "CreatePinDialog#finishPinCreation", Toast.LENGTH_LONG).show();
   }
 
   /**
    * Extended pin handler, used to create PIN verification step
    */
-  private class PinWithConfirmationHandler implements OneginiPinCallback {
+  public class PinWithConfirmationHandler {
 
     private final OneginiPinCallback originalHandler;
     private char[] pin;
@@ -81,8 +62,18 @@ public class CreatePinDialog implements OneginiCreatePinRequestHandler {
     }
 
     private void firstPinProvided(final char[] pin) {
-      this.pin = pin;
-      notifyActivity(context.getString(R.string.pin_title_verify_pin), "");
+      OneginiSDK.getOneginiClient(context).getUserClient().validatePinWithPolicy(pin, new OneginiPinValidationHandler() {
+        @Override
+        public void onSuccess() {
+          PinWithConfirmationHandler.this.pin = pin;
+          notifyActivity(context.getString(R.string.pin_title_verify_pin), "");
+        }
+
+        @Override
+        public void onError(final OneginiPinValidationError oneginiPinValidationError) {
+          handlePinValidationError(oneginiPinValidationError);
+        }
+      });
     }
 
     public void secondPinProvided(final char[] pin) {
@@ -107,39 +98,34 @@ public class CreatePinDialog implements OneginiCreatePinRequestHandler {
       pin = null;
     }
 
-    @Override
-    public void acceptAuthenticationRequest(final char[] chars) {
+    public void onPinProvided(final char[] pin) {
       if (isPinSet()) {
         secondPinProvided(pin);
       } else {
         firstPinProvided(pin);
       }
     }
-
-    @Override
-    public void denyAuthenticationRequest() {
-
-    }
   }
 
-//
-//  @Override
-//  public void pinBlackListed() {
-//    notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_blacklisted));
-//  }
-//
-//  @Override
-//  public void pinShouldNotBeASequence() {
-//    notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_sequence));
-//  }
-//
-//  @Override
-//  public void pinShouldNotUseSimilarDigits(final int maxSimilar) {
-//    notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_similar));
-//  }
-//
-//  @Override
-//  public void pinTooShort() {
-//    notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_too_short));
-//  }
+  private void handlePinValidationError(final OneginiPinValidationError oneginiPinValidationError) {
+    int errorType = oneginiPinValidationError.getErrorType();
+
+    switch (errorType) {
+      case OneginiPinValidationError.PIN_TOO_SHORT:
+        notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_too_short));
+        break;
+      case OneginiPinValidationError.PIN_BLACKLISTED:
+        notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_blacklisted));
+        break;
+      case OneginiPinValidationError.PIN_IS_A_SEQUENCE:
+        notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_sequence));
+        break;
+      case OneginiPinValidationError.PIN_USES_SIMILAR_DIGITS:
+        notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_similar));
+        break;
+      default:
+        // TODO add general error handling
+        break;
+    }
+  }
 }
