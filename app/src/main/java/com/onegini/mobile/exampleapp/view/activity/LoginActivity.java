@@ -114,7 +114,7 @@ public class LoginActivity extends Activity {
         if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.SERVER_NOT_REACHABLE) {
           showToast("Server not reachable");
         } else if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.USER_DEREGISTERED) {
-          showToast("User deregistered");
+          onUserDeregistered(userProfile);
         } else {
           showToast("Login error: " + oneginiAuthenticationError.getErrorDescription());
         }
@@ -122,9 +122,10 @@ public class LoginActivity extends Activity {
     });
   }
 
-  private void startDashboardActivity() {
-    final Intent intent = new Intent(this, DashboardActivity.class);
-    startActivity(intent);
+  private void onUserDeregistered(final UserProfile userProfile) {
+    userStorage.removeUser(userProfile);
+    showToast("User deregistered");
+    startSplashActivity();
     finish();
   }
 
@@ -151,5 +152,15 @@ public class LoginActivity extends Activity {
 
   private void showToast(final String message) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+  }
+
+  private void startSplashActivity() {
+    startActivity(new Intent(this, SplashScreenActivity.class));
+    finish();
+  }
+
+  private void startDashboardActivity() {
+    startActivity(new Intent(this, DashboardActivity.class));
+    finish();
   }
 }
