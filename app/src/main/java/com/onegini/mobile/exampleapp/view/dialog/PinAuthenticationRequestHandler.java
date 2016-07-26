@@ -21,17 +21,6 @@ public class PinAuthenticationRequestHandler implements OneginiPinAuthentication
     userStorage = new UserStorage(context);
   }
 
-  private void startPinActivity(final UserProfile userProfile) {
-    final Intent intent = new Intent(context, PinActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    intent.putExtra(PinActivity.EXTRA_TITLE, context.getString(R.string.pin_title_enter_pin));
-
-    final User user = userStorage.loadUser(userProfile);
-    intent.putExtra(PinActivity.EXTRA_USER_NAME, user.getName());
-
-    context.startActivity(intent);
-  }
-
   @Override
   public void startAuthentication(final UserProfile userProfile, final OneginiPinCallback oneginiPinCallback) {
     PinAuthenticationRequestHandler.oneginiPinCallback = oneginiPinCallback;
@@ -48,6 +37,16 @@ public class PinAuthenticationRequestHandler implements OneginiPinAuthentication
   @Override
   public void finishAuthentication() {
     PinActivity.setIsCreatePinFlow(false);
+  }
 
+  private void startPinActivity(final UserProfile userProfile) {
+    final Intent intent = new Intent(context, PinActivity.class);
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    intent.putExtra(PinActivity.EXTRA_TITLE, context.getString(R.string.pin_title_enter_pin));
+
+    final User user = userStorage.loadUser(userProfile);
+    intent.putExtra(PinActivity.EXTRA_USER_NAME, user.getName());
+
+    context.startActivity(intent);
   }
 }

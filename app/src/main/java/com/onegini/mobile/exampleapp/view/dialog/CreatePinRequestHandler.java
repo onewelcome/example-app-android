@@ -23,14 +23,6 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
     this.context = context;
   }
 
-  private void notifyActivity(final String title, final String message) {
-    final Intent intent = new Intent(context, PinActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    intent.putExtra(PinActivity.EXTRA_TITLE, title);
-    intent.putExtra(PinActivity.EXTRA_MESSAGE, message);
-    context.startActivity(intent);
-  }
-
   @Override
   public void startPinCreation(final UserProfile userProfile, final OneginiPinCallback oneginiPinCallback) {
     PinActivity.setIsCreatePinFlow(true);
@@ -55,6 +47,7 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
   public class PinWithConfirmationHandler {
 
     private final OneginiPinCallback originalHandler;
+
     private char[] pin;
 
     public PinWithConfirmationHandler(final OneginiPinCallback originalHandler) {
@@ -127,5 +120,13 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
         // TODO add general error handling
         break;
     }
+  }
+
+  private void notifyActivity(final String title, final String message) {
+    final Intent intent = new Intent(context, PinActivity.class);
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    intent.putExtra(PinActivity.EXTRA_TITLE, title);
+    intent.putExtra(PinActivity.EXTRA_MESSAGE, message);
+    context.startActivity(intent);
   }
 }
