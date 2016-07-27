@@ -18,12 +18,13 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.onegini.mobile.android.sdk.handlers.OneginiAuthenticationHandler;
+import com.onegini.mobile.android.sdk.handlers.error.OneginiAuthenticationError;
+import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
-import com.onegini.mobile.sdk.android.library.handlers.OneginiAuthenticationHandler;
-import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 
 public class LoginActivity extends Activity {
 
@@ -99,94 +100,37 @@ public class LoginActivity extends Activity {
   }
 
   private void loginUser(final UserProfile userProfile) {
-    OneginiSDK.getOneginiClient(this).authenticateUser(userProfile, new OneginiAuthenticationHandler() {
+    OneginiSDK.getOneginiClient(this).getUserClient().authenticateUser(userProfile, new OneginiAuthenticationHandler() {
+
       @Override
-      public void authenticationSuccess(final UserProfile userProfileSuccessfullyAuthenticated) {
+      public void onSuccess(final UserProfile userProfile) {
         startDashboardActivity();
       }
 
       @Override
-      public void authenticationError() {
-        showToast("authenticationError");
-      }
-
-      @Override
-      public void authenticationException(final Exception e) {
-        showToast("authenticationException");
-      }
-
-      @Override
-      public void authenticationErrorInvalidRequest() {
-        showToast("authenticationErrorInvalidRequest");
-      }
-
-      @Override
-      public void authenticationErrorClientRegistrationFailed() {
-        showToast("authenticationErrorClientRegistrationFailed");
-      }
-
-      @Override
-      public void authenticationErrorInvalidState() {
-        showToast("authenticationErrorInvalidState");
-      }
-
-      @Override
-      public void authenticationErrorInvalidGrant(final int remaining) {
+      public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
         setProgressbarVisibility(true);
-        PinActivity.setRemainingFailedAttempts(remaining);
-        loginUser(userProfile);
-      }
 
-      @Override
-      public void authenticationErrorNotAuthenticated() {
-        showToast("authenticationErrorNotAuthenticated");
-      }
-
-      @Override
-      public void authenticationErrorInvalidScope() {
-        showToast("authenticationErrorInvalidScope");
-      }
-
-      @Override
-      public void authenticationErrorNotAuthorized() {
-        showToast("authenticationErrorNotAuthorized");
-      }
-
-      @Override
-      public void authenticationErrorInvalidGrantType() {
-        showToast("authenticationErrorInvalidGrantType");
-      }
-
-      @Override
-      public void authenticationErrorTooManyPinFailures() {
-        showToast("authenticationErrorTooManyPinFailures");
-      }
-
-      @Override
-      public void authenticationErrorInvalidApplication() {
-        showToast("authenticationErrorInvalidApplication");
-      }
-
-      @Override
-      public void authenticationErrorUnsupportedOS() {
-        showToast("authenticationErrorUnsupportedOS");
-      }
-
-      @Override
-      public void authenticationErrorInvalidProfile() {
-        showToast("authenticationErrorInvalidProfile");
+        if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.SERVER_NOT_REACHABLE) {
+          showToast("Server not reachable");
+        } else if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.USER_DEREGISTERED) {
+          onUserDeregistered(userProfile);
+        } else {
+          showToast("Login error: " + oneginiAuthenticationError.getErrorDescription());
+        }
       }
     });
   }
 
-  private void startDashboardActivity() {
-    final Intent intent = new Intent(this, DashboardActivity.class);
-    startActivity(intent);
+  private void onUserDeregistered(final UserProfile userProfile) {
+    userStorage.removeUser(userProfile);
+    showToast("User deregistered");
+    startSplashActivity();
     finish();
   }
 
   private boolean isRegisteredAtLeastOneUser() {
-    final Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(this).getUserProfiles();
+    final Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(this).getUserClient().getUserProfiles();
     return userProfiles.size() > 0;
   }
 
@@ -201,12 +145,22 @@ public class LoginActivity extends Activity {
   }
 
   private void prepareListOfProfiles() {
-    final Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(this).getUserProfiles();
+    final Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(this).getUserClient().getUserProfiles();
     userStorage = new UserStorage(this);
     listOfUsers = userStorage.loadUsers(userProfiles);
   }
 
   private void showToast(final String message) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+  }
+
+  private void startSplashActivity() {
+    startActivity(new Intent(this, SplashScreenActivity.class));
+    finish();
+  }
+
+  private void startDashboardActivity() {
+    startActivity(new Intent(this, DashboardActivity.class));
+    finish();
   }
 }

@@ -1,7 +1,7 @@
 package com.onegini.mobile.exampleapp;
 
 import android.os.Build;
-import com.onegini.mobile.sdk.android.library.model.OneginiClientConfigModel;
+import com.onegini.mobile.android.sdk.model.OneginiClientConfigModel;
 
 public class OneginiConfigModel implements OneginiClientConfigModel {
 
@@ -9,9 +9,9 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   private final String appPlatform = "android";
   private final String appScheme = "oneginiexample";
   private final String appVersion = "1.0.0";
-  private final String baseURL = "https://tokenserver-demo-test.onegini.com";
-  private final String resourceBaseURL = "https://resourcegateway-demo-test.onegini.com";
-  private final String keystoreHash = "b41bdf46dcace3ec5a16900abb91b6d395082e46f04ab3fccf6b616dab507bc1";
+  private final String baseURL = "https://onegini-msp-snapshot.test.onegini.io";
+  private final String resourceBaseURL = "https://onegini-msp-snapshot.test.onegini.io";
+  private final String keystoreHash = "ebdb795f8f39d902b3696d8bcc19a7b17e3831e72f6b883ad2f41e865244c8f8";
   private final int maxPinFailures = 3;
 
   @Override
@@ -65,18 +65,8 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   }
 
   @Override
-  public boolean shouldStoreCookies() {
-    return false;
-  }
-
-  @Override
   public int getMaxPinFailures() {
     return maxPinFailures;
-  }
-
-  @Override
-  public int getHttpClientTimeout() {
-    return 60000;
   }
 
   @Override

@@ -16,14 +16,15 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.onegini.mobile.android.sdk.client.OneginiClient;
+import com.onegini.mobile.android.sdk.handlers.OneginiAuthenticationHandler;
+import com.onegini.mobile.android.sdk.handlers.error.OneginiAuthenticationError;
+import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
-import com.onegini.mobile.sdk.android.library.OneginiClient;
-import com.onegini.mobile.sdk.android.library.handlers.OneginiAuthenticationHandler;
-import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
 
 public class RegistrationActivity extends Activity {
 
@@ -72,16 +73,16 @@ public class RegistrationActivity extends Activity {
   private void handleRedirection(final Uri uri) {
     final OneginiClient client = OneginiSDK.getOneginiClient(getApplicationContext());
     if (uri != null && uri.getScheme().equals(client.getConfigModel().getAppScheme())) {
-      client.handleAuthorizationCallback(uri);
+      client.getUserClient().handleAuthorizationCallback(uri);
     }
   }
 
   private void registerUser() {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    oneginiClient.registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
+    oneginiClient.getUserClient().registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
 
       @Override
-      public void authenticationSuccess(final UserProfile userProfile) {
+      public void onSuccess(final UserProfile userProfile) {
         PinActivity.setRemainingFailedAttempts(0);
         registeredProfile = userProfile;
         userProfileDebugText.setText(userProfile.getProfileId());
@@ -89,77 +90,41 @@ public class RegistrationActivity extends Activity {
       }
 
       @Override
-      public void authenticationError() {
-        showToast("authenticationError");
-      }
-
-      @Override
-      public void authenticationException(final Exception e) {
-        showToast("authenticationException");
-      }
-
-      @Override
-      public void authenticationErrorInvalidRequest() {
-        showToast("authenticationErrorInvalidRequest");
-      }
-
-      @Override
-      public void authenticationErrorClientRegistrationFailed() {
-        showToast("authenticationErrorClientRegistrationFailed");
-      }
-
-      @Override
-      public void authenticationErrorInvalidState() {
-        showToast("authenticationErrorInvalidState");
-      }
-
-      @Override
-      public void authenticationErrorInvalidGrant(final int remaining) {
-        // Show error the token was invalid, user should authorize again.
-        PinActivity.setRemainingFailedAttempts(remaining);
-        registerUser();
-      }
-
-      @Override
-      public void authenticationErrorNotAuthenticated() {
-        showToast("authenticationErrorNotAuthenticated");
-      }
-
-      @Override
-      public void authenticationErrorInvalidScope() {
-        showToast("authenticationErrorInvalidScope");
-      }
-
-      @Override
-      public void authenticationErrorNotAuthorized() {
-        showToast("authenticationErrorNotAuthorized");
-      }
-
-      @Override
-      public void authenticationErrorInvalidGrantType() {
-        showToast("authenticationErrorInvalidGrantType");
-      }
-
-      @Override
-      public void authenticationErrorTooManyPinFailures() {
-        showToast("authenticationErrorTooManyPinFailures");
-      }
-
-      @Override
-      public void authenticationErrorInvalidApplication() {
-        showToast("authenticationErrorInvalidApplication");
-      }
-
-      @Override
-      public void authenticationErrorUnsupportedOS() {
-        showToast("authenticationErrorUnsupportedOS");
-      }
-
-      @Override
-      public void authenticationErrorInvalidProfile() {
-        showToast("authenticationErrorInvalidProfile");
+      public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
+        handleRegistrationErrors(oneginiAuthenticationError);
       }
     });
+  }
+
+  private void handleRegistrationErrors(final OneginiAuthenticationError oneginiAuthenticationError) {
+    int errorType = oneginiAuthenticationError.getErrorType();
+
+    switch (errorType) {
+      case OneginiAuthenticationError.ACTION_CANCELED:
+        showToast("Registration was cancelled");
+        break;
+      case OneginiAuthenticationError.NETWORK_CONNECTIVITY_PROBLEM:
+        showToast("No internet connection.");
+        break;
+      case OneginiAuthenticationError.OUTDATED_APP:
+        showToast("Please update application in order to use.");
+        break;
+      case OneginiAuthenticationError.GENERAL_ERROR:
+        break;
+      default:
+        // General error handling for other, less relevant errors
+        showToast(oneginiAuthenticationError.getErrorDescription());
+        handleGeneralError(oneginiAuthenticationError);
+        break;
+    }
+  }
+
+  private void handleGeneralError(final OneginiAuthenticationError oneginiAuthenticationError) {
+    showToast("General error: " + oneginiAuthenticationError.getErrorDescription() + ". Check logcat for more details.");
+    Exception exception = oneginiAuthenticationError.getException();
+    if (exception != null) {
+      exception.printStackTrace();
+    }
   }
 
   private void askForProfileName() {
@@ -175,7 +140,7 @@ public class RegistrationActivity extends Activity {
   }
 
   private void showToast(final String message) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
   }
 
   private void storeUserProfile() {

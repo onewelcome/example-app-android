@@ -2,8 +2,8 @@ package com.onegini.mobile.exampleapp.network.client;
 
 import android.content.Context;
 import com.google.gson.GsonBuilder;
+import com.onegini.mobile.android.sdk.client.OneginiClient;
 import com.onegini.mobile.exampleapp.OneginiSDK;
-import com.onegini.mobile.sdk.android.library.OneginiClient;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
@@ -16,7 +16,7 @@ public class SecuredClient {
   public static <T> T prepareSecuredClient(final Class<T> clazz, final Context context) {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
     final RestAdapter restAdapter = new RestAdapter.Builder()
-        .setClient(oneginiClient.getResourceRetrofitClient())
+        .setClient(oneginiClient.getNetworkClient().getResourceRetrofitClient())
         .setEndpoint(oneginiClient.getConfigModel().getResourceBaseUrl())
         .setLogLevel(LOG_LEVEL)
         .setConverter(gsonConverter)

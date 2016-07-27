@@ -1,7 +1,6 @@
 package com.onegini.mobile.exampleapp.model;
 
-
-import com.onegini.mobile.sdk.android.library.model.entity.UserProfile;
+import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 
 public class User {
 
