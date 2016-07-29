@@ -7,11 +7,11 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
 
   private final String appIdentifier = "ExampleApp";
   private final String appPlatform = "android";
-  private final String appScheme = "oneginiexample";
+  private final String redirectionUri = "oneginiexample://loginsuccess";
   private final String appVersion = "1.0.0";
   private final String baseURL = "https://onegini-msp-snapshot.test.onegini.io";
   private final String resourceBaseURL = "https://onegini-msp-snapshot.test.onegini.io";
-  private final String keystoreHash = "ebdb795f8f39d902b3696d8bcc19a7b17e3831e72f6b883ad2f41e865244c8f8";
+  private final String keystoreHash = "8a70d8c81261da12ecebbb7f227dfc937a374a8a0cfb30c662d333837ef667e0";
   private final int maxPinFailures = 3;
 
   @Override
@@ -25,8 +25,8 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   }
 
   @Override
-  public String getAppScheme() {
-    return appScheme;
+  public String getRedirectUri() {
+    return redirectionUri;
   }
 
   @Override
@@ -74,13 +74,11 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
     return "ConfigModel{" +
         "  appIdentifier='" + appIdentifier + "'" +
         ", appPlatform='" + appPlatform + "'" +
-        ", appScheme='" + appScheme + "'" +
+        ", redirectionUri='" + redirectionUri + "'" +
         ", appVersion='" + appVersion + "'" +
         ", baseURL='" + baseURL + "'" +
         ", maxPinFailures='" + maxPinFailures + "'" +
         ", resourceBaseURL='" + resourceBaseURL + "'" +
-        ", keyStoreHash='" + getKeyStoreHash() + "'" +
-        ", idTokenRequested='" + shouldGetIdToken() + "'" +
         "}";
   }
 }
