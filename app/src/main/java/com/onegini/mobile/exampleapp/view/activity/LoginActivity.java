@@ -49,6 +49,7 @@ public class LoginActivity extends Activity {
 
   private List<User> listOfUsers = new ArrayList<>();
   private UserStorage userStorage;
+  private boolean userIsLoggingIn = false;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class LoginActivity extends Activity {
 
     final User user = listOfUsers.get(usersSpinner.getSelectedItemPosition());
     loginUser(user.getUserProfile());
+    userIsLoggingIn = true;
   }
 
   @SuppressWarnings("unused")
@@ -81,7 +83,12 @@ public class LoginActivity extends Activity {
   }
 
   private void setupUserInterface() {
-    setProgressbarVisibility(false);
+    if (userIsLoggingIn == false) {
+      setProgressbarVisibility(false);
+      registerButton.setVisibility(View.VISIBLE);
+    } else {
+      registerButton.setVisibility(View.INVISIBLE);
+    }
 
     if (isRegisteredAtLeastOneUser()) {
       prepareListOfProfiles();
@@ -91,7 +98,6 @@ public class LoginActivity extends Activity {
       usersSpinner.setVisibility(View.INVISIBLE);
       loginButton.setVisibility(View.INVISIBLE);
     }
-    registerButton.setVisibility(View.VISIBLE);
   }
 
   private void setupUsersSpinner() {
@@ -112,6 +118,7 @@ public class LoginActivity extends Activity {
 
       @Override
       public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
+        userIsLoggingIn = false;
         setProgressbarVisibility(true);
 
         if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.SERVER_NOT_REACHABLE) {
@@ -154,11 +161,6 @@ public class LoginActivity extends Activity {
 
   private void showToast(final String message) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-  }
-
-  private void startSplashActivity() {
-    startActivity(new Intent(this, SplashScreenActivity.class));
-    finish();
   }
 
   private void startDashboardActivity() {
