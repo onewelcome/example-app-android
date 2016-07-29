@@ -83,11 +83,11 @@ public class LoginActivity extends Activity {
   }
 
   private void setupUserInterface() {
-    if (userIsLoggingIn == false) {
+    if (userIsLoggingIn) {
+      registerButton.setVisibility(View.INVISIBLE);
+    } else {
       setProgressbarVisibility(false);
       registerButton.setVisibility(View.VISIBLE);
-    } else {
-      registerButton.setVisibility(View.INVISIBLE);
     }
 
     if (isRegisteredAtLeastOneUser()) {
