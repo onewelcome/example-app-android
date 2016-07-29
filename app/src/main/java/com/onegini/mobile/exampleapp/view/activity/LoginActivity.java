@@ -87,6 +87,9 @@ public class LoginActivity extends Activity {
       prepareListOfProfiles();
       setupUsersSpinner();
       loginButton.setVisibility(View.VISIBLE);
+    } else {
+      usersSpinner.setVisibility(View.INVISIBLE);
+      loginButton.setVisibility(View.INVISIBLE);
     }
     registerButton.setVisibility(View.VISIBLE);
   }
@@ -125,8 +128,7 @@ public class LoginActivity extends Activity {
   private void onUserDeregistered(final UserProfile userProfile) {
     userStorage.removeUser(userProfile);
     showToast("User deregistered");
-    startSplashActivity();
-    finish();
+    setupUserInterface();
   }
 
   private boolean isRegisteredAtLeastOneUser() {
