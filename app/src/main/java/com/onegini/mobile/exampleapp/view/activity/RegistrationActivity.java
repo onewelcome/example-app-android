@@ -109,7 +109,6 @@ public class RegistrationActivity extends Activity {
         showToast("Please update application in order to use.");
         break;
       case OneginiAuthenticationError.GENERAL_ERROR:
-        break;
       default:
         // General error handling for other, less relevant errors
         handleGeneralError(oneginiAuthenticationError);
