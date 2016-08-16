@@ -1,13 +1,14 @@
 package com.onegini.mobile.exampleapp.storage;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.onegini.mobile.android.sdk.model.entity.UserProfile;
+import com.onegini.mobile.exampleapp.model.User;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import com.onegini.mobile.android.sdk.model.entity.UserProfile;
-import com.onegini.mobile.exampleapp.model.User;
 
 public class UserStorage {
   private static final String PREFS_NAME = "user_storage";
@@ -16,7 +17,7 @@ public class UserStorage {
   private final SharedPreferences sharedPreferences;
 
   public UserStorage(final Context context) {
-    sharedPreferences = context.getSharedPreferences(PREFS_NAME, 0);
+    sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
   }
 
   public void saveUser(final User user) {

@@ -3,6 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.onegini.mobile.exampleapp">
 
+    <permission
+        android:name="com.onegini.mobile.exampleapp.permission.C2D_MESSAGE"
+        android:protectionLevel="signature"/>
+
+    <uses-permission android:name="com.onegini.mobile.exampleapp.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
   <application
       android:name="android.support.multidex.MultiDexApplication"
       android:allowBackup="true"
@@ -42,5 +51,29 @@
         android:name=".view.activity.DashboardActivity"
         android:screenOrientation="portrait">
     </activity>
+      <receiver
+          android:name=".network.gcm.GcmBroadcastReceiver"
+          android:permission="com.google.android.c2dm.permission.SEND">
+          <intent-filter>
+              <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+              <category android:name="com.onegini.mobile.exampleapp"/>
+          </intent-filter>
+      </receiver>
+      <service android:name=".network.gcm.GcmIntentService"
+               android:exported="false" >
+          <intent-filter>
+              <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+          </intent-filter>
+      </service>
+      <service
+          android:name=".network.gcm.GcmInstanceIdListenerService"
+          android:exported="false">
+          <intent-filter>
+              <action android:name="com.google.android.gms.iid.InstanceID" />
+          </intent-filter>
+      </service>
+      <meta-data
+          android:name="com.google.android.gms.version"
+          android:value="@integer/google_play_services_version"/>
   </application>
 </manifest>

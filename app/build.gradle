@@ -64,8 +64,8 @@ dependencies {
   // Rest Client
   compile 'com.squareup.retrofit:retrofit:1.9.0'
   // Google cloud messaging (GCM)
-  compile 'com.google.android.gms:play-services-base:8.4.0'
-  compile 'com.google.android.gms:play-services-gcm:8.4.0'
+  compile 'com.google.android.gms:play-services-base:9.4.0'
+  compile 'com.google.android.gms:play-services-gcm:9.4.0'
   // Spongy castle
   compile 'com.madgag.spongycastle:core:1.54.0.0'
   compile 'com.madgag.spongycastle:prov:1.54.0.0'
