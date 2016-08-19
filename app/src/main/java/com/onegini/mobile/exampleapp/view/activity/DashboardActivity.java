@@ -7,9 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.onegini.mobile.android.sdk.client.OneginiClient;
 import com.onegini.mobile.android.sdk.handlers.OneginiDeregisterUserProfileHandler;
 import com.onegini.mobile.android.sdk.handlers.OneginiLogoutHandler;
@@ -22,6 +20,10 @@ import com.onegini.mobile.exampleapp.model.Profile;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.network.PersonService;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Subscription;
 
 public class DashboardActivity extends AppCompatActivity {
