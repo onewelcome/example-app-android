@@ -1,6 +1,4 @@
 <resources>
-    <string name="gcm_sender_id">586427927998</string>
-
     <string name="app_name">Example App</string>
     <string name="btn_login_label">LOG IN</string>
     <string name="btn_register_label">REGISTER</string>

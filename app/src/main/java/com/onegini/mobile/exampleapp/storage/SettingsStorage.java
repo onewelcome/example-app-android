@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 public class SettingsStorage {
 
   private static final String PREFS_NAME = "settings_storage";
-  private static final String KEY_MOBILE_AUTH_ENABLES = "key_mobile_auth_enabled";
+  private static final String KEY_MOBILE_AUTH_ENABLED = "key_mobile_auth_enabled_";
 
   private final SharedPreferences sharedPreferences;
 
@@ -14,13 +14,13 @@ public class SettingsStorage {
     sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
   }
 
-  public void saveMobileAuthenticationEnabled(final boolean isEnabled) {
+  public void saveUserMobileEnrollment(final String profileId) {
     final SharedPreferences.Editor editor = sharedPreferences.edit();
-    editor.putBoolean(KEY_MOBILE_AUTH_ENABLES, isEnabled);
+    editor.putBoolean(KEY_MOBILE_AUTH_ENABLED + profileId, true);
     editor.apply();
   }
 
-  public boolean isMobileAuthenticationEnabled() {
-    return sharedPreferences.getBoolean(KEY_MOBILE_AUTH_ENABLES, false);
+  public boolean isUserMobileEnrolled(final String profileId) {
+    return sharedPreferences.getBoolean(KEY_MOBILE_AUTH_ENABLED + profileId, false);
   }
 }

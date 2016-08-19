@@ -19,8 +19,6 @@ import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.Profile;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.network.PersonService;
-import com.onegini.mobile.exampleapp.network.gcm.GcmIntentService;
-import com.onegini.mobile.exampleapp.storage.SettingsStorage;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 
 import butterknife.Bind;
@@ -50,7 +48,6 @@ public class DashboardActivity extends AppCompatActivity {
     ButterKnife.bind(this);
 
     userStorage = new UserStorage(this);
-    checkMobileAuthenticationEnrollment();
     setupUserInterface();
   }
 
@@ -180,16 +177,5 @@ public class DashboardActivity extends AppCompatActivity {
     final Intent intent = new Intent(this, LoginActivity.class);
     startActivity(intent);
     finish();
-  }
-
-  private void checkMobileAuthenticationEnrollment() {
-    final SettingsStorage settingsStorage = new SettingsStorage(this);
-    if (!settingsStorage.isMobileAuthenticationEnabled()) {
-      enrollMobileAuthentication();
-    }
-  }
-
-  private void enrollMobileAuthentication() {
-    startService(new Intent(this, GcmIntentService.class));
   }
 }

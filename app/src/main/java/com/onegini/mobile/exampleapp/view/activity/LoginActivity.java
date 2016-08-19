@@ -1,9 +1,5 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,16 +11,24 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.onegini.mobile.android.sdk.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.android.sdk.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
+import com.onegini.mobile.exampleapp.network.gcm.GcmHelper;
+import com.onegini.mobile.exampleapp.storage.SettingsStorage;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class LoginActivity extends Activity {
 
@@ -113,6 +117,7 @@ public class LoginActivity extends Activity {
 
       @Override
       public void onSuccess(final UserProfile userProfile) {
+        checkMobileAuthenticationEnrollment(userProfile.getProfileId());
         startDashboardActivity();
       }
 
@@ -166,5 +171,17 @@ public class LoginActivity extends Activity {
   private void startDashboardActivity() {
     startActivity(new Intent(this, DashboardActivity.class));
     finish();
+  }
+
+  private void checkMobileAuthenticationEnrollment(final String profileId) {
+    final SettingsStorage settingsStorage = new SettingsStorage(this);
+    if (!settingsStorage.isUserMobileEnrolled(profileId)) {
+      enrollMobileAuthentication();
+    }
+  }
+
+  private void enrollMobileAuthentication() {
+    final GcmHelper gcmHelper = new GcmHelper(this);
+    gcmHelper.enrollMobileAuthentication();
   }
 }
