@@ -16,7 +16,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.onegini.mobile.android.sdk.handlers.OneginiMobileAuthenticationEnrollmentHandler;
 import com.onegini.mobile.android.sdk.handlers.error.OneginiMobileAuthenticationEnrollmentError;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.network.GCMRegistrationService;
+import com.onegini.mobile.exampleapp.network.gcm.GCMRegistrationService;
 import com.onegini.mobile.exampleapp.storage.SettingsStorage;
 
 public class SettingsActivity extends AppCompatActivity {

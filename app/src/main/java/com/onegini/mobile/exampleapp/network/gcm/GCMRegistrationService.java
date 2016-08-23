@@ -1,4 +1,4 @@
-package com.onegini.mobile.exampleapp.network;
+package com.onegini.mobile.exampleapp.network.gcm;
 
 import java.io.IOException;
 
