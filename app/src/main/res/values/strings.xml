@@ -20,4 +20,9 @@
     <string name="name_edit_text_hint">Name</string>
     <string name="create_profile_submit">CREATE PROFILE</string>
     <string name="welcome_user_text">Hello, %1$s!</string>
+    <string name="settings_title">Settings</string>
+    <string name="btn_settings_label">SETTINGS</string>
+    <string name="settings_mobile_enrollment_off">Enable mobile authentication</string>
+    <string name="settings_mobile_enrollment_on">Mobile authentication enabled</string>
+    <string name="settings_mobile_enrollment_not_available">Mobile authentication not available</string>
 </resources>

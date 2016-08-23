@@ -44,41 +44,17 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/dashboard_welcome_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Base.TextAppearance.AppCompat.Headline"
-                android:text="@string/welcome_user_text"/>
-
-            <TextView
-                android:layout_width="wrap_content"
+                android:text="@string/settings_title"/>
+            <Button
+                android:id="@+id/button_mobile_authentication"
+                style="@style/ButtonStyle"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/tv_user_profile_info"
-                android:layout_gravity="center_horizontal"
-                android:lines="3"
-                android:layout_marginTop="20dp"/>
-            <Button
-                android:id="@+id/button_get_user_profile"
-                style="@style/ButtonStyle"
-                android:text="@string/btn_get_user_profile_data_label"
-                android:layout_marginTop="20dp"/>
-            <Button
-                android:id="@+id/button_settings"
-                style="@style/ButtonStyle"
-                android:text="@string/btn_settings_label"
-                android:layout_marginTop="20dp"/>
-            <Button
-                android:id="@+id/button_logout"
-                style="@style/ButtonStyle"
-                android:layout_marginTop="20dp"
-                android:text="@string/btn_logout_label"/>
-            <Button
-                android:id="@+id/button_deregister_user"
-                style="@style/ButtonStyle"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:text="@string/btn_deregister_user_label"/>
+                android:text="@string/settings_mobile_enrollment_off"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

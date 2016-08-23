@@ -42,5 +42,10 @@
         android:name=".view.activity.DashboardActivity"
         android:screenOrientation="portrait">
     </activity>
+    <activity
+        android:name=".view.activity.SettingsActivity"
+        android:screenOrientation="portrait"
+        android:parentActivityName=".view.activity.DashboardActivity">
+    </activity>
   </application>
 </manifest>
