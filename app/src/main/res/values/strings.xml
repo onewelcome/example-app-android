@@ -8,7 +8,7 @@
     <string name="pin_title_verify_pin">Confirm PIN</string>
     <string name="pin_error_blacklisted">This PIN is blacklisted</string>
     <string name="pin_error_sequence">PIN should not be a sequence</string>
-    <string name="pin_error_too_short">PIN is too short</string>
+    <string name="pin_error_invalid_length">PIN length is incorrect</string>
     <string name="pin_error_not_equal">PIN was not the same, choose PIN</string>
     <string name="pin_error_similar">Too many similar digits</string>
     <string name="pin_title_enter_pin">Enter PIN</string>

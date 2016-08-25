@@ -13,18 +13,20 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.onegini.mobile.android.sdk.client.OneginiClient;
-import com.onegini.mobile.android.sdk.handlers.OneginiAuthenticationHandler;
-import com.onegini.mobile.android.sdk.handlers.error.OneginiAuthenticationError;
+import com.onegini.mobile.android.sdk.handlers.OneginiRegistrationHandler;
+import com.onegini.mobile.android.sdk.handlers.error.OneginiRegistrationError;
 import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class RegistrationActivity extends Activity {
 
@@ -79,7 +81,7 @@ public class RegistrationActivity extends Activity {
 
   private void registerUser() {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    oneginiClient.getUserClient().registerUser(Constants.DEFAULT_SCOPES, new OneginiAuthenticationHandler() {
+    oneginiClient.getUserClient().registerUser(Constants.DEFAULT_SCOPES, new OneginiRegistrationHandler() {
 
       @Override
       public void onSuccess(final UserProfile userProfile) {
@@ -90,37 +92,37 @@ public class RegistrationActivity extends Activity {
       }
 
       @Override
-      public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
-        handleRegistrationErrors(oneginiAuthenticationError);
+      public void onError(final OneginiRegistrationError oneginiRegistrationError) {
+        handleRegistrationErrors(oneginiRegistrationError);
       }
     });
   }
 
-  private void handleRegistrationErrors(final OneginiAuthenticationError oneginiAuthenticationError) {
-    final int errorType = oneginiAuthenticationError.getErrorType();
+  private void handleRegistrationErrors(final OneginiRegistrationError oneginiRegistrationError) {
+    final int errorType = oneginiRegistrationError.getErrorType();
     switch (errorType) {
-      case OneginiAuthenticationError.ACTION_CANCELED:
+      case OneginiRegistrationError.ACTION_CANCELED:
         showToast("Registration was cancelled");
         break;
-      case OneginiAuthenticationError.NETWORK_CONNECTIVITY_PROBLEM:
+      case OneginiRegistrationError.NETWORK_CONNECTIVITY_PROBLEM:
         showToast("No internet connection.");
         break;
-      case OneginiAuthenticationError.OUTDATED_APP:
+      case OneginiRegistrationError.OUTDATED_APP:
         showToast("Please update application in order to use.");
         break;
-      case OneginiAuthenticationError.GENERAL_ERROR:
+      case OneginiRegistrationError.GENERAL_ERROR:
       default:
         // General error handling for other, less relevant errors
-        handleGeneralError(oneginiAuthenticationError);
+        handleGeneralError(oneginiRegistrationError);
         break;
     }
   }
 
-  private void handleGeneralError(final OneginiAuthenticationError oneginiAuthenticationError) {
+  private void handleGeneralError(final OneginiRegistrationError oneginiRegistrationError) {
     final StringBuilder stringBuilder = new StringBuilder("General error: ");
-    stringBuilder.append(oneginiAuthenticationError.getErrorDescription());
+    stringBuilder.append(oneginiRegistrationError.getErrorDescription());
 
-    final Exception exception = oneginiAuthenticationError.getException();
+    final Exception exception = oneginiRegistrationError.getException();
     if (exception != null) {
       stringBuilder.append(" Check logcat for more details.");
       exception.printStackTrace();
