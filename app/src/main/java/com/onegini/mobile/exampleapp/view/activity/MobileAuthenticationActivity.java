@@ -15,14 +15,14 @@ import com.onegini.mobile.exampleapp.view.dialog.MobileAuthenticationRequestHand
 
 public class MobileAuthenticationActivity extends Activity {
 
-  public static final String COMMAND_SHOW = "show";
-  public static final String COMMAND_HIDE = "hide";
+  public static final String COMMAND_START = "start";
+  public static final String COMMAND_FINISH = "finish";
 
   public static final String EXTRA_COMMAND = "command";
   public static final String EXTRA_MESSAGE = "extra_message";
   public static final String EXTRA_PROFILE_ID = "extra_profile_id";
 
-  @Bind(R.id.push_user)
+  @Bind(R.id.welcome_user_text)
   TextView userTextView;
   @Bind(R.id.push_text)
   TextView messageTextView;
@@ -43,9 +43,9 @@ public class MobileAuthenticationActivity extends Activity {
   @Override
   protected void onNewIntent(final Intent intent) {
     final String command = intent.getStringExtra(EXTRA_COMMAND);
-    if (COMMAND_HIDE.equals(command)) {
+    if (COMMAND_FINISH.equals(command)) {
       finish();
-    } else if (COMMAND_SHOW.equals(command)) {
+    } else if (COMMAND_START.equals(command)) {
       setIntent(intent);
       initialize();
     }
@@ -81,7 +81,7 @@ public class MobileAuthenticationActivity extends Activity {
   }
 
   private void initLayout() {
-    userTextView.setText(user.toString());
+    userTextView.setText(getString(R.string.welcome_user_text, user.getName()));
     messageTextView.setText(message);
   }
 }

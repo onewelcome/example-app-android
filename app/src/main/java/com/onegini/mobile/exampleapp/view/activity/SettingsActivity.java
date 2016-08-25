@@ -94,7 +94,7 @@ public class SettingsActivity extends AppCompatActivity {
     final OneginiMobileAuthenticationEnrollmentHandler mobileAuthenticationEnrollmentHandler = new OneginiMobileAuthenticationEnrollmentHandler() {
       @Override
       public void onSuccess() {
-        settingsStorage.setMobileAuthenticationEnabled();
+        settingsStorage.setMobileAuthenticationEnabled(true);
         onMobileAuthEnabled();
         showToast("Mobile authentication enabled");
       }

@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_margin="10dp">
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/push_user"
+        android:id="@+id/welcome_user_text"
         android:layout_width="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
         style="@style/Base.TextAppearance.AppCompat.Headline"
-        android:text="Profile ID"/>
+        android:text="@string/welcome_user_text"/>
 
     <TextView
         android:id="@+id/push_text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
         android:text="Simple push message"
-        android:textSize="32sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:textAlignment="center"/>
+        android:textColor="@color/dark_text"
+        android:textSize="20sp"
+        android:layout_below="@+id/welcome_user_text"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_below="@+id/push_text"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="40dp"
+        android:gravity="center_horizontal">
 
         <Button
             android:id="@+id/push_accept_button"
@@ -42,6 +44,5 @@
             android:id="@+id/push_deny_button"
             style="@style/ButtonStyle"
             android:text="@string/btn_push_deny"/>
-
     </LinearLayout>
- </LinearLayout>
+ </RelativeLayout>

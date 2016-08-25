@@ -55,6 +55,10 @@
             android:name=".view.activity.MobileAuthenticationActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"/>
+        <activity
+            android:name=".view.activity.MobileAuthenticationPinActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
 
         <receiver
             android:name=".network.gcm.GCMBroadcastReceiver"

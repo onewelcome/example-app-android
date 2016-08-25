@@ -33,7 +33,7 @@ public class MobileAuthenticationRequestHandler implements OneginiMobileAuthenti
 
   private void openActivity(final String profileId, final String message) {
     final Intent intent = new Intent(context, MobileAuthenticationActivity.class);
-    intent.putExtra(MobileAuthenticationActivity.EXTRA_COMMAND, MobileAuthenticationActivity.COMMAND_SHOW);
+    intent.putExtra(MobileAuthenticationActivity.EXTRA_COMMAND, MobileAuthenticationActivity.COMMAND_START);
     intent.putExtra(MobileAuthenticationActivity.EXTRA_PROFILE_ID, profileId);
     intent.putExtra(MobileAuthenticationActivity.EXTRA_MESSAGE, message);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
@@ -42,7 +42,7 @@ public class MobileAuthenticationRequestHandler implements OneginiMobileAuthenti
 
   private void closeActivity() {
     final Intent intent = new Intent(context, MobileAuthenticationActivity.class);
-    intent.putExtra(MobileAuthenticationActivity.EXTRA_COMMAND, MobileAuthenticationActivity.COMMAND_HIDE);
+    intent.putExtra(MobileAuthenticationActivity.EXTRA_COMMAND, MobileAuthenticationActivity.COMMAND_FINISH);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }

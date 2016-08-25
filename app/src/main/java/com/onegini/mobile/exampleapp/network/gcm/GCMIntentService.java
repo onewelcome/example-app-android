@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import com.onegini.mobile.android.sdk.handlers.OneginiMobileAuthenticationHandler;
+import com.onegini.mobile.android.sdk.handlers.error.OneginiError;
 import com.onegini.mobile.android.sdk.handlers.error.OneginiMobileAuthenticationError;
 import com.onegini.mobile.exampleapp.OneginiSDK;
+import com.onegini.mobile.exampleapp.storage.SettingsStorage;
 
 public class GCMIntentService extends IntentService {
 
@@ -31,6 +33,9 @@ public class GCMIntentService extends IntentService {
         @Override
         public void onError(final OneginiMobileAuthenticationError oneginiMobileAuthenticationError) {
           Toast.makeText(GCMIntentService.this, oneginiMobileAuthenticationError.getErrorDescription(), Toast.LENGTH_SHORT).show();
+          if (oneginiMobileAuthenticationError.getErrorType() == OneginiError.USER_DEREGISTERED) {
+            new SettingsStorage(GCMIntentService.this).setMobileAuthenticationEnabled(false);
+          }
         }
       });
     }
