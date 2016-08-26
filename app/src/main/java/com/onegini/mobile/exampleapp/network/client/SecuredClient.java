@@ -16,7 +16,7 @@ public class SecuredClient {
   public static <T> T prepareSecuredClient(final Class<T> clazz, final Context context) {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
     final RestAdapter restAdapter = new RestAdapter.Builder()
-        .setClient(oneginiClient.getNetworkClient().getResourceRetrofitClient())
+        .setClient(oneginiClient.getUserClient().getResourceRetrofitClient())
         .setEndpoint(oneginiClient.getConfigModel().getResourceBaseUrl())
         .setLogLevel(LOG_LEVEL)
         .setConverter(gsonConverter)
