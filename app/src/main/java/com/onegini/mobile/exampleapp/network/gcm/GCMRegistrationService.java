@@ -10,10 +10,10 @@ import com.onegini.mobile.android.sdk.client.UserClient;
 import com.onegini.mobile.android.sdk.handlers.OneginiMobileAuthenticationEnrollmentHandler;
 import com.onegini.mobile.android.sdk.handlers.error.OneginiError;
 import com.onegini.mobile.android.sdk.handlers.error.OneginiMobileAuthenticationEnrollmentError;
+import com.onegini.mobile.exampleapp.BuildConfig;
 import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.storage.GCMStorage;
-import com.onegini.mobile.exampleapp.util.AppInfo;
 
 public class GCMRegistrationService {
 
@@ -53,7 +53,7 @@ public class GCMRegistrationService {
 
     // Check if app was updated; if so, it must clear the registration ID since the existing regID is not guaranteed to work with the new app version.
     final int registeredVersion = storage.getAppVersion();
-    final int currentVersion = AppInfo.getAppVersion(context);
+    final int currentVersion = BuildConfig.VERSION_CODE;
     if (registeredVersion != currentVersion) {
       Log.i(TAG, "App version changed.");
       return "";
@@ -85,7 +85,7 @@ public class GCMRegistrationService {
 
   private void storeRegisteredId(final String regid) {
     storage.setRegistrationId(regid);
-    storage.setAppVersion(AppInfo.getAppVersion(context));
+    storage.setAppVersion(BuildConfig.VERSION_CODE);
     storage.save();
   }
 
