@@ -19,8 +19,6 @@ public class SettingsStorage {
   }
 
   public void setMobileAuthenticationEnabled(final boolean isEnabled) {
-    sharedPreferences.edit().
-        putBoolean(KEY_MOBILE_AUTH, isEnabled)
-        .apply();
+    sharedPreferences.edit().putBoolean(KEY_MOBILE_AUTH, isEnabled).apply();
   }
 }
