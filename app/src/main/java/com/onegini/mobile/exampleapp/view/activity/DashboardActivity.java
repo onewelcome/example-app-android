@@ -121,6 +121,12 @@ public class DashboardActivity extends AppCompatActivity {
         .subscribe(this::onPersonFetched, throwable -> onPersonFetchFail());
   }
 
+  @SuppressWarnings("unused")
+  @OnClick(R.id.button_settings)
+  public void startSettingsActivity() {
+    startActivity(new Intent(this, SettingsActivity.class));
+  }
+
   private void onPersonFetchFail() {
     showToast("onPersonFetchFail");
   }

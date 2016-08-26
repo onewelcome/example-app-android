@@ -1,9 +1,10 @@
 package com.onegini.mobile.exampleapp.view.dialog;
 
+import java.util.Arrays;
+
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
-
 import com.onegini.mobile.android.sdk.handlers.OneginiPinValidationHandler;
 import com.onegini.mobile.android.sdk.handlers.error.OneginiPinValidationError;
 import com.onegini.mobile.android.sdk.handlers.request.OneginiCreatePinRequestHandler;
@@ -12,8 +13,6 @@ import com.onegini.mobile.android.sdk.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.activity.PinActivity;
-
-import java.util.Arrays;
 
 public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
 

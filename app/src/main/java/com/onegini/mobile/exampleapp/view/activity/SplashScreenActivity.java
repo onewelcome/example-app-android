@@ -37,7 +37,6 @@ public class SplashScreenActivity extends Activity {
 
       @Override
       public void onError(final OneginiInitializationError error) {
-        if (error.getErrorType() == OneginiInitializationError.OUTDATED_APP)
         Toast.makeText(SplashScreenActivity.this, error.getErrorDescription(), Toast.LENGTH_LONG).show();
       }
     });

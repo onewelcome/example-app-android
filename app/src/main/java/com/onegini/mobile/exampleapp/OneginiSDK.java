@@ -3,6 +3,8 @@ package com.onegini.mobile.exampleapp;
 import android.content.Context;
 import com.onegini.mobile.android.sdk.client.OneginiClient;
 import com.onegini.mobile.android.sdk.client.OneginiClientBuilder;
+import com.onegini.mobile.exampleapp.view.dialog.MobileAuthenticationPinRequestHandler;
+import com.onegini.mobile.exampleapp.view.dialog.MobileAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.dialog.CreatePinRequestHandler;
 import com.onegini.mobile.exampleapp.view.dialog.PinAuthenticationRequestHandler;
 
@@ -23,6 +25,8 @@ public class OneginiSDK {
 
     // will throw OneginiConfigNotFoundException if OneginiConfigModel class can't be found
     return new OneginiClientBuilder(applicationContext, createPinRequestHandler, pinAuthenticationRequestHandler)
+        .setMobileAuthenticationRequestHandler(new MobileAuthenticationRequestHandler(applicationContext))
+        .setMobileAuthenticationPinRequestHandler(new MobileAuthenticationPinRequestHandler(applicationContext))
         .build();
   }
 }

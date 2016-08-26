@@ -25,6 +25,7 @@ public class PinInputFields {
     this.pinLength = pinInputs.length;
 
     pin = new char[pinLength];
+    reset();
   }
 
   public void onPinDigitRemoved() {

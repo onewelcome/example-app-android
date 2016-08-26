@@ -34,7 +34,10 @@
 
         <Spinner
             android:id="@+id/users_spinner"
-            android:layout_margin="@dimen/activity_margin"
+            android:layout_marginBottom="@dimen/activity_margin"
+            android:layout_marginTop="@dimen/activity_margin"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
             android:visibility="invisible"
             android:layout_width="fill_parent"
             android:layout_below="@+id/label"
