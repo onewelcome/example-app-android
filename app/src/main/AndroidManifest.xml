@@ -4,7 +4,7 @@
     package="com.onegini.mobile.exampleapp">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    
+
     <permission
         android:name="com.onegini.mobile.exampleapp.permission.C2D_MESSAGE"
         android:protectionLevel="signature"/>
@@ -68,6 +68,7 @@
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <category android:name="com.onegini.mobile.exampleapp" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
             </intent-filter>
         </receiver>
 
