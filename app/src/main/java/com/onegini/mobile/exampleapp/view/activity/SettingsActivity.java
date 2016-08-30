@@ -122,18 +122,14 @@ public class SettingsActivity extends AppCompatActivity {
     OneginiSDK.getOneginiClient(this).getUserClient().changePin(new OneginiChangePinHandler() {
       @Override
       public void onSuccess() {
-        Toast.makeText(SettingsActivity.this, "onSuccess", Toast.LENGTH_LONG).show();
+        showToast("Change PIN finished successfully");
       }
 
       @Override
       public void onError(final OneginiChangePinError oneginiChangePinError) {
         @OneginiChangePinError.ChangePinErrorType int errorType = oneginiChangePinError.getErrorType();
-        if (errorType == OneginiError.ACTION_CANCELED) {
-          Toast.makeText(SettingsActivity.this, "User canceled change pin action", Toast.LENGTH_LONG).show();
-        } else if (errorType == OneginiError.USER_DEREGISTERED) {
+        if (errorType == OneginiError.USER_DEREGISTERED) {
           userDeregistered();
-        } else {
-          Toast.makeText(SettingsActivity.this, oneginiChangePinError.getErrorDescription(), Toast.LENGTH_LONG).show();
         }
       }
     });
