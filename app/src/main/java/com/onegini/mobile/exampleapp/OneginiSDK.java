@@ -1,8 +1,8 @@
 package com.onegini.mobile.exampleapp;
 
 import android.content.Context;
-import com.onegini.mobile.android.sdk.client.OneginiClient;
-import com.onegini.mobile.android.sdk.client.OneginiClientBuilder;
+import com.onegini.mobile.sdk.android.client.OneginiClient;
+import com.onegini.mobile.sdk.android.client.OneginiClientBuilder;
 import com.onegini.mobile.exampleapp.view.dialog.MobileAuthenticationPinRequestHandler;
 import com.onegini.mobile.exampleapp.view.dialog.MobileAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.dialog.CreatePinRequestHandler;

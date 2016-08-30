@@ -2,9 +2,9 @@ package com.onegini.mobile.exampleapp.view.dialog;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.android.sdk.handlers.request.OneginiPinAuthenticationRequestHandler;
-import com.onegini.mobile.android.sdk.handlers.request.callback.OneginiPinCallback;
-import com.onegini.mobile.android.sdk.model.entity.UserProfile;
+import com.onegini.mobile.sdk.android.handlers.request.OneginiPinAuthenticationRequestHandler;
+import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiPinCallback;
+import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
