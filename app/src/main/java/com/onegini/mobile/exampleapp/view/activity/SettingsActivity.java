@@ -1,5 +1,6 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -13,8 +14,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.onegini.mobile.android.sdk.handlers.OneginiChangePinHandler;
 import com.onegini.mobile.android.sdk.handlers.OneginiMobileAuthenticationEnrollmentHandler;
+import com.onegini.mobile.android.sdk.handlers.error.OneginiChangePinError;
+import com.onegini.mobile.android.sdk.handlers.error.OneginiError;
 import com.onegini.mobile.android.sdk.handlers.error.OneginiMobileAuthenticationEnrollmentError;
+import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.network.gcm.GCMRegistrationService;
 import com.onegini.mobile.exampleapp.storage.SettingsStorage;
@@ -27,6 +32,9 @@ public class SettingsActivity extends AppCompatActivity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.button_mobile_authentication)
   Button mobileAuthButton;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.button_change_pin)
+  Button changePinButton;
 
   private SettingsStorage settingsStorage;
 
@@ -106,6 +114,37 @@ public class SettingsActivity extends AppCompatActivity {
     };
     final GCMRegistrationService gcmRegistrationService = new GCMRegistrationService(this);
     gcmRegistrationService.registerGCMService(mobileAuthenticationEnrollmentHandler);
+  }
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.button_change_pin)
+  public void startChangePinFlow() {
+    OneginiSDK.getOneginiClient(this).getUserClient().changePin(new OneginiChangePinHandler() {
+      @Override
+      public void onSuccess() {
+        Toast.makeText(SettingsActivity.this, "onSuccess", Toast.LENGTH_LONG).show();
+      }
+
+      @Override
+      public void onError(final OneginiChangePinError oneginiChangePinError) {
+        @OneginiChangePinError.ChangePinErrorType int errorType = oneginiChangePinError.getErrorType();
+        if (errorType == OneginiError.ACTION_CANCELED) {
+          Toast.makeText(SettingsActivity.this, "User canceled change pin action", Toast.LENGTH_LONG).show();
+        } else if (errorType == OneginiError.USER_DEREGISTERED) {
+          userDeregistered();
+        } else {
+          Toast.makeText(SettingsActivity.this, oneginiChangePinError.getErrorDescription(), Toast.LENGTH_LONG).show();
+        }
+      }
+    });
+  }
+
+  private void userDeregistered() {
+    Intent intent = new Intent(this, LoginActivity.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+    startActivity(intent);
+    finish();
   }
 
   private void showToast(final String message) {
