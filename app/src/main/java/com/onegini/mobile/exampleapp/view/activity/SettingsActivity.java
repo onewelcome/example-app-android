@@ -14,15 +14,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.onegini.mobile.android.sdk.handlers.OneginiChangePinHandler;
-import com.onegini.mobile.android.sdk.handlers.OneginiMobileAuthenticationEnrollmentHandler;
-import com.onegini.mobile.android.sdk.handlers.error.OneginiChangePinError;
-import com.onegini.mobile.android.sdk.handlers.error.OneginiError;
-import com.onegini.mobile.android.sdk.handlers.error.OneginiMobileAuthenticationEnrollmentError;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.network.gcm.GCMRegistrationService;
 import com.onegini.mobile.exampleapp.storage.SettingsStorage;
+import com.onegini.mobile.sdk.android.handlers.OneginiChangePinHandler;
+import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationEnrollmentHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiChangePinError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationEnrollmentError;
 
 public class SettingsActivity extends AppCompatActivity {
 

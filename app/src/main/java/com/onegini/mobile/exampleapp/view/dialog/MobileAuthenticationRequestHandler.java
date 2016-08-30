@@ -4,9 +4,9 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.android.sdk.handlers.request.OneginiMobileAuthenticationRequestHandler;
-import com.onegini.mobile.android.sdk.handlers.request.callback.OneginiAcceptDenyCallback;
-import com.onegini.mobile.android.sdk.model.entity.OneginiMobileAuthenticationRequest;
+import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthenticationRequestHandler;
+import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiAcceptDenyCallback;
+import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationActivity;
 
 public class MobileAuthenticationRequestHandler implements OneginiMobileAuthenticationRequestHandler {
