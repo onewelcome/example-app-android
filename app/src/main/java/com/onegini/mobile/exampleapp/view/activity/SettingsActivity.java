@@ -122,7 +122,7 @@ public class SettingsActivity extends AppCompatActivity {
     OneginiSDK.getOneginiClient(this).getUserClient().changePin(new OneginiChangePinHandler() {
       @Override
       public void onSuccess() {
-        showToast("Change PIN finished successfully");
+        showToast("Change PIN action finished successfully");
       }
 
       @Override
@@ -138,7 +138,6 @@ public class SettingsActivity extends AppCompatActivity {
   private void userDeregistered() {
     Intent intent = new Intent(this, LoginActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
     startActivity(intent);
     finish();
   }
