@@ -14,10 +14,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.onegini.mobile.android.sdk.client.OneginiClient;
-import com.onegini.mobile.android.sdk.handlers.OneginiRegistrationHandler;
-import com.onegini.mobile.android.sdk.handlers.error.OneginiRegistrationError;
-import com.onegini.mobile.android.sdk.model.entity.UserProfile;
+import com.onegini.mobile.sdk.android.client.OneginiClient;
+import com.onegini.mobile.sdk.android.handlers.OneginiRegistrationHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiRegistrationError;
+import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
