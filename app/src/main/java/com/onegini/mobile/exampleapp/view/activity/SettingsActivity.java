@@ -66,10 +66,10 @@ public class SettingsActivity extends AppCompatActivity {
 
   private void setupView() {
     setupActionBar();
-    setupMobileAutheButton();
+    setupMobileAuthButton();
   }
 
-  private void setupMobileAutheButton() {
+  private void setupMobileAuthButton() {
     mobileAuthButton.setEnabled(false);
     mobileAuthButton.setText(R.string.settings_mobile_enrollment_not_available);
 
@@ -131,12 +131,13 @@ public class SettingsActivity extends AppCompatActivity {
         if (errorType == OneginiError.USER_DEREGISTERED) {
           userDeregistered();
         }
+        showToast(oneginiChangePinError.getErrorDescription());
       }
     });
   }
 
   private void userDeregistered() {
-    Intent intent = new Intent(this, LoginActivity.class);
+    final Intent intent = new Intent(this, LoginActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     startActivity(intent);
     finish();
