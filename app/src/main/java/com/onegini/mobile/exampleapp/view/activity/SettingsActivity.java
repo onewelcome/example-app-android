@@ -1,5 +1,6 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -13,11 +14,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationEnrollmentHandler;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationEnrollmentError;
+import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.network.gcm.GCMRegistrationService;
 import com.onegini.mobile.exampleapp.storage.SettingsStorage;
+import com.onegini.mobile.sdk.android.handlers.OneginiChangePinHandler;
+import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationEnrollmentHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiChangePinError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationEnrollmentError;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -27,6 +32,9 @@ public class SettingsActivity extends AppCompatActivity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.button_mobile_authentication)
   Button mobileAuthButton;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.button_change_pin)
+  Button changePinButton;
 
   private SettingsStorage settingsStorage;
 
@@ -58,10 +66,10 @@ public class SettingsActivity extends AppCompatActivity {
 
   private void setupView() {
     setupActionBar();
-    setupMobileAutheButton();
+    setupMobileAuthButton();
   }
 
-  private void setupMobileAutheButton() {
+  private void setupMobileAuthButton() {
     mobileAuthButton.setEnabled(false);
     mobileAuthButton.setText(R.string.settings_mobile_enrollment_not_available);
 
@@ -106,6 +114,33 @@ public class SettingsActivity extends AppCompatActivity {
     };
     final GCMRegistrationService gcmRegistrationService = new GCMRegistrationService(this);
     gcmRegistrationService.registerGCMService(mobileAuthenticationEnrollmentHandler);
+  }
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.button_change_pin)
+  public void startChangePinFlow() {
+    OneginiSDK.getOneginiClient(this).getUserClient().changePin(new OneginiChangePinHandler() {
+      @Override
+      public void onSuccess() {
+        showToast("Change PIN action finished successfully");
+      }
+
+      @Override
+      public void onError(final OneginiChangePinError oneginiChangePinError) {
+        @OneginiChangePinError.ChangePinErrorType int errorType = oneginiChangePinError.getErrorType();
+        if (errorType == OneginiError.USER_DEREGISTERED) {
+          userDeregistered();
+        }
+        showToast(oneginiChangePinError.getErrorDescription());
+      }
+    });
+  }
+
+  private void userDeregistered() {
+    final Intent intent = new Intent(this, LoginActivity.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    startActivity(intent);
+    finish();
   }
 
   private void showToast(final String message) {

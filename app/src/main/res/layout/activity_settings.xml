@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            android:text="@string/app_name"
+            android:text="@string/settings_title"
             android:textColor="@color/white"
             android:layout_gravity="center"
             android:id="@+id/toolbar_title"/>
@@ -43,18 +43,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Base.TextAppearance.AppCompat.Headline"
-                android:text="@string/settings_title"/>
             <Button
                 android:id="@+id/button_mobile_authentication"
                 style="@style/ButtonStyle"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="40dp"
                 android:text="@string/settings_mobile_enrollment_off"/>
+            <Button
+                android:id="@+id/button_change_pin"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="40dp"
+                android:text="@string/settings_change_pin"/>
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>
