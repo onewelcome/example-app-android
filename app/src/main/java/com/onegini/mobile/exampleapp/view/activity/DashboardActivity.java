@@ -10,18 +10,18 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.onegini.mobile.exampleapp.OneginiSDK;
+import com.onegini.mobile.exampleapp.R;
+import com.onegini.mobile.exampleapp.model.User;
+import com.onegini.mobile.exampleapp.network.DevicesService;
+import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
+import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeregisterUserProfileHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiLogoutHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiDeregistrationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiLogoutError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
-import com.onegini.mobile.exampleapp.OneginiSDK;
-import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.model.Profile;
-import com.onegini.mobile.exampleapp.model.User;
-import com.onegini.mobile.exampleapp.network.PersonService;
-import com.onegini.mobile.exampleapp.storage.UserStorage;
 import rx.Subscription;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -116,8 +116,8 @@ public class DashboardActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_get_user_profile)
   public void getUserProfileData() {
-    subscription = PersonService.getInstance(this)
-        .getPerson()
+    subscription = DevicesService.getInstance(this)
+        .getDevices()
         .subscribe(this::onPersonFetched, throwable -> onPersonFetchFail());
   }
 
@@ -131,8 +131,8 @@ public class DashboardActivity extends AppCompatActivity {
     showToast("onPersonFetchFail");
   }
 
-  private void onPersonFetched(final Profile profile) {
-    userInfoTextView.setText(profile.getPersonFullInfo());
+  private void onPersonFetched(final DevicesResponse devices) {
+    userInfoTextView.setText(devices.getDevices().get(0).getDeviceFullInfo());
   }
 
   private void showToast(final String message) {
