@@ -9,9 +9,9 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   private final String appPlatform = "android";
   private final String redirectionUri = "oneginiexample://loginsuccess";
   private final String appVersion = "1.0.0";
-  private final String baseURL = "https://onegini-msp-snapshot.test.onegini.io";
-  private final String resourceBaseURL = "https://onegini-msp-snapshot.test.onegini.io";
-  private final String keystoreHash = "8a70d8c81261da12ecebbb7f227dfc937a374a8a0cfb30c662d333837ef667e0";
+  private final String baseURL = "https://demo-msp.onegini.com";
+  private final String resourceBaseURL = "https://demo-msp.onegini.com/resources";
+  private final String keystoreHash = "910638c3e6c17ec9ab2a74969abab06b34470d29c21d8ad8a65af243a1ccb69f";
   private final int maxPinFailures = 3;
 
   @Override
