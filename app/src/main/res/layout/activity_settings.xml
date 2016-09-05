@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="@color/dashboard_background"
+    android:background="@color/background_for_activity_with_card_views"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar

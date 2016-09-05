@@ -38,7 +38,7 @@ public class Device {
   }
 
   public String getDeviceFullInfo() {
-    return "ID: " + getId() + Constants.NEW_LINE + getName() + Constants.NEW_LINE + getApplication() + Constants.NEW_LINE + getPlatform() + Constants.NEW_LINE
+    return getName() + Constants.NEW_LINE + getApplication() + Constants.NEW_LINE + getPlatform() + Constants.NEW_LINE
         + "Mobile authentication enabled: " + isMobileAuthenticationEnabled();
   }
 }

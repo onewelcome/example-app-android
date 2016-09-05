@@ -13,8 +13,6 @@ import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
-import com.onegini.mobile.exampleapp.network.DevicesService;
-import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeregisterUserProfileHandler;
@@ -22,7 +20,6 @@ import com.onegini.mobile.sdk.android.handlers.OneginiLogoutHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiDeregistrationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiLogoutError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
-import rx.Subscription;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -30,13 +27,9 @@ public class DashboardActivity extends AppCompatActivity {
   @Bind(R.id.toolbar)
   Toolbar toolbar;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.tv_user_profile_info)
-  TextView userInfoTextView;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.dashboard_welcome_text)
   TextView dashboardWelcomeText;
 
-  private Subscription subscription;
   private UserStorage userStorage;
 
   @Override
@@ -114,11 +107,9 @@ public class DashboardActivity extends AppCompatActivity {
   }
 
   @SuppressWarnings("unused")
-  @OnClick(R.id.button_get_user_profile)
-  public void getUserProfileData() {
-    subscription = DevicesService.getInstance(this)
-        .getDevices()
-        .subscribe(this::onPersonFetched, throwable -> onPersonFetchFail());
+  @OnClick(R.id.button_your_devices)
+  public void startDevicesActivity() {
+    startActivity(new Intent(this, DevicesListActivity.class));
   }
 
   @SuppressWarnings("unused")
@@ -127,13 +118,6 @@ public class DashboardActivity extends AppCompatActivity {
     startActivity(new Intent(this, SettingsActivity.class));
   }
 
-  private void onPersonFetchFail() {
-    showToast("onPersonFetchFail");
-  }
-
-  private void onPersonFetched(final DevicesResponse devices) {
-    userInfoTextView.setText(devices.getDevices().get(0).getDeviceFullInfo());
-  }
 
   private void showToast(final String message) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -160,14 +144,6 @@ public class DashboardActivity extends AppCompatActivity {
       actionBar.setDisplayUseLogoEnabled(true);
       actionBar.setDisplayShowTitleEnabled(false);
     }
-  }
-
-  @Override
-  public void onDestroy() {
-    if (subscription != null) {
-      subscription.unsubscribe();
-    }
-    super.onDestroy();
   }
 
   private void onUserDeregistered(final UserProfile userProfile) {

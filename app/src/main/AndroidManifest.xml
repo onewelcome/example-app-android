@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.onegini.mobile.exampleapp">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.onegini.mobile.exampleapp">
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <permission
         android:name="com.onegini.mobile.exampleapp.permission.C2D_MESSAGE"
@@ -18,12 +17,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".view.activity.SplashScreenActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -38,8 +37,10 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
+
                 <data android:scheme="oneginiexample"/>
             </intent-filter>
         </activity>
@@ -51,31 +52,39 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.SettingsActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".view.activity.DashboardActivity"/>
+            android:parentActivityName=".view.activity.DashboardActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.MobileAuthenticationActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.MobileAuthenticationPinActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.DevicesListActivity"
+            android:parentActivityName=".view.activity.DashboardActivity"
+            android:screenOrientation="portrait"/>
 
         <receiver
             android:name=".network.gcm.GCMBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.onegini.mobile.exampleapp" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+
+                <category android:name="com.onegini.mobile.exampleapp"/>
+
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
             </intent-filter>
         </receiver>
 
-        <service android:name=".network.gcm.GCMIntentService" />
+        <service android:name=".network.gcm.GCMIntentService"/>
 
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            android:value="@integer/google_play_services_version"/>
+
     </application>
+
 </manifest>
