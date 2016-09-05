@@ -23,4 +23,15 @@ public class SecuredClient {
         .build();
     return restAdapter.create(clazz);
   }
+
+  public static <T> T prepareSecuredAnonymousClient(final Class<T> clazz, final Context context) {
+    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
+    final RestAdapter restAdapter = new RestAdapter.Builder()
+        .setClient(oneginiClient.getDeviceClient().getAnonymousResourceRetrofitClient())
+        .setEndpoint(oneginiClient.getConfigModel().getResourceBaseUrl())
+        .setLogLevel(LOG_LEVEL)
+        .setConverter(gsonConverter)
+        .build();
+    return restAdapter.create(clazz);
+  }
 }
