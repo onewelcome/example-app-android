@@ -6,14 +6,13 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.onegini.mobile.sdk.android.client.UserClient;
-import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationEnrollmentHandler;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationEnrollmentError;
 import com.onegini.mobile.exampleapp.BuildConfig;
 import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.storage.GCMStorage;
+import com.onegini.mobile.sdk.android.client.UserClient;
+import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationEnrollmentHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationEnrollmentError;
 
 public class GCMRegistrationService {
 
@@ -76,7 +75,7 @@ public class GCMRegistrationService {
           enrollForMobileAuthentication(regid);
           storeRegisteredId(regid);
         } catch (final IOException ex) {
-          enrollmentHandler.onError(new OneginiMobileAuthenticationEnrollmentError(OneginiError.GENERAL_ERROR, "Unable to register in GCM"));
+          enrollmentHandler.onError(new OneginiMobileAuthenticationEnrollmentError(OneginiMobileAuthenticationEnrollmentError.GENERAL_ERROR, "Unable to register in GCM"));
         }
         return null;
       }
