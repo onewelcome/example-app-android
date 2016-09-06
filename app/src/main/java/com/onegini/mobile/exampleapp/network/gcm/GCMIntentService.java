@@ -75,6 +75,8 @@ public class GCMIntentService extends IntentService {
         Toast.makeText(GCMIntentService.this, oneginiMobileAuthenticationError.getErrorDescription(), Toast.LENGTH_SHORT).show();
         if (oneginiMobileAuthenticationError.getErrorType() == OneginiMobileAuthenticationError.USER_DEREGISTERED) {
           new SettingsStorage(GCMIntentService.this).setMobileAuthenticationEnabled(false);
+        } else if (oneginiMobileAuthenticationError.getErrorType() == OneginiMobileAuthenticationError.ACTION_CANCELED) {
+          // the user denied incoming mobile authentication request
         }
       }
     });
