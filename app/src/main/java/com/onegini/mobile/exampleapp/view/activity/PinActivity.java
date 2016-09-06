@@ -11,8 +11,8 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.view.dialog.CreatePinRequestHandler;
-import com.onegini.mobile.exampleapp.view.dialog.PinAuthenticationRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.PinAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.helper.PinInputFields;
 import com.onegini.mobile.exampleapp.view.helper.PinKeyboard;
 
