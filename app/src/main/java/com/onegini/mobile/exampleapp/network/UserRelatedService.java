@@ -7,20 +7,20 @@ import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class DevicesService {
+public class UserRelatedService {
 
-  private static DevicesService instance;
+  private static UserRelatedService instance;
 
-  public static DevicesService getInstance(final Context context) {
+  public static UserRelatedService getInstance(final Context context) {
     if (instance == null) {
-      instance = new DevicesService(context);
+      instance = new UserRelatedService(context);
     }
     return instance;
   }
 
   private final UserRelatedClient userRelatedClient;
 
-  private DevicesService(final Context context) {
+  private UserRelatedService(final Context context) {
     userRelatedClient = SecuredResourceGatewayClient.prepareSecuredClient(UserRelatedClient.class, context);
   }
 

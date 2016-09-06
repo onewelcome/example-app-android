@@ -7,20 +7,20 @@ import com.onegini.mobile.exampleapp.network.client.SecuredResourceGatewayClient
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class ApplicationDetailsService {
+public class DeviceRelatedAnonymousService {
 
-  private static ApplicationDetailsService instance;
+  private static DeviceRelatedAnonymousService instance;
 
-  public static ApplicationDetailsService getInstance(final Context context) {
+  public static DeviceRelatedAnonymousService getInstance(final Context context) {
     if (instance == null) {
-      instance = new ApplicationDetailsService(context);
+      instance = new DeviceRelatedAnonymousService(context);
     }
     return instance;
   }
 
   private final DeviceRelatedAnonymousClient applicationDetailsClient;
 
-  private ApplicationDetailsService(final Context context) {
+  private DeviceRelatedAnonymousService(final Context context) {
     applicationDetailsClient = SecuredResourceGatewayClient.prepareSecuredAnonymousClient(DeviceRelatedAnonymousClient.class, context);
   }
 
