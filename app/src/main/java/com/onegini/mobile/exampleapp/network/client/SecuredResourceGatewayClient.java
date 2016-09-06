@@ -7,7 +7,7 @@ import com.onegini.mobile.exampleapp.OneginiSDK;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
-public class SecuredClient {
+public class SecuredResourceGatewayClient {
 
   private static final RestAdapter.LogLevel LOG_LEVEL = RestAdapter.LogLevel.FULL;
 

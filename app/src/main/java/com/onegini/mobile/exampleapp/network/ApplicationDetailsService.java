@@ -2,8 +2,8 @@ package com.onegini.mobile.exampleapp.network;
 
 import android.content.Context;
 import com.onegini.mobile.exampleapp.model.ApplicationDetails;
-import com.onegini.mobile.exampleapp.network.client.ApplicationDetailsClient;
-import com.onegini.mobile.exampleapp.network.client.SecuredClient;
+import com.onegini.mobile.exampleapp.network.client.DeviceRelatedAnonymousClient;
+import com.onegini.mobile.exampleapp.network.client.SecuredResourceGatewayClient;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -18,10 +18,10 @@ public class ApplicationDetailsService {
     return instance;
   }
 
-  private final ApplicationDetailsClient applicationDetailsClient;
+  private final DeviceRelatedAnonymousClient applicationDetailsClient;
 
   private ApplicationDetailsService(final Context context) {
-    applicationDetailsClient = SecuredClient.prepareSecuredAnonymousClient(ApplicationDetailsClient.class, context);
+    applicationDetailsClient = SecuredResourceGatewayClient.prepareSecuredAnonymousClient(DeviceRelatedAnonymousClient.class, context);
   }
 
   public Observable<ApplicationDetails> getApplicationDetails() {
