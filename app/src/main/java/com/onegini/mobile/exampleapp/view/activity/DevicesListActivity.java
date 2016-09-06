@@ -15,9 +15,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.adapter.DevicesAdapter;
-import com.onegini.mobile.exampleapp.model.ApplicationDetails;
 import com.onegini.mobile.exampleapp.model.Device;
-import com.onegini.mobile.exampleapp.network.ApplicationDetailsService;
+import com.onegini.mobile.exampleapp.network.DevicesService;
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
 import rx.Subscription;
 
@@ -46,20 +45,9 @@ public class DevicesListActivity extends AppCompatActivity {
   }
 
   private void fetchUserDevices() {
-//    subscription = DevicesService.getInstance(this)
-//        .getDevices()
-//        .subscribe(this::onDevicesFetched, throwable -> onDevicesFetchFailed(), this::onFetchComplete);
-    subscription = ApplicationDetailsService.getInstance(this)
-        .getApplicationDetails()
-        .subscribe(this::onApplicationDetailsFetched, throwable -> onApplicationDetailsFetchFailed(), this::onFetchComplete);
-  }
-
-  private void onApplicationDetailsFetched(final ApplicationDetails applicationDetails) {
-
-  }
-
-  private void onApplicationDetailsFetchFailed() {
-
+    subscription = DevicesService.getInstance(this)
+        .getDevices()
+        .subscribe(this::onDevicesFetched, throwable -> onDevicesFetchFailed(), this::onFetchComplete);
   }
 
   private void onDevicesFetched(final DevicesResponse devicesResponse) {

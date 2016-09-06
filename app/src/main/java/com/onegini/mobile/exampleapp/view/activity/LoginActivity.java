@@ -18,13 +18,18 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
-import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
+import com.onegini.mobile.exampleapp.model.ApplicationDetails;
 import com.onegini.mobile.exampleapp.model.User;
+import com.onegini.mobile.exampleapp.network.ApplicationDetailsService;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
+import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiDeviceAuthenticationError;
+import com.onegini.mobile.sdk.android.internal.handlers.OneginiDeviceAuthenticationHandler;
+import com.onegini.mobile.sdk.android.model.entity.UserProfile;
+import rx.Subscription;
 
 public class LoginActivity extends Activity {
 
@@ -46,16 +51,51 @@ public class LoginActivity extends Activity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.layout_login_content)
   RelativeLayout layoutLoginContent;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.application_details)
+  TextView applicationDetailsTextView;
 
   private List<User> listOfUsers = new ArrayList<>();
   private UserStorage userStorage;
   private boolean userIsLoggingIn = false;
+  private Subscription subscription;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
     ButterKnife.bind(this);
+
+    authenticateDevice();
+  }
+
+  private void authenticateDevice() {
+    OneginiSDK.getOneginiClient(this).getDeviceClient()
+        .authenticateDevice(new String[]{ "application_details" }, new OneginiDeviceAuthenticationHandler() {
+          @Override
+          public void onSuccess() {
+            callAnonymousResourceCallToFetchApplicationDetails();
+          }
+
+          @Override
+          public void onError(final OneginiDeviceAuthenticationError oneginiDeviceAuthenticationError) {
+
+          }
+        });
+  }
+
+  private void callAnonymousResourceCallToFetchApplicationDetails() {
+    subscription = ApplicationDetailsService.getInstance(this)
+        .getApplicationDetails()
+        .subscribe(this::onApplicationDetailsFetched, throwable -> onApplicationDetailsFetchFailed());
+  }
+
+  private void onApplicationDetailsFetched(final ApplicationDetails applicationDetails) {
+    applicationDetailsTextView.setText(applicationDetails.getApplicationDetailsCombined());
+  }
+
+  private void onApplicationDetailsFetchFailed() {
+    applicationDetailsTextView.setText("Application details fetch failed");
   }
 
   @Override
@@ -166,5 +206,13 @@ public class LoginActivity extends Activity {
   private void startDashboardActivity() {
     startActivity(new Intent(this, DashboardActivity.class));
     finish();
+  }
+
+  @Override
+  public void onDestroy() {
+    if (subscription != null) {
+      subscription.unsubscribe();
+    }
+    super.onDestroy();
   }
 }

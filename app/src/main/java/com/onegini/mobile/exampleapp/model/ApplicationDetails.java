@@ -25,7 +25,7 @@ public class ApplicationDetails {
     return applicationVersion;
   }
 
-  public String getApplicationDetails() {
+  public String getApplicationDetailsCombined() {
     return getApplicationIdentifier() + Constants.NEW_LINE + getApplicationPlatform() + Constants.NEW_LINE + getApplicationVersion();
   }
 }
