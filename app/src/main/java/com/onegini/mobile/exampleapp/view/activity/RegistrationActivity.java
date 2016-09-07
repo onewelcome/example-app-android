@@ -103,6 +103,7 @@ public class RegistrationActivity extends Activity {
         showToast("Registration was cancelled");
         break;
       case OneginiRegistrationError.NETWORK_CONNECTIVITY_PROBLEM:
+      case OneginiRegistrationError.SERVER_NOT_REACHABLE:
         showToast("No internet connection.");
         break;
       case OneginiRegistrationError.OUTDATED_APP:
