@@ -6,8 +6,8 @@ import java.util.Set;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.model.User;
+import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class UserStorage {
   private static final String PREFS_NAME = "user_storage";
@@ -43,5 +43,9 @@ public class UserStorage {
     }
 
     return listOfUsers;
+  }
+
+  public void clearStorage() {
+    sharedPreferences.edit().clear().apply();
   }
 }

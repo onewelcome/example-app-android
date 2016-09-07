@@ -25,9 +25,9 @@ import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.network.DeviceRelatedAnonymousService;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
+import com.onegini.mobile.sdk.android.handlers.OneginiDeviceAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiDeviceAuthenticationError;
-import com.onegini.mobile.sdk.android.handlers.OneginiDeviceAuthenticationHandler;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 import rx.Subscription;
 
@@ -160,22 +160,64 @@ public class LoginActivity extends Activity {
       public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
         userIsLoggingIn = false;
         setProgressbarVisibility(true);
-
-        if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.SERVER_NOT_REACHABLE) {
-          showToast("Server not reachable");
-        } else if (oneginiAuthenticationError.getErrorType() == OneginiAuthenticationError.USER_DEREGISTERED) {
-          onUserDeregistered(userProfile);
-        } else {
-          showToast("Login error: " + oneginiAuthenticationError.getErrorDescription());
-        }
+        handleAuthenticationErrors(oneginiAuthenticationError, userProfile);
       }
     });
+  }
+
+  private void handleAuthenticationErrors(final OneginiAuthenticationError oneginiAuthenticationError, final UserProfile userProfile) {
+    int errorType = oneginiAuthenticationError.getErrorType();
+    switch (errorType) {
+      case OneginiAuthenticationError.ACTION_CANCELED:
+        showToast("Authentication was cancelled");
+        break;
+      case OneginiAuthenticationError.NETWORK_CONNECTIVITY_PROBLEM:
+      case OneginiAuthenticationError.SERVER_NOT_REACHABLE:
+        showToast("No internet connection.");
+        break;
+      case OneginiAuthenticationError.OUTDATED_APP:
+        showToast("Please update this application in order to use it.");
+        break;
+      case OneginiAuthenticationError.OUTDATED_OS:
+        showToast("Please update your Android version to use this application.");
+        break;
+      case OneginiAuthenticationError.USER_DEREGISTERED:
+        onUserDeregistered(userProfile);
+        break;
+      case OneginiAuthenticationError.DEVICE_DEREGISTERED:
+        onDeviceDeregistered();
+        break;
+      case OneginiAuthenticationError.GENERAL_ERROR:
+      default:
+        // General error handling for other, less relevant errors
+        handleGeneralError(oneginiAuthenticationError);
+        break;
+    }
   }
 
   private void onUserDeregistered(final UserProfile userProfile) {
     userStorage.removeUser(userProfile);
     showToast("User deregistered");
     setupUserInterface();
+  }
+
+  private void onDeviceDeregistered() {
+    userStorage.clearStorage();
+    showToast("Device deregistered");
+    setupUserInterface();
+  }
+
+  private void handleGeneralError(final OneginiAuthenticationError error) {
+    final StringBuilder stringBuilder = new StringBuilder("General error: ");
+    stringBuilder.append(error.getErrorDescription());
+
+    final Exception exception = error.getException();
+    if (exception != null) {
+      stringBuilder.append(" Check logcat for more details.");
+      exception.printStackTrace();
+    }
+
+    showToast(stringBuilder.toString());
   }
 
   private boolean isRegisteredAtLeastOneUser() {
