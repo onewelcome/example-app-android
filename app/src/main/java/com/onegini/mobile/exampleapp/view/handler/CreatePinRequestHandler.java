@@ -1,4 +1,4 @@
-package com.onegini.mobile.exampleapp.view.dialog;
+package com.onegini.mobile.exampleapp.view.handler;
 
 import java.util.Arrays;
 

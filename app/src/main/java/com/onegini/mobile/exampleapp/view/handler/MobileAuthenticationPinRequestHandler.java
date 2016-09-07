@@ -1,4 +1,4 @@
-package com.onegini.mobile.exampleapp.view.dialog;
+package com.onegini.mobile.exampleapp.view.handler;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthenticationPinRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiPinCallback;
+import com.onegini.mobile.sdk.android.model.entity.AuthenticationAttemptCounter;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationPinActivity;
 
@@ -25,7 +26,7 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthe
   }
 
   @Override
-  public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest, final OneginiPinCallback oneginiPinCallback) {
+  public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest, final OneginiPinCallback oneginiPinCallback, final AuthenticationAttemptCounter attemptCounter) {
     CALLBACK = oneginiPinCallback;
     message = oneginiMobileAuthenticationRequest.getMessage();
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
@@ -34,9 +35,9 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthe
   }
 
   @Override
-  public void onNextAuthenticationAttempt(final int failedAttemptsCount, final int maxAttemptsCount) {
-    this.failedAttemptsCount = failedAttemptsCount;
-    this.maxAttemptsCount = maxAttemptsCount;
+  public void onNextAuthenticationAttempt(final AuthenticationAttemptCounter attemptCounter) {
+    this.failedAttemptsCount = attemptCounter.getFailedAttempts();
+    this.maxAttemptsCount = attemptCounter.getMaxAttempts();
     startActivity();
   }
 

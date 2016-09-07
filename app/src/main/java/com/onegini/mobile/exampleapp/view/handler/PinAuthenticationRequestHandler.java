@@ -1,9 +1,10 @@
-package com.onegini.mobile.exampleapp.view.dialog;
+package com.onegini.mobile.exampleapp.view.handler;
 
 import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiPinAuthenticationRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiPinCallback;
+import com.onegini.mobile.sdk.android.model.entity.AuthenticationAttemptCounter;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
@@ -23,7 +24,7 @@ public class PinAuthenticationRequestHandler implements OneginiPinAuthentication
   }
 
   @Override
-  public void startAuthentication(final UserProfile userProfile, final OneginiPinCallback oneginiPinCallback) {
+  public void startAuthentication(final UserProfile userProfile, final OneginiPinCallback oneginiPinCallback, final AuthenticationAttemptCounter attemptCounter) {
     PinAuthenticationRequestHandler.userProfile = userProfile;
     PinAuthenticationRequestHandler.oneginiPinCallback = oneginiPinCallback;
 
@@ -32,8 +33,8 @@ public class PinAuthenticationRequestHandler implements OneginiPinAuthentication
   }
 
   @Override
-  public void onNextAuthenticationAttempt(int failedAttemptsCount, int maxAttemptsCount) {
-    PinActivity.setRemainingFailedAttempts(maxAttemptsCount - failedAttemptsCount);
+  public void onNextAuthenticationAttempt(final AuthenticationAttemptCounter attemptCounter) {
+    PinActivity.setRemainingFailedAttempts(attemptCounter.getRemainingAttempts());
     startPinActivity(userProfile);
   }
 

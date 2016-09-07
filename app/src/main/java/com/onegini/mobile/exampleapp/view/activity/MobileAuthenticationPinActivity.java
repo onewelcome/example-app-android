@@ -14,7 +14,7 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
-import com.onegini.mobile.exampleapp.view.dialog.MobileAuthenticationPinRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequestHandler;
 import com.onegini.mobile.exampleapp.view.helper.PinInputFields;
 import com.onegini.mobile.exampleapp.view.helper.PinKeyboard;
 

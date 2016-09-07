@@ -21,7 +21,6 @@ import com.onegini.mobile.exampleapp.storage.SettingsStorage;
 import com.onegini.mobile.sdk.android.handlers.OneginiChangePinHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationEnrollmentHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiChangePinError;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationEnrollmentError;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -128,7 +127,7 @@ public class SettingsActivity extends AppCompatActivity {
       @Override
       public void onError(final OneginiChangePinError oneginiChangePinError) {
         @OneginiChangePinError.ChangePinErrorType int errorType = oneginiChangePinError.getErrorType();
-        if (errorType == OneginiError.USER_DEREGISTERED) {
+        if (errorType == OneginiChangePinError.USER_DEREGISTERED) {
           userDeregistered();
         }
         showToast(oneginiChangePinError.getErrorDescription());
