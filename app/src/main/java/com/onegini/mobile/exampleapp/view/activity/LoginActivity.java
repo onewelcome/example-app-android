@@ -27,7 +27,7 @@ import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiDeviceAuthenticationError;
-import com.onegini.mobile.sdk.android.internal.handlers.OneginiDeviceAuthenticationHandler;
+import com.onegini.mobile.sdk.android.handlers.OneginiDeviceAuthenticationHandler;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 import rx.Subscription;
 
@@ -71,7 +71,7 @@ public class LoginActivity extends Activity {
 
   private void authenticateDevice() {
     OneginiSDK.getOneginiClient(this).getDeviceClient()
-        .authenticateDevice(new String[]{ "application_details" }, new OneginiDeviceAuthenticationHandler() {
+        .authenticateDevice(new String[]{ "application-details" }, new OneginiDeviceAuthenticationHandler() {
           @Override
           public void onSuccess() {
             callAnonymousResourceCallToFetchApplicationDetails();
