@@ -22,7 +22,7 @@ import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.ApplicationDetails;
 import com.onegini.mobile.exampleapp.model.User;
-import com.onegini.mobile.exampleapp.network.DeviceRelatedAnonymousService;
+import com.onegini.mobile.exampleapp.network.AnonymousService;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeviceAuthenticationHandler;
@@ -85,7 +85,7 @@ public class LoginActivity extends Activity {
   }
 
   private void callAnonymousResourceCallToFetchApplicationDetails() {
-    subscription = DeviceRelatedAnonymousService.getInstance(this)
+    subscription = AnonymousService.getInstance(this)
         .getApplicationDetails()
         .subscribe(this::onApplicationDetailsFetched, throwable -> onApplicationDetailsFetchFailed());
   }

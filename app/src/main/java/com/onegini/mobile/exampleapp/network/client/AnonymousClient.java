@@ -4,7 +4,7 @@ import com.onegini.mobile.exampleapp.model.ApplicationDetails;
 import retrofit.http.GET;
 import rx.Observable;
 
-public interface DeviceRelatedAnonymousClient {
+public interface AnonymousClient {
 
   @GET("/application-details")
   Observable<ApplicationDetails> getApplicationDetails();

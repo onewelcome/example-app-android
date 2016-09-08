@@ -4,7 +4,7 @@ import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
 import retrofit.http.GET;
 import rx.Observable;
 
-public interface UserRelatedClient {
+public interface UserClient {
 
   @GET("/devices")
   Observable<DevicesResponse> getDevices();

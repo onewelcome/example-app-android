@@ -7,13 +7,13 @@ import com.onegini.mobile.exampleapp.OneginiSDK;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
-public class SecuredResourceGatewayClient {
+public class SecureResourceClient {
 
   private static final RestAdapter.LogLevel LOG_LEVEL = RestAdapter.LogLevel.FULL;
 
   private static final GsonConverter gsonConverter = new GsonConverter(new GsonBuilder().disableHtmlEscaping().create());
 
-  public static <T> T prepareSecuredClient(final Class<T> clazz, final Context context) {
+  public static <T> T prepareSecuredUserClient(final Class<T> clazz, final Context context) {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
     final RestAdapter restAdapter = new RestAdapter.Builder()
         .setClient(oneginiClient.getUserClient().getResourceRetrofitClient())
