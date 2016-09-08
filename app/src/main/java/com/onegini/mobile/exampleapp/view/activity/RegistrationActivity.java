@@ -13,20 +13,18 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.onegini.mobile.sdk.android.client.OneginiClient;
-import com.onegini.mobile.sdk.android.handlers.OneginiRegistrationHandler;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiRegistrationError;
-import com.onegini.mobile.sdk.android.model.entity.UserProfile;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import com.onegini.mobile.sdk.android.client.OneginiClient;
+import com.onegini.mobile.sdk.android.handlers.OneginiRegistrationHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiRegistrationError;
+import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class RegistrationActivity extends Activity {
 
@@ -105,10 +103,14 @@ public class RegistrationActivity extends Activity {
         showToast("Registration was cancelled");
         break;
       case OneginiRegistrationError.NETWORK_CONNECTIVITY_PROBLEM:
+      case OneginiRegistrationError.SERVER_NOT_REACHABLE:
         showToast("No internet connection.");
         break;
       case OneginiRegistrationError.OUTDATED_APP:
-        showToast("Please update application in order to use.");
+        showToast("Please update this application in order to use it.");
+        break;
+      case OneginiRegistrationError.OUTDATED_OS:
+        showToast("Please update your Android version to use this application.");
         break;
       case OneginiRegistrationError.GENERAL_ERROR:
       default:

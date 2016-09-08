@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="@color/dashboard_background"
+    android:background="@color/background_for_activity_with_card_views"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -50,19 +50,11 @@
                     style="@style/Base.TextAppearance.AppCompat.Headline"
                     android:text="@string/welcome_user_text"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/tv_user_profile_info"
-                    android:layout_gravity="center_horizontal"
-                    android:lines="3"
-                    android:layout_marginTop="20dp"/>
                 <Button
-                    android:id="@+id/button_get_user_profile"
+                    android:id="@+id/button_your_devices"
                     style="@style/ButtonStyle"
-                    android:text="@string/btn_get_user_profile_data_label"
-                    android:layout_marginTop="20dp"/>
+                    android:text="@string/btn_your_devices"
+                    android:layout_marginTop="32dp"/>
                 <Button
                     android:id="@+id/button_settings"
                     style="@style/ButtonStyle"
@@ -77,7 +69,7 @@
                     android:id="@+id/button_deregister_user"
                     style="@style/ButtonStyle"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="40dp"
+                    android:layout_marginBottom="32dp"
                     android:text="@string/btn_deregister_user_label"/>
             </LinearLayout>
         </ScrollView>

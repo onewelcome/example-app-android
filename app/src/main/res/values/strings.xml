@@ -14,7 +14,7 @@
     <string name="pin_title_enter_pin">Enter PIN</string>
     <string name="btn_logout_label">Logout</string>
     <string name="btn_deregister_user_label">Deregister user</string>
-    <string name="btn_get_user_profile_data_label">Get User Profile</string>
+    <string name="btn_your_devices">Your devices</string>
     <string name="confirm">Confirm</string>
     <string name="name_edit_text_label">Please enter your name</string>
     <string name="name_edit_text_hint">Name</string>
@@ -28,4 +28,5 @@
     <string name="btn_push_accept">Accept</string>
     <string name="btn_push_deny">Deny</string>
     <string name="settings_change_pin">Change PIN</string>
+    <string name="toolbar_name_devices_activity">Devices</string>
 </resources>
