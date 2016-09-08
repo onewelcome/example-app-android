@@ -28,6 +28,7 @@ import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeviceAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiDeviceAuthenticationError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 import rx.Subscription;
 
@@ -78,8 +79,8 @@ public class LoginActivity extends Activity {
           }
 
           @Override
-          public void onError(final OneginiDeviceAuthenticationError oneginiDeviceAuthenticationError) {
-
+          public void onError(final OneginiDeviceAuthenticationError error) {
+            displayError(error);
           }
         });
   }
@@ -165,8 +166,8 @@ public class LoginActivity extends Activity {
     });
   }
 
-  private void handleAuthenticationErrors(final OneginiAuthenticationError oneginiAuthenticationError, final UserProfile userProfile) {
-    int errorType = oneginiAuthenticationError.getErrorType();
+  private void handleAuthenticationErrors(final OneginiAuthenticationError error, final UserProfile userProfile) {
+    int errorType = error.getErrorType();
     switch (errorType) {
       case OneginiAuthenticationError.ACTION_CANCELED:
         showToast("Authentication was cancelled");
@@ -189,8 +190,8 @@ public class LoginActivity extends Activity {
         break;
       case OneginiAuthenticationError.GENERAL_ERROR:
       default:
-        // General error handling for other, less relevant errors
-        handleGeneralError(oneginiAuthenticationError);
+        // Just display the error for other, less relevant errors
+        displayError(error);
         break;
     }
   }
@@ -207,8 +208,8 @@ public class LoginActivity extends Activity {
     setupUserInterface();
   }
 
-  private void handleGeneralError(final OneginiAuthenticationError error) {
-    final StringBuilder stringBuilder = new StringBuilder("General error: ");
+  private void displayError(final OneginiError error) {
+    final StringBuilder stringBuilder = new StringBuilder("Error: ");
     stringBuilder.append(error.getErrorDescription());
 
     final Exception exception = error.getException();

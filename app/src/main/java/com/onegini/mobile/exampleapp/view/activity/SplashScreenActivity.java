@@ -11,6 +11,7 @@ import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiInitializationError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
@@ -64,8 +65,8 @@ public class SplashScreenActivity extends Activity {
         break;
       case OneginiInitializationError.GENERAL_ERROR:
       default:
-        // General error handling for other, less relevant errors
-        handleGeneralError(error);
+        // Just display the error for other, less relevant errors
+        displayError(error);
         break;
     }
   }
@@ -75,9 +76,8 @@ public class SplashScreenActivity extends Activity {
     showToast("Device deregistered");
   }
 
-
-  private void handleGeneralError(final OneginiInitializationError error) {
-    final StringBuilder stringBuilder = new StringBuilder("General error: ");
+  private void displayError(final OneginiError error) {
+    final StringBuilder stringBuilder = new StringBuilder("Error: ");
     stringBuilder.append(error.getErrorDescription());
 
     final Exception exception = error.getException();
