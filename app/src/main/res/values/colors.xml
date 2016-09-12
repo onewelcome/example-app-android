@@ -8,4 +8,6 @@
     <color name="blue">#008FCE</color>
     <color name="light_blue">#00A3EA</color>
     <color name="background_for_activity_with_card_views">#F2F2F2</color>
+    <color name="switcher_light">#FAFAFA</color>
+    <color name="switcher_dark">#F0F0F0</color>
 </resources>

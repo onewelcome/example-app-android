@@ -51,9 +51,13 @@
             android:name=".view.activity.DashboardActivity"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".view.activity.SettingsAuthenticatorsActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".view.activity.SettingsActivity"/>
+        <activity
             android:name=".view.activity.SettingsActivity"
-            android:parentActivityName=".view.activity.DashboardActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".view.activity.DashboardActivity"/>
         <activity
             android:name=".view.activity.MobileAuthenticationActivity"
             android:launchMode="singleTask"

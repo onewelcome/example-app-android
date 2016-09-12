@@ -28,5 +28,8 @@
     <string name="btn_push_accept">Accept</string>
     <string name="btn_push_deny">Deny</string>
     <string name="settings_change_pin">Change PIN</string>
+    <string name="settings_change_authentication">Change authentication</string>
+    <string name="settings_authentication">Authentication</string>
+    <string name="settings_authentication_method">Login Method</string>
     <string name="toolbar_name_devices_activity">Devices</string>
 </resources>
