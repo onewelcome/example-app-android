@@ -11,8 +11,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -21,6 +24,10 @@ import com.onegini.mobile.exampleapp.model.AuthenticatorListItem;
 import com.onegini.mobile.exampleapp.view.adapter.AuthenticatorsAdapter;
 import com.onegini.mobile.exampleapp.view.helper.OneginiAuthenticatorComperator;
 import com.onegini.mobile.sdk.android.client.UserClient;
+import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticatorDeregistrationHandler;
+import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticatorRegistrationHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorDeregistrationError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorRegistrationError;
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
@@ -90,7 +97,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     authenticators = wrapAuthenticatorsToListItems(oneginiAuthenticators);
     listViewAdapter = new AuthenticatorsAdapter(this, authenticators);
     authenticatorsListView.setAdapter(listViewAdapter);
-    //authenticatorsListView.setOnItemClickListener(new AuthenticatorClickListener());
+    authenticatorsListView.setOnItemClickListener(new AuthenticatorClickListener());
   }
 
   private OneginiAuthenticator[] sortLists(final Set<OneginiAuthenticator> registeredAuths, final Set<OneginiAuthenticator> unregisteredAuths) {
@@ -108,5 +115,61 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
       authenticators[i] = new AuthenticatorListItem(oneginiAuthenticators[i]);
     }
     return authenticators;
+  }
+
+  private void registerAuthenticator(final OneginiAuthenticator authenticator, final int position) {
+    userClient.registerAuthenticator(authenticator, new OneginiAuthenticatorRegistrationHandler() {
+      @Override
+      public void onSuccess() {
+        authenticators[position].setIsProcessed(false);
+        authenticators[position].setRegistered(true);
+        listViewAdapter.notifyDataSetChanged();
+        Toast.makeText(SettingsAuthenticatorsActivity.this, "Authenticator registered", Toast.LENGTH_SHORT).show();
+      }
+
+      @Override
+      public void onError(final OneginiAuthenticatorRegistrationError error) {
+        authenticators[position].setIsProcessed(false);
+        Toast.makeText(SettingsAuthenticatorsActivity.this, error.getErrorDescription(), Toast.LENGTH_SHORT).show();
+      }
+    });
+  }
+
+  private void deregisterAuthenticator(final OneginiAuthenticator authenticator, final int position) {
+    userClient.deregisterAuthenticator(authenticator, new OneginiAuthenticatorDeregistrationHandler() {
+      @Override
+      public void onSuccess() {
+        authenticators[position].setIsProcessed(false);
+        authenticators[position].setRegistered(false);
+        listViewAdapter.notifyDataSetChanged();
+      }
+
+      @Override
+      public void onError(final OneginiAuthenticatorDeregistrationError error) {
+        authenticators[position].setIsProcessed(false);
+        Toast.makeText(SettingsAuthenticatorsActivity.this, error.getErrorDescription(), Toast.LENGTH_SHORT).show();
+      }
+    });
+  }
+
+  private class AuthenticatorClickListener implements AdapterView.OnItemClickListener {
+
+    @Override
+    public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+      final AuthenticatorListItem clickedAuthenticatorItem = authenticators[position];
+      final OneginiAuthenticator clieckedAuthenticator = clickedAuthenticatorItem.getAuthenticator();
+
+      if (clickedAuthenticatorItem.isProcessed() || clieckedAuthenticator.getType() == OneginiAuthenticator.PIN) {
+        return;
+      }
+      clickedAuthenticatorItem.setIsProcessed(true);
+      listViewAdapter.notifyDataSetChanged();
+
+      if (clickedAuthenticatorItem.isRegistered()) {
+        deregisterAuthenticator(clickedAuthenticatorItem.getAuthenticator(), position);
+      } else {
+        registerAuthenticator(clickedAuthenticatorItem.getAuthenticator(), position);
+      }
+    }
   }
 }
