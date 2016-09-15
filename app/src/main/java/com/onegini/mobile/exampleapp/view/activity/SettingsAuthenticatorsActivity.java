@@ -112,9 +112,17 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   private AuthenticatorListItem[] wrapAuthenticatorsToListItems(final OneginiAuthenticator[] oneginiAuthenticators) {
     final AuthenticatorListItem[] authenticators = new AuthenticatorListItem[oneginiAuthenticators.length];
     for (int i = 0; i < oneginiAuthenticators.length; i++) {
-      authenticators[i] = new AuthenticatorListItem(oneginiAuthenticators[i]);
+      final OneginiAuthenticator currentAuthenticator = oneginiAuthenticators[i];
+      if (currentAuthenticator.isPreferred()) {
+        setPreferredAuthenticator(currentAuthenticator);
+      }
+      authenticators[i] = new AuthenticatorListItem(currentAuthenticator);
     }
     return authenticators;
+  }
+
+  private void setPreferredAuthenticator(final OneginiAuthenticator authenticator) {
+    loginMethodTextView.setText(authenticator.getName());
   }
 
   private void registerAuthenticator(final OneginiAuthenticator authenticator, final int position) {

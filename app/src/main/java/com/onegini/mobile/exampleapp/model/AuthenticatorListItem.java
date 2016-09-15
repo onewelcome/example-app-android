@@ -11,6 +11,7 @@ public class AuthenticatorListItem {
 
   public AuthenticatorListItem(final OneginiAuthenticator authenticator) {
     this.authenticator = authenticator;
+    this.isRegistered = authenticator.isRegistered();
   }
 
   public boolean isProcessed() {

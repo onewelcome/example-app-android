@@ -50,7 +50,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  compile 'com.onegini.mobile.sdk.android:onegini-sdk:6.00.00-SNAPSHOT:release@aar'
+  compile 'com.onegini.mobile.sdk.android:onegini-sdk:6.00.00-SNAPSHOT-JERZY@aar'
 
   // Ocra 100.00.00
   compile 'com.onegini.misc:og-ocra:100.00.00'
@@ -80,4 +80,11 @@ dependencies {
   compile 'com.jakewharton:butterknife:7.0.1'
   // RxJava
   compile 'io.reactivex:rxandroid:1.1.0'
+
+  // Samsung's FIDO client
+  compile 'com.samsung.sds.fido.uaf.sdk:fido-client:1.4.1@aar'
+  compile 'org.fidoalliance.uaf.client.common:samsungsds-ccom:1.4.1@aar'
+  compile 'com.samsung.sds.fido.uaf.message:samsungsds-um:1.4.1'
+  // Google Guava
+  compile 'com.google.guava:guava:19.0'
 }

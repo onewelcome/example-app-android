@@ -16,6 +16,11 @@
     <string name="btn_deregister_user_label">Deregister user</string>
     <string name="btn_your_devices">Your devices</string>
     <string name="confirm">Confirm</string>
+    <string name="confirm_with_fingerprint">Confirm with fingerprint</string>
+    <string name="scan_fingerprint">Touch sensor</string>
+    <string name="use_pin_authentication">Use PIN code</string>
+    <string name="try_again">Try again…</string>
+    <string name="verifying">Verifying…</string>
     <string name="name_edit_text_label">Please enter your name</string>
     <string name="name_edit_text_hint">Name</string>
     <string name="create_profile_submit">CREATE PROFILE</string>
