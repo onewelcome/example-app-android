@@ -39,16 +39,15 @@ public class MobileAuthenticationFingerprintActivity extends Activity {
     setContentView(R.layout.activity_fingerprint_mobile);
     ButterKnife.bind(this);
 
-    setupUi();
+    setupUi(getIntent().getStringExtra(MSG_EXTRA_ACTION));
   }
 
   @Override
   protected void onNewIntent(final Intent intent) {
-    setupUi();
+    setupUi(intent.getStringExtra(MSG_EXTRA_ACTION));
   }
 
-  private void setupUi() {
-    final String action = getIntent().getStringExtra(MSG_EXTRA_ACTION);
+  private void setupUi(final String action) {
     if (MSG_EXTRA_ASK_TO_ACCEPT_OR_DENY.equals(action)) {
       setFingerprintAuthenticationPermissionVisibility(true);
     } else if (MSG_EXTRA_SHOW_SCANNING.equals(action)) {

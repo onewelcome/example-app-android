@@ -30,7 +30,7 @@ public class FingerprintActivity extends Activity {
     setContentView(R.layout.activity_fingerprint);
     ButterKnife.bind(this);
 
-    setupUi();
+    setupUi(getIntent().getStringExtra(MSG_EXTRA_ACTION));
   }
 
   @Override
@@ -43,11 +43,10 @@ public class FingerprintActivity extends Activity {
 
   @Override
   protected void onNewIntent(final Intent intent) {
-    setupUi();
+    setupUi(intent.getStringExtra(MSG_EXTRA_ACTION));
   }
 
-  private void setupUi() {
-    final String action = getIntent().getStringExtra(MSG_EXTRA_ACTION);
+  private void setupUi(final String action) {
     if (MSG_EXTRA_SHOW_SCANNING.equals(action)) {
       actionText.setText(R.string.verifying);
     } else if (MSG_EXTRA_START.equals(action)) {

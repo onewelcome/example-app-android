@@ -5,9 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -18,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.AuthenticatorListItem;
@@ -36,8 +40,10 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.toolbar)
   Toolbar toolbar;
+  @SuppressWarnings({"unused", "WeakerAccess"})
   @Bind(R.id.settings_authenticator_selector_text)
   TextView loginMethodTextView;
+  @SuppressWarnings({"unused", "WeakerAccess"})
   @Bind(R.id.authenticators_list)
   ListView authenticatorsListView;
 
@@ -68,6 +74,41 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
         return true;
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.settings_authenticator_selector)
+  public void onChangePreferredAuthenticatorClick() {
+    final UserProfile userProfile = userClient.getAuthenticatedUserProfile();
+    final Set<OneginiAuthenticator> registeredAuthenticators = userClient.getRegisteredAuthenticators(userProfile);
+
+    final List<String> authenticatorNames = new ArrayList<>(registeredAuthenticators.size());
+    for (final OneginiAuthenticator authenticator : registeredAuthenticators) {
+      authenticatorNames.add(authenticator.getName());
+    }
+    final String[] authenticatorsToSelect = new String[authenticatorNames.size()];
+
+    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle(R.string.pick_authenticator);
+    builder.setItems(authenticatorNames.toArray(authenticatorsToSelect), new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(final DialogInterface dialog, final int which) {
+        updatePreferredAuthenticator(which, registeredAuthenticators);
+      }
+    });
+    builder.show();
+  }
+
+  private void updatePreferredAuthenticator(final int which, final Set<OneginiAuthenticator> registeredAuthenticators) {
+    int index = 0;
+    for (final OneginiAuthenticator authenticator : registeredAuthenticators) {
+      if (which == index) {
+        userClient.setPreferredAuthenticator(authenticator);
+        setPreferredAuthenticatorText(authenticator);
+        break;
+      }
+      index++;
+    }
   }
 
   private void setupView() {
@@ -114,14 +155,14 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     for (int i = 0; i < oneginiAuthenticators.length; i++) {
       final OneginiAuthenticator currentAuthenticator = oneginiAuthenticators[i];
       if (currentAuthenticator.isPreferred()) {
-        setPreferredAuthenticator(currentAuthenticator);
+        setPreferredAuthenticatorText(currentAuthenticator);
       }
       authenticators[i] = new AuthenticatorListItem(currentAuthenticator);
     }
     return authenticators;
   }
 
-  private void setPreferredAuthenticator(final OneginiAuthenticator authenticator) {
+  private void setPreferredAuthenticatorText(final OneginiAuthenticator authenticator) {
     loginMethodTextView.setText(authenticator.getName());
   }
 
@@ -165,9 +206,9 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     @Override
     public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
       final AuthenticatorListItem clickedAuthenticatorItem = authenticators[position];
-      final OneginiAuthenticator clieckedAuthenticator = clickedAuthenticatorItem.getAuthenticator();
+      final OneginiAuthenticator clickedAuthenticator = clickedAuthenticatorItem.getAuthenticator();
 
-      if (clickedAuthenticatorItem.isProcessed() || clieckedAuthenticator.getType() == OneginiAuthenticator.PIN) {
+      if (clickedAuthenticatorItem.isProcessed() || clickedAuthenticator.getType() == OneginiAuthenticator.PIN) {
         return;
       }
       clickedAuthenticatorItem.setIsProcessed(true);
