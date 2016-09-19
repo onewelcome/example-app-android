@@ -6,12 +6,10 @@ public class AuthenticatorListItem {
 
   private final OneginiAuthenticator authenticator;
 
-  private boolean isRegistered;
   private boolean isProcessed;
 
   public AuthenticatorListItem(final OneginiAuthenticator authenticator) {
     this.authenticator = authenticator;
-    this.isRegistered = authenticator.isRegistered();
   }
 
   public boolean isProcessed() {
@@ -24,13 +22,5 @@ public class AuthenticatorListItem {
 
   public OneginiAuthenticator getAuthenticator() {
     return authenticator;
-  }
-
-  public boolean isRegistered() {
-    return isRegistered;
-  }
-
-  public void setRegistered(final boolean registered) {
-    isRegistered = registered;
   }
 }

@@ -130,23 +130,17 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
   private void prepareAuthenticatorsList() {
     final UserProfile userProfile = userClient.getAuthenticatedUserProfile();
-
-    final Set<OneginiAuthenticator> registeredAuthenticators = userClient.getRegisteredAuthenticators(userProfile);
-    final Set<OneginiAuthenticator> notRegisteredAuthenticators = userClient.getNotRegisteredAuthenticators(userProfile);
-
-    final OneginiAuthenticator[] oneginiAuthenticators = sortLists(registeredAuthenticators, notRegisteredAuthenticators);
+    final Set<OneginiAuthenticator> allAuthenticators = userClient.getAllAuthenticators(userProfile);
+    final OneginiAuthenticator[] oneginiAuthenticators = sortLists(allAuthenticators);
     authenticators = wrapAuthenticatorsToListItems(oneginiAuthenticators);
     listViewAdapter = new AuthenticatorsAdapter(this, authenticators);
     authenticatorsListView.setAdapter(listViewAdapter);
     authenticatorsListView.setOnItemClickListener(new AuthenticatorClickListener());
   }
 
-  private OneginiAuthenticator[] sortLists(final Set<OneginiAuthenticator> registeredAuths, final Set<OneginiAuthenticator> unregisteredAuths) {
-    final List<OneginiAuthenticator> authenticatorList = new ArrayList<>();
-    authenticatorList.addAll(registeredAuths);
-    authenticatorList.addAll(unregisteredAuths);
+  private OneginiAuthenticator[] sortLists(final Set<OneginiAuthenticator> allAuthenticators) {
+    final List<OneginiAuthenticator> authenticatorList = new ArrayList<>(allAuthenticators);
     Collections.sort(authenticatorList, new OneginiAuthenticatorComperator());
-
     return authenticatorList.toArray(new OneginiAuthenticator[authenticatorList.size()]);
   }
 
@@ -171,7 +165,6 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
       @Override
       public void onSuccess() {
         authenticators[position].setIsProcessed(false);
-        authenticators[position].setRegistered(true);
         listViewAdapter.notifyDataSetChanged();
         Toast.makeText(SettingsAuthenticatorsActivity.this, "Authenticator registered", Toast.LENGTH_SHORT).show();
       }
@@ -189,7 +182,6 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
       @Override
       public void onSuccess() {
         authenticators[position].setIsProcessed(false);
-        authenticators[position].setRegistered(false);
         listViewAdapter.notifyDataSetChanged();
       }
 
@@ -214,7 +206,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
       clickedAuthenticatorItem.setIsProcessed(true);
       listViewAdapter.notifyDataSetChanged();
 
-      if (clickedAuthenticatorItem.isRegistered()) {
+      if (clickedAuthenticator.isRegistered()) {
         deregisterAuthenticator(clickedAuthenticatorItem.getAuthenticator(), position);
       } else {
         registerAuthenticator(clickedAuthenticatorItem.getAuthenticator(), position);

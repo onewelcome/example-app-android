@@ -50,7 +50,7 @@ public class AuthenticatorsAdapter extends ArrayAdapter<AuthenticatorListItem> {
       return rowView;
     }
 
-    authenticatorSwitch.setChecked(authenticatorListItem.isRegistered());
+    authenticatorSwitch.setChecked(authenticator.isRegistered());
 
     if (authenticatorListItem.isProcessed()) {
       progressIndicator.setVisibility(VISIBLE);
