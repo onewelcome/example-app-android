@@ -46,6 +46,7 @@ public class MobileAuthenticationFingerprintRequestHandler implements OneginiMob
 
   private void startFingerprintActivity(final String action) {
     final Intent intent = new Intent(context, MobileAuthenticationFingerprintActivity.class);
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
     intent.putExtra(FingerprintActivity.MSG_EXTRA_ACTION, action);
     context.startActivity(intent);

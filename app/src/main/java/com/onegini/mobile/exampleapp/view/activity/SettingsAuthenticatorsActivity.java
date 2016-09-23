@@ -165,7 +165,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
       @Override
       public void onSuccess() {
         authenticators[position].setIsProcessed(false);
-        listViewAdapter.notifyDataSetChanged();
+        prepareAuthenticatorsList();
         Toast.makeText(SettingsAuthenticatorsActivity.this, "Authenticator registered", Toast.LENGTH_SHORT).show();
       }
 
@@ -182,7 +182,8 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
       @Override
       public void onSuccess() {
         authenticators[position].setIsProcessed(false);
-        listViewAdapter.notifyDataSetChanged();
+        prepareAuthenticatorsList();
+        Toast.makeText(SettingsAuthenticatorsActivity.this, "Authenticator unregistered", Toast.LENGTH_SHORT).show();
       }
 
       @Override
