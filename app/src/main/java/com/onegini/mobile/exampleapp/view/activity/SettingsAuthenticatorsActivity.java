@@ -103,12 +103,16 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     int index = 0;
     for (final OneginiAuthenticator authenticator : registeredAuthenticators) {
       if (which == index) {
-        userClient.setPreferredAuthenticator(authenticator);
+        sendPreferredAuthenticator(authenticator);
         setPreferredAuthenticatorText(authenticator);
         break;
       }
       index++;
     }
+  }
+
+  private void sendPreferredAuthenticator(final OneginiAuthenticator authenticator) {
+    userClient.setPreferredAuthenticator(authenticator);
   }
 
   private void setupView() {
@@ -182,6 +186,9 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
       @Override
       public void onSuccess() {
         authenticators[position].setIsProcessed(false);
+        if (authenticators[position].getAuthenticator().getName().equals(loginMethodTextView.getText().toString())) {
+          setPinAsPreferredAuthenticator();
+        }
         prepareAuthenticatorsList();
         Toast.makeText(SettingsAuthenticatorsActivity.this, "Authenticator unregistered", Toast.LENGTH_SHORT).show();
       }
@@ -192,6 +199,16 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
         Toast.makeText(SettingsAuthenticatorsActivity.this, error.getErrorDescription(), Toast.LENGTH_SHORT).show();
       }
     });
+  }
+
+  private void setPinAsPreferredAuthenticator() {
+    final UserProfile userProfile = userClient.getAuthenticatedUserProfile();
+    final Set<OneginiAuthenticator> allAuthenticators = userClient.getAllAuthenticators(userProfile);
+    for (final OneginiAuthenticator auth : allAuthenticators) {
+      if (auth.getType() == OneginiAuthenticator.PIN) {
+        sendPreferredAuthenticator(auth);
+      }
+    }
   }
 
   private class AuthenticatorClickListener implements AdapterView.OnItemClickListener {
