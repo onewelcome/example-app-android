@@ -1,4 +1,4 @@
-package com.onegini.mobile.exampleapp.view.adapter;
+package com.onegini.mobile.exampleapp.adapter;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;

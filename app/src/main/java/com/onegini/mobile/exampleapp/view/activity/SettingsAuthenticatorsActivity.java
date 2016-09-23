@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -21,11 +20,10 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.AuthenticatorListItem;
-import com.onegini.mobile.exampleapp.view.adapter.AuthenticatorsAdapter;
+import com.onegini.mobile.exampleapp.adapter.AuthenticatorsAdapter;
 import com.onegini.mobile.exampleapp.view.helper.OneginiAuthenticatorComperator;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticatorDeregistrationHandler;
@@ -90,11 +88,8 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
     final AlertDialog.Builder builder = new AlertDialog.Builder(this);
     builder.setTitle(R.string.pick_authenticator);
-    builder.setItems(authenticatorNames.toArray(authenticatorsToSelect), new DialogInterface.OnClickListener() {
-      @Override
-      public void onClick(final DialogInterface dialog, final int which) {
-        updatePreferredAuthenticator(which, registeredAuthenticators);
-      }
+    builder.setItems(authenticatorNames.toArray(authenticatorsToSelect), (dialog, which) -> {
+      updatePreferredAuthenticator(which, registeredAuthenticators);
     });
     builder.show();
   }
@@ -103,15 +98,15 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     int index = 0;
     for (final OneginiAuthenticator authenticator : registeredAuthenticators) {
       if (which == index) {
-        sendPreferredAuthenticator(authenticator);
-        setPreferredAuthenticatorText(authenticator);
+        setPreferredAuthenticator(authenticator);
+        setPreferredAuthenticatorLabel(authenticator);
         break;
       }
       index++;
     }
   }
 
-  private void sendPreferredAuthenticator(final OneginiAuthenticator authenticator) {
+  private void setPreferredAuthenticator(final OneginiAuthenticator authenticator) {
     userClient.setPreferredAuthenticator(authenticator);
   }
 
@@ -153,14 +148,14 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     for (int i = 0; i < oneginiAuthenticators.length; i++) {
       final OneginiAuthenticator currentAuthenticator = oneginiAuthenticators[i];
       if (currentAuthenticator.isPreferred()) {
-        setPreferredAuthenticatorText(currentAuthenticator);
+        setPreferredAuthenticatorLabel(currentAuthenticator);
       }
       authenticators[i] = new AuthenticatorListItem(currentAuthenticator);
     }
     return authenticators;
   }
 
-  private void setPreferredAuthenticatorText(final OneginiAuthenticator authenticator) {
+  private void setPreferredAuthenticatorLabel(final OneginiAuthenticator authenticator) {
     loginMethodTextView.setText(authenticator.getName());
   }
 
@@ -190,7 +185,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
           setPinAsPreferredAuthenticator();
         }
         prepareAuthenticatorsList();
-        Toast.makeText(SettingsAuthenticatorsActivity.this, "Authenticator unregistered", Toast.LENGTH_SHORT).show();
+        Toast.makeText(SettingsAuthenticatorsActivity.this, "Authenticator deregistered", Toast.LENGTH_SHORT).show();
       }
 
       @Override
@@ -206,7 +201,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     final Set<OneginiAuthenticator> allAuthenticators = userClient.getAllAuthenticators(userProfile);
     for (final OneginiAuthenticator auth : allAuthenticators) {
       if (auth.getType() == OneginiAuthenticator.PIN) {
-        sendPreferredAuthenticator(auth);
+        setPreferredAuthenticator(auth);
       }
     }
   }
