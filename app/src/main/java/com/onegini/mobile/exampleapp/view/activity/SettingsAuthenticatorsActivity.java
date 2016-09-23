@@ -10,11 +10,10 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
@@ -22,8 +21,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.model.AuthenticatorListItem;
 import com.onegini.mobile.exampleapp.adapter.AuthenticatorsAdapter;
+import com.onegini.mobile.exampleapp.model.AuthenticatorListItem;
 import com.onegini.mobile.exampleapp.view.helper.OneginiAuthenticatorComperator;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticatorDeregistrationHandler;
@@ -43,10 +42,10 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   TextView loginMethodTextView;
   @SuppressWarnings({"unused", "WeakerAccess"})
   @Bind(R.id.authenticators_list)
-  ListView authenticatorsListView;
+  RecyclerView authenticatorsRecyclerView;
 
   private AuthenticatorListItem[] authenticators;
-  private AuthenticatorsAdapter listViewAdapter;
+  private AuthenticatorsAdapter authenticatorsAdapter;
   private UserClient userClient;
 
   @Override
@@ -132,9 +131,9 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     final Set<OneginiAuthenticator> allAuthenticators = userClient.getAllAuthenticators(userProfile);
     final OneginiAuthenticator[] oneginiAuthenticators = sortLists(allAuthenticators);
     authenticators = wrapAuthenticatorsToListItems(oneginiAuthenticators);
-    listViewAdapter = new AuthenticatorsAdapter(this, authenticators);
-    authenticatorsListView.setAdapter(listViewAdapter);
-    authenticatorsListView.setOnItemClickListener(new AuthenticatorClickListener());
+    authenticatorsAdapter = new AuthenticatorsAdapter(authenticators, new AuthenticatorClickListener());
+    authenticatorsRecyclerView.setAdapter(authenticatorsAdapter);
+    authenticatorsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
   }
 
   private OneginiAuthenticator[] sortLists(final Set<OneginiAuthenticator> allAuthenticators) {
@@ -206,10 +205,9 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     }
   }
 
-  private class AuthenticatorClickListener implements AdapterView.OnItemClickListener {
+  public class AuthenticatorClickListener {
 
-    @Override
-    public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+    public void onAuthenticatorItemClick(final int position) {
       final AuthenticatorListItem clickedAuthenticatorItem = authenticators[position];
       final OneginiAuthenticator clickedAuthenticator = clickedAuthenticatorItem.getAuthenticator();
 
@@ -217,7 +215,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
         return;
       }
       clickedAuthenticatorItem.setIsProcessed(true);
-      listViewAdapter.notifyDataSetChanged();
+      authenticatorsAdapter.notifyDataSetChanged();
 
       if (clickedAuthenticator.isRegistered()) {
         deregisterAuthenticator(clickedAuthenticatorItem.getAuthenticator(), position);
