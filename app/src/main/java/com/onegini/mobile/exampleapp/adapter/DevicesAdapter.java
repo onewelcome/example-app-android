@@ -51,9 +51,9 @@ public class DevicesAdapter extends
     Context context = parent.getContext();
     LayoutInflater inflater = LayoutInflater.from(context);
 
-    View contactView = inflater.inflate(R.layout.row_item_device, parent, false);
+    View deviceItemView = inflater.inflate(R.layout.row_item_device, parent, false);
 
-    return new ViewHolder(contactView);
+    return new ViewHolder(deviceItemView);
   }
 
   @Override

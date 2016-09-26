@@ -132,7 +132,7 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
         notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_similar));
         break;
       default:
-        // TODO add general error handling
+        notifyActivity(context.getString(R.string.pin_title_choose_pin), oneginiPinValidationError.getErrorDescription());
         break;
     }
   }

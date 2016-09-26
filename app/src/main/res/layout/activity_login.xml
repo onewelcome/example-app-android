@@ -57,8 +57,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/application_details" android:layout_below="@+id/login_button" android:layout_centerHorizontal="true" android:layout_marginTop="32dp"
-            android:layout_marginLeft="@dimen/activity_margin" android:layout_marginRight="@dimen/activity_margin" android:gravity="center_horizontal"/>
+            android:id="@+id/application_details"
+            android:layout_below="@+id/login_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginLeft="@dimen/activity_margin"
+            android:layout_marginRight="@dimen/activity_margin"
+            android:gravity="center_horizontal"/>
     </RelativeLayout>
 
     <ProgressBar

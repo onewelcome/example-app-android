@@ -49,6 +49,9 @@ public class SettingsActivity extends AppCompatActivity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.button_change_pin)
   Button changePinButton;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.button_change_authentication)
+  Button changeAuthentication;
 
   private SettingsStorage settingsStorage;
 
@@ -148,6 +151,12 @@ public class SettingsActivity extends AppCompatActivity {
         showToast(oneginiChangePinError.getErrorDescription());
       }
     });
+  }
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.button_change_authentication)
+  public void changeAuthentication() {
+    startActivity(new Intent(this, SettingsAuthenticatorsActivity.class));
   }
 
   private void userDeregistered() {

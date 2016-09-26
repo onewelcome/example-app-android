@@ -16,6 +16,9 @@
 package com.onegini.mobile.exampleapp;
 
 import android.content.Context;
+
+import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFingerprintRequestHandler;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.client.OneginiClientBuilder;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequestHandler;
@@ -42,6 +45,8 @@ public class OneginiSDK {
     return new OneginiClientBuilder(applicationContext, createPinRequestHandler, pinAuthenticationRequestHandler)
         .setMobileAuthenticationRequestHandler(new MobileAuthenticationRequestHandler(applicationContext))
         .setMobileAuthenticationPinRequestHandler(new MobileAuthenticationPinRequestHandler(applicationContext))
+        .setFingerprintAuthenticatioRequestHandler(new FingerprintAuthenticationRequestHandler(applicationContext))
+        .setMobileAuthenticationFingerprintRequestHandler(new MobileAuthenticationFingerprintRequestHandler(applicationContext))
         .build();
   }
 }

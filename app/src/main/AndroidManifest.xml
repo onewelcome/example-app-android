@@ -22,7 +22,7 @@
     <permission
         android:name="com.onegini.mobile.exampleapp.permission.C2D_MESSAGE"
         android:protectionLevel="signature"/>
-
+    <uses-permission android:name="org.fidoalliance.uaf.permissions.FIDO_CLIENT"/>
     <uses-permission android:name="com.onegini.mobile.exampleapp.permission.C2D_MESSAGE"/>
 
     <application
@@ -63,12 +63,22 @@
             android:name=".view.activity.PinActivity"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".view.activity.FingerprintActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.MobileAuthenticationFingerprintActivity"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".view.activity.DashboardActivity"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".view.activity.SettingsAuthenticatorsActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".view.activity.SettingsActivity"/>
+        <activity
             android:name=".view.activity.SettingsActivity"
-            android:parentActivityName=".view.activity.DashboardActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".view.activity.DashboardActivity"/>
         <activity
             android:name=".view.activity.MobileAuthenticationActivity"
             android:launchMode="singleTask"
