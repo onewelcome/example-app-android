@@ -13,7 +13,6 @@ public class MyInstanceIDListenerService extends InstanceIDListenerService {
    */
   @Override
   public void onTokenRefresh() {
-
     final OneginiMobileAuthenticationEnrollmentHandler mobileAuthenticationEnrollmentHandler = new OneginiMobileAuthenticationEnrollmentHandler() {
       @Override
       public void onSuccess() {
