@@ -66,7 +66,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  compile 'com.onegini.mobile.sdk.android:onegini-sdk:6.00.00-SNAPSHOT:release@aar'
+  compile 'com.onegini.mobile.sdk.android:onegini-sdk:6.00.00:release@aar'
 
   // Ocra 100.00.00
   compile 'com.onegini.misc:og-ocra:100.00.00'
