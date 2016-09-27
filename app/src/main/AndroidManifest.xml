@@ -106,6 +106,14 @@
 
         <service android:name=".network.gcm.GCMIntentService"/>
 
+        <service
+            android:name=".network.gcm.MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            </intent-filter>
+        </service>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
