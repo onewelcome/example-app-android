@@ -5,7 +5,7 @@ import com.onegini.mobile.exampleapp.storage.SettingsStorage;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationEnrollmentHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationEnrollmentError;
 
-public class MyInstanceIDListenerService extends InstanceIDListenerService {
+public class GCMInstanceIDListenerService extends InstanceIDListenerService {
 
   /**
    * Called if InstanceID token is updated. This may occur if the security of the previous token had been compromised. This call is initiated by the InstanceID
@@ -29,7 +29,7 @@ public class MyInstanceIDListenerService extends InstanceIDListenerService {
   }
 
   private void setMobileAuthenticationEnabled(final boolean isEnabled) {
-    SettingsStorage settingsStorage = new SettingsStorage(MyInstanceIDListenerService.this);
+    SettingsStorage settingsStorage = new SettingsStorage(GCMInstanceIDListenerService.this);
     settingsStorage.setMobileAuthenticationEnabled(isEnabled);
   }
 }
