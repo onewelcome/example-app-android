@@ -17,13 +17,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.onegini.mobile.exampleapp">
 
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
-    <permission
-        android:name="com.onegini.mobile.exampleapp.permission.C2D_MESSAGE"
-        android:protectionLevel="signature"/>
     <uses-permission android:name="org.fidoalliance.uaf.permissions.FIDO_CLIENT"/>
-    <uses-permission android:name="com.onegini.mobile.exampleapp.permission.C2D_MESSAGE"/>
 
     <application
         android:name="android.support.multidex.MultiDexApplication"
@@ -32,6 +29,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".view.activity.SplashScreenActivity"
             android:screenOrientation="portrait">
@@ -92,19 +90,30 @@
             android:parentActivityName=".view.activity.DashboardActivity"
             android:screenOrientation="portrait"/>
 
+        <service
+            android:name=".network.gcm.GCMListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name=".network.gcm.GCMInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            </intent-filter>
+        </service>
+
         <receiver
-            android:name=".network.gcm.GCMBroadcastReceiver"
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-
                 <category android:name="com.onegini.mobile.exampleapp"/>
-
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
             </intent-filter>
         </receiver>
-
-        <service android:name=".network.gcm.GCMIntentService"/>
 
         <meta-data
             android:name="com.google.android.gms.version"

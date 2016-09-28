@@ -17,11 +17,10 @@ package com.onegini.mobile.exampleapp.network.gcm;
 
 import java.util.Set;
 
-import android.app.IntentService;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+import com.google.android.gms.gcm.GcmListenerService;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.storage.SettingsStorage;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
@@ -33,30 +32,24 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiInitializationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
-public class GCMIntentService extends IntentService {
+public class GCMListenerService extends GcmListenerService {
 
-  private static final String TAG = GCMIntentService.class.getSimpleName();
+  private static final String TAG = GCMListenerService.class.getSimpleName();
 
-  public GCMIntentService() {
-    super(TAG);
-  }
 
   @Override
-  protected void onHandleIntent(final Intent intent) {
-    final Bundle extras = intent.getExtras();
-    if (!extras.isEmpty()) {
+  public void onMessageReceived(String from, Bundle data) {
+    if (!data.isEmpty()) {
       Log.i(TAG, "Push message received");
 
       try {
-        handleMobileAuthenticationRequest(extras);
+        handleMobileAuthenticationRequest(data);
       } catch (OneginiInitializationException exception) {
         // Onegini SDK hasn't been started yet so we have to do it
         // before handling the mobile authentication request
-        setupOneginiSDK(extras);
+        setupOneginiSDK(data);
       }
     }
-    // Release the wake lock provided by the WakefulBroadcastReceiver.
-    GCMBroadcastReceiver.completeWakefulIntent(intent);
   }
 
   private void setupOneginiSDK(final Bundle extras) {
@@ -73,7 +66,7 @@ public class GCMIntentService extends IntentService {
 
       @Override
       public void onError(final OneginiInitializationError error) {
-        Toast.makeText(GCMIntentService.this, error.getErrorDescription(), Toast.LENGTH_LONG).show();
+        Toast.makeText(GCMListenerService.this, error.getErrorDescription(), Toast.LENGTH_LONG).show();
       }
     });
   }
@@ -82,14 +75,14 @@ public class GCMIntentService extends IntentService {
     OneginiSDK.getOneginiClient(this).getUserClient().handleMobileAuthenticationRequest(extras, new OneginiMobileAuthenticationHandler() {
       @Override
       public void onSuccess() {
-        Toast.makeText(GCMIntentService.this, "Mobile authentication success", Toast.LENGTH_SHORT).show();
+        Toast.makeText(GCMListenerService.this, "Mobile authentication success", Toast.LENGTH_SHORT).show();
       }
 
       @Override
       public void onError(final OneginiMobileAuthenticationError oneginiMobileAuthenticationError) {
-        Toast.makeText(GCMIntentService.this, oneginiMobileAuthenticationError.getErrorDescription(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(GCMListenerService.this, oneginiMobileAuthenticationError.getErrorDescription(), Toast.LENGTH_SHORT).show();
         if (oneginiMobileAuthenticationError.getErrorType() == OneginiMobileAuthenticationError.USER_DEREGISTERED) {
-          new SettingsStorage(GCMIntentService.this).setMobileAuthenticationEnabled(false);
+          new SettingsStorage(GCMListenerService.this).setMobileAuthenticationEnabled(false);
         } else if (oneginiMobileAuthenticationError.getErrorType() == OneginiMobileAuthenticationError.ACTION_CANCELED) {
           // the user denied incoming mobile authentication request
         }
