@@ -22,8 +22,7 @@ import android.util.Log;
 import android.widget.Toast;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.onegini.mobile.exampleapp.OneginiSDK;
-import com.onegini.mobile.exampleapp.storage.SettingsStorage;
-import com.onegini.mobile.exampleapp.storage.UserStorage;
+import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.exception.OneginiInitializationException;
 import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
@@ -66,6 +65,9 @@ public class GCMListenerService extends GcmListenerService {
 
       @Override
       public void onError(final OneginiInitializationError error) {
+        if (error.getErrorType() == OneginiInitializationError.DEVICE_DEREGISTERED) {
+          new DeregistrationUtil(getApplicationContext()).onDeviceDeregistered();
+        }
         Toast.makeText(GCMListenerService.this, error.getErrorDescription(), Toast.LENGTH_LONG).show();
       }
     });
@@ -81,8 +83,10 @@ public class GCMListenerService extends GcmListenerService {
       @Override
       public void onError(final OneginiMobileAuthenticationError oneginiMobileAuthenticationError) {
         Toast.makeText(GCMListenerService.this, oneginiMobileAuthenticationError.getErrorDescription(), Toast.LENGTH_SHORT).show();
+
         if (oneginiMobileAuthenticationError.getErrorType() == OneginiMobileAuthenticationError.USER_DEREGISTERED) {
-          new SettingsStorage(GCMListenerService.this).setMobileAuthenticationEnabled(false);
+          final DeregistrationUtil deregistrationUtil = new DeregistrationUtil(GCMListenerService.this);
+          deregistrationUtil.onUserDeregistered(OneginiSDK.getOneginiClient(GCMListenerService.this).getUserClient().getAuthenticatedUserProfile());
         } else if (oneginiMobileAuthenticationError.getErrorType() == OneginiMobileAuthenticationError.ACTION_CANCELED) {
           // the user denied incoming mobile authentication request
         }
@@ -91,9 +95,9 @@ public class GCMListenerService extends GcmListenerService {
   }
 
   private void removeUserProfiles(final Set<UserProfile> removedUserProfiles, final Bundle extras) {
-    final UserStorage userStorage = new UserStorage(this);
+    final DeregistrationUtil deregistrationUtil = new DeregistrationUtil(this);
     for (final UserProfile userProfile : removedUserProfiles) {
-      userStorage.removeUser(userProfile);
+      deregistrationUtil.onUserDeregistered(userProfile);
     }
     handleMobileAuthenticationRequest(extras);
   }

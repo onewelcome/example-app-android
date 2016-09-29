@@ -33,6 +33,7 @@ import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.network.gcm.GCMRegistrationService;
 import com.onegini.mobile.exampleapp.storage.SettingsStorage;
+import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.handlers.OneginiChangePinHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationEnrollmentHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiChangePinError;
@@ -92,7 +93,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     final int googlePlayServicesAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
     if (googlePlayServicesAvailable == ConnectionResult.SUCCESS) {
-      if (settingsStorage.isMobileAuthenticationEnabled()) {
+      if (settingsStorage.isMobileAuthenticationEnabled(OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile())) {
         mobileAuthButton.setText(R.string.settings_mobile_enrollment_on);
       } else {
         mobileAuthButton.setText(R.string.settings_mobile_enrollment_off);
@@ -119,14 +120,18 @@ public class SettingsActivity extends AppCompatActivity {
     final OneginiMobileAuthenticationEnrollmentHandler mobileAuthenticationEnrollmentHandler = new OneginiMobileAuthenticationEnrollmentHandler() {
       @Override
       public void onSuccess() {
-        settingsStorage.setMobileAuthenticationEnabled(true);
+        settingsStorage.setMobileAuthenticationEnabled(OneginiSDK.getOneginiClient(SettingsActivity.this).getUserClient().getAuthenticatedUserProfile(), true);
         onMobileAuthEnabled();
         showToast("Mobile authentication enabled");
       }
 
       @Override
-      public void onError(final OneginiMobileAuthenticationEnrollmentError oneginiMobileAuthenticationEnrollmentError) {
-        showToast("Mobile authentication error - " + oneginiMobileAuthenticationEnrollmentError.getErrorDescription());
+      public void onError(final OneginiMobileAuthenticationEnrollmentError error) {
+        if (error.getErrorType() == OneginiMobileAuthenticationEnrollmentError.DEVICE_DEREGISTERED) {
+          new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
+        }
+
+        showToast("Mobile authentication error - " + error.getErrorDescription());
       }
     };
     final GCMRegistrationService gcmRegistrationService = new GCMRegistrationService(this);

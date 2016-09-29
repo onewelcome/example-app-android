@@ -16,9 +16,11 @@
 package com.onegini.mobile.exampleapp.network.gcm;
 
 import com.google.android.gms.iid.InstanceIDListenerService;
+import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.storage.SettingsStorage;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationEnrollmentHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationEnrollmentError;
+import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class GCMInstanceIDListenerService extends InstanceIDListenerService {
 
@@ -39,12 +41,18 @@ public class GCMInstanceIDListenerService extends InstanceIDListenerService {
         setMobileAuthenticationEnabled(false);
       }
     };
+    // TODO for this purpose we should enroll all users once again so we need to add new method
     final GCMRegistrationService gcmRegistrationService = new GCMRegistrationService(this);
     gcmRegistrationService.registerGCMService(mobileAuthenticationEnrollmentHandler);
   }
 
   private void setMobileAuthenticationEnabled(final boolean isEnabled) {
-    SettingsStorage settingsStorage = new SettingsStorage(GCMInstanceIDListenerService.this);
-    settingsStorage.setMobileAuthenticationEnabled(isEnabled);
+    UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
+    if (authenticatedUserProfile == null) {
+      return; // no user is authenticated so enrollment failed TODO and we don't know for which user it failed
+    }
+
+    final SettingsStorage settingsStorage = new SettingsStorage(GCMInstanceIDListenerService.this);
+    settingsStorage.setMobileAuthenticationEnabled(authenticatedUserProfile, true);
   }
 }
