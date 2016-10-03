@@ -83,8 +83,9 @@ public class GCMListenerService extends GcmListenerService {
       @Override
       public void onError(final OneginiMobileAuthenticationError oneginiMobileAuthenticationError) {
         Toast.makeText(GCMListenerService.this, oneginiMobileAuthenticationError.getErrorDescription(), Toast.LENGTH_SHORT).show();
-
-        if (oneginiMobileAuthenticationError.getErrorType() == OneginiMobileAuthenticationError.ACTION_CANCELED) {
+        if (oneginiMobileAuthenticationError.getErrorType() == OneginiMobileAuthenticationError.USER_DEREGISTERED) {
+          // the user was deregister, for example he provided wrong PIN for too many times
+        } else if (oneginiMobileAuthenticationError.getErrorType() == OneginiMobileAuthenticationError.ACTION_CANCELED) {
           // the user denied incoming mobile authentication request
         }
       }

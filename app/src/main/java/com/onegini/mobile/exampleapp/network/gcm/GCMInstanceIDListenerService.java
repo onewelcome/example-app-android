@@ -34,11 +34,13 @@ public class GCMInstanceIDListenerService extends InstanceIDListenerService {
     final OneginiMobileAuthenticationEnrollmentHandler mobileAuthenticationEnrollmentHandler = new OneginiMobileAuthenticationEnrollmentHandler() {
       @Override
       public void onSuccess() {
+        // Method called when mobile authentication was successfully enrolled.
         setMobileAuthenticationEnabled(true);
       }
 
       @Override
       public void onError(final OneginiMobileAuthenticationEnrollmentError oneginiMobileAuthenticationEnrollmentError) {
+        // Method called on mobile authentication enrollment error, for example when user is not authenticated
         if (oneginiMobileAuthenticationEnrollmentError.getErrorType() == OneginiMobileAuthenticationEnrollmentError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(GCMInstanceIDListenerService.this).onDeviceDeregistered();
         }
