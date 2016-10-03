@@ -19,11 +19,10 @@ apply plugin: 'me.tatarka.retrolambda'
 
 allprojects {
   apply plugin: 'maven'
-
   repositories {
     mavenLocal()
     mavenCentral()
-    if(project.hasProperty('artifactory_user') && project.hasProperty('artifactory_password')) {
+    if (project.hasProperty('artifactory_user') && project.hasProperty('artifactory_password')) {
       maven {
         url "https://repo.onegini.com/artifactory/public"
         credentials {
@@ -31,6 +30,9 @@ allprojects {
           password artifactory_password
         }
       }
+    } else {
+      throw new InvalidUserDataException("You must configure the 'artifactory_user' and 'artifactory_password' properties in your project before you can " +
+          "build it.")
     }
   }
 }
