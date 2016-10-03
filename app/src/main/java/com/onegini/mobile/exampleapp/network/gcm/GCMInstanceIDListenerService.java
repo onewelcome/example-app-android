@@ -45,7 +45,6 @@ public class GCMInstanceIDListenerService extends InstanceIDListenerService {
         setMobileAuthenticationEnabled(false);
       }
     };
-    // TODO for this purpose we should enroll all users once again so we need to add new method
     final GCMRegistrationService gcmRegistrationService = new GCMRegistrationService(this);
     gcmRegistrationService.registerGCMService(mobileAuthenticationEnrollmentHandler);
   }
@@ -53,7 +52,7 @@ public class GCMInstanceIDListenerService extends InstanceIDListenerService {
   private void setMobileAuthenticationEnabled(final boolean isEnabled) {
     UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
     if (authenticatedUserProfile == null) {
-      return; // no user is authenticated so enrollment failed TODO and we don't know for which user it failed
+      return;
     }
 
     final SettingsStorage settingsStorage = new SettingsStorage(GCMInstanceIDListenerService.this);

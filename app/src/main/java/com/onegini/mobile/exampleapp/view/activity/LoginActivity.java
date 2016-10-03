@@ -101,7 +101,7 @@ public class LoginActivity extends Activity {
                   deregistrationUtil.onDeviceDeregistered();
                 } else if (error.getErrorType() == OneginiDeviceAuthenticationError.USER_DEREGISTERED) {
                   UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(LoginActivity.this).getUserClient().getAuthenticatedUserProfile();
-                  if (authenticatedUserProfile == null) { // TODO it's probably always true so why we return such error? probably we should remove USER_DEREGISTERED from
+                  if (authenticatedUserProfile == null) {
                     return;
                   }
                   deregistrationUtil.onUserDeregistered(authenticatedUserProfile);
