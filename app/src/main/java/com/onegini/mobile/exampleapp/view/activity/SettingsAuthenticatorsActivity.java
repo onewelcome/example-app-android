@@ -38,12 +38,14 @@ import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.adapter.AuthenticatorsAdapter;
 import com.onegini.mobile.exampleapp.model.AuthenticatorListItem;
+import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.helper.OneginiAuthenticatorComperator;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticatorDeregistrationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticatorRegistrationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorDeregistrationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorRegistrationError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiChangePinError;
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
@@ -52,10 +54,10 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.toolbar)
   Toolbar toolbar;
-  @SuppressWarnings({"unused", "WeakerAccess"})
+  @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.settings_authenticator_selector_text)
   TextView loginMethodTextView;
-  @SuppressWarnings({"unused", "WeakerAccess"})
+  @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.authenticators_list)
   RecyclerView authenticatorsRecyclerView;
 
@@ -184,8 +186,18 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
       @Override
       public void onError(final OneginiAuthenticatorRegistrationError error) {
-        authenticators[position].setIsProcessed(false);
-        Toast.makeText(SettingsAuthenticatorsActivity.this, error.getErrorDescription(), Toast.LENGTH_SHORT).show();
+        @OneginiAuthenticatorRegistrationError.AuthenticatorRegistrationErrorType int errorType = error.getErrorType();
+        if (errorType == OneginiChangePinError.USER_DEREGISTERED) {
+          UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(SettingsAuthenticatorsActivity.this).getUserClient().getAuthenticatedUserProfile();
+          if (authenticatedUserProfile == null) {
+            return;
+          }
+          new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onUserDeregistered(authenticatedUserProfile);
+        } else if (errorType == OneginiChangePinError.DEVICE_DEREGISTERED) {
+          new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onDeviceDeregistered();
+        }
+
+        onErrorOccurred(position, error.getErrorDescription());
       }
     });
   }
@@ -204,10 +216,25 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
       @Override
       public void onError(final OneginiAuthenticatorDeregistrationError error) {
-        authenticators[position].setIsProcessed(false);
-        Toast.makeText(SettingsAuthenticatorsActivity.this, error.getErrorDescription(), Toast.LENGTH_SHORT).show();
+        @OneginiAuthenticatorRegistrationError.AuthenticatorRegistrationErrorType int errorType = error.getErrorType();
+        if (errorType == OneginiChangePinError.USER_DEREGISTERED) {
+          UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(SettingsAuthenticatorsActivity.this).getUserClient().getAuthenticatedUserProfile();
+          if (authenticatedUserProfile == null) {
+            return;
+          }
+          new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onUserDeregistered(authenticatedUserProfile);
+        } else if (errorType == OneginiChangePinError.DEVICE_DEREGISTERED) {
+          new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onDeviceDeregistered();
+        }
+
+        onErrorOccurred(position, error.getErrorDescription());
       }
     });
+  }
+
+  private void onErrorOccurred(int position, String errorDescription) {
+    authenticators[position].setIsProcessed(false);
+    Toast.makeText(SettingsAuthenticatorsActivity.this, errorDescription, Toast.LENGTH_SHORT).show();
   }
 
   private void setPinAsPreferredAuthenticator() {

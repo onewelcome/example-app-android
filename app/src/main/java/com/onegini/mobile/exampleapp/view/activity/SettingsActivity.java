@@ -38,6 +38,7 @@ import com.onegini.mobile.sdk.android.handlers.OneginiChangePinHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationEnrollmentHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiChangePinError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationEnrollmentError;
+import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -152,6 +153,8 @@ public class SettingsActivity extends AppCompatActivity {
         @OneginiChangePinError.ChangePinErrorType int errorType = oneginiChangePinError.getErrorType();
         if (errorType == OneginiChangePinError.USER_DEREGISTERED) {
           userDeregistered();
+        } else if (errorType == OneginiChangePinError.DEVICE_DEREGISTERED) {
+          new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
         }
         showToast(oneginiChangePinError.getErrorDescription());
       }
@@ -169,6 +172,12 @@ public class SettingsActivity extends AppCompatActivity {
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     startActivity(intent);
     finish();
+
+    UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(SettingsActivity.this).getUserClient().getAuthenticatedUserProfile();
+    if (authenticatedUserProfile == null) {
+      return;
+    }
+    new DeregistrationUtil(this).onUserDeregistered(authenticatedUserProfile);
   }
 
   private void showToast(final String message) {

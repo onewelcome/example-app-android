@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
+import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
@@ -87,7 +88,7 @@ public class SplashScreenActivity extends Activity {
   }
 
   private void onDeviceDeregistered() {
-    userStorage.clearStorage();
+    new DeregistrationUtil(this).onDeviceDeregistered();
     showToast("Device deregistered");
   }
 

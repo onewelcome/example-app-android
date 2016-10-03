@@ -225,13 +225,13 @@ public class LoginActivity extends Activity {
   }
 
   private void onUserDeregistered(final UserProfile userProfile) {
-    userStorage.removeUser(userProfile);
+    new DeregistrationUtil(this).onUserDeregistered(userProfile);
     showToast("User deregistered");
     setupUserInterface();
   }
 
   private void onDeviceDeregistered() {
-    userStorage.clearStorage();
+    new DeregistrationUtil(this).onDeviceDeregistered();
     showToast("Device deregistered");
     setupUserInterface();
   }

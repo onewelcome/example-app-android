@@ -86,7 +86,8 @@ public class GCMListenerService extends GcmListenerService {
 
         if (oneginiMobileAuthenticationError.getErrorType() == OneginiMobileAuthenticationError.USER_DEREGISTERED) {
           final DeregistrationUtil deregistrationUtil = new DeregistrationUtil(GCMListenerService.this);
-          deregistrationUtil.onUserDeregistered(OneginiSDK.getOneginiClient(GCMListenerService.this).getUserClient().getAuthenticatedUserProfile());
+          // TODO we don't know which user we should remove
+          // deregistrationUtil.onUserDeregistered(OneginiSDK.getOneginiClient(GCMListenerService.this).getUserClient().getAuthenticatedUserProfile()); IMO incorrect
         } else if (oneginiMobileAuthenticationError.getErrorType() == OneginiMobileAuthenticationError.ACTION_CANCELED) {
           // the user denied incoming mobile authentication request
         }
