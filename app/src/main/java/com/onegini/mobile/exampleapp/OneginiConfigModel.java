@@ -54,11 +54,6 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   }
 
   @Override
-  public int getMaxPinFailures() {
-    return 0;
-  }
-
-  @Override
   public String getResourceBaseUrl() {
     return resourceBaseURL;
   }
