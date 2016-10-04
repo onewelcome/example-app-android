@@ -68,7 +68,9 @@ android {
 
 dependencies {
   // Onegini SDK
-  compile 'com.onegini.mobile.sdk.android:onegini-sdk:6.00.02-SNAPSHOT'
+  compile('com.onegini.mobile.sdk.android:onegini-sdk:6.00.02-SNAPSHOT@aar') {
+    transitive = true
+  }
 
   // Google Support
   compile 'com.android.support:appcompat-v7:23.3.0'
