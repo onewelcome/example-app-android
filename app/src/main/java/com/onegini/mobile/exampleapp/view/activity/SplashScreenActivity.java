@@ -77,7 +77,7 @@ public class SplashScreenActivity extends Activity {
         showToast("Please update your Android version to use this application.");
         break;
       case OneginiInitializationError.DEVICE_DEREGISTERED:
-        // in that case clear local storage from device and all user's related data
+        // in this case clear the local storage from the device and all user related data
         onDeviceDeregistered();
         break;
       case OneginiInitializationError.DEVICE_REGISTRATION_ERROR:

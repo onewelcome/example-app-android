@@ -216,7 +216,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
       @Override
       public void onError(final OneginiAuthenticatorDeregistrationError error) {
-        // handle many different errors, below we mapped a few of them
+        // handle different errors, below we mapped a few of them
         @OneginiAuthenticatorRegistrationError.AuthenticatorRegistrationErrorType int errorType = error.getErrorType();
         if (errorType == OneginiChangePinError.USER_DEREGISTERED) {
           UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(SettingsAuthenticatorsActivity.this).getUserClient().getAuthenticatedUserProfile();
