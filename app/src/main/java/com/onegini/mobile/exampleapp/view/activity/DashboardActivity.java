@@ -106,13 +106,20 @@ public class DashboardActivity extends AppCompatActivity {
 
           @Override
           public void onError(final OneginiDeregistrationError oneginiDeregistrationError) {
-            handleDeregistrationError(oneginiDeregistrationError, userProfile);
+            onUserDeregistrationError(oneginiDeregistrationError, userProfile);
           }
         }
     );
   }
 
-  private void handleDeregistrationError(final OneginiDeregistrationError oneginiDeregistrationError, final UserProfile userProfile) {
+  private void onUserDeregistered(final UserProfile userProfile) {
+    new DeregistrationUtil(this).onUserDeregistered(userProfile);
+    showToast("deregisterUserSuccess");
+
+    startLoginActivity();
+  }
+
+  private void onUserDeregistrationError(final OneginiDeregistrationError oneginiDeregistrationError, final UserProfile userProfile) {
     new DeregistrationUtil(this).onUserDeregistered(userProfile);
 
     if (oneginiDeregistrationError.getErrorType() == OneginiDeregistrationError.LOCAL_DEREGISTRATION) {
@@ -162,13 +169,6 @@ public class DashboardActivity extends AppCompatActivity {
       actionBar.setDisplayUseLogoEnabled(true);
       actionBar.setDisplayShowTitleEnabled(false);
     }
-  }
-
-  private void onUserDeregistered(final UserProfile userProfile) {
-    new DeregistrationUtil(this).onUserDeregistered(userProfile);
-    showToast("deregisterUserSuccess");
-
-    startLoginActivity();
   }
 
   private void startLoginActivity() {
