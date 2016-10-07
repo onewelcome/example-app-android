@@ -88,7 +88,7 @@ public class GCMListenerService extends GcmListenerService {
           // supports multiple profiles we handle it when the user tries to login the next time because we don't know which user profile was deregistered at
           // this point.
         } else if (oneginiMobileAuthenticationError.getErrorType() == OneginiMobileAuthenticationError.ACTION_CANCELED) {
-          // the user denied incoming mobile authentication request
+          Toast.makeText(GCMListenerService.this, "The user cancelled the mobile authentication request", Toast.LENGTH_LONG).show();
         }
       }
     });
