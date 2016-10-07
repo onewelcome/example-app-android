@@ -29,6 +29,7 @@ import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
+import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeregisterUserProfileHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiLogoutHandler;
@@ -105,13 +106,22 @@ public class DashboardActivity extends AppCompatActivity {
 
           @Override
           public void onError(final OneginiDeregistrationError oneginiDeregistrationError) {
-            handleDeregistrationError(oneginiDeregistrationError);
+            onUserDeregistrationError(oneginiDeregistrationError, userProfile);
           }
         }
     );
   }
 
-  private void handleDeregistrationError(final OneginiDeregistrationError oneginiDeregistrationError) {
+  private void onUserDeregistered(final UserProfile userProfile) {
+    new DeregistrationUtil(this).onUserDeregistered(userProfile);
+    showToast("deregisterUserSuccess");
+
+    startLoginActivity();
+  }
+
+  private void onUserDeregistrationError(final OneginiDeregistrationError oneginiDeregistrationError, final UserProfile userProfile) {
+    new DeregistrationUtil(this).onUserDeregistered(userProfile);
+
     if (oneginiDeregistrationError.getErrorType() == OneginiDeregistrationError.LOCAL_DEREGISTRATION) {
       showToast("The user was only logged out on the device. The access token has not been invalidated on the server-side.");
     } else if (oneginiDeregistrationError.getErrorType() == OneginiDeregistrationError.GENERAL_ERROR) {
@@ -159,13 +169,6 @@ public class DashboardActivity extends AppCompatActivity {
       actionBar.setDisplayUseLogoEnabled(true);
       actionBar.setDisplayShowTitleEnabled(false);
     }
-  }
-
-  private void onUserDeregistered(final UserProfile userProfile) {
-    showToast("deregisterUserSuccess");
-    userStorage.removeUser(userProfile);
-
-    startLoginActivity();
   }
 
   private void startLoginActivity() {

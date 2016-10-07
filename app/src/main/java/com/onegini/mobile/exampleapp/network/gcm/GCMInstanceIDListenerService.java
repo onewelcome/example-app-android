@@ -16,9 +16,12 @@
 package com.onegini.mobile.exampleapp.network.gcm;
 
 import com.google.android.gms.iid.InstanceIDListenerService;
+import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.storage.SettingsStorage;
+import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationEnrollmentHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationEnrollmentError;
+import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class GCMInstanceIDListenerService extends InstanceIDListenerService {
 
@@ -36,6 +39,10 @@ public class GCMInstanceIDListenerService extends InstanceIDListenerService {
 
       @Override
       public void onError(final OneginiMobileAuthenticationEnrollmentError oneginiMobileAuthenticationEnrollmentError) {
+        // This method is called when a mobile authentication enrollment error occurs, for example when the device is deregistered
+        if (oneginiMobileAuthenticationEnrollmentError.getErrorType() == OneginiMobileAuthenticationEnrollmentError.DEVICE_DEREGISTERED) {
+          new DeregistrationUtil(GCMInstanceIDListenerService.this).onDeviceDeregistered();
+        }
         setMobileAuthenticationEnabled(false);
       }
     };
@@ -44,7 +51,12 @@ public class GCMInstanceIDListenerService extends InstanceIDListenerService {
   }
 
   private void setMobileAuthenticationEnabled(final boolean isEnabled) {
-    SettingsStorage settingsStorage = new SettingsStorage(GCMInstanceIDListenerService.this);
-    settingsStorage.setMobileAuthenticationEnabled(isEnabled);
+    UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
+    if (authenticatedUserProfile == null) {
+      return;
+    }
+
+    final SettingsStorage settingsStorage = new SettingsStorage(GCMInstanceIDListenerService.this);
+    settingsStorage.setMobileAuthenticationEnabled(authenticatedUserProfile, isEnabled);
   }
 }
