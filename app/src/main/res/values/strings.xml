@@ -17,6 +17,7 @@
     <string name="btn_your_devices">Your devices</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_with_fingerprint">Confirm with fingerprint</string>
+    <string name="confirm_with_fido">Confirm with FIDO</string>
     <string name="scan_fingerprint">Touch sensor</string>
     <string name="use_pin_authentication">Use PIN code</string>
     <string name="try_again">Try again…</string>
