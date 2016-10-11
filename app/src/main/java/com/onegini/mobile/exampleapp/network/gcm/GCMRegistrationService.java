@@ -21,6 +21,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 import com.onegini.mobile.exampleapp.BuildConfig;
 import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -31,7 +32,7 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthentication
 
 public class GCMRegistrationService {
 
-  private static final String TAG = "GCMDemo";
+  private static final String TAG = "GCMRegistrationService";
 
   private final Context context;
   private final GCMStorage storage;
@@ -45,7 +46,7 @@ public class GCMRegistrationService {
 
   public void registerGCMService(final OneginiMobileAuthenticationEnrollmentHandler handler) {
     enrollmentHandler = handler;
-    final String regid = getRegistrationId(context);
+    final String regid = getRegistrationId();
     if (regid.isEmpty()) {
       registerInBackground();
     } else {
@@ -58,7 +59,7 @@ public class GCMRegistrationService {
    *
    * @return registration ID, or empty string if there is no existing registration ID.
    */
-  private String getRegistrationId(final Context context) {
+  private String getRegistrationId() {
     final String registrationId = storage.getRegistrationId();
     if (registrationId == null || registrationId.isEmpty()) {
       Log.i(TAG, "Registration not found.");
@@ -76,21 +77,21 @@ public class GCMRegistrationService {
   }
 
   /**
-   * Registers the application with GCM servers asynchronously.
-   * Stores the registration ID and app versionCode in the application's
-   * shared preferences.
+   * Registers the application with GCM servers asynchronously. Stores the registration ID and app versionCode in the application's shared preferences.
    */
   private void registerInBackground() {
     new AsyncTask<Void, Void, Void>() {
       @Override
       protected Void doInBackground(Void... params) {
         try {
-          final GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
-          final String regid = gcm.register(Constants.GCM_SENDER_ID);
+          InstanceID instanceID = InstanceID.getInstance(context);
+          String regid = instanceID.getToken(Constants.GCM_SENDER_ID,
+              GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
           enrollForMobileAuthentication(regid);
           storeRegisteredId(regid);
         } catch (final IOException ex) {
-          enrollmentHandler.onError(new OneginiMobileAuthenticationEnrollmentError(OneginiMobileAuthenticationEnrollmentError.GENERAL_ERROR, "Unable to register in GCM"));
+          enrollmentHandler
+              .onError(new OneginiMobileAuthenticationEnrollmentError(OneginiMobileAuthenticationEnrollmentError.GENERAL_ERROR, "Unable to register in GCM"));
         }
         return null;
       }
