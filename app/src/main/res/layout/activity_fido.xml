@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/welcome_user_text"
+        style="@style/Base.TextAppearance.AppCompat.Headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="@string/welcome_user_text"/>
+
+    <TextView
+        android:id="@+id/pin_title"
+        android:layout_below="@id/welcome_user_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/confirm_with_fido"
+        android:textColor="@color/dark_text"
+        android:textSize="20sp"/>
+
+    <LinearLayout
+        android:id="@+id/content_accept_deny"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+
+        <Button
+            android:id="@+id/auth_accept_button"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="@dimen/big_button_side_margin"
+            android:layout_marginRight="@dimen/big_button_side_margin"
+            android:text="@string/btn_push_accept"/>
+
+        <Button
+            android:id="@+id/auth_deny_button"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="@dimen/big_button_side_margin"
+            android:layout_marginRight="@dimen/big_button_side_margin"
+            android:text="@string/btn_push_deny"/>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/fido_progressbar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/fallback_to_pin_button"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="24dp"
+        android:layout_marginLeft="@dimen/big_button_side_margin"
+        android:layout_marginRight="@dimen/big_button_side_margin"
+        android:text="@string/use_pin_authentication"/>
+
+</RelativeLayout>
