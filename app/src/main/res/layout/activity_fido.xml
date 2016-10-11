@@ -26,16 +26,6 @@
         android:textColor="@color/dark_text"
         android:textSize="20sp"/>
 
-    <Button
-        android:id="@+id/fallback_to_pin_button"
-        style="@style/ButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="24dp"
-        android:layout_marginLeft="@dimen/big_button_side_margin"
-        android:layout_marginRight="@dimen/big_button_side_margin"
-        android:text="@string/use_pin_authentication"/>
-
     <LinearLayout
         android:id="@+id/content_accept_deny"
         android:layout_width="match_parent"
@@ -48,7 +38,7 @@
             android:id="@+id/auth_accept_button"
             style="@style/ButtonStyle"
             android:layout_width="match_parent"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginLeft="@dimen/big_button_side_margin"
             android:layout_marginRight="@dimen/big_button_side_margin"
             android:text="@string/btn_push_accept"/>
@@ -70,5 +60,15 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/fallback_to_pin_button"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="24dp"
+        android:layout_marginLeft="@dimen/big_button_side_margin"
+        android:layout_marginRight="@dimen/big_button_side_margin"
+        android:text="@string/use_pin_authentication"/>
 
 </RelativeLayout>
