@@ -18,6 +18,10 @@ package com.onegini.mobile.exampleapp.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,6 +29,7 @@ import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
+import com.onegini.mobile.exampleapp.view.handler.FidoAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFidoRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationRequestHandler;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
@@ -40,8 +45,14 @@ public class MobileAuthenticationFidoActivity extends Activity {
 
   @Bind(R.id.welcome_user_text)
   TextView userTextView;
-  @Bind(R.id.push_text)
+  @Bind(R.id.pin_title)
   TextView messageTextView;
+  @Bind(R.id.content_accept_deny)
+  LinearLayout acceptDenyLayout;
+  @Bind(R.id.fallback_to_pin_button)
+  Button pinFallbackButton;
+  @Bind(R.id.fido_progressbar)
+  ProgressBar progressBar;
 
   private User user;
   private String message;
@@ -50,7 +61,7 @@ public class MobileAuthenticationFidoActivity extends Activity {
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_push_simple);
+    setContentView(R.layout.activity_fido);
     ButterKnife.bind(this);
     userStorage = new UserStorage(this);
     initialize();
@@ -68,7 +79,7 @@ public class MobileAuthenticationFidoActivity extends Activity {
   }
 
   @SuppressWarnings("unused")
-  @OnClick(R.id.push_accept_button)
+  @OnClick(R.id.auth_accept_button)
   public void onAcceptClicked() {
     if (MobileAuthenticationFidoRequestHandler.CALLBACK != null) {
       MobileAuthenticationFidoRequestHandler.CALLBACK.acceptAuthenticationRequest();
@@ -76,10 +87,18 @@ public class MobileAuthenticationFidoActivity extends Activity {
   }
 
   @SuppressWarnings("unused")
-  @OnClick(R.id.push_deny_button)
+  @OnClick(R.id.auth_deny_button)
   public void onDenyClicked() {
-    if (MobileAuthenticationRequestHandler.CALLBACK != null) {
+    if (MobileAuthenticationFidoRequestHandler.CALLBACK != null) {
       MobileAuthenticationFidoRequestHandler.CALLBACK.denyAuthenticationRequest();
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.fallback_to_pin_button)
+  public void onFallbackClicked() {
+    if (MobileAuthenticationFidoRequestHandler.CALLBACK != null) {
+      MobileAuthenticationFidoRequestHandler.CALLBACK.fallbackToPin();
     }
   }
 
@@ -92,12 +111,14 @@ public class MobileAuthenticationFidoActivity extends Activity {
     final Intent intent = getIntent();
     final String profileId = intent.getStringExtra(EXTRA_PROFILE_ID);
     message = intent.getStringExtra(EXTRA_MESSAGE);
-
     user = userStorage.loadUser(new UserProfile(profileId));
   }
 
   private void initLayout() {
     userTextView.setText(getString(R.string.welcome_user_text, user.getName()));
+    acceptDenyLayout.setVisibility(View.VISIBLE);
+    pinFallbackButton.setVisibility(View.VISIBLE);
+    progressBar.setVisibility(View.GONE);
     messageTextView.setText(message);
   }
 }
