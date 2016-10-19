@@ -56,6 +56,7 @@ public class SettingsActivity extends AppCompatActivity {
   Button changeAuthentication;
 
   private SettingsStorage settingsStorage;
+  private UserProfile authenticatedUserProfile;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -64,6 +65,7 @@ public class SettingsActivity extends AppCompatActivity {
     ButterKnife.bind(this);
 
     settingsStorage = new SettingsStorage(this);
+    authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
   }
 
   @Override
@@ -94,7 +96,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     final int googlePlayServicesAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
     if (googlePlayServicesAvailable == ConnectionResult.SUCCESS) {
-      if (settingsStorage.isMobileAuthenticationEnabled(OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile())) {
+      if (settingsStorage.isMobileAuthenticationEnabled(authenticatedUserProfile)) {
         mobileAuthButton.setText(R.string.settings_mobile_enrollment_on);
       } else {
         mobileAuthButton.setText(R.string.settings_mobile_enrollment_off);
@@ -121,7 +123,7 @@ public class SettingsActivity extends AppCompatActivity {
     final OneginiMobileAuthenticationEnrollmentHandler mobileAuthenticationEnrollmentHandler = new OneginiMobileAuthenticationEnrollmentHandler() {
       @Override
       public void onSuccess() {
-        settingsStorage.setMobileAuthenticationEnabled(OneginiSDK.getOneginiClient(SettingsActivity.this).getUserClient().getAuthenticatedUserProfile(), true);
+        settingsStorage.setMobileAuthenticationEnabled(authenticatedUserProfile, true);
         onMobileAuthEnabled();
         showToast("Mobile authentication enabled");
       }
@@ -168,16 +170,12 @@ public class SettingsActivity extends AppCompatActivity {
   }
 
   private void userDeregistered() {
+    new DeregistrationUtil(this).onUserDeregistered(authenticatedUserProfile);
+
     final Intent intent = new Intent(this, LoginActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     startActivity(intent);
     finish();
-
-    UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(SettingsActivity.this).getUserClient().getAuthenticatedUserProfile();
-    if (authenticatedUserProfile == null) {
-      return;
-    }
-    new DeregistrationUtil(this).onUserDeregistered(authenticatedUserProfile);
   }
 
   private void showToast(final String message) {
