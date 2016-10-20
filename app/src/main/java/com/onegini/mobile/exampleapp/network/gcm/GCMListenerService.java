@@ -65,7 +65,8 @@ public class GCMListenerService extends GcmListenerService {
 
       @Override
       public void onError(final OneginiInitializationError error) {
-        if (error.getErrorType() == OneginiInitializationError.DEVICE_DEREGISTERED) {
+        @OneginiInitializationError.InitializationErrorType final int errorType = error.getErrorType();
+        if (errorType == OneginiInitializationError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(getApplicationContext()).onDeviceDeregistered();
         }
         Toast.makeText(GCMListenerService.this, error.getErrorDescription(), Toast.LENGTH_LONG).show();
@@ -83,11 +84,12 @@ public class GCMListenerService extends GcmListenerService {
       @Override
       public void onError(final OneginiMobileAuthenticationError oneginiMobileAuthenticationError) {
         Toast.makeText(GCMListenerService.this, oneginiMobileAuthenticationError.getErrorDescription(), Toast.LENGTH_SHORT).show();
-        if (oneginiMobileAuthenticationError.getErrorType() == OneginiMobileAuthenticationError.USER_DEREGISTERED) {
+        @OneginiInitializationError.InitializationErrorType final int errorType = oneginiMobileAuthenticationError.getErrorType();
+        if (errorType == OneginiMobileAuthenticationError.USER_DEREGISTERED) {
           // the user was deregister, for example he provided a wrong PIN for too many times. You can handle the deregistration here, but since this application
           // supports multiple profiles we handle it when the user tries to login the next time because we don't know which user profile was deregistered at
           // this point.
-        } else if (oneginiMobileAuthenticationError.getErrorType() == OneginiMobileAuthenticationError.ACTION_CANCELED) {
+        } else if (errorType == OneginiMobileAuthenticationError.ACTION_CANCELED) {
           Toast.makeText(GCMListenerService.this, "The user cancelled the mobile authentication request", Toast.LENGTH_LONG).show();
         }
       }

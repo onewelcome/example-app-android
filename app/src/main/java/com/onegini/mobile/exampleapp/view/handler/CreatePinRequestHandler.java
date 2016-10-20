@@ -118,7 +118,6 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
 
   private void handlePinValidationError(final OneginiPinValidationError oneginiPinValidationError) {
     @OneginiPinValidationError.PinValidationErrorType int errorType = oneginiPinValidationError.getErrorType();
-
     switch (errorType) {
       case OneginiPinValidationError.WRONG_PIN_LENGTH:
         notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_invalid_length));

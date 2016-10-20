@@ -192,7 +192,7 @@ public class LoginActivity extends Activity {
   }
 
   private void handleAuthenticationErrors(final OneginiAuthenticationError error, final UserProfile userProfile) {
-    int errorType = error.getErrorType();
+    @OneginiAuthenticationError.AuthenticationErrorType int errorType = error.getErrorType();
     switch (errorType) {
       case OneginiAuthenticationError.ACTION_CANCELED:
         showToast("Authentication was cancelled");

@@ -113,10 +113,11 @@ public class RegistrationActivity extends Activity {
   }
 
   private void handleRegistrationErrors(final OneginiRegistrationError oneginiRegistrationError) {
-    final int errorType = oneginiRegistrationError.getErrorType();
+    @OneginiRegistrationError.RegistrationErrorType final int errorType = oneginiRegistrationError.getErrorType();
     switch (errorType) {
       case OneginiRegistrationError.DEVICE_DEREGISTERED:
         showToast("The device was deregistered, please try registering again");
+
         new DeregistrationUtil(this).onDeviceDeregistered();
         break;
       case OneginiRegistrationError.ACTION_CANCELED:
