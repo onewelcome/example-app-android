@@ -73,9 +73,9 @@ public class LoginActivity extends Activity {
   TextView applicationDetailsTextView;
 
   private List<User> listOfUsers = new ArrayList<>();
-  private UserStorage userStorage;
   private boolean userIsLoggingIn = false;
   private Subscription subscription;
+  private UserProfile authenticatedUserProfile;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -87,6 +87,7 @@ public class LoginActivity extends Activity {
   }
 
   private void authenticateDevice() {
+    authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
     OneginiSDK.getOneginiClient(this).getDeviceClient()
         .authenticateDevice(new String[]{ "application-details" }, new OneginiDeviceAuthenticationHandler() {
               @Override
@@ -96,17 +97,14 @@ public class LoginActivity extends Activity {
 
               @Override
               public void onError(final OneginiDeviceAuthenticationError error) {
-                final DeregistrationUtil deregistrationUtil = new DeregistrationUtil(LoginActivity.this);
-                if (error.getErrorType() == OneginiDeviceAuthenticationError.DEVICE_DEREGISTERED) {
-                  deregistrationUtil.onDeviceDeregistered();
-                } else if (error.getErrorType() == OneginiDeviceAuthenticationError.USER_DEREGISTERED) {
-                  UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(LoginActivity.this).getUserClient().getAuthenticatedUserProfile();
-                  if (authenticatedUserProfile == null) {
-                    return;
-                  }
-                  deregistrationUtil.onUserDeregistered(authenticatedUserProfile);
+                final @OneginiDeviceAuthenticationError.DeviceAuthenticationErrorType int errorType = error.getErrorType();
+                if (errorType == OneginiDeviceAuthenticationError.DEVICE_DEREGISTERED) {
+                  onDeviceDeregistered();
+                } else if (errorType == OneginiDeviceAuthenticationError.USER_DEREGISTERED) {
+                  onUserDeregistered(authenticatedUserProfile);
+                } else {
+                  displayError(error);
                 }
-                displayError(error);
               }
             }
         );
@@ -265,7 +263,7 @@ public class LoginActivity extends Activity {
 
   private void prepareListOfProfiles() {
     final Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(this).getUserClient().getUserProfiles();
-    userStorage = new UserStorage(this);
+    final UserStorage userStorage = new UserStorage(this);
     listOfUsers = userStorage.loadUsers(userProfiles);
   }
 

@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -45,7 +46,6 @@ import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticatorDeregistratio
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticatorRegistrationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorDeregistrationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorRegistrationError;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiChangePinError;
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
@@ -64,6 +64,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   private AuthenticatorListItem[] authenticators;
   private AuthenticatorsAdapter authenticatorsAdapter;
   private UserClient userClient;
+  private UserProfile authenticatedUserProfile;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     setContentView(R.layout.activity_settings_authenticators);
     ButterKnife.bind(this);
     userClient = OneginiSDK.getOneginiClient(this).getUserClient();
+    authenticatedUserProfile = userClient.getAuthenticatedUserProfile();
   }
 
   @Override
@@ -93,8 +95,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.settings_authenticator_selector)
   public void onChangePreferredAuthenticatorClick() {
-    final UserProfile userProfile = userClient.getAuthenticatedUserProfile();
-    final Set<OneginiAuthenticator> registeredAuthenticators = userClient.getRegisteredAuthenticators(userProfile);
+    final Set<OneginiAuthenticator> registeredAuthenticators = userClient.getRegisteredAuthenticators(authenticatedUserProfile);
 
     final List<String> authenticatorNames = new ArrayList<>(registeredAuthenticators.size());
     for (final OneginiAuthenticator authenticator : registeredAuthenticators) {
@@ -144,8 +145,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   }
 
   private void prepareAuthenticatorsList() {
-    final UserProfile userProfile = userClient.getAuthenticatedUserProfile();
-    final Set<OneginiAuthenticator> allAuthenticators = userClient.getAllAuthenticators(userProfile);
+    final Set<OneginiAuthenticator> allAuthenticators = userClient.getAllAuthenticators(authenticatedUserProfile);
     final OneginiAuthenticator[] oneginiAuthenticators = sortLists(allAuthenticators);
     authenticators = wrapAuthenticatorsToListItems(oneginiAuthenticators);
     authenticatorsAdapter = new AuthenticatorsAdapter(authenticators, new AuthenticatorClickListener());
@@ -187,14 +187,12 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
       @Override
       public void onError(final OneginiAuthenticatorRegistrationError error) {
         @OneginiAuthenticatorRegistrationError.AuthenticatorRegistrationErrorType int errorType = error.getErrorType();
-        if (errorType == OneginiChangePinError.USER_DEREGISTERED) {
-          UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(SettingsAuthenticatorsActivity.this).getUserClient().getAuthenticatedUserProfile();
-          if (authenticatedUserProfile == null) {
-            return;
-          }
+        if (errorType == OneginiAuthenticatorRegistrationError.USER_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onUserDeregistered(authenticatedUserProfile);
-        } else if (errorType == OneginiChangePinError.DEVICE_DEREGISTERED) {
+          startLoginActivity();
+        } else if (errorType == OneginiAuthenticatorRegistrationError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onDeviceDeregistered();
+          startLoginActivity();
         }
 
         onErrorOccurred(position, error.getErrorDescription());
@@ -216,16 +214,9 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
       @Override
       public void onError(final OneginiAuthenticatorDeregistrationError error) {
-        // handle different errors, below we mapped a few of them
-        @OneginiAuthenticatorRegistrationError.AuthenticatorRegistrationErrorType int errorType = error.getErrorType();
-        if (errorType == OneginiChangePinError.USER_DEREGISTERED) {
-          UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(SettingsAuthenticatorsActivity.this).getUserClient().getAuthenticatedUserProfile();
-          if (authenticatedUserProfile == null) {
-            return;
-          }
-          new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onUserDeregistered(authenticatedUserProfile);
-        } else if (errorType == OneginiChangePinError.DEVICE_DEREGISTERED) {
-          new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onDeviceDeregistered();
+        @OneginiAuthenticatorDeregistrationError.AuthenticatorDeregistrationErrorType int errorType = error.getErrorType();
+        if (errorType == OneginiAuthenticatorDeregistrationError.USER_NOT_AUTHENTICATED) {
+          startLoginActivity();
         }
 
         onErrorOccurred(position, error.getErrorDescription());
@@ -239,8 +230,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   }
 
   private void setPinAsPreferredAuthenticator() {
-    final UserProfile userProfile = userClient.getAuthenticatedUserProfile();
-    final Set<OneginiAuthenticator> allAuthenticators = userClient.getAllAuthenticators(userProfile);
+    final Set<OneginiAuthenticator> allAuthenticators = userClient.getAllAuthenticators(authenticatedUserProfile);
     for (final OneginiAuthenticator auth : allAuthenticators) {
       if (auth.getType() == OneginiAuthenticator.PIN) {
         setPreferredAuthenticator(auth);
@@ -266,5 +256,11 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
         registerAuthenticator(clickedAuthenticatorItem.getAuthenticator(), position);
       }
     }
+  }
+
+  private void startLoginActivity() {
+    final Intent intent = new Intent(this, LoginActivity.class);
+    startActivity(intent);
+    finish();
   }
 }
