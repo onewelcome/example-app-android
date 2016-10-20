@@ -1,11 +1,15 @@
 # Android Example App
-If you want to see working example app using Onegini SDK then you can open Example App project in Android Studio to test it live.
+
+The Android Example App is using the Onegini Android SDK to perform secure authentication and resource calls. Please have a look at the 
+[App developer quickstart](https://docs.onegini.com/app-developer-quickstart.html) if you want more information about how to get setup with this 
+example app.
 
 ## Resolving dependencies
 
 Before you can compile the application it must be able to resolve it's dependencies. The Onegini Android SDK is one of those dependencies. We have an 
 Artifactory repository that distributes the required dependencies. Make sure that you have access to the Onegini Artifactory repository (https://repo.onegini.com).
-If you don't have access please contact Onegini Support. Access to Artifactory is required to let Gradle download the Onegini Android SDK library.
+If you don't have access, no problem just go to the [App developer quickstart](https://docs.onegini.com/app-developer-quickstart.html#step1) and perform the 
+first step. Access to Artifactory is required to let Gradle download the Onegini Android SDK library.
 
 When you have access you have to make sure that your Artifactory username and password are set in the `gradle.properties` file in your Gradle user home 
 (e.g. ~/.gradle):
