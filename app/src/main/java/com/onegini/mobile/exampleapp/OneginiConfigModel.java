@@ -80,11 +80,6 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   }
 
   @Override
-  public int getMaxPinFailures() {
-    return maxPinFailures;
-  }
-
-  @Override
   public String toString() {
     return "ConfigModel{" +
             "  appIdentifier='" + appIdentifier + "'" +
