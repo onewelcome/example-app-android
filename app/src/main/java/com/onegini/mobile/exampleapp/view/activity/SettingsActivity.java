@@ -130,7 +130,8 @@ public class SettingsActivity extends AppCompatActivity {
 
       @Override
       public void onError(final OneginiMobileAuthenticationEnrollmentError error) {
-        if (error.getErrorType() == OneginiMobileAuthenticationEnrollmentError.DEVICE_DEREGISTERED) {
+        @OneginiMobileAuthenticationEnrollmentError.MobileAuthenticationEnrollmentErrorType final int errorType = error.getErrorType();
+        if (errorType == OneginiMobileAuthenticationEnrollmentError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
         }
 
