@@ -20,14 +20,15 @@ import java.util.Arrays;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
+import com.onegini.mobile.exampleapp.OneginiSDK;
+import com.onegini.mobile.exampleapp.R;
+import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.activity.PinActivity;
 import com.onegini.mobile.sdk.android.handlers.OneginiPinValidationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiPinValidationError;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiCreatePinRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiPinCallback;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
-import com.onegini.mobile.exampleapp.OneginiSDK;
-import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.view.activity.PinActivity;
 
 public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
 
@@ -116,8 +117,7 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
   }
 
   private void handlePinValidationError(final OneginiPinValidationError oneginiPinValidationError) {
-    int errorType = oneginiPinValidationError.getErrorType();
-
+    @OneginiPinValidationError.PinValidationErrorType int errorType = oneginiPinValidationError.getErrorType();
     switch (errorType) {
       case OneginiPinValidationError.WRONG_PIN_LENGTH:
         notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_invalid_length));
@@ -131,6 +131,9 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
       case OneginiPinValidationError.PIN_USES_SIMILAR_DIGITS:
         notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_similar));
         break;
+      case OneginiPinValidationError.DEVICE_DEREGISTERED:
+        new DeregistrationUtil(context).onDeviceDeregistered();
+      case OneginiPinValidationError.GENERAL_ERROR:
       default:
         notifyActivity(context.getString(R.string.pin_title_choose_pin), oneginiPinValidationError.getErrorDescription());
         break;

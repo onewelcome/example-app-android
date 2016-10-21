@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
+import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
@@ -63,7 +64,7 @@ public class SplashScreenActivity extends Activity {
   }
 
   private void handleInitializationErrors(final OneginiInitializationError error) {
-    int errorType = error.getErrorType();
+    @OneginiInitializationError.InitializationErrorType int errorType = error.getErrorType();
     switch (errorType) {
       case OneginiInitializationError.NETWORK_CONNECTIVITY_PROBLEM:
       case OneginiInitializationError.SERVER_NOT_REACHABLE:
@@ -76,8 +77,10 @@ public class SplashScreenActivity extends Activity {
         showToast("Please update your Android version to use this application.");
         break;
       case OneginiInitializationError.DEVICE_DEREGISTERED:
+        // in this case clear the local storage from the device and all user related data
         onDeviceDeregistered();
         break;
+      case OneginiInitializationError.DEVICE_REGISTRATION_ERROR:
       case OneginiInitializationError.GENERAL_ERROR:
       default:
         // Just display the error for other, less relevant errors
@@ -87,7 +90,7 @@ public class SplashScreenActivity extends Activity {
   }
 
   private void onDeviceDeregistered() {
-    userStorage.clearStorage();
+    new DeregistrationUtil(this).onDeviceDeregistered();
     showToast("Device deregistered");
   }
 

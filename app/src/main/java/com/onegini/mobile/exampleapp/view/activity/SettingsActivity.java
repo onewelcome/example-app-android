@@ -33,10 +33,12 @@ import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.network.gcm.GCMRegistrationService;
 import com.onegini.mobile.exampleapp.storage.SettingsStorage;
+import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.handlers.OneginiChangePinHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationEnrollmentHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiChangePinError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationEnrollmentError;
+import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -54,6 +56,7 @@ public class SettingsActivity extends AppCompatActivity {
   Button changeAuthentication;
 
   private SettingsStorage settingsStorage;
+  private UserProfile authenticatedUserProfile;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -62,6 +65,7 @@ public class SettingsActivity extends AppCompatActivity {
     ButterKnife.bind(this);
 
     settingsStorage = new SettingsStorage(this);
+    authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
   }
 
   @Override
@@ -92,7 +96,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     final int googlePlayServicesAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
     if (googlePlayServicesAvailable == ConnectionResult.SUCCESS) {
-      if (settingsStorage.isMobileAuthenticationEnabled()) {
+      if (settingsStorage.isMobileAuthenticationEnabled(authenticatedUserProfile)) {
         mobileAuthButton.setText(R.string.settings_mobile_enrollment_on);
       } else {
         mobileAuthButton.setText(R.string.settings_mobile_enrollment_off);
@@ -119,14 +123,19 @@ public class SettingsActivity extends AppCompatActivity {
     final OneginiMobileAuthenticationEnrollmentHandler mobileAuthenticationEnrollmentHandler = new OneginiMobileAuthenticationEnrollmentHandler() {
       @Override
       public void onSuccess() {
-        settingsStorage.setMobileAuthenticationEnabled(true);
+        settingsStorage.setMobileAuthenticationEnabled(authenticatedUserProfile, true);
         onMobileAuthEnabled();
         showToast("Mobile authentication enabled");
       }
 
       @Override
-      public void onError(final OneginiMobileAuthenticationEnrollmentError oneginiMobileAuthenticationEnrollmentError) {
-        showToast("Mobile authentication error - " + oneginiMobileAuthenticationEnrollmentError.getErrorDescription());
+      public void onError(final OneginiMobileAuthenticationEnrollmentError error) {
+        @OneginiMobileAuthenticationEnrollmentError.MobileAuthenticationEnrollmentErrorType final int errorType = error.getErrorType();
+        if (errorType == OneginiMobileAuthenticationEnrollmentError.DEVICE_DEREGISTERED) {
+          new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
+        }
+
+        showToast("Mobile authentication error - " + error.getErrorDescription());
       }
     };
     final GCMRegistrationService gcmRegistrationService = new GCMRegistrationService(this);
@@ -147,6 +156,8 @@ public class SettingsActivity extends AppCompatActivity {
         @OneginiChangePinError.ChangePinErrorType int errorType = oneginiChangePinError.getErrorType();
         if (errorType == OneginiChangePinError.USER_DEREGISTERED) {
           userDeregistered();
+        } else if (errorType == OneginiChangePinError.DEVICE_DEREGISTERED) {
+          new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
         }
         showToast(oneginiChangePinError.getErrorDescription());
       }
@@ -160,6 +171,8 @@ public class SettingsActivity extends AppCompatActivity {
   }
 
   private void userDeregistered() {
+    new DeregistrationUtil(this).onUserDeregistered(authenticatedUserProfile);
+
     final Intent intent = new Intent(this, LoginActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     startActivity(intent);

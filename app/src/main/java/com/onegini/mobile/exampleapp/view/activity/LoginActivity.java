@@ -39,6 +39,7 @@ import com.onegini.mobile.exampleapp.model.ApplicationDetails;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.network.AnonymousService;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
+import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeviceAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
@@ -72,9 +73,9 @@ public class LoginActivity extends Activity {
   TextView applicationDetailsTextView;
 
   private List<User> listOfUsers = new ArrayList<>();
-  private UserStorage userStorage;
   private boolean userIsLoggingIn = false;
   private Subscription subscription;
+  private UserProfile authenticatedUserProfile;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -86,18 +87,27 @@ public class LoginActivity extends Activity {
   }
 
   private void authenticateDevice() {
+    authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
     OneginiSDK.getOneginiClient(this).getDeviceClient()
         .authenticateDevice(new String[]{ "application-details" }, new OneginiDeviceAuthenticationHandler() {
-          @Override
-          public void onSuccess() {
-            callAnonymousResourceCallToFetchApplicationDetails();
-          }
+              @Override
+              public void onSuccess() {
+                callAnonymousResourceCallToFetchApplicationDetails();
+              }
 
-          @Override
-          public void onError(final OneginiDeviceAuthenticationError error) {
-            displayError(error);
-          }
-        });
+              @Override
+              public void onError(final OneginiDeviceAuthenticationError error) {
+                final @OneginiDeviceAuthenticationError.DeviceAuthenticationErrorType int errorType = error.getErrorType();
+                if (errorType == OneginiDeviceAuthenticationError.DEVICE_DEREGISTERED) {
+                  onDeviceDeregistered();
+                } else if (errorType == OneginiDeviceAuthenticationError.USER_DEREGISTERED) {
+                  onUserDeregistered(authenticatedUserProfile);
+                } else {
+                  displayError(error);
+                }
+              }
+            }
+        );
   }
 
   private void callAnonymousResourceCallToFetchApplicationDetails() {
@@ -182,7 +192,7 @@ public class LoginActivity extends Activity {
   }
 
   private void handleAuthenticationErrors(final OneginiAuthenticationError error, final UserProfile userProfile) {
-    int errorType = error.getErrorType();
+    @OneginiAuthenticationError.AuthenticationErrorType int errorType = error.getErrorType();
     switch (errorType) {
       case OneginiAuthenticationError.ACTION_CANCELED:
         showToast("Authentication was cancelled");
@@ -212,13 +222,13 @@ public class LoginActivity extends Activity {
   }
 
   private void onUserDeregistered(final UserProfile userProfile) {
-    userStorage.removeUser(userProfile);
+    new DeregistrationUtil(this).onUserDeregistered(userProfile);
     showToast("User deregistered");
     setupUserInterface();
   }
 
   private void onDeviceDeregistered() {
-    userStorage.clearStorage();
+    new DeregistrationUtil(this).onDeviceDeregistered();
     showToast("Device deregistered");
     setupUserInterface();
   }
@@ -253,7 +263,7 @@ public class LoginActivity extends Activity {
 
   private void prepareListOfProfiles() {
     final Set<UserProfile> userProfiles = OneginiSDK.getOneginiClient(this).getUserClient().getUserProfiles();
-    userStorage = new UserStorage(this);
+    final UserStorage userStorage = new UserStorage(this);
     listOfUsers = userStorage.loadUsers(userProfiles);
   }
 
