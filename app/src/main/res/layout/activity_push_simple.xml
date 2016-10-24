@@ -4,26 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <include
         android:id="@+id/welcome_user_text"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content"
-        style="@style/Base.TextAppearance.AppCompat.Headline"
-        android:text="@string/welcome_user_text"/>
+        layout="@layout/view_welcome_user_text"/>
 
     <TextView
         android:id="@+id/push_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
-        android:text="Simple push message"
-        android:textColor="@color/dark_text"
-        android:textSize="20sp"
-        android:layout_below="@+id/welcome_user_text"
-        android:layout_marginTop="40dp"
-        android:layout_centerHorizontal="true"/>
+        android:text="@string/simple_push_message"
+        android:layout_below="@id/welcome_user_text"
+        style="@style/AuthenticatorMessageStyle"/>
 
     <LinearLayout
         android:layout_width="match_parent"

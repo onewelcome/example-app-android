@@ -5,49 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/pin_keyboard_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:orientation="vertical">
-
-        <include
-            android:id="@+id/pin_keyboard"
-            layout="@layout/pin_keyboard"/>
-
-        <Button
-            android:id="@+id/pin_deny_button"
-            style="@style/PinKeyboardKeyButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_marginTop="1dp"
-            android:text="@string/pin_deny_button_label"
-            android:visibility="gone"/>
-
-    </LinearLayout>
-
-    <TextView
+    <include
         android:id="@+id/welcome_user_text"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content"
-        style="@style/Base.TextAppearance.AppCompat.Headline"
-        android:text="@string/welcome_user_text"/>
+        layout="@layout/view_welcome_user_text"/>
 
     <TextView
         android:id="@+id/pin_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:fontFamily="sans-serif-medium"
         android:text="@string/pin_title_enter_pin"
-        android:textColor="@color/dark_text"
-        android:textSize="20sp"/>
+        android:layout_below="@id/welcome_user_text"
+        style="@style/AuthenticatorMessageStyle"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -100,5 +66,28 @@
             tools:text="Lorem ipsum"/>
 
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/pin_keyboard_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/pin_keyboard"
+            layout="@layout/pin_keyboard"/>
+
+        <Button
+            android:id="@+id/pin_deny_button"
+            style="@style/PinKeyboardKeyButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_marginTop="1dp"
+            android:text="@string/pin_deny_button_label"
+            android:visibility="gone"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
