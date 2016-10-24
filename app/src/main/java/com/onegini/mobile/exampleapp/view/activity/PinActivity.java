@@ -15,7 +15,6 @@
  */
 package com.onegini.mobile.exampleapp.view.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -31,13 +30,9 @@ import com.onegini.mobile.exampleapp.view.handler.PinAuthenticationRequestHandle
 import com.onegini.mobile.exampleapp.view.helper.PinInputFields;
 import com.onegini.mobile.exampleapp.view.helper.PinKeyboard;
 
-public class PinActivity extends Activity {
+public class PinActivity extends AuthenticationActivity {
 
   private static final int MAX_DIGITS = 5;
-
-  public static final String EXTRA_TITLE = "title";
-  public static final String EXTRA_MESSAGE = "message";
-  public static final String EXTRA_USER_NAME = "user_name";
 
   private static boolean isCreatePinFlow = false;
   private static int remainingFailedAttempts = 0;
@@ -50,20 +45,10 @@ public class PinActivity extends Activity {
     PinActivity.remainingFailedAttempts = remainingFailedAttempts;
   }
 
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.welcome_user_text)
-  TextView welcomeTextView;
-  @SuppressWarnings("unused")
-  @Bind(R.id.pin_title)
-  TextView screenTitleTextView;
   @SuppressWarnings("unused")
   @Bind(R.id.pin_error_message)
   TextView errorTextView;
   private final ImageView[] pinInputs = new ImageView[MAX_DIGITS];
-
-  private String screenTitle;
-  private String screenMessage;
-  private String userName;
 
   private PinKeyboard pinKeyboard;
   private PinInputFields pinInputFields;
@@ -96,18 +81,11 @@ public class PinActivity extends Activity {
   }
 
   private void initialize() {
-    initPinInputs();
     parseIntent();
+    initPinInputs();
     initListeners();
     initLayout();
     initKeyboard();
-  }
-
-  private void parseIntent() {
-    final Bundle extras = getIntent().getExtras();
-    screenTitle = extras.getString(EXTRA_TITLE, "");
-    screenMessage = extras.getString(EXTRA_MESSAGE, "");
-    userName = extras.getString(EXTRA_USER_NAME, "");
   }
 
   private void initListeners() {
@@ -139,26 +117,9 @@ public class PinActivity extends Activity {
     pinKeyboard.initLayout(keyboardLayout, getResources(), getPackageName());
   }
 
-  private void updateTexts() {
-    updateWelcomeText();
-    updateTitleText();
+  protected void updateTexts() {
+    super.updateTexts();
     updateErrorText();
-  }
-
-  private void updateWelcomeText() {
-    if (isNotBlank(userName)) {
-      welcomeTextView.setText(getString(R.string.welcome_user_text, userName));
-    } else {
-      welcomeTextView.setVisibility(View.INVISIBLE);
-    }
-  }
-
-  private void updateTitleText() {
-    if (isNotBlank(screenTitle)) {
-      screenTitleTextView.setText(screenTitle);
-    } else {
-      screenTitleTextView.setVisibility(View.INVISIBLE);
-    }
   }
 
   private void updateErrorText() {
@@ -171,14 +132,6 @@ public class PinActivity extends Activity {
     } else {
       errorTextView.setVisibility(View.INVISIBLE);
     }
-  }
-
-  private boolean isNotBlank(final String string) {
-    return !isBlank(string);
-  }
-
-  private boolean isBlank(final String string) {
-    return string == null || string.length() == 0;
   }
 
   private void resetView() {
