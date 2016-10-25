@@ -56,14 +56,6 @@ public class FingerprintActivity extends AuthenticationActivity {
     actionText = getIntent().getStringExtra(EXTRA_ACTION);
   }
 
-  @Override
-  protected void onPostCreate(final Bundle savedInstanceState) {
-    super.onPostCreate(savedInstanceState);
-    if (FingerprintAuthenticationRequestHandler.fingerprintCallback != null) {
-      FingerprintAuthenticationRequestHandler.fingerprintCallback.acceptAuthenticationRequest();
-    }
-  }
-
   protected void updateTexts() {
     super.updateTexts();
     if (EXTRA_SHOW_SCANNING.equals(actionText)) {
