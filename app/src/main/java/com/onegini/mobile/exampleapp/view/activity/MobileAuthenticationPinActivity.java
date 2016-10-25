@@ -79,7 +79,7 @@ public class MobileAuthenticationPinActivity extends AuthenticationActivity {
     }
   }
 
-  private void initialize() {
+  protected void initialize() {
     parseIntent();
     initPinListener();
     initLayout();

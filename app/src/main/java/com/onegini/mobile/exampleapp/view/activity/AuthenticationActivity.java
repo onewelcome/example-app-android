@@ -17,6 +17,7 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -38,17 +39,22 @@ public abstract class AuthenticationActivity extends Activity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.authenticator_message)
   TextView authenticatorMessage;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.pin_error_message)
-  TextView errorTextView;
 
-  private String screenMessage;
+  private String message;
   private String userName;
   protected String errorMessage;
 
+  protected abstract void initialize();
+
+  @Override
+  protected void onNewIntent(final Intent intent) {
+    setIntent(intent);
+    initialize();
+  }
+
   protected void parseIntent() {
     final Bundle extras = getIntent().getExtras();
-    screenMessage = extras.getString(EXTRA_MESSAGE, "");
+    message = extras.getString(EXTRA_MESSAGE, "");
     errorMessage = extras.getString(EXTRA_ERROR_MESSAGE, "");
 
     final String userProfileId = extras.getString(EXTRA_USER_PROFILE_ID, "");
@@ -65,7 +71,7 @@ public abstract class AuthenticationActivity extends Activity {
 
   protected void updateTexts() {
     updateWelcomeText();
-    updateTitleText();
+    updateAuthenticatorMessage();
   }
 
   private void updateWelcomeText() {
@@ -76,10 +82,10 @@ public abstract class AuthenticationActivity extends Activity {
     }
   }
 
-  private void updateTitleText() {
-    if (isNotBlank(screenMessage)) {
-      authenticatorMessage.setText(screenMessage);
-    } else {
+  private void updateAuthenticatorMessage() {
+    if (isNotBlank(message)) {
+      authenticatorMessage.setText(message);
+    } else if (isBlank(authenticatorMessage.getText().toString())){
       authenticatorMessage.setVisibility(View.INVISIBLE);
     }
   }

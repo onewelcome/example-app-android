@@ -9,20 +9,16 @@
         layout="@layout/view_welcome_user_text"/>
 
     <TextView
-        android:id="@+id/confirmation_text"
-        style="@style/Base.TextAppearance.AppCompat.Headline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/welcome_user_text"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="@string/confirm_with_fingerprint"/>
+        android:id="@+id/authenticator_message"
+        android:text="@string/confirm_with_fingerprint"
+        android:layout_below="@id/welcome_user_text"
+        style="@style/AuthenticatorMessageStyle"/>
 
     <TextView
         android:id="@+id/action_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/confirmation_text"
+        android:layout_below="@+id/authenticator_message"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp"
         android:fontFamily="sans-serif-medium"

@@ -15,12 +15,13 @@
  */
 package com.onegini.mobile.exampleapp.view.activity;
 
-import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
+import android.widget.TextView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
@@ -31,6 +32,10 @@ import com.onegini.mobile.exampleapp.view.helper.PinKeyboard;
 public class PinActivity extends AuthenticationActivity {
 
   private static final int MAX_DIGITS = 5;
+
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.pin_error_message)
+  TextView errorTextView;
 
   private static boolean isCreatePinFlow = false;
   private static int remainingFailedAttempts = 0;
@@ -64,13 +69,7 @@ public class PinActivity extends AuthenticationActivity {
     resetView();
   }
 
-  @Override
-  protected void onNewIntent(final Intent intent) {
-    setIntent(intent);
-    initialize();
-  }
-
-  private void initialize() {
+  protected void initialize() {
     parseIntent();
     initPinInputs();
     initListeners();

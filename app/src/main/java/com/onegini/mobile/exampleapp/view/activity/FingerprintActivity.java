@@ -15,29 +15,27 @@
  */
 package com.onegini.mobile.exampleapp.view.activity;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.util.AnimationUtils;
 import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationRequestHandler;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+public class FingerprintActivity extends AuthenticationActivity {
 
-public class FingerprintActivity extends Activity {
-
-  public static final String MSG_EXTRA_ACTION = "fingerprint-action";
-  public static final String MSG_EXTRA_START = "start";
-  public static final String MSG_EXTRA_SHOW_SCANNING = "show";
-  public static final String MSG_EXTRA_RECEIVED_FINGERPRINT = "received";
-  public static final String MSG_EXTRA_CLOSE = "close";
+  public static final String EXTRA_ACTION = "fingerprint_action";
+  public static final String EXTRA_START = "start";
+  public static final String EXTRA_SHOW_SCANNING = "show";
+  public static final String EXTRA_RECEIVED_FINGERPRINT = "received";
+  public static final String EXTRA_CLOSE = "close";
 
   @Bind(R.id.action_text)
-  TextView actionText;
+  TextView actionTextView;
+
+  private String actionText;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -45,7 +43,17 @@ public class FingerprintActivity extends Activity {
     setContentView(R.layout.activity_fingerprint);
     ButterKnife.bind(this);
 
-    setupUi(getIntent().getStringExtra(MSG_EXTRA_ACTION));
+    initialize();
+  }
+
+  protected void initialize() {
+    parseIntent();
+    updateTexts();
+  }
+
+  protected void parseIntent() {
+    super.parseIntent();
+    actionText = getIntent().getStringExtra(EXTRA_ACTION);
   }
 
   @Override
@@ -56,20 +64,16 @@ public class FingerprintActivity extends Activity {
     }
   }
 
-  @Override
-  protected void onNewIntent(final Intent intent) {
-    setupUi(intent.getStringExtra(MSG_EXTRA_ACTION));
-  }
-
-  private void setupUi(final String action) {
-    if (MSG_EXTRA_SHOW_SCANNING.equals(action)) {
-      actionText.setText(R.string.verifying);
-    } else if (MSG_EXTRA_START.equals(action)) {
-      actionText.setText(R.string.scan_fingerprint);
-    } else if (MSG_EXTRA_RECEIVED_FINGERPRINT.equals(action)) {
-      actionText.setText(R.string.try_again);
-      actionText.setAnimation(AnimationUtils.getBlinkAnimation());
-    } else if (MSG_EXTRA_CLOSE.equals(action)) {
+  protected void updateTexts() {
+    super.updateTexts();
+    if (EXTRA_SHOW_SCANNING.equals(actionText)) {
+      actionTextView.setText(R.string.verifying);
+    } else if (EXTRA_START.equals(actionText)) {
+      actionTextView.setText(R.string.scan_fingerprint);
+    } else if (EXTRA_RECEIVED_FINGERPRINT.equals(actionText)) {
+      actionTextView.setText(R.string.try_again);
+      actionTextView.setAnimation(AnimationUtils.getBlinkAnimation());
+    } else if (EXTRA_CLOSE.equals(actionText)) {
       finish();
     }
   }
