@@ -21,8 +21,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
-import android.widget.TextView;
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
@@ -45,9 +43,6 @@ public class PinActivity extends AuthenticationActivity {
     PinActivity.remainingFailedAttempts = remainingFailedAttempts;
   }
 
-  @SuppressWarnings("unused")
-  @Bind(R.id.pin_error_message)
-  TextView errorTextView;
   private final ImageView[] pinInputs = new ImageView[MAX_DIGITS];
 
   private PinKeyboard pinKeyboard;
@@ -73,11 +68,6 @@ public class PinActivity extends AuthenticationActivity {
   protected void onNewIntent(final Intent intent) {
     setIntent(intent);
     initialize();
-  }
-
-  @Override
-  public void onBackPressed() {
-    // we don't want to be able to go back from the pin screen
   }
 
   private void initialize() {
@@ -123,8 +113,8 @@ public class PinActivity extends AuthenticationActivity {
   }
 
   private void updateErrorText() {
-    if (isCreatePinFlow && isNotBlank(screenMessage)) {
-      errorTextView.setText(screenMessage);
+    if (isCreatePinFlow && isNotBlank(errorMessage)) {
+      errorTextView.setText(errorMessage);
       errorTextView.setVisibility(View.VISIBLE);
     } else if (!isCreatePinFlow && remainingFailedAttempts > 0) {
       errorTextView.setText(getString(R.string.pin_error_invalid_pin, remainingFailedAttempts));

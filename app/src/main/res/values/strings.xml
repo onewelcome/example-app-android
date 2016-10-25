@@ -11,7 +11,7 @@
     <string name="pin_error_invalid_length">PIN length is incorrect</string>
     <string name="pin_error_not_equal">PIN was not the same, choose PIN</string>
     <string name="pin_error_similar">Too many similar digits</string>
-    <string name="pin_title_enter_pin">Enter PIN</string>
+    <string name="authenticator_message_enter_pin">Enter PIN</string>
     <string name="btn_logout_label">Logout</string>
     <string name="btn_deregister_user_label">Deregister user</string>
     <string name="btn_your_devices">Your devices</string>

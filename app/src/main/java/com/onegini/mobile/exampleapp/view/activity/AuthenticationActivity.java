@@ -18,33 +18,49 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import butterknife.Bind;
 import com.onegini.mobile.exampleapp.R;
+import com.onegini.mobile.exampleapp.storage.UserStorage;
+import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public abstract class AuthenticationActivity extends Activity {
 
-  public static final String EXTRA_TITLE = "title";
   public static final String EXTRA_MESSAGE = "message";
-  public static final String EXTRA_USER_NAME = "user_name";
+  public static final String EXTRA_ERROR_MESSAGE = "error_message";
+  public static final String EXTRA_USER_PROFILE_ID = "user_name";
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.welcome_user_text)
   TextView welcomeTextView;
-  @SuppressWarnings("unused")
-  @Bind(R.id.pin_title)
-  TextView screenTitleTextView;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.authenticator_message)
+  TextView authenticatorMessage;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.pin_error_message)
+  TextView errorTextView;
 
+  private String screenMessage;
   private String userName;
-  private String screenTitle;
-  protected String screenMessage;
+  protected String errorMessage;
 
   protected void parseIntent() {
     final Bundle extras = getIntent().getExtras();
-    screenTitle = extras.getString(EXTRA_TITLE, "");
     screenMessage = extras.getString(EXTRA_MESSAGE, "");
-    userName = extras.getString(EXTRA_USER_NAME, "");
+    errorMessage = extras.getString(EXTRA_ERROR_MESSAGE, "");
+
+    final String userProfileId = extras.getString(EXTRA_USER_PROFILE_ID, "");
+    loadUserName(userProfileId);
+  }
+
+  private void loadUserName(final String userProfileId) {
+    if (TextUtils.isEmpty(userProfileId)) {
+      return;
+    }
+    UserStorage userStorage = new UserStorage(this);
+    userName = userStorage.loadUser(new UserProfile(userProfileId)).getName();
   }
 
   protected void updateTexts() {
@@ -61,10 +77,10 @@ public abstract class AuthenticationActivity extends Activity {
   }
 
   private void updateTitleText() {
-    if (isNotBlank(screenTitle)) {
-      screenTitleTextView.setText(screenTitle);
+    if (isNotBlank(screenMessage)) {
+      authenticatorMessage.setText(screenMessage);
     } else {
-      screenTitleTextView.setVisibility(View.INVISIBLE);
+      authenticatorMessage.setVisibility(View.INVISIBLE);
     }
   }
 
@@ -76,4 +92,8 @@ public abstract class AuthenticationActivity extends Activity {
     return string == null || string.length() == 0;
   }
 
+  @Override
+  public void onBackPressed() {
+    // we don't want to be able to go back from the pin screen
+  }
 }

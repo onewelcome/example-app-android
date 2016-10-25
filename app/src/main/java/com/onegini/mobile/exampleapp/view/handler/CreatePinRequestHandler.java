@@ -140,11 +140,11 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
     }
   }
 
-  private void notifyActivity(final String title, final String message) {
+  private void notifyActivity(final String message, final String errorMessage) {
     final Intent intent = new Intent(context, PinActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    intent.putExtra(PinActivity.EXTRA_TITLE, title);
     intent.putExtra(PinActivity.EXTRA_MESSAGE, message);
+    intent.putExtra(PinActivity.EXTRA_ERROR_MESSAGE, errorMessage);
     context.startActivity(intent);
   }
 }
