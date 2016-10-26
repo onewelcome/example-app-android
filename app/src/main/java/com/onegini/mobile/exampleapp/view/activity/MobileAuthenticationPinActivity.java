@@ -45,8 +45,6 @@ public class MobileAuthenticationPinActivity extends AbstractMobileAuthenticatio
 
   private int failedAttemptsCount;
   private int maxFailedAttempts;
-  private PinKeyboard pinKeyboard;
-  private PinInputFields pinInputFields;
   private PinInputFields.PinProvidedListener pinProvidedListener;
 
   @Override
@@ -90,8 +88,8 @@ public class MobileAuthenticationPinActivity extends AbstractMobileAuthenticatio
   }
 
   private void initKeyboard() {
-    pinInputFields = new PinInputFields(pinProvidedListener, pinInputs);
-    pinKeyboard = new PinKeyboard(pinInputFields);
+    final PinInputFields pinInputFields = new PinInputFields(pinProvidedListener, pinInputs);
+    final PinKeyboard pinKeyboard = new PinKeyboard(pinInputFields);
 
     final TableLayout keyboardLayout = (TableLayout) findViewById(R.id.pin_keyboard);
     pinKeyboard.initLayout(keyboardLayout, getResources(), getPackageName());

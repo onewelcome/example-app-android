@@ -105,9 +105,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
     final AlertDialog.Builder builder = new AlertDialog.Builder(this);
     builder.setTitle(R.string.pick_authenticator);
-    builder.setItems(authenticatorNames.toArray(authenticatorsToSelect), (dialog, which) -> {
-      updatePreferredAuthenticator(which, registeredAuthenticators);
-    });
+    builder.setItems(authenticatorNames.toArray(authenticatorsToSelect), (dialog, which) -> updatePreferredAuthenticator(which, registeredAuthenticators));
     builder.show();
   }
 

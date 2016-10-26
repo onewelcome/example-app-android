@@ -24,7 +24,7 @@ import com.onegini.mobile.exampleapp.model.Device;
 public class DevicesResponse {
 
   @SerializedName("devices")
-  private List<Device> devices = new ArrayList<>();
+  final private List<Device> devices = new ArrayList<>();
 
   public List<Device> getDevices() {
     return devices;

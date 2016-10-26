@@ -35,11 +35,11 @@ public class DevicesAdapter extends
     devices = contacts;
   }
 
-  public static class ViewHolder extends RecyclerView.ViewHolder {
+  static class ViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView nameTextView;
+    TextView nameTextView;
 
-    public ViewHolder(View itemView) {
+    ViewHolder(View itemView) {
       super(itemView);
 
       nameTextView = (TextView) itemView.findViewById(R.id.textView);

@@ -94,7 +94,7 @@ public abstract class AuthenticationActivity extends Activity {
     return !isBlank(string);
   }
 
-  protected boolean isBlank(final String string) {
+  private boolean isBlank(final String string) {
     return string == null || string.length() == 0;
   }
 

@@ -44,7 +44,7 @@ public class MobileAuthenticationFingerprintActivity extends AuthenticationActiv
   @Bind(R.id.fallback_to_pin_button)
   Button fallbackToPinButton;
 
-  String actionText;
+  private String actionText;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
