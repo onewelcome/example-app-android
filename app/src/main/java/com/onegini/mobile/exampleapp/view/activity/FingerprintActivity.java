@@ -44,11 +44,14 @@ public class FingerprintActivity extends AuthenticationActivity {
     ButterKnife.bind(this);
 
     initialize();
+
   }
 
+  @Override
   protected void initialize() {
     parseIntent();
     updateTexts();
+    setupUi();
   }
 
   protected void parseIntent() {
@@ -56,12 +59,12 @@ public class FingerprintActivity extends AuthenticationActivity {
     actionText = getIntent().getStringExtra(EXTRA_ACTION);
   }
 
-  protected void updateTexts() {
-    super.updateTexts();
-    if (EXTRA_SHOW_SCANNING.equals(actionText)) {
-      actionTextView.setText(R.string.verifying);
-    } else if (EXTRA_START.equals(actionText)) {
+  protected void setupUi() {
+    if (EXTRA_START.equals(actionText)) {
       actionTextView.setText(R.string.scan_fingerprint);
+      FingerprintAuthenticationRequestHandler.fingerprintCallback.acceptAuthenticationRequest();
+    } else if (EXTRA_SHOW_SCANNING.equals(actionText)) {
+      actionTextView.setText(R.string.verifying);
     } else if (EXTRA_RECEIVED_FINGERPRINT.equals(actionText)) {
       actionTextView.setText(R.string.try_again);
       actionTextView.setAnimation(AnimationUtils.getBlinkAnimation());
