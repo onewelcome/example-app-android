@@ -2,7 +2,6 @@
     <string name="app_name">Example App</string>
     <string name="btn_login_label">LOG IN</string>
     <string name="btn_register_label">REGISTER</string>
-    <string name="pin_deny_button_label">Deny</string>
     <string name="pin_error_invalid_pin">Wrong PIN, %1$d attempt(s) left</string>
     <string name="pin_title_choose_pin">Create PIN</string>
     <string name="pin_title_verify_pin">Confirm PIN</string>
@@ -31,8 +30,8 @@
     <string name="settings_mobile_enrollment_off">Enable mobile authentication</string>
     <string name="settings_mobile_enrollment_on">Mobile authentication enabled</string>
     <string name="settings_mobile_enrollment_not_available">Mobile authentication not available</string>
-    <string name="btn_push_accept">Accept</string>
-    <string name="btn_push_deny">Deny</string>
+    <string name="btn_auth_accept">Accept</string>
+    <string name="btn_auth_deny">Deny</string>
     <string name="settings_change_pin">Change PIN</string>
     <string name="settings_change_authentication">Change authentication</string>
     <string name="settings_authentication">Authentication</string>

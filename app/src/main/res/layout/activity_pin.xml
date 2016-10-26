@@ -81,12 +81,13 @@
             layout="@layout/pin_keyboard"/>
 
         <Button
-            android:id="@+id/pin_deny_button"
-            style="@style/PinKeyboardKeyButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_marginTop="1dp"
-            android:text="@string/pin_deny_button_label"
-            android:visibility="gone"/>
+            android:id="@+id/auth_deny_button"
+            style="@style/ButtonStyle"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="12dp"
+            tools:visibility="visible"
+            android:visibility="gone"
+            android:text="@string/btn_auth_deny"/>
 
     </LinearLayout>
 

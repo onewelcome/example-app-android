@@ -42,6 +42,11 @@
 
     </LinearLayout>
 
+    <include
+        layout="@layout/view_auth_accept_deny_buttons"
+        android:layout_below="@+id/content_fingerprint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <Button
         android:id="@+id/fallback_to_pin_button"
         style="@style/ButtonStyle"
@@ -49,28 +54,5 @@
         android:text="@string/use_pin_authentication"
         android:layout_alignParentBottom="true"/>
 
-    <LinearLayout
-        android:id="@+id/content_accept_deny"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:layout_below="@+id/content_fingerprint"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <Button
-            android:id="@+id/auth_accept_button"
-            style="@style/ButtonStyle"
-            android:text="@string/btn_push_accept"/>
-
-        <Button
-            android:id="@+id/auth_deny_button"
-            style="@style/ButtonStyle"
-            android:text="@string/btn_push_deny"/>
-
-    </LinearLayout>
 
 </RelativeLayout>

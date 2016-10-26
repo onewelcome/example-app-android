@@ -33,7 +33,7 @@ public class MobileAuthenticationActivity extends AbstractMobileAuthenticationAc
   }
 
   @SuppressWarnings("unused")
-  @OnClick(R.id.push_accept_button)
+  @OnClick(R.id.auth_accept_button)
   public void onAcceptClicked() {
     if (MobileAuthenticationRequestHandler.CALLBACK != null) {
       MobileAuthenticationRequestHandler.CALLBACK.acceptAuthenticationRequest();
@@ -41,7 +41,7 @@ public class MobileAuthenticationActivity extends AbstractMobileAuthenticationAc
   }
 
   @SuppressWarnings("unused")
-  @OnClick(R.id.push_deny_button)
+  @OnClick(R.id.auth_deny_button)
   public void onDenyClicked() {
     if (MobileAuthenticationRequestHandler.CALLBACK != null) {
       MobileAuthenticationRequestHandler.CALLBACK.denyAuthenticationRequest();

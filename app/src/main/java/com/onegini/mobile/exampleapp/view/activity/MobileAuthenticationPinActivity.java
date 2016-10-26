@@ -39,7 +39,7 @@ public class MobileAuthenticationPinActivity extends AbstractMobileAuthenticatio
 
   @Bind(R.id.pin_error_message)
   TextView errorTextView;
-  @Bind(R.id.pin_deny_button)
+  @Bind(R.id.auth_deny_button)
   Button denyButton;
   private final ImageView[] pinInputs = new ImageView[MAX_DIGITS];
 
@@ -103,7 +103,7 @@ public class MobileAuthenticationPinActivity extends AbstractMobileAuthenticatio
   }
 
   @SuppressWarnings("unused")
-  @OnClick(R.id.pin_deny_button)
+  @OnClick(R.id.auth_deny_button)
   public void onDenyClicked() {
     if (MobileAuthenticationPinRequestHandler.CALLBACK != null) {
       MobileAuthenticationPinRequestHandler.CALLBACK.denyAuthenticationRequest();
