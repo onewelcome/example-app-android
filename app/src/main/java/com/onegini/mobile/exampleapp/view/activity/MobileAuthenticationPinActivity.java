@@ -50,6 +50,14 @@ public class MobileAuthenticationPinActivity extends PinActivity {
     }
   }
 
+  @Override
+  protected void initPinListener() {
+    pinProvidedListener = pin -> {
+      errorTextView.setVisibility(View.INVISIBLE);
+      MobileAuthenticationPinRequestHandler.CALLBACK.acceptAuthenticationRequest(pin);
+    };
+  }
+
   private void initDenyButton() {
     denyButton.setVisibility(View.VISIBLE);
   }

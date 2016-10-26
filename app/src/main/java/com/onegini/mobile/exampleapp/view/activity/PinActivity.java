@@ -43,6 +43,7 @@ public class PinActivity extends AuthenticationActivity {
 
   protected int failedAttemptsCount;
   protected int maxFailedAttempts;
+  protected PinInputFields.PinProvidedListener pinProvidedListener;
 
   private static boolean isCreatePinFlow = false;
 
@@ -51,10 +52,8 @@ public class PinActivity extends AuthenticationActivity {
   }
 
   private final ImageView[] pinInputs = new ImageView[MAX_DIGITS];
-
   private PinKeyboard pinKeyboard;
   private PinInputFields pinInputFields;
-  private PinInputFields.PinProvidedListener pinProvidedListener;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -108,7 +107,7 @@ public class PinActivity extends AuthenticationActivity {
     }
   }
 
-  private void initPinListener() {
+  protected void initPinListener() {
     pinProvidedListener = pin -> {
       errorTextView.setVisibility(View.INVISIBLE);
       callHandler(pin);
