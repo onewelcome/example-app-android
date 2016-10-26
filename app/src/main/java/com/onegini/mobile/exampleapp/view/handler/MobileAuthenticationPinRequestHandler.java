@@ -30,19 +30,20 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthe
 
   public static OneginiPinCallback CALLBACK;
 
-  private final Context context;
+  private static int failedAttemptsCount;
+  private static int maxAttemptsCount;
+  private static String message;
+  private static String userProfileId;
 
-  private String message;
-  private String userProfileId;
-  private int failedAttemptsCount;
-  private int maxAttemptsCount;
+  private final Context context;
 
   public MobileAuthenticationPinRequestHandler(final Context context) {
     this.context = context;
   }
 
   @Override
-  public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest, final OneginiPinCallback oneginiPinCallback, final AuthenticationAttemptCounter attemptCounter) {
+  public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest, final OneginiPinCallback oneginiPinCallback,
+                                  final AuthenticationAttemptCounter attemptCounter) {
     CALLBACK = oneginiPinCallback;
     message = oneginiMobileAuthenticationRequest.getMessage();
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
@@ -52,8 +53,8 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthe
 
   @Override
   public void onNextAuthenticationAttempt(final AuthenticationAttemptCounter attemptCounter) {
-    this.failedAttemptsCount = attemptCounter.getFailedAttempts();
-    this.maxAttemptsCount = attemptCounter.getMaxAttempts();
+    failedAttemptsCount = attemptCounter.getFailedAttempts();
+    maxAttemptsCount = attemptCounter.getMaxAttempts();
     startActivity();
   }
 

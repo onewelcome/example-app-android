@@ -27,8 +27,10 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class PinAuthenticationRequestHandler implements OneginiPinAuthenticationRequestHandler {
 
-  public static OneginiPinCallback oneginiPinCallback;
-  private static UserProfile userProfile;
+  public static OneginiPinCallback pinCallback;
+
+  private static String userProfileId;
+
   private final Context context;
 
   public PinAuthenticationRequestHandler(final Context context) {
@@ -36,18 +38,19 @@ public class PinAuthenticationRequestHandler implements OneginiPinAuthentication
   }
 
   @Override
-  public void startAuthentication(final UserProfile userProfile, final OneginiPinCallback oneginiPinCallback, final AuthenticationAttemptCounter attemptCounter) {
-    PinAuthenticationRequestHandler.userProfile = userProfile;
-    PinAuthenticationRequestHandler.oneginiPinCallback = oneginiPinCallback;
+  public void startAuthentication(final UserProfile userProfile, final OneginiPinCallback oneginiPinCallback,
+                                  final AuthenticationAttemptCounter attemptCounter) {
+    userProfileId = userProfile.getProfileId();
+    pinCallback = oneginiPinCallback;
 
     PinActivity.setIsCreatePinFlow(false);
-    startPinActivity(userProfile);
+    startPinActivity();
   }
 
   @Override
   public void onNextAuthenticationAttempt(final AuthenticationAttemptCounter attemptCounter) {
     PinActivity.setRemainingFailedAttempts(attemptCounter.getRemainingAttempts());
-    startPinActivity(userProfile);
+    startPinActivity();
   }
 
   @Override
@@ -55,11 +58,11 @@ public class PinAuthenticationRequestHandler implements OneginiPinAuthentication
     PinActivity.setRemainingFailedAttempts(0);
   }
 
-  private void startPinActivity(final UserProfile userProfile) {
+  private void startPinActivity() {
     final Intent intent = new Intent(context, PinActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.putExtra(AuthenticationActivity.EXTRA_MESSAGE, context.getString(R.string.authenticator_message_enter_pin));
-    intent.putExtra(AuthenticationActivity.EXTRA_USER_PROFILE_ID, userProfile.getProfileId());
+    intent.putExtra(AuthenticationActivity.EXTRA_USER_PROFILE_ID, userProfileId);
 
     context.startActivity(intent);
   }

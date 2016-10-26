@@ -131,9 +131,9 @@ public class PinActivity extends AuthenticationActivity {
 
   private void callHandler(final char[] pin) {
     if (isCreatePinFlow) {
-      CreatePinRequestHandler.oneginiPinCallback.onPinProvided(pin);
+      CreatePinRequestHandler.pinCallback.onPinProvided(pin);
     } else {
-      PinAuthenticationRequestHandler.oneginiPinCallback.acceptAuthenticationRequest(pin);
+      PinAuthenticationRequestHandler.pinCallback.acceptAuthenticationRequest(pin);
     }
     finish();
   }

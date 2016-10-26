@@ -32,7 +32,7 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
 
-  public static PinWithConfirmationHandler oneginiPinCallback;
+  public static PinWithConfirmationHandler pinCallback;
   private final Context context;
 
   public CreatePinRequestHandler(final Context context) {
@@ -44,7 +44,7 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
     PinActivity.setIsCreatePinFlow(true);
     notifyActivity(context.getString(R.string.pin_title_choose_pin), "");
 
-    CreatePinRequestHandler.oneginiPinCallback = new PinWithConfirmationHandler(oneginiPinCallback);
+    pinCallback = new PinWithConfirmationHandler(oneginiPinCallback);
   }
 
   @Override

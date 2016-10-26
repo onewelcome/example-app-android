@@ -15,7 +15,6 @@
  */
 package com.onegini.mobile.exampleapp.view.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,18 +30,6 @@ public class MobileAuthenticationActivity extends AbstractMobileAuthenticationAc
     ButterKnife.bind(this);
 
     initialize();
-  }
-
-  @Override
-  protected void onNewIntent(final Intent intent) {
-    super.onNewIntent(intent);
-    final String command = intent.getStringExtra(EXTRA_COMMAND);
-    if (COMMAND_FINISH.equals(command)) {
-      finish();
-    } else if (COMMAND_START.equals(command)) {
-      setIntent(intent);
-      initialize();
-    }
   }
 
   @SuppressWarnings("unused")

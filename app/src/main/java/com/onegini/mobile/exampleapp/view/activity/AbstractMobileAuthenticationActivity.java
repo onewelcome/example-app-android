@@ -16,10 +16,23 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
+import android.content.Intent;
+
 abstract public class AbstractMobileAuthenticationActivity extends AuthenticationActivity {
 
   public static final String COMMAND_START = "start";
   public static final String COMMAND_FINISH = "finish";
   public static final String EXTRA_COMMAND = "command";
 
+  @Override
+  protected void onNewIntent(final Intent intent) {
+    super.onNewIntent(intent);
+    final String command = intent.getStringExtra(EXTRA_COMMAND);
+    if (COMMAND_FINISH.equals(command)) {
+      finish();
+    } else if (COMMAND_START.equals(command)) {
+      setIntent(intent);
+      initialize();
+    }
+  }
 }

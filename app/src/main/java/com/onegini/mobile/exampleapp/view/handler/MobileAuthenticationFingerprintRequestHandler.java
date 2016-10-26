@@ -31,9 +31,11 @@ import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRe
 public class MobileAuthenticationFingerprintRequestHandler implements OneginiMobileAuthenticationFingerprintRequestHandler {
 
   public static OneginiFingerprintCallback fingerprintCallback;
+
+  private static String message;
+  private static String userProfileId;
+
   private final Context context;
-  private String message;
-  private String userProfileId;
 
   public MobileAuthenticationFingerprintRequestHandler(final Context context) {
     this.context = context;

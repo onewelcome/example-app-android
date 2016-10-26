@@ -24,6 +24,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequestHandler;
 import com.onegini.mobile.exampleapp.view.helper.PinInputFields;
@@ -55,17 +56,6 @@ public class MobileAuthenticationPinActivity extends AbstractMobileAuthenticatio
     ButterKnife.bind(this);
     initPinInputs();
     initialize();
-  }
-
-  @Override
-  protected void onNewIntent(final Intent intent) {
-    final String command = intent.getStringExtra(EXTRA_COMMAND);
-    if (COMMAND_FINISH.equals(command)) {
-      finish();
-    } else if (COMMAND_START.equals(command)) {
-      setIntent(intent);
-      initialize();
-    }
   }
 
   private void initPinInputs() {
@@ -110,7 +100,14 @@ public class MobileAuthenticationPinActivity extends AbstractMobileAuthenticatio
 
   private void initDenyButton() {
     denyButton.setVisibility(View.VISIBLE);
-    denyButton.setOnClickListener(v -> MobileAuthenticationPinRequestHandler.CALLBACK.denyAuthenticationRequest());
+  }
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.pin_deny_button)
+  public void onDenyClicked() {
+    if (MobileAuthenticationPinRequestHandler.CALLBACK != null) {
+      MobileAuthenticationPinRequestHandler.CALLBACK.denyAuthenticationRequest();
+    }
   }
 
   protected void updateTexts() {
