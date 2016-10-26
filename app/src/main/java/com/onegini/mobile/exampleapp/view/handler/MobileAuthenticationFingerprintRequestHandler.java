@@ -15,10 +15,10 @@
  */
 package com.onegini.mobile.exampleapp.view.handler;
 
-import static com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFingerprintActivity.MSG_EXTRA_ASK_TO_ACCEPT_OR_DENY;
-import static com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFingerprintActivity.MSG_EXTRA_CLOSE;
-import static com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFingerprintActivity.MSG_EXTRA_RECEIVED_FINGERPRINT;
-import static com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFingerprintActivity.MSG_EXTRA_SHOW_SCANNING;
+import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_CLOSE;
+import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_RECEIVED_FINGERPRINT;
+import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_SHOW_SCANNING;
+import static com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFingerprintActivity.EXTRA_ASK_TO_ACCEPT_OR_DENY;
 
 import android.content.Context;
 import android.content.Intent;
@@ -46,22 +46,22 @@ public class MobileAuthenticationFingerprintRequestHandler implements OneginiMob
     fingerprintCallback = oneginiFingerprintCallback;
     message = oneginiMobileAuthenticationRequest.getMessage();
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
-    startFingerprintActivity(MSG_EXTRA_ASK_TO_ACCEPT_OR_DENY);
+    startFingerprintActivity(EXTRA_ASK_TO_ACCEPT_OR_DENY);
   }
 
   @Override
   public void onNextAuthenticationAttempt() {
-    startFingerprintActivity(MSG_EXTRA_RECEIVED_FINGERPRINT);
+    startFingerprintActivity(EXTRA_RECEIVED_FINGERPRINT);
   }
 
   @Override
   public void onFingerprintCaptured() {
-    startFingerprintActivity(MSG_EXTRA_SHOW_SCANNING);
+    startFingerprintActivity(EXTRA_SHOW_SCANNING);
   }
 
   @Override
   public void finishAuthentication() {
-    startFingerprintActivity(MSG_EXTRA_CLOSE);
+    startFingerprintActivity(EXTRA_CLOSE);
   }
 
   private void startFingerprintActivity(final String action) {

@@ -16,6 +16,9 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,8 +37,14 @@ public class FingerprintActivity extends AuthenticationActivity {
 
   @Bind(R.id.action_text)
   TextView actionTextView;
+  @Bind(R.id.content_fingerprint)
+  LinearLayout layoutFingerprint;
+  @Bind(R.id.content_accept_deny)
+  LinearLayout layoutAcceptDeny;
+  @Bind(R.id.fallback_to_pin_button)
+  Button fallbackToPinButton;
 
-  private String actionText;
+  protected String actionText;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -43,8 +52,8 @@ public class FingerprintActivity extends AuthenticationActivity {
     setContentView(R.layout.activity_fingerprint);
     ButterKnife.bind(this);
 
+    setFingerprintAuthenticationPermissionVisibility(false);
     initialize();
-
   }
 
   @Override
@@ -80,5 +89,11 @@ public class FingerprintActivity extends AuthenticationActivity {
       FingerprintAuthenticationRequestHandler.fingerprintCallback.fallbackToPin();
       finish();
     }
+  }
+
+  protected void setFingerprintAuthenticationPermissionVisibility(final boolean isVisible) {
+    layoutAcceptDeny.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    layoutFingerprint.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+    fallbackToPinButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
   }
 }
