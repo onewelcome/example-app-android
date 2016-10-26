@@ -15,13 +15,18 @@
  */
 package com.onegini.mobile.exampleapp.view.activity;
 
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
+
+import android.content.Intent;
 import android.os.Bundle;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationRequestHandler;
 
-public class MobileAuthenticationActivity extends AbstractMobileAuthenticationActivity {
+public class MobileAuthenticationActivity extends AuthenticationActivity {
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -51,5 +56,17 @@ public class MobileAuthenticationActivity extends AbstractMobileAuthenticationAc
   protected void initialize() {
     parseIntent();
     updateTexts();
+  }
+
+  @Override
+  protected void onNewIntent(final Intent intent) {
+    super.onNewIntent(intent);
+    final String command = intent.getStringExtra(EXTRA_COMMAND);
+    if (COMMAND_FINISH.equals(command)) {
+      finish();
+    } else if (COMMAND_START.equals(command)) {
+      setIntent(intent);
+      initialize();
+    }
   }
 }

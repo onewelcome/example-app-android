@@ -19,4 +19,7 @@ public interface Constants {
   String[] DEFAULT_SCOPES = { "read" };
   String NEW_LINE = "\n";
   String GCM_SENDER_ID = "586427927998";
+  String EXTRA_COMMAND = "command";
+  String COMMAND_START = "start";
+  String COMMAND_FINISH = "finish";
 }

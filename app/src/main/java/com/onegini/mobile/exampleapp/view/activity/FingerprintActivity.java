@@ -15,6 +15,11 @@
  */
 package com.onegini.mobile.exampleapp.view.activity;
 
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,10 +35,8 @@ import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationReque
 public class FingerprintActivity extends AuthenticationActivity {
 
   public static final String EXTRA_ACTION = "fingerprint_action";
-  public static final String EXTRA_START = "start";
   public static final String EXTRA_SHOW_SCANNING = "show";
   public static final String EXTRA_RECEIVED_FINGERPRINT = "received";
-  public static final String EXTRA_CLOSE = "close";
 
   @Bind(R.id.action_text)
   TextView actionTextView;
@@ -69,7 +72,7 @@ public class FingerprintActivity extends AuthenticationActivity {
   }
 
   protected void setupUi() {
-    if (EXTRA_START.equals(actionText)) {
+    if (COMMAND_START.equals(actionText)) {
       actionTextView.setText(R.string.scan_fingerprint);
       FingerprintAuthenticationRequestHandler.fingerprintCallback.acceptAuthenticationRequest();
     } else if (EXTRA_SHOW_SCANNING.equals(actionText)) {
@@ -77,7 +80,7 @@ public class FingerprintActivity extends AuthenticationActivity {
     } else if (EXTRA_RECEIVED_FINGERPRINT.equals(actionText)) {
       actionTextView.setText(R.string.try_again);
       actionTextView.setAnimation(AnimationUtils.getBlinkAnimation());
-    } else if (EXTRA_CLOSE.equals(actionText)) {
+    } else if (COMMAND_FINISH.equals(actionText)) {
       finish();
     }
   }
@@ -95,5 +98,17 @@ public class FingerprintActivity extends AuthenticationActivity {
     layoutAcceptDeny.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     layoutFingerprint.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     fallbackToPinButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+  }
+
+  @Override
+  protected void onNewIntent(final Intent intent) {
+    super.onNewIntent(intent);
+    final String command = intent.getStringExtra(EXTRA_COMMAND);
+    if (COMMAND_FINISH.equals(command)) {
+      finish();
+    } else if (COMMAND_START.equals(command)) {
+      setIntent(intent);
+      initialize();
+    }
   }
 }

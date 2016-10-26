@@ -15,10 +15,10 @@
  */
 package com.onegini.mobile.exampleapp.view.handler;
 
-import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_CLOSE;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
 import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_RECEIVED_FINGERPRINT;
 import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_SHOW_SCANNING;
-import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_START;
 
 import android.content.Context;
 import android.content.Intent;
@@ -44,7 +44,7 @@ public class FingerprintAuthenticationRequestHandler implements OneginiFingerpri
   public void startAuthentication(final UserProfile userProfile, final OneginiFingerprintCallback oneginiFingerprintCallback) {
     fingerprintCallback = oneginiFingerprintCallback;
     userProfileId = userProfile.getProfileId();
-    startFingerprintActivity(EXTRA_START);
+    startFingerprintActivity(COMMAND_START);
   }
 
   @Override
@@ -59,7 +59,7 @@ public class FingerprintAuthenticationRequestHandler implements OneginiFingerpri
 
   @Override
   public void finishAuthentication() {
-    startFingerprintActivity(EXTRA_CLOSE);
+    startFingerprintActivity(COMMAND_FINISH);
   }
 
   private void startFingerprintActivity(final String action) {

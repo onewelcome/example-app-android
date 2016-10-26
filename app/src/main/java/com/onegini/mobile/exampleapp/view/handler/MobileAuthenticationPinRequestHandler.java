@@ -16,6 +16,9 @@
 package com.onegini.mobile.exampleapp.view.handler;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
 
 import android.content.Context;
 import android.content.Intent;
@@ -67,7 +70,7 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthe
     final Intent intent = new Intent(context, MobileAuthenticationPinActivity.class);
     intent.putExtra(AuthenticationActivity.EXTRA_MESSAGE, message);
     intent.putExtra(AuthenticationActivity.EXTRA_USER_PROFILE_ID, userProfileId);
-    intent.putExtra(MobileAuthenticationPinActivity.EXTRA_COMMAND, MobileAuthenticationPinActivity.COMMAND_START);
+    intent.putExtra(EXTRA_COMMAND, COMMAND_START);
     intent.putExtra(MobileAuthenticationPinActivity.EXTRA_FAILED_ATTEMPTS_COUNT, failedAttemptsCount);
     intent.putExtra(MobileAuthenticationPinActivity.EXTRA_MAX_FAILED_ATTEMPTS, maxAttemptsCount);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
@@ -77,7 +80,7 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthe
 
   private void closeActivity() {
     final Intent intent = new Intent(context, MobileAuthenticationPinActivity.class);
-    intent.putExtra(MobileAuthenticationPinActivity.EXTRA_COMMAND, MobileAuthenticationPinActivity.COMMAND_FINISH);
+    intent.putExtra(EXTRA_COMMAND, COMMAND_FINISH);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }

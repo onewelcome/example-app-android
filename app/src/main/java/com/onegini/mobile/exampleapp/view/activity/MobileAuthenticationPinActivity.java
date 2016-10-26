@@ -15,6 +15,10 @@
  */
 package com.onegini.mobile.exampleapp.view.activity;
 
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -30,7 +34,7 @@ import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequest
 import com.onegini.mobile.exampleapp.view.helper.PinInputFields;
 import com.onegini.mobile.exampleapp.view.helper.PinKeyboard;
 
-public class MobileAuthenticationPinActivity extends AbstractMobileAuthenticationActivity {
+public class MobileAuthenticationPinActivity extends AuthenticationActivity {
 
   public static final String EXTRA_FAILED_ATTEMPTS_COUNT = "failed_attempts";
   public static final String EXTRA_MAX_FAILED_ATTEMPTS = "max_failed_attempts";
@@ -116,6 +120,18 @@ public class MobileAuthenticationPinActivity extends AbstractMobileAuthenticatio
       errorTextView.setVisibility(View.VISIBLE);
     } else {
       errorTextView.setVisibility(View.INVISIBLE);
+    }
+  }
+
+  @Override
+  protected void onNewIntent(final Intent intent) {
+    super.onNewIntent(intent);
+    final String command = intent.getStringExtra(EXTRA_COMMAND);
+    if (COMMAND_FINISH.equals(command)) {
+      finish();
+    } else if (COMMAND_START.equals(command)) {
+      setIntent(intent);
+      initialize();
     }
   }
 }
