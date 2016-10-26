@@ -19,10 +19,12 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.content.Context;
 import android.content.Intent;
+import com.onegini.mobile.exampleapp.view.activity.AbstractMobileAuthenticationActivity;
+import com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity;
+import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthenticationRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiAcceptDenyCallback;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
-import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationActivity;
 
 public class MobileAuthenticationRequestHandler implements OneginiMobileAuthenticationRequestHandler {
 
@@ -48,9 +50,9 @@ public class MobileAuthenticationRequestHandler implements OneginiMobileAuthenti
 
   private void openActivity(final String profileId, final String message) {
     final Intent intent = new Intent(context, MobileAuthenticationActivity.class);
-    intent.putExtra(MobileAuthenticationActivity.EXTRA_COMMAND, MobileAuthenticationActivity.COMMAND_START);
-    intent.putExtra(MobileAuthenticationActivity.EXTRA_PROFILE_ID, profileId);
-    intent.putExtra(MobileAuthenticationActivity.EXTRA_MESSAGE, message);
+    intent.putExtra(AbstractMobileAuthenticationActivity.EXTRA_COMMAND, MobileAuthenticationActivity.COMMAND_START);
+    intent.putExtra(AuthenticationActivity.EXTRA_MESSAGE, message);
+    intent.putExtra(AuthenticationActivity.EXTRA_USER_PROFILE_ID, profileId);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }

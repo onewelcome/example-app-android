@@ -29,12 +29,8 @@ import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequest
 import com.onegini.mobile.exampleapp.view.helper.PinInputFields;
 import com.onegini.mobile.exampleapp.view.helper.PinKeyboard;
 
-public class MobileAuthenticationPinActivity extends AuthenticationActivity {
+public class MobileAuthenticationPinActivity extends AbstractMobileAuthenticationActivity {
 
-  public static final String COMMAND_START = "start";
-  public static final String COMMAND_FINISH = "finish";
-
-  public static final String EXTRA_COMMAND = "command";
   public static final String EXTRA_FAILED_ATTEMPTS_COUNT = "failed_attempts";
   public static final String EXTRA_MAX_FAILED_ATTEMPTS = "max_failed_attempts";
 

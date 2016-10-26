@@ -9,8 +9,7 @@
         layout="@layout/view_welcome_user_text"/>
 
     <TextView
-        android:id="@+id/push_text"
-        android:text="@string/simple_push_message"
+        android:id="@+id/authenticator_message"
         android:layout_below="@id/welcome_user_text"
         style="@style/AuthenticatorMessageStyle"/>
 
@@ -18,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/push_text"
+        android:layout_below="@+id/authenticator_message"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="40dp"
