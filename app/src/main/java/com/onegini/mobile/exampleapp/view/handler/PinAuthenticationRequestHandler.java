@@ -15,6 +15,10 @@
  */
 package com.onegini.mobile.exampleapp.view.handler;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
+
 import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.R;
@@ -32,6 +36,8 @@ public class PinAuthenticationRequestHandler implements OneginiPinAuthentication
   private static String userProfileId;
 
   private final Context context;
+  private int failedAttemptsCount;
+  private int maxAttemptsCount;
 
   public PinAuthenticationRequestHandler(final Context context) {
     this.context = context;
@@ -42,6 +48,7 @@ public class PinAuthenticationRequestHandler implements OneginiPinAuthentication
                                   final AuthenticationAttemptCounter attemptCounter) {
     userProfileId = userProfile.getProfileId();
     pinCallback = oneginiPinCallback;
+    failedAttemptsCount = maxAttemptsCount = 0;
 
     PinActivity.setIsCreatePinFlow(false);
     startPinActivity();
@@ -49,13 +56,14 @@ public class PinAuthenticationRequestHandler implements OneginiPinAuthentication
 
   @Override
   public void onNextAuthenticationAttempt(final AuthenticationAttemptCounter attemptCounter) {
-    PinActivity.setRemainingFailedAttempts(attemptCounter.getRemainingAttempts());
+    failedAttemptsCount = attemptCounter.getFailedAttempts();
+    maxAttemptsCount = attemptCounter.getMaxAttempts();
     startPinActivity();
   }
 
   @Override
   public void finishAuthentication() {
-    PinActivity.setRemainingFailedAttempts(0);
+    closeActivity();
   }
 
   private void startPinActivity() {
@@ -63,7 +71,15 @@ public class PinAuthenticationRequestHandler implements OneginiPinAuthentication
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.putExtra(AuthenticationActivity.EXTRA_MESSAGE, context.getString(R.string.authenticator_message_enter_pin));
     intent.putExtra(AuthenticationActivity.EXTRA_USER_PROFILE_ID, userProfileId);
+    intent.putExtra(PinActivity.EXTRA_FAILED_ATTEMPTS_COUNT, failedAttemptsCount);
+    intent.putExtra(PinActivity.EXTRA_MAX_FAILED_ATTEMPTS, maxAttemptsCount);
+    context.startActivity(intent);
+  }
 
+  private void closeActivity() {
+    final Intent intent = new Intent(context, PinActivity.class);
+    intent.putExtra(EXTRA_COMMAND, COMMAND_FINISH);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }
 }

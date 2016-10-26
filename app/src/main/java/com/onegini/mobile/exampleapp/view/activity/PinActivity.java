@@ -15,6 +15,7 @@
  */
 package com.onegini.mobile.exampleapp.view.activity;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
@@ -31,21 +32,22 @@ import com.onegini.mobile.exampleapp.view.helper.PinKeyboard;
 
 public class PinActivity extends AuthenticationActivity {
 
-  private static final int MAX_DIGITS = 5;
+  public static final String EXTRA_FAILED_ATTEMPTS_COUNT = "failed_attempts";
+  public static final String EXTRA_MAX_FAILED_ATTEMPTS = "max_failed_attempts";
+
+  protected static final int MAX_DIGITS = 5;
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.pin_error_message)
   TextView errorTextView;
 
+  protected int failedAttemptsCount;
+  protected int maxFailedAttempts;
+
   private static boolean isCreatePinFlow = false;
-  private static int remainingFailedAttempts = 0;
 
   public static void setIsCreatePinFlow(final boolean isCreatePinFlow) {
     PinActivity.isCreatePinFlow = isCreatePinFlow;
-  }
-
-  public static void setRemainingFailedAttempts(final int remainingFailedAttempts) {
-    PinActivity.remainingFailedAttempts = remainingFailedAttempts;
   }
 
   private final ImageView[] pinInputs = new ImageView[MAX_DIGITS];
@@ -72,12 +74,20 @@ public class PinActivity extends AuthenticationActivity {
   protected void initialize() {
     parseIntent();
     initPinInputs();
-    initListeners();
+    initPinListener();
     initLayout();
     initKeyboard();
   }
 
-  private void initListeners() {
+
+  protected void parseIntent() {
+    super.parseIntent();
+    final Intent intent = getIntent();
+    failedAttemptsCount = intent.getIntExtra(EXTRA_FAILED_ATTEMPTS_COUNT, 0);
+    maxFailedAttempts = intent.getIntExtra(EXTRA_MAX_FAILED_ATTEMPTS, 0);
+  }
+
+  protected void initPinListener() {
     pinProvidedListener = pin -> {
       errorTextView.setVisibility(View.INVISIBLE);
       callHandler(pin);
@@ -111,7 +121,9 @@ public class PinActivity extends AuthenticationActivity {
     updateErrorText();
   }
 
-  private void updateErrorText() {
+  protected void updateErrorText() {
+    final int remainingFailedAttempts = maxFailedAttempts - failedAttemptsCount;
+
     if (isCreatePinFlow && isNotBlank(errorMessage)) {
       errorTextView.setText(errorMessage);
       errorTextView.setVisibility(View.VISIBLE);

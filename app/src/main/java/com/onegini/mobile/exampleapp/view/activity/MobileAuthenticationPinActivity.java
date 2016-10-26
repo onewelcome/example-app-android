@@ -20,84 +20,34 @@ import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
 import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TextView;
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequestHandler;
-import com.onegini.mobile.exampleapp.view.helper.PinInputFields;
-import com.onegini.mobile.exampleapp.view.helper.PinKeyboard;
 
-public class MobileAuthenticationPinActivity extends AuthenticationActivity {
+public class MobileAuthenticationPinActivity extends PinActivity {
 
-  public static final String EXTRA_FAILED_ATTEMPTS_COUNT = "failed_attempts";
-  public static final String EXTRA_MAX_FAILED_ATTEMPTS = "max_failed_attempts";
-
-  private static final int MAX_DIGITS = 5;
-
-  @Bind(R.id.pin_error_message)
-  TextView errorTextView;
   @Bind(R.id.auth_deny_button)
   Button denyButton;
-  private final ImageView[] pinInputs = new ImageView[MAX_DIGITS];
-
-  private int failedAttemptsCount;
-  private int maxFailedAttempts;
-  private PinInputFields.PinProvidedListener pinProvidedListener;
 
   @Override
-  protected void onCreate(final Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_pin);
-    ButterKnife.bind(this);
-    initPinInputs();
-    initialize();
-  }
-
-  private void initPinInputs() {
-    for (int input = 0; input < MAX_DIGITS; input++) {
-      final int inputId = getResources().getIdentifier("pin_input_" + input, "id", getPackageName());
-      pinInputs[input] = (ImageView) findViewById(inputId);
-    }
-  }
-
   protected void initialize() {
-    parseIntent();
-    initPinListener();
-    initLayout();
-    initKeyboard();
-  }
-
-  protected void parseIntent() {
-    super.parseIntent();
-    final Intent intent = getIntent();
-    failedAttemptsCount = intent.getIntExtra(EXTRA_FAILED_ATTEMPTS_COUNT, 0);
-    maxFailedAttempts = intent.getIntExtra(EXTRA_MAX_FAILED_ATTEMPTS, 0);
-  }
-
-  private void initPinListener() {
-    pinProvidedListener = pin -> MobileAuthenticationPinRequestHandler.CALLBACK.acceptAuthenticationRequest(pin);
-  }
-
-  private void initLayout() {
-    initPinInputs();
-    updateTexts();
+    super.initialize();
     initDenyButton();
   }
 
-  private void initKeyboard() {
-    final PinInputFields pinInputFields = new PinInputFields(pinProvidedListener, pinInputs);
-    final PinKeyboard pinKeyboard = new PinKeyboard(pinInputFields);
+  @Override
+  protected void updateErrorText() {
+    if (failedAttemptsCount > 0) {
+      final int remainingFailedAttempts = maxFailedAttempts - failedAttemptsCount;
 
-    final TableLayout keyboardLayout = (TableLayout) findViewById(R.id.pin_keyboard);
-    pinKeyboard.initLayout(keyboardLayout, getResources(), getPackageName());
-    pinKeyboard.reset();
+      errorTextView.setText(getString(R.string.pin_error_invalid_pin, remainingFailedAttempts));
+      errorTextView.setVisibility(View.VISIBLE);
+    } else {
+      errorTextView.setVisibility(View.INVISIBLE);
+    }
   }
 
   private void initDenyButton() {
@@ -109,17 +59,6 @@ public class MobileAuthenticationPinActivity extends AuthenticationActivity {
   public void onDenyClicked() {
     if (MobileAuthenticationPinRequestHandler.CALLBACK != null) {
       MobileAuthenticationPinRequestHandler.CALLBACK.denyAuthenticationRequest();
-    }
-  }
-
-  protected void updateTexts() {
-    super.updateTexts();
-    if (failedAttemptsCount > 0) {
-      final int remainingAttempts = maxFailedAttempts - failedAttemptsCount;
-      errorTextView.setText(getString(R.string.pin_error_invalid_pin, remainingAttempts));
-      errorTextView.setVisibility(View.VISIBLE);
-    } else {
-      errorTextView.setVisibility(View.INVISIBLE);
     }
   }
 

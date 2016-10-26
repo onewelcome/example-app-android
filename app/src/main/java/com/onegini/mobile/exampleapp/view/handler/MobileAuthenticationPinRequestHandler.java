@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationPinActivity;
+import com.onegini.mobile.exampleapp.view.activity.PinActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthenticationPinRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiPinCallback;
 import com.onegini.mobile.sdk.android.model.entity.AuthenticationAttemptCounter;
@@ -68,13 +69,12 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthe
 
   private void startActivity() {
     final Intent intent = new Intent(context, MobileAuthenticationPinActivity.class);
+    intent.putExtra(EXTRA_COMMAND, COMMAND_START);
     intent.putExtra(AuthenticationActivity.EXTRA_MESSAGE, message);
     intent.putExtra(AuthenticationActivity.EXTRA_USER_PROFILE_ID, userProfileId);
-    intent.putExtra(EXTRA_COMMAND, COMMAND_START);
-    intent.putExtra(MobileAuthenticationPinActivity.EXTRA_FAILED_ATTEMPTS_COUNT, failedAttemptsCount);
-    intent.putExtra(MobileAuthenticationPinActivity.EXTRA_MAX_FAILED_ATTEMPTS, maxAttemptsCount);
+    intent.putExtra(PinActivity.EXTRA_FAILED_ATTEMPTS_COUNT, failedAttemptsCount);
+    intent.putExtra(PinActivity.EXTRA_MAX_FAILED_ATTEMPTS, maxAttemptsCount);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-
     context.startActivity(intent);
   }
 

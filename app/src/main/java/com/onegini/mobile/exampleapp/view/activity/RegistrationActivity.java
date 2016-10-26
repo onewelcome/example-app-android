@@ -99,7 +99,6 @@ public class RegistrationActivity extends Activity {
 
       @Override
       public void onSuccess(final UserProfile userProfile) {
-        PinActivity.setRemainingFailedAttempts(0);
         registeredProfile = userProfile;
         userProfileDebugText.setText(userProfile.getProfileId());
         askForProfileName();
