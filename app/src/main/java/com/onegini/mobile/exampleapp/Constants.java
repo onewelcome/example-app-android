@@ -19,5 +19,4 @@ public interface Constants {
   String[] DEFAULT_SCOPES = { "read" };
   String NEW_LINE = "\n";
   String GCM_SENDER_ID = "586427927998";
-  String GCM_REGISTRATION_COMPLETE = "gmc_registration_complete";
 }
