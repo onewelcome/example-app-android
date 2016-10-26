@@ -15,8 +15,16 @@
         <item name="android:layout_height">64dp</item>
         <item name="android:textColor">#FFF</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_centerHorizontal">true</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="ButtonWideStyle" parent="ButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginLeft">60dp</item>
+        <item name="android:layout_marginRight">60dp</item>
     </style>
 
     <style name="PinKeyboardKeyButtonStyle" parent="Widget.AppCompat.Button.Borderless">
