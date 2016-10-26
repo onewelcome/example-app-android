@@ -64,6 +64,7 @@ public class FingerprintActivity extends AuthenticationActivity {
     setupUi();
   }
 
+  @Override
   protected void parseIntent() {
     super.parseIntent();
     actionText = getIntent().getStringExtra(EXTRA_ACTION);

@@ -28,6 +28,7 @@ public class MobileAuthenticationFingerprintActivity extends FingerprintActivity
 
   public static final String EXTRA_ASK_TO_ACCEPT_OR_DENY = "ask";
 
+  @Override
   protected void setupUi() {
     if (EXTRA_ASK_TO_ACCEPT_OR_DENY.equals(actionText)) {
       setFingerprintAuthenticationPermissionVisibility(true);

@@ -71,6 +71,7 @@ public class PinActivity extends AuthenticationActivity {
     resetView();
   }
 
+  @Override
   protected void initialize() {
     parseIntent();
     initPinInputs();
@@ -79,7 +80,7 @@ public class PinActivity extends AuthenticationActivity {
     initKeyboard();
   }
 
-
+  @Override
   protected void parseIntent() {
     super.parseIntent();
     final Intent intent = getIntent();
@@ -87,7 +88,27 @@ public class PinActivity extends AuthenticationActivity {
     maxFailedAttempts = intent.getIntExtra(EXTRA_MAX_FAILED_ATTEMPTS, 0);
   }
 
-  protected void initPinListener() {
+  @Override
+  protected void updateTexts() {
+    super.updateTexts();
+    updateErrorText();
+  }
+
+  protected void updateErrorText() {
+    final int remainingFailedAttempts = maxFailedAttempts - failedAttemptsCount;
+
+    if (isCreatePinFlow && isNotBlank(errorMessage)) {
+      errorTextView.setText(errorMessage);
+      errorTextView.setVisibility(View.VISIBLE);
+    } else if (!isCreatePinFlow && remainingFailedAttempts > 0) {
+      errorTextView.setText(getString(R.string.pin_error_invalid_pin, remainingFailedAttempts));
+      errorTextView.setVisibility(View.VISIBLE);
+    } else {
+      errorTextView.setVisibility(View.INVISIBLE);
+    }
+  }
+
+  private void initPinListener() {
     pinProvidedListener = pin -> {
       errorTextView.setVisibility(View.INVISIBLE);
       callHandler(pin);
@@ -114,25 +135,6 @@ public class PinActivity extends AuthenticationActivity {
 
     final TableLayout keyboardLayout = (TableLayout) findViewById(R.id.pin_keyboard);
     pinKeyboard.initLayout(keyboardLayout, getResources(), getPackageName());
-  }
-
-  protected void updateTexts() {
-    super.updateTexts();
-    updateErrorText();
-  }
-
-  protected void updateErrorText() {
-    final int remainingFailedAttempts = maxFailedAttempts - failedAttemptsCount;
-
-    if (isCreatePinFlow && isNotBlank(errorMessage)) {
-      errorTextView.setText(errorMessage);
-      errorTextView.setVisibility(View.VISIBLE);
-    } else if (!isCreatePinFlow && remainingFailedAttempts > 0) {
-      errorTextView.setText(getString(R.string.pin_error_invalid_pin, remainingFailedAttempts));
-      errorTextView.setVisibility(View.VISIBLE);
-    } else {
-      errorTextView.setVisibility(View.INVISIBLE);
-    }
   }
 
   private void resetView() {

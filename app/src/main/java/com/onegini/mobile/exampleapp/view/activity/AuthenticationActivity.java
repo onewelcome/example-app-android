@@ -40,9 +40,9 @@ public abstract class AuthenticationActivity extends Activity {
   @Bind(R.id.authenticator_message)
   TextView authenticatorMessage;
 
+  protected String errorMessage;
   private String message;
   private String userName;
-  protected String errorMessage;
 
   protected abstract void initialize();
 

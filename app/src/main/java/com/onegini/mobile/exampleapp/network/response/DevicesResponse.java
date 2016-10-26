@@ -21,6 +21,7 @@ import java.util.List;
 import com.google.gson.annotations.SerializedName;
 import com.onegini.mobile.exampleapp.model.Device;
 
+@SuppressWarnings("unused")
 public class DevicesResponse {
 
   @SerializedName("devices")

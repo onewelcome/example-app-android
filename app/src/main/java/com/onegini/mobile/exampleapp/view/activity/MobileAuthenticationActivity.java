@@ -52,7 +52,8 @@ public class MobileAuthenticationActivity extends AuthenticationActivity {
       MobileAuthenticationRequestHandler.CALLBACK.denyAuthenticationRequest();
     }
   }
-
+  
+  @Override
   protected void initialize() {
     parseIntent();
     updateTexts();
