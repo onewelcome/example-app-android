@@ -19,10 +19,11 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
 import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
+import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_MESSAGE;
+import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_USER_PROFILE_ID;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthenticationRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiAcceptDenyCallback;
@@ -33,6 +34,8 @@ public class MobileAuthenticationRequestHandler implements OneginiMobileAuthenti
   public static OneginiAcceptDenyCallback CALLBACK;
 
   private final Context context;
+  private String profileId;
+  private String message;
 
   public MobileAuthenticationRequestHandler(final Context context) {
     this.context = context;
@@ -42,26 +45,21 @@ public class MobileAuthenticationRequestHandler implements OneginiMobileAuthenti
   public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest,
                                   final OneginiAcceptDenyCallback oneginiAcceptDenyCallback) {
     CALLBACK = oneginiAcceptDenyCallback;
-    openActivity(oneginiMobileAuthenticationRequest.getUserProfile().getProfileId(), oneginiMobileAuthenticationRequest.getMessage());
+    profileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
+    message = oneginiMobileAuthenticationRequest.getMessage();
+    notifyActivity(COMMAND_START);
   }
 
   @Override
   public void finishAuthentication() {
-    closeActivity();
+    notifyActivity(COMMAND_FINISH);
   }
 
-  private void openActivity(final String profileId, final String message) {
+  private void notifyActivity(final String command) {
     final Intent intent = new Intent(context, MobileAuthenticationActivity.class);
-    intent.putExtra(EXTRA_COMMAND, COMMAND_START);
-    intent.putExtra(AuthenticationActivity.EXTRA_MESSAGE, message);
-    intent.putExtra(AuthenticationActivity.EXTRA_USER_PROFILE_ID, profileId);
-    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-    context.startActivity(intent);
-  }
-
-  private void closeActivity() {
-    final Intent intent = new Intent(context, MobileAuthenticationActivity.class);
-    intent.putExtra(EXTRA_COMMAND, COMMAND_FINISH);
+    intent.putExtra(EXTRA_COMMAND, command);
+    intent.putExtra(EXTRA_MESSAGE, message);
+    intent.putExtra(EXTRA_USER_PROFILE_ID, profileId);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }

@@ -17,12 +17,13 @@ package com.onegini.mobile.exampleapp.view.handler;
 
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
+import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_USER_PROFILE_ID;
+import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_ACTION;
 import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_RECEIVED_FINGERPRINT;
 import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_SHOW_SCANNING;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity;
 import com.onegini.mobile.exampleapp.view.activity.FingerprintActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiFingerprintAuthenticationRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiFingerprintCallback;
@@ -30,7 +31,7 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class FingerprintAuthenticationRequestHandler implements OneginiFingerprintAuthenticationRequestHandler {
 
-  public static OneginiFingerprintCallback fingerprintCallback;
+  public static OneginiFingerprintCallback CALLBACK;
 
   private static String userProfileId;
 
@@ -42,32 +43,32 @@ public class FingerprintAuthenticationRequestHandler implements OneginiFingerpri
 
   @Override
   public void startAuthentication(final UserProfile userProfile, final OneginiFingerprintCallback oneginiFingerprintCallback) {
-    fingerprintCallback = oneginiFingerprintCallback;
+    CALLBACK = oneginiFingerprintCallback;
     userProfileId = userProfile.getProfileId();
-    startFingerprintActivity(COMMAND_START);
+    notifyActivity(COMMAND_START);
   }
 
   @Override
   public void onNextAuthenticationAttempt() {
-    startFingerprintActivity(EXTRA_RECEIVED_FINGERPRINT);
+    notifyActivity(EXTRA_RECEIVED_FINGERPRINT);
   }
 
   @Override
   public void onFingerprintCaptured() {
-    startFingerprintActivity(EXTRA_SHOW_SCANNING);
+    notifyActivity(EXTRA_SHOW_SCANNING);
   }
 
   @Override
   public void finishAuthentication() {
-    startFingerprintActivity(COMMAND_FINISH);
+    notifyActivity(COMMAND_FINISH);
   }
 
-  private void startFingerprintActivity(final String action) {
+  private void notifyActivity(final String action) {
     final Intent intent = new Intent(context, FingerprintActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-    intent.putExtra(FingerprintActivity.EXTRA_ACTION, action);
-    intent.putExtra(AuthenticationActivity.EXTRA_USER_PROFILE_ID, userProfileId);
+    intent.putExtra(EXTRA_ACTION, action);
+    intent.putExtra(EXTRA_USER_PROFILE_ID, userProfileId);
     context.startActivity(intent);
   }
 }

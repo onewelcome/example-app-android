@@ -144,7 +144,7 @@ public class PinActivity extends AuthenticationActivity {
 
   private void callHandler(final char[] pin) {
     if (isCreatePinFlow) {
-      CreatePinRequestHandler.pinCallback.onPinProvided(pin);
+      CreatePinRequestHandler.CALLBACK.onPinProvided(pin);
     } else {
       PinAuthenticationRequestHandler.pinCallback.acceptAuthenticationRequest(pin);
     }

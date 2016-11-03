@@ -73,7 +73,7 @@ public class FingerprintActivity extends AuthenticationActivity {
   protected void setupUi() {
     if (COMMAND_START.equals(actionText)) {
       actionTextView.setText(R.string.scan_fingerprint);
-      FingerprintAuthenticationRequestHandler.fingerprintCallback.acceptAuthenticationRequest();
+      FingerprintAuthenticationRequestHandler.CALLBACK.acceptAuthenticationRequest();
     } else if (EXTRA_SHOW_SCANNING.equals(actionText)) {
       actionTextView.setText(R.string.verifying);
     } else if (EXTRA_RECEIVED_FINGERPRINT.equals(actionText)) {
@@ -87,8 +87,8 @@ public class FingerprintActivity extends AuthenticationActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.fallback_to_pin_button)
   public void onFallbackToPinButtonClick() {
-    if (FingerprintAuthenticationRequestHandler.fingerprintCallback != null) {
-      FingerprintAuthenticationRequestHandler.fingerprintCallback.fallbackToPin();
+    if (FingerprintAuthenticationRequestHandler.CALLBACK != null) {
+      FingerprintAuthenticationRequestHandler.CALLBACK.fallbackToPin();
       finish();
     }
   }

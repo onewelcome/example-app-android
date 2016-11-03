@@ -65,7 +65,7 @@ public abstract class AuthenticationActivity extends Activity {
     if (TextUtils.isEmpty(userProfileId)) {
       return;
     }
-    UserStorage userStorage = new UserStorage(this);
+    final UserStorage userStorage = new UserStorage(this);
     userName = userStorage.loadUser(new UserProfile(userProfileId)).getName();
   }
 
@@ -95,7 +95,7 @@ public abstract class AuthenticationActivity extends Activity {
   }
 
   private boolean isBlank(final String string) {
-    return string == null || string.length() == 0;
+    return string == null || string.isEmpty();
   }
 
   @Override

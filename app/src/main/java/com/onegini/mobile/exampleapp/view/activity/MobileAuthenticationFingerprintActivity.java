@@ -40,16 +40,16 @@ public class MobileAuthenticationFingerprintActivity extends FingerprintActivity
   @SuppressWarnings("unused")
   @OnClick(R.id.fallback_to_pin_button)
   public void onFallbackToPinButtonClick() {
-    if (MobileAuthenticationFingerprintRequestHandler.fingerprintCallback != null) {
-      MobileAuthenticationFingerprintRequestHandler.fingerprintCallback.fallbackToPin();
+    if (MobileAuthenticationFingerprintRequestHandler.CALLBACK != null) {
+      MobileAuthenticationFingerprintRequestHandler.CALLBACK.fallbackToPin();
     }
   }
 
   @SuppressWarnings("unused")
   @OnClick(R.id.auth_accept_button)
   public void onAuthenticationAcceptButtonClick() {
-    if (MobileAuthenticationFingerprintRequestHandler.fingerprintCallback != null) {
-      MobileAuthenticationFingerprintRequestHandler.fingerprintCallback.acceptAuthenticationRequest();
+    if (MobileAuthenticationFingerprintRequestHandler.CALLBACK != null) {
+      MobileAuthenticationFingerprintRequestHandler.CALLBACK.acceptAuthenticationRequest();
       actionTextView.setText(R.string.scan_fingerprint);
       setFingerprintAuthenticationPermissionVisibility(false);
     }
@@ -58,8 +58,8 @@ public class MobileAuthenticationFingerprintActivity extends FingerprintActivity
   @SuppressWarnings("unused")
   @OnClick(R.id.auth_deny_button)
   public void onDenyAuthenticationButtonClick() {
-    if (MobileAuthenticationFingerprintRequestHandler.fingerprintCallback != null) {
-      MobileAuthenticationFingerprintRequestHandler.fingerprintCallback.denyAuthenticationRequest();
+    if (MobileAuthenticationFingerprintRequestHandler.CALLBACK != null) {
+      MobileAuthenticationFingerprintRequestHandler.CALLBACK.denyAuthenticationRequest();
       finish();
     }
   }

@@ -15,6 +15,9 @@
  */
 package com.onegini.mobile.exampleapp.view.handler;
 
+import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_ERROR_MESSAGE;
+import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_MESSAGE;
+
 import java.util.Arrays;
 
 import android.content.Context;
@@ -32,7 +35,8 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
 
-  public static PinWithConfirmationHandler pinCallback;
+  public static PinWithConfirmationHandler CALLBACK;
+
   private final Context context;
 
   public CreatePinRequestHandler(final Context context) {
@@ -44,7 +48,7 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
     PinActivity.setIsCreatePinFlow(true);
     notifyActivity(context.getString(R.string.pin_title_choose_pin), "");
 
-    pinCallback = new PinWithConfirmationHandler(oneginiPinCallback);
+    CALLBACK = new PinWithConfirmationHandler(oneginiPinCallback);
   }
 
   @Override
@@ -143,8 +147,8 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
   private void notifyActivity(final String message, final String errorMessage) {
     final Intent intent = new Intent(context, PinActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    intent.putExtra(PinActivity.EXTRA_MESSAGE, message);
-    intent.putExtra(PinActivity.EXTRA_ERROR_MESSAGE, errorMessage);
+    intent.putExtra(EXTRA_MESSAGE, message);
+    intent.putExtra(EXTRA_ERROR_MESSAGE, errorMessage);
     context.startActivity(intent);
   }
 }

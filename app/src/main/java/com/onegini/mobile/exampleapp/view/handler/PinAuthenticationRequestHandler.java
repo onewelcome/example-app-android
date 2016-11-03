@@ -15,6 +15,11 @@
  */
 package com.onegini.mobile.exampleapp.view.handler;
 
+import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_MESSAGE;
+import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_USER_PROFILE_ID;
+import static com.onegini.mobile.exampleapp.view.activity.PinActivity.EXTRA_FAILED_ATTEMPTS_COUNT;
+import static com.onegini.mobile.exampleapp.view.activity.PinActivity.EXTRA_MAX_FAILED_ATTEMPTS;
+
 import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.R;
@@ -64,10 +69,10 @@ public class PinAuthenticationRequestHandler implements OneginiPinAuthentication
   private void startPinActivity() {
     final Intent intent = new Intent(context, PinActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    intent.putExtra(AuthenticationActivity.EXTRA_MESSAGE, context.getString(R.string.authenticator_message_enter_pin));
-    intent.putExtra(AuthenticationActivity.EXTRA_USER_PROFILE_ID, userProfileId);
-    intent.putExtra(PinActivity.EXTRA_FAILED_ATTEMPTS_COUNT, failedAttemptsCount);
-    intent.putExtra(PinActivity.EXTRA_MAX_FAILED_ATTEMPTS, maxAttemptsCount);
+    intent.putExtra(EXTRA_MESSAGE, context.getString(R.string.authenticator_message_enter_pin));
+    intent.putExtra(EXTRA_USER_PROFILE_ID, userProfileId);
+    intent.putExtra(EXTRA_FAILED_ATTEMPTS_COUNT, failedAttemptsCount);
+    intent.putExtra(EXTRA_MAX_FAILED_ATTEMPTS, maxAttemptsCount);
     context.startActivity(intent);
   }
 }
