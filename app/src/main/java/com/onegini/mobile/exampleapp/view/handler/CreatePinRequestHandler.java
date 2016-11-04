@@ -18,6 +18,10 @@ package com.onegini.mobile.exampleapp.view.handler;
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_ERROR_MESSAGE;
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_MESSAGE;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
+
 import java.util.Arrays;
 
 import android.content.Context;
@@ -59,6 +63,14 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
   @Override
   public void finishPinCreation() {
     Toast.makeText(context, "CreatePinRequestHandler#finishPinCreation", Toast.LENGTH_LONG).show();
+    closeActivity();
+  }
+
+  private void closeActivity() {
+    final Intent intent = new Intent(context, PinActivity.class);
+    intent.putExtra(EXTRA_COMMAND, COMMAND_FINISH);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+    context.startActivity(intent);
   }
 
   /**

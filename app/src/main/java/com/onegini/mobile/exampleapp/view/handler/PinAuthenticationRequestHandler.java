@@ -15,6 +15,10 @@
  */
 package com.onegini.mobile.exampleapp.view.handler;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
+
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_MESSAGE;
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_USER_PROFILE_ID;
 import static com.onegini.mobile.exampleapp.view.activity.PinActivity.EXTRA_FAILED_ATTEMPTS_COUNT;
@@ -23,7 +27,6 @@ import static com.onegini.mobile.exampleapp.view.activity.PinActivity.EXTRA_MAX_
 import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity;
 import com.onegini.mobile.exampleapp.view.activity.PinActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiPinAuthenticationRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiPinCallback;
@@ -64,6 +67,14 @@ public class PinAuthenticationRequestHandler implements OneginiPinAuthentication
 
   @Override
   public void finishAuthentication() {
+    closeActivity();
+  }
+
+  private void closeActivity() {
+    final Intent intent = new Intent(context, PinActivity.class);
+    intent.putExtra(EXTRA_COMMAND, COMMAND_FINISH);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+    context.startActivity(intent);
   }
 
   private void startPinActivity() {

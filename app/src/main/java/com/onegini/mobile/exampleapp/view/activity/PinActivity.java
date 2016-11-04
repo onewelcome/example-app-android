@@ -148,6 +148,5 @@ public class PinActivity extends AuthenticationActivity {
     } else {
       PinAuthenticationRequestHandler.pinCallback.acceptAuthenticationRequest(pin);
     }
-    finish();
   }
 }

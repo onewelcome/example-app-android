@@ -16,6 +16,9 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -54,6 +57,13 @@ public abstract class AuthenticationActivity extends Activity {
 
   protected void parseIntent() {
     final Bundle extras = getIntent().getExtras();
+
+    final String command = extras.getString(EXTRA_COMMAND);
+    if (COMMAND_FINISH.equals(command)) {
+      finish();
+      return;
+    }
+
     message = extras.getString(EXTRA_MESSAGE, "");
     errorMessage = extras.getString(EXTRA_ERROR_MESSAGE, "");
 
@@ -98,8 +108,8 @@ public abstract class AuthenticationActivity extends Activity {
     return string == null || string.isEmpty();
   }
 
-  @Override
-  public void onBackPressed() {
-    // we don't want to be able to go back from the pin screen
-  }
+//  @Override
+//  public void onBackPressed() {
+//    // we don't want to be able to go back from the pin screen
+//  }
 }
