@@ -16,11 +16,11 @@
 package com.onegini.mobile.exampleapp.view.handler;
 
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_RECEIVED_FINGERPRINT;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_SHOW_SCANNING;
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_USER_PROFILE_ID;
-import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_ACTION;
-import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_RECEIVED_FINGERPRINT;
-import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_SHOW_SCANNING;
 
 import android.content.Context;
 import android.content.Intent;
@@ -50,12 +50,12 @@ public class FingerprintAuthenticationRequestHandler implements OneginiFingerpri
 
   @Override
   public void onNextAuthenticationAttempt() {
-    notifyActivity(EXTRA_RECEIVED_FINGERPRINT);
+    notifyActivity(COMMAND_RECEIVED_FINGERPRINT);
   }
 
   @Override
   public void onFingerprintCaptured() {
-    notifyActivity(EXTRA_SHOW_SCANNING);
+    notifyActivity(COMMAND_SHOW_SCANNING);
   }
 
   @Override
@@ -63,11 +63,11 @@ public class FingerprintAuthenticationRequestHandler implements OneginiFingerpri
     notifyActivity(COMMAND_FINISH);
   }
 
-  private void notifyActivity(final String action) {
+  private void notifyActivity(final String command) {
     final Intent intent = new Intent(context, FingerprintActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-    intent.putExtra(EXTRA_ACTION, action);
+    intent.putExtra(EXTRA_COMMAND, command);
     intent.putExtra(EXTRA_USER_PROFILE_ID, userProfileId);
     context.startActivity(intent);
   }

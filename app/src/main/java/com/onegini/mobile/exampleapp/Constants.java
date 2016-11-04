@@ -22,4 +22,7 @@ public interface Constants {
   String EXTRA_COMMAND = "command";
   String COMMAND_START = "start";
   String COMMAND_FINISH = "finish";
+  String COMMAND_SHOW_SCANNING = "show";
+  String COMMAND_RECEIVED_FINGERPRINT = "received";
+  String COMMAND_ASK_TO_ACCEPT_OR_DENY = "ask";
 }

@@ -15,7 +15,8 @@
  */
 package com.onegini.mobile.exampleapp.view.activity;
 
-import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_RECEIVED_FINGERPRINT;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_SHOW_SCANNING;
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
 
 import android.os.Bundle;
@@ -32,10 +33,6 @@ import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationReque
 
 public class FingerprintActivity extends AuthenticationActivity {
 
-  public static final String EXTRA_ACTION = "fingerprint_action";
-  public static final String EXTRA_SHOW_SCANNING = "show";
-  public static final String EXTRA_RECEIVED_FINGERPRINT = "received";
-
   @Bind(R.id.action_text)
   TextView actionTextView;
   @Bind(R.id.content_fingerprint)
@@ -44,8 +41,6 @@ public class FingerprintActivity extends AuthenticationActivity {
   LinearLayout layoutAcceptDeny;
   @Bind(R.id.fallback_to_pin_button)
   Button fallbackToPinButton;
-
-  protected String actionText;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -64,23 +59,15 @@ public class FingerprintActivity extends AuthenticationActivity {
     setupUi();
   }
 
-  @Override
-  protected void parseIntent() {
-    super.parseIntent();
-    actionText = getIntent().getStringExtra(EXTRA_ACTION);
-  }
-
   protected void setupUi() {
-    if (COMMAND_START.equals(actionText)) {
+    if (COMMAND_START.equals(command)) {
       actionTextView.setText(R.string.scan_fingerprint);
       FingerprintAuthenticationRequestHandler.CALLBACK.acceptAuthenticationRequest();
-    } else if (EXTRA_SHOW_SCANNING.equals(actionText)) {
+    } else if (COMMAND_SHOW_SCANNING.equals(command)) {
       actionTextView.setText(R.string.verifying);
-    } else if (EXTRA_RECEIVED_FINGERPRINT.equals(actionText)) {
+    } else if (COMMAND_RECEIVED_FINGERPRINT.equals(command)) {
       actionTextView.setText(R.string.try_again);
       actionTextView.setAnimation(AnimationUtils.getBlinkAnimation());
-    } else if (COMMAND_FINISH.equals(actionText)) {
-      finish();
     }
   }
 

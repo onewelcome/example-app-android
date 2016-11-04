@@ -15,13 +15,13 @@
  */
 package com.onegini.mobile.exampleapp.view.handler;
 
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_ASK_TO_ACCEPT_OR_DENY;
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_RECEIVED_FINGERPRINT;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_SHOW_SCANNING;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_MESSAGE;
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_USER_PROFILE_ID;
-import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_ACTION;
-import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_RECEIVED_FINGERPRINT;
-import static com.onegini.mobile.exampleapp.view.activity.FingerprintActivity.EXTRA_SHOW_SCANNING;
-import static com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFingerprintActivity.EXTRA_ASK_TO_ACCEPT_OR_DENY;
 
 import android.content.Context;
 import android.content.Intent;
@@ -48,17 +48,17 @@ public class MobileAuthenticationFingerprintRequestHandler implements OneginiMob
     CALLBACK = oneginiFingerprintCallback;
     message = oneginiMobileAuthenticationRequest.getMessage();
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
-    notifyActivity(EXTRA_ASK_TO_ACCEPT_OR_DENY);
+    notifyActivity(COMMAND_ASK_TO_ACCEPT_OR_DENY);
   }
 
   @Override
   public void onNextAuthenticationAttempt() {
-    notifyActivity(EXTRA_RECEIVED_FINGERPRINT);
+    notifyActivity(COMMAND_RECEIVED_FINGERPRINT);
   }
 
   @Override
   public void onFingerprintCaptured() {
-    notifyActivity(EXTRA_SHOW_SCANNING);
+    notifyActivity(COMMAND_SHOW_SCANNING);
   }
 
   @Override
@@ -66,10 +66,10 @@ public class MobileAuthenticationFingerprintRequestHandler implements OneginiMob
     notifyActivity(COMMAND_FINISH);
   }
 
-  private void notifyActivity(final String action) {
+  private void notifyActivity(final String command) {
     final Intent intent = new Intent(context, MobileAuthenticationFingerprintActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    intent.putExtra(EXTRA_ACTION, action);
+    intent.putExtra(EXTRA_COMMAND, command);
     intent.putExtra(EXTRA_MESSAGE, message);
     intent.putExtra(EXTRA_USER_PROFILE_ID, userProfileId);
     context.startActivity(intent);

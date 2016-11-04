@@ -15,12 +15,11 @@
  */
 package com.onegini.mobile.exampleapp.view.handler;
 
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_ERROR_MESSAGE;
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_MESSAGE;
-
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
-import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
 
 import java.util.Arrays;
 
@@ -63,14 +62,7 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
   @Override
   public void finishPinCreation() {
     Toast.makeText(context, "CreatePinRequestHandler#finishPinCreation", Toast.LENGTH_LONG).show();
-    closeActivity();
-  }
-
-  private void closeActivity() {
-    final Intent intent = new Intent(context, PinActivity.class);
-    intent.putExtra(EXTRA_COMMAND, COMMAND_FINISH);
-    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-    context.startActivity(intent);
+    notifyActivity("", "", COMMAND_FINISH);
   }
 
   /**
@@ -157,10 +149,16 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
   }
 
   private void notifyActivity(final String message, final String errorMessage) {
+    notifyActivity(message, errorMessage, COMMAND_START);
+  }
+
+  private void notifyActivity(final String message, final String errorMessage, final String command) {
     final Intent intent = new Intent(context, PinActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     intent.putExtra(EXTRA_MESSAGE, message);
     intent.putExtra(EXTRA_ERROR_MESSAGE, errorMessage);
+    intent.putExtra(EXTRA_COMMAND, command);
     context.startActivity(intent);
   }
 }

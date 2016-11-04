@@ -15,17 +15,17 @@
  */
 package com.onegini.mobile.exampleapp.view.activity;
 
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_ASK_TO_ACCEPT_OR_DENY;
+
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFingerprintRequestHandler;
 
 public class MobileAuthenticationFingerprintActivity extends FingerprintActivity {
 
-  public static final String EXTRA_ASK_TO_ACCEPT_OR_DENY = "ask";
-
   @Override
   protected void setupUi() {
-    if (EXTRA_ASK_TO_ACCEPT_OR_DENY.equals(actionText)) {
+    if (COMMAND_ASK_TO_ACCEPT_OR_DENY.equals(command)) {
       setFingerprintAuthenticationPermissionVisibility(true);
     } else {
       super.setupUi();

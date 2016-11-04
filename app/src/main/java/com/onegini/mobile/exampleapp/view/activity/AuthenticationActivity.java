@@ -17,6 +17,7 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
 import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
 
 import android.app.Activity;
@@ -44,6 +45,7 @@ public abstract class AuthenticationActivity extends Activity {
   TextView authenticatorMessage;
 
   protected String errorMessage;
+  protected String command;
   private String message;
   private String userName;
 
@@ -57,18 +59,16 @@ public abstract class AuthenticationActivity extends Activity {
 
   protected void parseIntent() {
     final Bundle extras = getIntent().getExtras();
-
-    final String command = extras.getString(EXTRA_COMMAND);
+    command = extras.getString(EXTRA_COMMAND);
     if (COMMAND_FINISH.equals(command)) {
       finish();
-      return;
+    } else if(COMMAND_START.equals(command)) {
+      message = extras.getString(EXTRA_MESSAGE, "");
+      errorMessage = extras.getString(EXTRA_ERROR_MESSAGE, "");
+
+      final String userProfileId = extras.getString(EXTRA_USER_PROFILE_ID, "");
+      loadUserName(userProfileId);
     }
-
-    message = extras.getString(EXTRA_MESSAGE, "");
-    errorMessage = extras.getString(EXTRA_ERROR_MESSAGE, "");
-
-    final String userProfileId = extras.getString(EXTRA_USER_PROFILE_ID, "");
-    loadUserName(userProfileId);
   }
 
   private void loadUserName(final String userProfileId) {
@@ -108,8 +108,8 @@ public abstract class AuthenticationActivity extends Activity {
     return string == null || string.isEmpty();
   }
 
-//  @Override
-//  public void onBackPressed() {
-//    // we don't want to be able to go back from the pin screen
-//  }
+  @Override
+  public void onBackPressed() {
+    // we don't want to be able to go back from the pin screen
+  }
 }
