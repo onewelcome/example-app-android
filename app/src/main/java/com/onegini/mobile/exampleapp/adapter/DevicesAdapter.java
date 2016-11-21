@@ -29,17 +29,17 @@ import com.onegini.mobile.exampleapp.model.Device;
 public class DevicesAdapter extends
     RecyclerView.Adapter<DevicesAdapter.ViewHolder> {
 
-  private List<Device> devices;
+  private final List<Device> devices;
 
   public DevicesAdapter(List<Device> contacts) {
     devices = contacts;
   }
 
-  public static class ViewHolder extends RecyclerView.ViewHolder {
+  static class ViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView nameTextView;
+    final TextView nameTextView;
 
-    public ViewHolder(View itemView) {
+    ViewHolder(View itemView) {
       super(itemView);
 
       nameTextView = (TextView) itemView.findViewById(R.id.textView);

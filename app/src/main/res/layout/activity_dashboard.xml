@@ -42,11 +42,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <include
+                    layout="@layout/view_welcome_user_text"
                     android:id="@+id/dashboard_welcome_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:layout_marginTop="0dp"
                     android:text="@string/welcome_user_text"/>
 
                 <Button
@@ -57,17 +58,14 @@
                 <Button
                     android:id="@+id/button_settings"
                     style="@style/ButtonStyle"
-                    android:text="@string/btn_settings_label"
-                    android:layout_marginTop="20dp"/>
+                    android:text="@string/btn_settings_label"/>
                 <Button
                     android:id="@+id/button_logout"
                     style="@style/ButtonStyle"
-                    android:layout_marginTop="20dp"
                     android:text="@string/btn_logout_label"/>
                 <Button
                     android:id="@+id/button_deregister_user"
                     style="@style/ButtonStyle"
-                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="32dp"
                     android:text="@string/btn_deregister_user_label"/>
             </LinearLayout>

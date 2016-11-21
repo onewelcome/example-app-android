@@ -47,11 +47,9 @@
             android:id="@+id/login_button"
             android:visibility="gone"
             tools:visibility="visible"
-            style="@style/ButtonStyle"
+            style="@style/ButtonWideStyle"
             android:layout_below="@+id/users_spinner"
             android:layout_width="match_parent"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp"
             android:text="@string/btn_login_label"/>
         <TextView
             android:layout_width="match_parent"
@@ -76,11 +74,9 @@
 
     <Button
         android:id="@+id/register_button"
-        style="@style/ButtonStyle"
+        style="@style/ButtonWideStyle"
         android:layout_width="match_parent"
         android:layout_marginBottom="100dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
         android:visibility="invisible"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"

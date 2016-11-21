@@ -15,29 +15,32 @@
  */
 package com.onegini.mobile.exampleapp.view.activity;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.TextView;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_RECEIVED_FINGERPRINT;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_SHOW_SCANNING;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.util.AnimationUtils;
 import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationRequestHandler;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
-public class FingerprintActivity extends Activity {
-
-  public static final String MSG_EXTRA_ACTION = "fingerprint-action";
-  public static final String MSG_EXTRA_START = "start";
-  public static final String MSG_EXTRA_SHOW_SCANNING = "show";
-  public static final String MSG_EXTRA_RECEIVED_FINGERPRINT = "received";
-  public static final String MSG_EXTRA_CLOSE = "close";
+public class FingerprintActivity extends AuthenticationActivity {
 
   @Bind(R.id.action_text)
-  TextView actionText;
+  TextView actionTextView;
+  @Bind(R.id.content_fingerprint)
+  LinearLayout layoutFingerprint;
+  @Bind(R.id.content_accept_deny)
+  LinearLayout layoutAcceptDeny;
+  @Bind(R.id.fallback_to_pin_button)
+  Button fallbackToPinButton;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -45,41 +48,41 @@ public class FingerprintActivity extends Activity {
     setContentView(R.layout.activity_fingerprint);
     ButterKnife.bind(this);
 
-    setupUi(getIntent().getStringExtra(MSG_EXTRA_ACTION));
+    setFingerprintAuthenticationPermissionVisibility(false);
+    initialize();
   }
 
   @Override
-  protected void onPostCreate(final Bundle savedInstanceState) {
-    super.onPostCreate(savedInstanceState);
-    if (FingerprintAuthenticationRequestHandler.fingerprintCallback != null) {
-      FingerprintAuthenticationRequestHandler.fingerprintCallback.acceptAuthenticationRequest();
-    }
+  protected void initialize() {
+    parseIntent();
+    updateTexts();
+    setupUi();
   }
 
-  @Override
-  protected void onNewIntent(final Intent intent) {
-    setupUi(intent.getStringExtra(MSG_EXTRA_ACTION));
-  }
-
-  private void setupUi(final String action) {
-    if (MSG_EXTRA_SHOW_SCANNING.equals(action)) {
-      actionText.setText(R.string.verifying);
-    } else if (MSG_EXTRA_START.equals(action)) {
-      actionText.setText(R.string.scan_fingerprint);
-    } else if (MSG_EXTRA_RECEIVED_FINGERPRINT.equals(action)) {
-      actionText.setText(R.string.try_again);
-      actionText.setAnimation(AnimationUtils.getBlinkAnimation());
-    } else if (MSG_EXTRA_CLOSE.equals(action)) {
-      finish();
+  protected void setupUi() {
+    if (COMMAND_START.equals(command)) {
+      actionTextView.setText(R.string.scan_fingerprint);
+      FingerprintAuthenticationRequestHandler.CALLBACK.acceptAuthenticationRequest();
+    } else if (COMMAND_SHOW_SCANNING.equals(command)) {
+      actionTextView.setText(R.string.verifying);
+    } else if (COMMAND_RECEIVED_FINGERPRINT.equals(command)) {
+      actionTextView.setText(R.string.try_again);
+      actionTextView.setAnimation(AnimationUtils.getBlinkAnimation());
     }
   }
 
   @SuppressWarnings("unused")
   @OnClick(R.id.fallback_to_pin_button)
   public void onFallbackToPinButtonClick() {
-    if (FingerprintAuthenticationRequestHandler.fingerprintCallback != null) {
-      FingerprintAuthenticationRequestHandler.fingerprintCallback.fallbackToPin();
+    if (FingerprintAuthenticationRequestHandler.CALLBACK != null) {
+      FingerprintAuthenticationRequestHandler.CALLBACK.fallbackToPin();
       finish();
     }
+  }
+
+  protected void setFingerprintAuthenticationPermissionVisibility(final boolean isVisible) {
+    layoutAcceptDeny.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    layoutFingerprint.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+    fallbackToPinButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
   }
 }

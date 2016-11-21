@@ -15,6 +15,12 @@
  */
 package com.onegini.mobile.exampleapp.view.handler;
 
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
+import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_ERROR_MESSAGE;
+import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_MESSAGE;
+
 import java.util.Arrays;
 
 import android.content.Context;
@@ -32,7 +38,8 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
 
-  public static PinWithConfirmationHandler oneginiPinCallback;
+  public static PinWithConfirmationHandler CALLBACK;
+
   private final Context context;
 
   public CreatePinRequestHandler(final Context context) {
@@ -44,7 +51,7 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
     PinActivity.setIsCreatePinFlow(true);
     notifyActivity(context.getString(R.string.pin_title_choose_pin), "");
 
-    CreatePinRequestHandler.oneginiPinCallback = new PinWithConfirmationHandler(oneginiPinCallback);
+    CALLBACK = new PinWithConfirmationHandler(oneginiPinCallback);
   }
 
   @Override
@@ -55,6 +62,7 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
   @Override
   public void finishPinCreation() {
     Toast.makeText(context, "CreatePinRequestHandler#finishPinCreation", Toast.LENGTH_LONG).show();
+    notifyActivity("", "", COMMAND_FINISH);
   }
 
   /**
@@ -140,11 +148,17 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
     }
   }
 
-  private void notifyActivity(final String title, final String message) {
+  private void notifyActivity(final String message, final String errorMessage) {
+    notifyActivity(message, errorMessage, COMMAND_START);
+  }
+
+  private void notifyActivity(final String message, final String errorMessage, final String command) {
     final Intent intent = new Intent(context, PinActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    intent.putExtra(PinActivity.EXTRA_TITLE, title);
-    intent.putExtra(PinActivity.EXTRA_MESSAGE, message);
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    intent.putExtra(EXTRA_MESSAGE, message);
+    intent.putExtra(EXTRA_ERROR_MESSAGE, errorMessage);
+    intent.putExtra(EXTRA_COMMAND, command);
     context.startActivity(intent);
   }
 }

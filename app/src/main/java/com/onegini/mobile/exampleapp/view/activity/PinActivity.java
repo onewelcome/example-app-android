@@ -15,7 +15,6 @@
  */
 package com.onegini.mobile.exampleapp.view.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -31,43 +30,30 @@ import com.onegini.mobile.exampleapp.view.handler.PinAuthenticationRequestHandle
 import com.onegini.mobile.exampleapp.view.helper.PinInputFields;
 import com.onegini.mobile.exampleapp.view.helper.PinKeyboard;
 
-public class PinActivity extends Activity {
+public class PinActivity extends AuthenticationActivity {
 
-  private static final int MAX_DIGITS = 5;
+  public static final String EXTRA_FAILED_ATTEMPTS_COUNT = "failed_attempts";
+  public static final String EXTRA_MAX_FAILED_ATTEMPTS = "max_failed_attempts";
 
-  public static final String EXTRA_TITLE = "title";
-  public static final String EXTRA_MESSAGE = "message";
-  public static final String EXTRA_USER_NAME = "user_name";
+  protected static final int MAX_DIGITS = 5;
+
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.pin_error_message)
+  TextView errorTextView;
+
+  protected int failedAttemptsCount;
+  protected int maxFailedAttempts;
+  protected PinInputFields.PinProvidedListener pinProvidedListener;
 
   private static boolean isCreatePinFlow = false;
-  private static int remainingFailedAttempts = 0;
 
   public static void setIsCreatePinFlow(final boolean isCreatePinFlow) {
     PinActivity.isCreatePinFlow = isCreatePinFlow;
   }
 
-  public static void setRemainingFailedAttempts(final int remainingFailedAttempts) {
-    PinActivity.remainingFailedAttempts = remainingFailedAttempts;
-  }
-
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.welcome_user_text)
-  TextView welcomeTextView;
-  @SuppressWarnings("unused")
-  @Bind(R.id.pin_title)
-  TextView screenTitleTextView;
-  @SuppressWarnings("unused")
-  @Bind(R.id.pin_error_message)
-  TextView errorTextView;
   private final ImageView[] pinInputs = new ImageView[MAX_DIGITS];
-
-  private String screenTitle;
-  private String screenMessage;
-  private String userName;
-
   private PinKeyboard pinKeyboard;
   private PinInputFields pinInputFields;
-  private PinInputFields.PinProvidedListener pinProvidedListener;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -85,32 +71,43 @@ public class PinActivity extends Activity {
   }
 
   @Override
-  protected void onNewIntent(final Intent intent) {
-    setIntent(intent);
-    initialize();
-  }
-
-  @Override
-  public void onBackPressed() {
-    // we don't want to be able to go back from the pin screen
-  }
-
-  private void initialize() {
-    initPinInputs();
+  protected void initialize() {
     parseIntent();
-    initListeners();
+    initPinInputs();
+    initPinListener();
     initLayout();
     initKeyboard();
   }
 
-  private void parseIntent() {
-    final Bundle extras = getIntent().getExtras();
-    screenTitle = extras.getString(EXTRA_TITLE, "");
-    screenMessage = extras.getString(EXTRA_MESSAGE, "");
-    userName = extras.getString(EXTRA_USER_NAME, "");
+  @Override
+  protected void parseIntent() {
+    super.parseIntent();
+    final Intent intent = getIntent();
+    failedAttemptsCount = intent.getIntExtra(EXTRA_FAILED_ATTEMPTS_COUNT, 0);
+    maxFailedAttempts = intent.getIntExtra(EXTRA_MAX_FAILED_ATTEMPTS, 0);
   }
 
-  private void initListeners() {
+  @Override
+  protected void updateTexts() {
+    super.updateTexts();
+    updateErrorText();
+  }
+
+  protected void updateErrorText() {
+    final int remainingFailedAttempts = maxFailedAttempts - failedAttemptsCount;
+
+    if (isCreatePinFlow && isNotBlank(errorMessage)) {
+      errorTextView.setText(errorMessage);
+      errorTextView.setVisibility(View.VISIBLE);
+    } else if (!isCreatePinFlow && remainingFailedAttempts > 0) {
+      errorTextView.setText(getString(R.string.pin_error_invalid_pin, remainingFailedAttempts));
+      errorTextView.setVisibility(View.VISIBLE);
+    } else {
+      errorTextView.setVisibility(View.INVISIBLE);
+    }
+  }
+
+  protected void initPinListener() {
     pinProvidedListener = pin -> {
       errorTextView.setVisibility(View.INVISIBLE);
       callHandler(pin);
@@ -139,48 +136,6 @@ public class PinActivity extends Activity {
     pinKeyboard.initLayout(keyboardLayout, getResources(), getPackageName());
   }
 
-  private void updateTexts() {
-    updateWelcomeText();
-    updateTitleText();
-    updateErrorText();
-  }
-
-  private void updateWelcomeText() {
-    if (isNotBlank(userName)) {
-      welcomeTextView.setText(getString(R.string.welcome_user_text, userName));
-    } else {
-      welcomeTextView.setVisibility(View.INVISIBLE);
-    }
-  }
-
-  private void updateTitleText() {
-    if (isNotBlank(screenTitle)) {
-      screenTitleTextView.setText(screenTitle);
-    } else {
-      screenTitleTextView.setVisibility(View.INVISIBLE);
-    }
-  }
-
-  private void updateErrorText() {
-    if (isCreatePinFlow && isNotBlank(screenMessage)) {
-      errorTextView.setText(screenMessage);
-      errorTextView.setVisibility(View.VISIBLE);
-    } else if (!isCreatePinFlow && remainingFailedAttempts > 0) {
-      errorTextView.setText(getString(R.string.pin_error_invalid_pin, remainingFailedAttempts));
-      errorTextView.setVisibility(View.VISIBLE);
-    } else {
-      errorTextView.setVisibility(View.INVISIBLE);
-    }
-  }
-
-  private boolean isNotBlank(final String string) {
-    return !isBlank(string);
-  }
-
-  private boolean isBlank(final String string) {
-    return string == null || string.length() == 0;
-  }
-
   private void resetView() {
     pinKeyboard.reset();
     pinInputFields.reset();
@@ -189,10 +144,9 @@ public class PinActivity extends Activity {
 
   private void callHandler(final char[] pin) {
     if (isCreatePinFlow) {
-      CreatePinRequestHandler.oneginiPinCallback.onPinProvided(pin);
+      CreatePinRequestHandler.CALLBACK.onPinProvided(pin);
     } else {
-      PinAuthenticationRequestHandler.oneginiPinCallback.acceptAuthenticationRequest(pin);
+      PinAuthenticationRequestHandler.CALLBACK.acceptAuthenticationRequest(pin);
     }
-    finish();
   }
 }

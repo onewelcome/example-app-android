@@ -62,9 +62,11 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.FingerprintActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.MobileAuthenticationFingerprintActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.DashboardActivity"
