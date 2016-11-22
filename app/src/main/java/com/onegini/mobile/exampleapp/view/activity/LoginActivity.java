@@ -268,7 +268,7 @@ public class LoginActivity extends Activity {
   }
 
   private void showToast(final String message) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
   }
 
   private void startDashboardActivity() {
