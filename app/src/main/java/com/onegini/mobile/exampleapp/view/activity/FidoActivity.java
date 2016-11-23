@@ -29,9 +29,9 @@ import com.onegini.mobile.exampleapp.view.handler.FidoAuthenticationRequestHandl
 public class FidoActivity extends AuthenticationActivity {
 
   @Bind(R.id.content_accept_deny)
-  LinearLayout acceptDenyLayout;
+  LinearLayout layoutAcceptDeny;
   @Bind(R.id.fallback_to_pin_button)
-  Button pinFallbackButton;
+  Button fallbackToPinButton;
   @Bind(R.id.fido_progressbar)
   ProgressBar progressBar;
 
@@ -48,9 +48,7 @@ public class FidoActivity extends AuthenticationActivity {
   public void onAcceptClicked() {
     if (FidoAuthenticationRequestHandler.CALLBACK != null) {
       FidoAuthenticationRequestHandler.CALLBACK.acceptAuthenticationRequest();
-      acceptDenyLayout.setVisibility(View.INVISIBLE);
-      pinFallbackButton.setVisibility(View.INVISIBLE);
-      progressBar.setVisibility(View.VISIBLE);
+      setFidoAuthenticationPermissionVisibility(false);
     }
   }
 
@@ -73,13 +71,13 @@ public class FidoActivity extends AuthenticationActivity {
 
   protected void initialize() {
     parseIntent();
-    initLayout();
     updateTexts();
+    setFidoAuthenticationPermissionVisibility(true);
   }
 
-  private void initLayout() {
-    acceptDenyLayout.setVisibility(View.VISIBLE);
-    pinFallbackButton.setVisibility(View.VISIBLE);
-    progressBar.setVisibility(View.GONE);
+  protected void setFidoAuthenticationPermissionVisibility(final boolean isVisible) {
+    layoutAcceptDeny.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    fallbackToPinButton.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    progressBar.setVisibility(isVisible ? View.GONE : View.VISIBLE);
   }
 }

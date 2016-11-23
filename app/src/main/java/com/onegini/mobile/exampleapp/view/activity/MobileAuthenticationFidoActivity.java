@@ -15,39 +15,18 @@
  */
 package com.onegini.mobile.exampleapp.view.activity;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFidoRequestHandler;
 
-public class MobileAuthenticationFidoActivity extends AuthenticationActivity {
-
-  @Bind(R.id.content_accept_deny)
-  LinearLayout acceptDenyLayout;
-  @Bind(R.id.fallback_to_pin_button)
-  Button pinFallbackButton;
-  @Bind(R.id.fido_progressbar)
-  ProgressBar progressBar;
-
-  @Override
-  protected void onCreate(final Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_fido);
-    ButterKnife.bind(this);
-    initialize();
-  }
+public class MobileAuthenticationFidoActivity extends FidoActivity {
 
   @SuppressWarnings("unused")
   @OnClick(R.id.auth_accept_button)
   public void onAcceptClicked() {
     if (MobileAuthenticationFidoRequestHandler.CALLBACK != null) {
       MobileAuthenticationFidoRequestHandler.CALLBACK.acceptAuthenticationRequest();
+      setFidoAuthenticationPermissionVisibility(false);
     }
   }
 
@@ -65,16 +44,5 @@ public class MobileAuthenticationFidoActivity extends AuthenticationActivity {
     if (MobileAuthenticationFidoRequestHandler.CALLBACK != null) {
       MobileAuthenticationFidoRequestHandler.CALLBACK.fallbackToPin();
     }
-  }
-
-  protected void initialize() {
-    parseIntent();
-    initLayout();
-  }
-
-  private void initLayout() {
-    acceptDenyLayout.setVisibility(View.VISIBLE);
-    pinFallbackButton.setVisibility(View.VISIBLE);
-    progressBar.setVisibility(View.GONE);
   }
 }

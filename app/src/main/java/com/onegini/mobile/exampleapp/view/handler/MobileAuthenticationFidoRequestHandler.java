@@ -16,11 +16,14 @@
 package com.onegini.mobile.exampleapp.view.handler;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
+import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_USER_PROFILE_ID;
+import static com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFidoActivity.*;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.Constants;
-import com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFidoActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthenticationFidoRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiFidoCallback;
@@ -30,6 +33,8 @@ public class MobileAuthenticationFidoRequestHandler implements OneginiMobileAuth
 
   public static OneginiFidoCallback CALLBACK;
 
+  private static String userProfileId;
+  private static String message;
   private final Context context;
 
   public MobileAuthenticationFidoRequestHandler(final Context context) {
@@ -39,26 +44,21 @@ public class MobileAuthenticationFidoRequestHandler implements OneginiMobileAuth
   @Override
   public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest, final OneginiFidoCallback oneginiFidoCallback) {
     CALLBACK = oneginiFidoCallback;
-    openActivity(oneginiMobileAuthenticationRequest.getUserProfile().getProfileId(), oneginiMobileAuthenticationRequest.getMessage());
+    userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
+    message = oneginiMobileAuthenticationRequest.getMessage();
+    notifyActivity(COMMAND_START);
   }
 
   @Override
   public void finishAuthentication() {
-    closeActivity();
+    notifyActivity(COMMAND_FINISH);
   }
 
-  private void openActivity(final String profileId, final String message) {
+  private void notifyActivity(final String command) {
     final Intent intent = new Intent(context, MobileAuthenticationFidoActivity.class);
-    intent.putExtra(Constants.EXTRA_COMMAND, Constants.COMMAND_START);
-    intent.putExtra(AuthenticationActivity.EXTRA_USER_PROFILE_ID, profileId);
-    intent.putExtra(MobileAuthenticationFidoActivity.EXTRA_MESSAGE, message);
-    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-    context.startActivity(intent);
-  }
-
-  private void closeActivity() {
-    final Intent intent = new Intent(context, MobileAuthenticationFidoActivity.class);
-    intent.putExtra(Constants.EXTRA_COMMAND, Constants.COMMAND_FINISH);
+    intent.putExtra(EXTRA_COMMAND, command);
+    intent.putExtra(EXTRA_USER_PROFILE_ID, userProfileId);
+    intent.putExtra(EXTRA_MESSAGE, message);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }

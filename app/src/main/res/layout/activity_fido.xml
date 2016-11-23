@@ -31,11 +31,8 @@
     <Button
         android:id="@+id/fallback_to_pin_button"
         style="@style/ButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
         android:layout_marginBottom="24dp"
-        android:layout_marginLeft="@dimen/big_button_side_margin"
-        android:layout_marginRight="@dimen/big_button_side_margin"
-        android:text="@string/use_pin_authentication"/>
+        android:text="@string/use_pin_authentication"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>
