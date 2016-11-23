@@ -19,6 +19,8 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.content.Context;
 import android.content.Intent;
+import com.onegini.mobile.exampleapp.Constants;
+import com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFidoActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthenticationFidoRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiFidoCallback;
@@ -47,8 +49,8 @@ public class MobileAuthenticationFidoRequestHandler implements OneginiMobileAuth
 
   private void openActivity(final String profileId, final String message) {
     final Intent intent = new Intent(context, MobileAuthenticationFidoActivity.class);
-    intent.putExtra(MobileAuthenticationFidoActivity.EXTRA_COMMAND, MobileAuthenticationFidoActivity.COMMAND_START);
-    intent.putExtra(MobileAuthenticationFidoActivity.EXTRA_PROFILE_ID, profileId);
+    intent.putExtra(Constants.EXTRA_COMMAND, Constants.COMMAND_START);
+    intent.putExtra(AuthenticationActivity.EXTRA_USER_PROFILE_ID, profileId);
     intent.putExtra(MobileAuthenticationFidoActivity.EXTRA_MESSAGE, message);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
@@ -56,7 +58,7 @@ public class MobileAuthenticationFidoRequestHandler implements OneginiMobileAuth
 
   private void closeActivity() {
     final Intent intent = new Intent(context, MobileAuthenticationFidoActivity.class);
-    intent.putExtra(MobileAuthenticationFidoActivity.EXTRA_COMMAND, MobileAuthenticationFidoActivity.COMMAND_FINISH);
+    intent.putExtra(Constants.EXTRA_COMMAND, Constants.COMMAND_FINISH);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }

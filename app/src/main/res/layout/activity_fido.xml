@@ -4,54 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <include
         android:id="@+id/welcome_user_text"
-        style="@style/Base.TextAppearance.AppCompat.Headline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="@string/welcome_user_text"/>
+        layout="@layout/view_welcome_user_text"/>
 
     <TextView
-        android:id="@+id/pin_title"
+        android:id="@+id/authenticator_message"
+        android:text="@string/do_you_want_to_confirm_with_fido"
         android:layout_below="@id/welcome_user_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/confirm_with_fido"
-        android:textColor="@color/dark_text"
-        android:textSize="20sp"/>
+        style="@style/AuthenticatorMessageStyle"/>
 
-    <LinearLayout
-        android:id="@+id/content_accept_deny"
+    <include
+        layout="@layout/view_auth_accept_deny_buttons"
+        android:layout_below="@+id/authenticator_message"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:layout_centerInParent="true">
-
-        <Button
-            android:id="@+id/auth_accept_button"
-            style="@style/ButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="@dimen/big_button_side_margin"
-            android:layout_marginRight="@dimen/big_button_side_margin"
-            android:text="@string/btn_auth_accept"/>
-
-        <Button
-            android:id="@+id/auth_deny_button"
-            style="@style/ButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="@dimen/big_button_side_margin"
-            android:layout_marginRight="@dimen/big_button_side_margin"
-            android:text="@string/btn_auth_deny"/>
-
-    </LinearLayout>
+        android:layout_height="wrap_content"/>
 
     <ProgressBar
         android:id="@+id/fido_progressbar"
