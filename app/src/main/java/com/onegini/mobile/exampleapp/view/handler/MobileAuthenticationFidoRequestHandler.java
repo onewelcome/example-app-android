@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.onegini.mobile.exampleapp.view.handler;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
