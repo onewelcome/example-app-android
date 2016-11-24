@@ -36,10 +36,10 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthe
 
   public static OneginiPinCallback CALLBACK;
 
-  private static int failedAttemptsCount;
-  private static int maxAttemptsCount;
-  private static String message;
-  private static String userProfileId;
+  private int failedAttemptsCount;
+  private int maxAttemptsCount;
+  private String message;
+  private String userProfileId;
 
   private final Context context;
 

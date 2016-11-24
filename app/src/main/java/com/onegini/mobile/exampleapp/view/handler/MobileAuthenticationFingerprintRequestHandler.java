@@ -35,7 +35,7 @@ public class MobileAuthenticationFingerprintRequestHandler implements OneginiMob
   public static OneginiFingerprintCallback CALLBACK;
 
   private String message;
-  private static String userProfileId;
+  private String userProfileId;
 
   private final Context context;
 

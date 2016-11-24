@@ -36,9 +36,8 @@ public class PinAuthenticationRequestHandler implements OneginiPinAuthentication
 
   public static OneginiPinCallback CALLBACK;
 
-  private static String userProfileId;
-
   private final Context context;
+  private String userProfileId;
   private int failedAttemptsCount;
   private int maxAttemptsCount;
 

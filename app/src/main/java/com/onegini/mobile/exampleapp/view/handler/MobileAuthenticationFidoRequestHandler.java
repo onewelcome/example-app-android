@@ -33,8 +33,8 @@ public class MobileAuthenticationFidoRequestHandler implements OneginiMobileAuth
 
   public static OneginiFidoCallback CALLBACK;
 
-  private static String userProfileId;
-  private static String message;
+  private String userProfileId;
+  private String message;
   private final Context context;
 
   public MobileAuthenticationFidoRequestHandler(final Context context) {

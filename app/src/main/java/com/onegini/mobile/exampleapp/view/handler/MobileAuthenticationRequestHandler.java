@@ -34,7 +34,7 @@ public class MobileAuthenticationRequestHandler implements OneginiMobileAuthenti
   public static OneginiAcceptDenyCallback CALLBACK;
 
   private final Context context;
-  private static String userProfileId;
+  private String userProfileId;
   private String message;
 
   public MobileAuthenticationRequestHandler(final Context context) {

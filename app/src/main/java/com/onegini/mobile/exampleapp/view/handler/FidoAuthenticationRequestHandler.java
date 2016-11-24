@@ -32,7 +32,7 @@ public class FidoAuthenticationRequestHandler implements OneginiFidoAuthenticati
 
   public static OneginiFidoCallback CALLBACK;
 
-  private static String userProfileId;
+  private String userProfileId;
 
   private final Context context;
 
