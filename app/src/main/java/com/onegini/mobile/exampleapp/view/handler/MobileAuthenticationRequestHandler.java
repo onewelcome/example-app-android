@@ -34,7 +34,7 @@ public class MobileAuthenticationRequestHandler implements OneginiMobileAuthenti
   public static OneginiAcceptDenyCallback CALLBACK;
 
   private final Context context;
-  private String profileId;
+  private String userProfileId;
   private String message;
 
   public MobileAuthenticationRequestHandler(final Context context) {
@@ -45,7 +45,7 @@ public class MobileAuthenticationRequestHandler implements OneginiMobileAuthenti
   public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest,
                                   final OneginiAcceptDenyCallback oneginiAcceptDenyCallback) {
     CALLBACK = oneginiAcceptDenyCallback;
-    profileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
+    userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
     message = oneginiMobileAuthenticationRequest.getMessage();
     notifyActivity(COMMAND_START);
   }
@@ -59,7 +59,7 @@ public class MobileAuthenticationRequestHandler implements OneginiMobileAuthenti
     final Intent intent = new Intent(context, MobileAuthenticationActivity.class);
     intent.putExtra(EXTRA_COMMAND, command);
     intent.putExtra(EXTRA_MESSAGE, message);
-    intent.putExtra(EXTRA_USER_PROFILE_ID, profileId);
+    intent.putExtra(EXTRA_USER_PROFILE_ID, userProfileId);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }

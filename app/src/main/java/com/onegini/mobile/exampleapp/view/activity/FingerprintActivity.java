@@ -48,7 +48,6 @@ public class FingerprintActivity extends AuthenticationActivity {
     setContentView(R.layout.activity_fingerprint);
     ButterKnife.bind(this);
 
-    setFingerprintAuthenticationPermissionVisibility(false);
     initialize();
   }
 
@@ -57,6 +56,7 @@ public class FingerprintActivity extends AuthenticationActivity {
     parseIntent();
     updateTexts();
     setupUi();
+    setFingerprintAuthenticationPermissionVisibility(false);
   }
 
   protected void setupUi() {

@@ -33,7 +33,7 @@ public class FingerprintAuthenticationRequestHandler implements OneginiFingerpri
 
   public static OneginiFingerprintCallback CALLBACK;
 
-  private static String userProfileId;
+  private String userProfileId;
 
   private final Context context;
 

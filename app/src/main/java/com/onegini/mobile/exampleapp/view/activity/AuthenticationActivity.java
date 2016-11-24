@@ -35,7 +35,7 @@ public abstract class AuthenticationActivity extends Activity {
 
   public static final String EXTRA_MESSAGE = "message";
   public static final String EXTRA_ERROR_MESSAGE = "error_message";
-  public static final String EXTRA_USER_PROFILE_ID = "user_name";
+  public static final String EXTRA_USER_PROFILE_ID = "user_profile_id";
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.welcome_user_text)

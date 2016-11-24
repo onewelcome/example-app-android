@@ -44,7 +44,8 @@ public class MobileAuthenticationFingerprintRequestHandler implements OneginiMob
   }
 
   @Override
-  public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest, final OneginiFingerprintCallback oneginiFingerprintCallback) {
+  public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest,
+                                  final OneginiFingerprintCallback oneginiFingerprintCallback) {
     CALLBACK = oneginiFingerprintCallback;
     message = oneginiMobileAuthenticationRequest.getMessage();
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
