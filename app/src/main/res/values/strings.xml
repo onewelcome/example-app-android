@@ -1,8 +1,23 @@
+<!--
+  Copyright (c) 2016 Onegini B.V.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
 <resources>
     <string name="app_name">Example App</string>
     <string name="btn_login_label">LOG IN</string>
     <string name="btn_register_label">REGISTER</string>
-    <string name="pin_deny_button_label">Deny</string>
     <string name="pin_error_invalid_pin">Wrong PIN, %1$d attempt(s) left</string>
     <string name="pin_title_choose_pin">Create PIN</string>
     <string name="pin_title_verify_pin">Confirm PIN</string>
@@ -11,12 +26,14 @@
     <string name="pin_error_invalid_length">PIN length is incorrect</string>
     <string name="pin_error_not_equal">PIN was not the same, choose PIN</string>
     <string name="pin_error_similar">Too many similar digits</string>
-    <string name="pin_title_enter_pin">Enter PIN</string>
+    <string name="authenticator_message_enter_pin">Enter PIN</string>
     <string name="btn_logout_label">Logout</string>
     <string name="btn_deregister_user_label">Deregister user</string>
     <string name="btn_your_devices">Your devices</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_with_fingerprint">Confirm with fingerprint</string>
+    <string name="confirm_with_fido">Authenticate with FIDO</string>
+    <string name="do_you_want_to_confirm_with_fido">Do you want to authenticate with FIDO?</string>
     <string name="scan_fingerprint">Touch sensor</string>
     <string name="use_pin_authentication">Use PIN code</string>
     <string name="try_again">Try again…</string>
@@ -31,12 +48,13 @@
     <string name="settings_mobile_enrollment_off">Enable mobile authentication</string>
     <string name="settings_mobile_enrollment_on">Mobile authentication enabled</string>
     <string name="settings_mobile_enrollment_not_available">Mobile authentication not available</string>
-    <string name="btn_push_accept">Accept</string>
-    <string name="btn_push_deny">Deny</string>
+    <string name="btn_auth_accept">Accept</string>
+    <string name="btn_auth_deny">Deny</string>
     <string name="settings_change_pin">Change PIN</string>
     <string name="settings_change_authentication">Change authentication</string>
     <string name="settings_authentication">Authentication</string>
     <string name="settings_authentication_method">Login Method</string>
     <string name="toolbar_name_devices_activity">Devices</string>
     <string name="settings_authenticators_possible_authenticators">Possible authenticators:</string>
+    <string name="simple_push_message">Simple push message</string>
 </resources>

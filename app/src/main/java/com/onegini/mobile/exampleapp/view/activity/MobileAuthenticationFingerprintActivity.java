@@ -13,85 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.onegini.mobile.exampleapp.view.activity;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_ASK_TO_ACCEPT_OR_DENY;
 
+import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.util.AnimationUtils;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFingerprintRequestHandler;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
-public class MobileAuthenticationFingerprintActivity extends Activity {
-
-  public static final String MSG_EXTRA_ACTION = "fingerprint-action";
-  public static final String MSG_EXTRA_ASK_TO_ACCEPT_OR_DENY = "ask";
-  public static final String MSG_EXTRA_SHOW_SCANNING = "show";
-  public static final String MSG_EXTRA_RECEIVED_FINGERPRINT = "received";
-  public static final String MSG_EXTRA_CLOSE = "close";
-
-  @Bind(R.id.action_text)
-  TextView actionText;
-  @Bind(R.id.content_fingerprint)
-  LinearLayout layoutFingerprint;
-  @Bind(R.id.content_accept_deny)
-  LinearLayout layoutAcceptDeny;
-  @Bind(R.id.fallback_to_pin_button)
-  Button fallbackToPinButton;
+public class MobileAuthenticationFingerprintActivity extends FingerprintActivity {
 
   @Override
-  protected void onCreate(final Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_fingerprint_mobile);
-    ButterKnife.bind(this);
-
-    setupUi(getIntent().getStringExtra(MSG_EXTRA_ACTION));
-  }
-
-  @Override
-  protected void onNewIntent(final Intent intent) {
-    setupUi(intent.getStringExtra(MSG_EXTRA_ACTION));
-  }
-
-  private void setupUi(final String action) {
-    if (MSG_EXTRA_ASK_TO_ACCEPT_OR_DENY.equals(action)) {
+  protected void setupUi() {
+    if (COMMAND_ASK_TO_ACCEPT_OR_DENY.equals(command)) {
       setFingerprintAuthenticationPermissionVisibility(true);
-    } else if (MSG_EXTRA_SHOW_SCANNING.equals(action)) {
-      setFingerprintAuthenticationPermissionVisibility(false);
-      actionText.setText(R.string.verifying);
-    } else if (MSG_EXTRA_RECEIVED_FINGERPRINT.equals(action)) {
-      setFingerprintAuthenticationPermissionVisibility(false);
-      actionText.setText(R.string.try_again);
-      actionText.setAnimation(AnimationUtils.getBlinkAnimation());
-    } else if (MSG_EXTRA_CLOSE.equals(action)) {
-      setFingerprintAuthenticationPermissionVisibility(false);
-      finish();
+    } else {
+      super.setupUi();
     }
   }
 
   @SuppressWarnings("unused")
   @OnClick(R.id.fallback_to_pin_button)
   public void onFallbackToPinButtonClick() {
-    if (MobileAuthenticationFingerprintRequestHandler.fingerprintCallback != null) {
-      MobileAuthenticationFingerprintRequestHandler.fingerprintCallback.fallbackToPin();
+    if (MobileAuthenticationFingerprintRequestHandler.CALLBACK != null) {
+      MobileAuthenticationFingerprintRequestHandler.CALLBACK.fallbackToPin();
     }
   }
 
   @SuppressWarnings("unused")
   @OnClick(R.id.auth_accept_button)
   public void onAuthenticationAcceptButtonClick() {
-    if (MobileAuthenticationFingerprintRequestHandler.fingerprintCallback != null) {
-      MobileAuthenticationFingerprintRequestHandler.fingerprintCallback.acceptAuthenticationRequest();
-      actionText.setText(R.string.scan_fingerprint);
+    if (MobileAuthenticationFingerprintRequestHandler.CALLBACK != null) {
+      MobileAuthenticationFingerprintRequestHandler.CALLBACK.acceptAuthenticationRequest();
+      actionTextView.setText(R.string.scan_fingerprint);
       setFingerprintAuthenticationPermissionVisibility(false);
     }
   }
@@ -99,15 +54,9 @@ public class MobileAuthenticationFingerprintActivity extends Activity {
   @SuppressWarnings("unused")
   @OnClick(R.id.auth_deny_button)
   public void onDenyAuthenticationButtonClick() {
-    if (MobileAuthenticationFingerprintRequestHandler.fingerprintCallback != null) {
-      MobileAuthenticationFingerprintRequestHandler.fingerprintCallback.denyAuthenticationRequest();
+    if (MobileAuthenticationFingerprintRequestHandler.CALLBACK != null) {
+      MobileAuthenticationFingerprintRequestHandler.CALLBACK.denyAuthenticationRequest();
       finish();
     }
-  }
-
-  private void setFingerprintAuthenticationPermissionVisibility(final boolean isVisible) {
-    layoutAcceptDeny.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-    layoutFingerprint.setVisibility(isVisible ? View.GONE : View.VISIBLE);
-    fallbackToPinButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
   }
 }

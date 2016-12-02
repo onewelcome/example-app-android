@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.onegini.mobile.exampleapp.network.gcm;
 
 import java.util.Set;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 import com.google.android.gms.gcm.GcmListenerService;
@@ -69,7 +72,7 @@ public class GCMListenerService extends GcmListenerService {
         if (errorType == OneginiInitializationError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(getApplicationContext()).onDeviceDeregistered();
         }
-        Toast.makeText(GCMListenerService.this, error.getErrorDescription(), Toast.LENGTH_LONG).show();
+        showToast(error.getErrorDescription());
       }
     });
   }
@@ -83,17 +86,22 @@ public class GCMListenerService extends GcmListenerService {
 
       @Override
       public void onError(final OneginiMobileAuthenticationError oneginiMobileAuthenticationError) {
-        Toast.makeText(GCMListenerService.this, oneginiMobileAuthenticationError.getErrorDescription(), Toast.LENGTH_SHORT).show();
+        showToast(oneginiMobileAuthenticationError.getErrorDescription());
         @OneginiMobileAuthenticationError.MobileAuthenticationEnrollmentErrorType final int errorType = oneginiMobileAuthenticationError.getErrorType();
         if (errorType == OneginiMobileAuthenticationError.USER_DEREGISTERED) {
           // the user was deregister, for example he provided a wrong PIN for too many times. You can handle the deregistration here, but since this application
           // supports multiple profiles we handle it when the user tries to login the next time because we don't know which user profile was deregistered at
           // this point.
         } else if (errorType == OneginiMobileAuthenticationError.ACTION_CANCELED) {
-          Toast.makeText(GCMListenerService.this, "The user cancelled the mobile authentication request", Toast.LENGTH_LONG).show();
+          showToast("The user cancelled the mobile authentication request");
         }
       }
     });
+  }
+
+  private void showToast(final String errorDescription) {
+    Handler handler = new Handler(Looper.getMainLooper());
+    handler.post(() -> Toast.makeText(getApplicationContext(), errorDescription, Toast.LENGTH_SHORT).show());
   }
 
   private void removeUserProfiles(final Set<UserProfile> removedUserProfiles, final Bundle extras) {

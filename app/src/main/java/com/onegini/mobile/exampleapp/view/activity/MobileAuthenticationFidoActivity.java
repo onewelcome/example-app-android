@@ -16,42 +16,34 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
-import android.os.Bundle;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFidoRequestHandler;
 
-public class MobileAuthenticationActivity extends AuthenticationActivity {
-
-  @Override
-  protected void onCreate(final Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_push_simple);
-    ButterKnife.bind(this);
-
-    initialize();
-  }
+public class MobileAuthenticationFidoActivity extends FidoActivity {
 
   @SuppressWarnings("unused")
   @OnClick(R.id.auth_accept_button)
   public void onAcceptClicked() {
-    if (MobileAuthenticationRequestHandler.CALLBACK != null) {
-      MobileAuthenticationRequestHandler.CALLBACK.acceptAuthenticationRequest();
+    if (MobileAuthenticationFidoRequestHandler.CALLBACK != null) {
+      MobileAuthenticationFidoRequestHandler.CALLBACK.acceptAuthenticationRequest();
+      setFidoAuthenticationPermissionVisibility(false);
     }
   }
 
   @SuppressWarnings("unused")
   @OnClick(R.id.auth_deny_button)
   public void onDenyClicked() {
-    if (MobileAuthenticationRequestHandler.CALLBACK != null) {
-      MobileAuthenticationRequestHandler.CALLBACK.denyAuthenticationRequest();
+    if (MobileAuthenticationFidoRequestHandler.CALLBACK != null) {
+      MobileAuthenticationFidoRequestHandler.CALLBACK.denyAuthenticationRequest();
     }
   }
-  
-  @Override
-  protected void initialize() {
-    parseIntent();
-    updateTexts();
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.fallback_to_pin_button)
+  public void onFallbackClicked() {
+    if (MobileAuthenticationFidoRequestHandler.CALLBACK != null) {
+      MobileAuthenticationFidoRequestHandler.CALLBACK.fallbackToPin();
+    }
   }
 }

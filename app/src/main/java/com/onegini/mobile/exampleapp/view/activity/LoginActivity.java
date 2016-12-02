@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.onegini.mobile.exampleapp.view.activity;
 
 import java.util.ArrayList;
@@ -268,7 +269,7 @@ public class LoginActivity extends Activity {
   }
 
   private void showToast(final String message) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
   }
 
   private void startDashboardActivity() {

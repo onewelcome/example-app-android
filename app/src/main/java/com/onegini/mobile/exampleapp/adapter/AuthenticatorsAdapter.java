@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.onegini.mobile.exampleapp.adapter;
 
 import static android.view.View.GONE;
@@ -86,12 +87,12 @@ public class AuthenticatorsAdapter extends
     return authenticators.length;
   }
 
-  public static class ViewHolder extends RecyclerView.ViewHolder {
-    public TextView nameTextView;
-    public Switch authenticatorSwitch;
-    public ProgressBar progressIndicator;
+  static class ViewHolder extends RecyclerView.ViewHolder {
+    final TextView nameTextView;
+    final Switch authenticatorSwitch;
+    final ProgressBar progressIndicator;
 
-    public ViewHolder(final View contactView) {
+    ViewHolder(final View contactView) {
       super(contactView);
       nameTextView = (TextView) itemView.findViewById(R.id.authenticator_name);
       authenticatorSwitch = (Switch) itemView.findViewById(R.id.authenticator_switch);

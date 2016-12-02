@@ -15,10 +15,12 @@
   limitations under the License.
   -->
 
-<shape
+<TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <solid android:color="#FFF"/>
-    <stroke android:width="2dp" android:color="#979797"/>
-    <size android:width="16dp" android:height="16dp"/>
-</shape>
+    android:id="@+id/welcome_user_text"
+    android:layout_width="wrap_content"
+    android:layout_marginTop="40dp"
+    android:layout_centerHorizontal="true"
+    android:layout_height="wrap_content"
+    style="@style/Base.TextAppearance.AppCompat.Headline"
+    android:text="@string/welcome_user_text"/>

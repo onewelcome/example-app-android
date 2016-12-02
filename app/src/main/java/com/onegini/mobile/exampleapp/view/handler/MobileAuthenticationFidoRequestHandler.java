@@ -20,32 +20,31 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
 import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
-import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_MESSAGE;
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_USER_PROFILE_ID;
+import static com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFidoActivity.*;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationActivity;
-import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthenticationRequestHandler;
-import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiAcceptDenyCallback;
+import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFidoActivity;
+import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthenticationFidoRequestHandler;
+import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiFidoCallback;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
 
-public class MobileAuthenticationRequestHandler implements OneginiMobileAuthenticationRequestHandler {
+public class MobileAuthenticationFidoRequestHandler implements OneginiMobileAuthenticationFidoRequestHandler {
 
-  public static OneginiAcceptDenyCallback CALLBACK;
+  public static OneginiFidoCallback CALLBACK;
 
-  private final Context context;
   private String userProfileId;
   private String message;
+  private final Context context;
 
-  public MobileAuthenticationRequestHandler(final Context context) {
+  public MobileAuthenticationFidoRequestHandler(final Context context) {
     this.context = context;
   }
 
   @Override
-  public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest,
-                                  final OneginiAcceptDenyCallback oneginiAcceptDenyCallback) {
-    CALLBACK = oneginiAcceptDenyCallback;
+  public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest, final OneginiFidoCallback oneginiFidoCallback) {
+    CALLBACK = oneginiFidoCallback;
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
     message = oneginiMobileAuthenticationRequest.getMessage();
     notifyActivity(COMMAND_START);
@@ -57,10 +56,10 @@ public class MobileAuthenticationRequestHandler implements OneginiMobileAuthenti
   }
 
   private void notifyActivity(final String command) {
-    final Intent intent = new Intent(context, MobileAuthenticationActivity.class);
+    final Intent intent = new Intent(context, MobileAuthenticationFidoActivity.class);
     intent.putExtra(EXTRA_COMMAND, command);
-    intent.putExtra(EXTRA_MESSAGE, message);
     intent.putExtra(EXTRA_USER_PROFILE_ID, userProfileId);
+    intent.putExtra(EXTRA_MESSAGE, message);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }
