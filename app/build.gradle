@@ -50,8 +50,8 @@ android {
     applicationId "com.onegini.mobile.exampleapp"
     minSdkVersion 16
     targetSdkVersion 23
-    versionCode 4
-    versionName "2.1.0"
+    versionCode 5
+    versionName "2.2.0"
     multiDexEnabled true
   }
   buildTypes {
@@ -67,7 +67,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  compile('com.onegini.mobile.sdk.android:onegini-sdk:6.02.00-SNAPSHOT@aar') {
+  compile('com.onegini.mobile.sdk.android:onegini-sdk:6.02.00@aar') {
     transitive = true
     exclude module: 'fido-client'
     exclude module: 'samsungsds-ccom'
