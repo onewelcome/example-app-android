@@ -216,6 +216,10 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
         @OneginiAuthenticatorDeregistrationError.AuthenticatorDeregistrationErrorType int errorType = error.getErrorType();
         if (errorType == OneginiAuthenticatorDeregistrationError.USER_NOT_AUTHENTICATED) {
           startLoginActivity();
+        } else if (errorType == OneginiAuthenticatorDeregistrationError.USER_DEREGISTERED) {
+          new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onUserDeregistered(authenticatedUserProfile);
+        } else if (errorType == OneginiAuthenticatorDeregistrationError.DEVICE_DEREGISTERED) {
+          new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onDeviceDeregistered();
         }
 
         onErrorOccurred(position, error.getErrorDescription());

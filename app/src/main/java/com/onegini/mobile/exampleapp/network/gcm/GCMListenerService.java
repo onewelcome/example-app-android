@@ -94,6 +94,8 @@ public class GCMListenerService extends GcmListenerService {
           // this point.
         } else if (errorType == OneginiMobileAuthenticationError.ACTION_CANCELED) {
           showToast("The user cancelled the mobile authentication request");
+        } else if (errorType == OneginiMobileAuthenticationError.DEVICE_DEREGISTERED) {
+          new DeregistrationUtil(getApplicationContext()).onDeviceDeregistered();
         }
       }
     });
