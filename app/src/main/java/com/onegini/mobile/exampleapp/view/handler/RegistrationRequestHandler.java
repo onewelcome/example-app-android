@@ -56,7 +56,7 @@ public class RegistrationRequestHandler implements OneginiRegistrationRequestHan
   public void startRegistration(final Uri uri, final OneginiRegistrationCallback oneginiRegistrationCallback) {
     CALLBACK = oneginiRegistrationCallback;
 
-    // We're going to lunch external browser to allow user to log in. You could also use embedded WebView instead.
+    // We're going to launch external browser to allow user to log in. You could also use embedded WebView instead.
     final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
