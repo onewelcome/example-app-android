@@ -38,9 +38,11 @@ import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.handler.RegistrationRequestHandler;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiRegistrationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiRegistrationError;
+import com.onegini.mobile.sdk.android.handlers.request.OneginiRegistrationRequestHandler;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class RegistrationActivity extends Activity {
@@ -88,9 +90,14 @@ public class RegistrationActivity extends Activity {
   }
 
   private void handleRedirection(final Uri uri) {
+    if (uri == null) {
+      return;
+    }
+
     final OneginiClient client = OneginiSDK.getOneginiClient(getApplicationContext());
-    if (uri != null && client.getConfigModel().getRedirectUri().startsWith(uri.getScheme())) {
-      client.getUserClient().handleRegistrationCallback(uri);
+    final String redirectUri = client.getConfigModel().getRedirectUri();
+    if (redirectUri.startsWith(uri.getScheme())) {
+      RegistrationRequestHandler.handleRegistrationCallback(uri);
     }
   }
 

@@ -25,7 +25,7 @@ import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFingerprin
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.PinAuthenticationRequestHandler;
-import com.onegini.mobile.exampleapp.view.handler.RegistrationURLHandler;
+import com.onegini.mobile.exampleapp.view.handler.RegistrationRequestHandler;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.client.OneginiClientBuilder;
 
@@ -41,19 +41,19 @@ public class OneginiSDK {
 
   private static OneginiClient buildSDK(final Context context) {
     final Context applicationContext = context.getApplicationContext();
+    final RegistrationRequestHandler registrationRequestHandler = new RegistrationRequestHandler(applicationContext);
     final CreatePinRequestHandler createPinRequestHandler = new CreatePinRequestHandler(applicationContext);
     final PinAuthenticationRequestHandler pinAuthenticationRequestHandler = new PinAuthenticationRequestHandler(applicationContext);
-    final RegistrationURLHandler registrationURLHandler = new RegistrationURLHandler(context);
 
     // will throw OneginiConfigNotFoundException if OneginiConfigModel class can't be found
-    return new OneginiClientBuilder(applicationContext, createPinRequestHandler, pinAuthenticationRequestHandler)
+    return new OneginiClientBuilder(applicationContext, registrationRequestHandler, createPinRequestHandler, pinAuthenticationRequestHandler)
+        // handlers for optional functionalities
         .setFingerprintAuthenticatioRequestHandler(new FingerprintAuthenticationRequestHandler(applicationContext))
         .setFidoAuthenticationRequestHandler(new FidoAuthenticationRequestHandler(applicationContext))
         .setMobileAuthenticationRequestHandler(new MobileAuthenticationRequestHandler(applicationContext))
         .setMobileAuthenticationPinRequestHandler(new MobileAuthenticationPinRequestHandler(applicationContext))
         .setFingerprintAuthenticatioRequestHandler(new FingerprintAuthenticationRequestHandler(applicationContext))
         .setMobileAuthenticationFingerprintRequestHandler(new MobileAuthenticationFingerprintRequestHandler(applicationContext))
-        .setOneginiURLHandler(registrationURLHandler)
         .setMobileAuthenticationFidoRequestHandler(new MobileAuthenticationFidoRequestHandler(applicationContext))
         .build();
   }

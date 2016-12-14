@@ -19,18 +19,43 @@ package com.onegini.mobile.exampleapp.view.handler;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import com.onegini.mobile.sdk.android.handlers.OneginiURLHandler;
+import com.onegini.mobile.sdk.android.handlers.request.OneginiRegistrationRequestHandler;
+import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiRegistrationCallback;
 
-public class RegistrationURLHandler implements OneginiURLHandler {
+public class RegistrationRequestHandler implements OneginiRegistrationRequestHandler {
+
+  private static OneginiRegistrationCallback CALLBACK;
+
+  /**
+   * Finish registration action with result from web browser
+   */
+  public static void handleRegistrationCallback(final Uri uri) {
+    if (CALLBACK != null) {
+      CALLBACK.handleRegistrationCallback(uri);
+      CALLBACK = null;
+    }
+  }
+
+  /**
+   * Cancel registration action in case of web browser error
+   */
+  public static void onRegistrationCanceled() {
+    if (CALLBACK != null) {
+      CALLBACK.denyRegistration();
+      CALLBACK = null;
+    }
+  }
 
   private final Context context;
 
-  public RegistrationURLHandler(final Context context) {
+  public RegistrationRequestHandler(final Context context) {
     this.context = context;
   }
 
   @Override
-  public void onOpenURL(final Uri uri) {
+  public void startRegistration(final Uri uri, final OneginiRegistrationCallback oneginiRegistrationCallback) {
+    CALLBACK = oneginiRegistrationCallback;
+
     // We're going to lunch external browser to allow user to log in. You could also use embedded WebView instead.
     final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
