@@ -63,11 +63,14 @@ android {
   dexOptions {
     javaMaxHeapSize "4g"
   }
+  packagingOptions {
+    exclude 'META-INF/rxjava.properties'
+  }
 }
 
 dependencies {
   // Onegini SDK
-  compile('com.onegini.mobile.sdk.android:onegini-sdk:6.02.00@aar') {
+  compile('com.onegini.mobile.sdk.android:onegini-sdk:6.03.00-SNAPSHOT@aar') {
     transitive = true
     exclude module: 'fido-client'
     exclude module: 'samsungsds-ccom'
@@ -86,7 +89,8 @@ dependencies {
   // DI for views
   compile 'com.jakewharton:butterknife:7.0.1'
   // RxJava
-  compile 'io.reactivex:rxandroid:1.1.0'
+  compile 'io.reactivex:rxandroid:1.2.1'
+  compile 'io.reactivex:rxjava:1.2.3'
 
   // Samsung's FIDO client
   compile 'com.samsung.sds.fido.uaf.sdk:fido-client:1.4.1@aar'
