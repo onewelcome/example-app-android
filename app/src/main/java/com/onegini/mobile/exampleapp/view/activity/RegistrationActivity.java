@@ -53,6 +53,9 @@ public class RegistrationActivity extends Activity {
   @Bind(R.id.create_profile_button)
   Button createProfileButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.cancel_registration_button)
+  Button cancelRegistrationButton;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.progress_bar_register)
   ProgressBar progressBar;
   @SuppressWarnings({ "unused", "WeakerAccess" })
@@ -63,7 +66,6 @@ public class RegistrationActivity extends Activity {
   TextView userProfileDebugText;
 
   private UserProfile registeredProfile;
-  private boolean pendingRegistration = false;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -72,23 +74,13 @@ public class RegistrationActivity extends Activity {
     ButterKnife.bind(this);
 
     setupUserInterface();
-  }
-
-  @Override
-  protected void onResume() {
-    super.onResume();
-    // let's assume that if this activity was resumed and registration callback is set,
-    // something went wrong in the web browser
-    if (pendingRegistration) {
-      RegistrationRequestHandler.onRegistrationCanceled();
-    } else {
-      registerUser();
-    }
+    registerUser();
   }
 
   private void setupUserInterface() {
     createProfileButton.setEnabled(false);
     layoutRegisterContent.setVisibility(View.GONE);
+    cancelRegistrationButton.setVisibility(View.VISIBLE);
     progressBar.setVisibility(View.VISIBLE);
     userProfileDebugText.setText("");
     nameEditText.addTextChangedListener(new ProfileNameChangeListener());
@@ -113,13 +105,11 @@ public class RegistrationActivity extends Activity {
   }
 
   private void registerUser() {
-    pendingRegistration = true;
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
     oneginiClient.getUserClient().registerUser(Constants.DEFAULT_SCOPES, new OneginiRegistrationHandler() {
 
       @Override
       public void onSuccess(final UserProfile userProfile) {
-        pendingRegistration = false;
         registeredProfile = userProfile;
         userProfileDebugText.setText(userProfile.getProfileId());
         askForProfileName();
@@ -127,7 +117,6 @@ public class RegistrationActivity extends Activity {
 
       @Override
       public void onError(final OneginiRegistrationError oneginiRegistrationError) {
-        pendingRegistration = false;
         handleRegistrationErrors(oneginiRegistrationError);
       }
     });
@@ -180,6 +169,7 @@ public class RegistrationActivity extends Activity {
 
   private void askForProfileName() {
     progressBar.setVisibility(View.GONE);
+    cancelRegistrationButton.setVisibility(View.GONE);
     layoutRegisterContent.setVisibility(View.VISIBLE);
   }
 
@@ -188,6 +178,12 @@ public class RegistrationActivity extends Activity {
   public void onCreateProfileClick() {
     storeUserProfile();
     startDashboardActivity();
+  }
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.cancel_registration_button)
+  public void onCancelRegistrationButton() {
+    RegistrationRequestHandler.onRegistrationCanceled();
   }
 
   private void showToast(final String message) {
