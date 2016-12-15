@@ -42,7 +42,6 @@ import com.onegini.mobile.exampleapp.view.handler.RegistrationRequestHandler;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiRegistrationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiRegistrationError;
-import com.onegini.mobile.sdk.android.handlers.request.OneginiRegistrationRequestHandler;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class RegistrationActivity extends Activity {
@@ -64,7 +63,7 @@ public class RegistrationActivity extends Activity {
   TextView userProfileDebugText;
 
   private UserProfile registeredProfile;
-  private boolean pendingRegistration;
+  private boolean pendingRegistration = false;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
