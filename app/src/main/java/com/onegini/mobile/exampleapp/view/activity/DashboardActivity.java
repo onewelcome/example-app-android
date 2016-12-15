@@ -83,16 +83,15 @@ public class DashboardActivity extends AppCompatActivity {
 
   private void handleLogoutError(final OneginiLogoutError oneginiLogoutError, final UserProfile userProfile) {
     @OneginiLogoutError.LogoutErrorType final int errorType = oneginiLogoutError.getErrorType();
-    if (errorType == OneginiLogoutError.LOCAL_LOGOUT) {
-      showToast("The user was only logged out on the device. The access token has not been invalidated on the server-side.");
-    } else if (errorType == OneginiLogoutError.GENERAL_ERROR) {
-      // General error handling for other, less relevant errors
-      showToast("Logout error: " + oneginiLogoutError.getErrorDescription());
-    } else if (errorType == OneginiLogoutError.DEVICE_DEREGISTERED) {
+
+    if (errorType == OneginiLogoutError.DEVICE_DEREGISTERED) {
       new DeregistrationUtil(this).onDeviceDeregistered();
     } else if (errorType == OneginiLogoutError.USER_DEREGISTERED) {
       new DeregistrationUtil(this).onUserDeregistered(userProfile);
     }
+
+    // other errors don't really require our reaction, but you might consider displaying some message to the user
+    showToast("Logout error: " + oneginiLogoutError.getErrorDescription());
 
     startLoginActivity();
   }
@@ -107,46 +106,37 @@ public class DashboardActivity extends AppCompatActivity {
       return;
     }
 
+    new DeregistrationUtil(this).onUserDeregistered(userProfile);
     oneginiClient.getUserClient().deregisterUser(userProfile, new OneginiDeregisterUserProfileHandler() {
           @Override
           public void onSuccess() {
-            onUserDeregistered(userProfile);
+            onUserDeregistered();
           }
 
           @Override
           public void onError(final OneginiDeregistrationError oneginiDeregistrationError) {
-            onUserDeregistrationError(oneginiDeregistrationError, userProfile);
+            onUserDeregistrationError(oneginiDeregistrationError);
           }
         }
     );
   }
 
-  private void onUserDeregistered(final UserProfile userProfile) {
-    new DeregistrationUtil(this).onUserDeregistered(userProfile);
+  private void onUserDeregistered() {
     showToast("deregisterUserSuccess");
 
     startLoginActivity();
   }
 
-  private void onUserDeregistrationError(final OneginiDeregistrationError oneginiDeregistrationError, final UserProfile userProfile) {
-    showToast("Logout error: " + oneginiDeregistrationError.getErrorDescription());
-
+  private void onUserDeregistrationError(final OneginiDeregistrationError oneginiDeregistrationError) {
     @OneginiDeregistrationError.DeregistrationErrorType final int errorType = oneginiDeregistrationError.getErrorType();
-    if (errorType == OneginiDeregistrationError.LOCAL_DEREGISTRATION) {
-      showToast("The user was only logged out on the device. The access token has not been invalidated on the server-side.");
-      new DeregistrationUtil(this).onUserDeregistered(userProfile);
-    } else if (errorType == OneginiDeregistrationError.GENERAL_ERROR) {
-      // General error handling for other, less relevant errors
-      showToast("Logout error: " + oneginiDeregistrationError.getErrorDescription());
-      new DeregistrationUtil(this).onUserDeregistered(userProfile);
-    } else if (errorType == OneginiDeregistrationError.DEVICE_DEREGISTERED) {
+    if (errorType == OneginiDeregistrationError.DEVICE_DEREGISTERED) {
       // Deregistration failed due to missing device credentials. Register app once again.
       new DeregistrationUtil(this).onDeviceDeregistered();
-    } else if (errorType == OneginiDeregistrationError.USER_DEREGISTERED) {
-      // The profile for which deregistration was performed is no longer available on the SDK side.
-      // Therefore, any local data associated to this user profile has also been removed.
-      new DeregistrationUtil(this).onUserDeregistered(userProfile);
     }
+
+    // other errors don't really require our reaction, but you might consider displaying some message to the user
+    showToast("Deregistration error: " + oneginiDeregistrationError.getErrorDescription());
+
     startLoginActivity();
   }
 
