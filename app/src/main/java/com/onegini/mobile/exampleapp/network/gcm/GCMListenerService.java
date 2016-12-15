@@ -92,8 +92,6 @@ public class GCMListenerService extends GcmListenerService {
           // the user was deregister, for example he provided a wrong PIN for too many times. You can handle the deregistration here, but since this application
           // supports multiple profiles we handle it when the user tries to login the next time because we don't know which user profile was deregistered at
           // this point.
-        } else if (errorType == OneginiMobileAuthenticationError.ACTION_CANCELED) {
-          showToast("The user cancelled the mobile authentication request");
         } else if (errorType == OneginiMobileAuthenticationError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(getApplicationContext()).onDeviceDeregistered();
         }
