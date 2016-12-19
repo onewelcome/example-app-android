@@ -50,8 +50,8 @@ android {
     applicationId "com.onegini.mobile.exampleapp"
     minSdkVersion 16
     targetSdkVersion 23
-    versionCode 5
-    versionName "2.2.0"
+    versionCode 6
+    versionName "2.3.0"
     multiDexEnabled true
   }
   buildTypes {
@@ -63,11 +63,14 @@ android {
   dexOptions {
     javaMaxHeapSize "4g"
   }
+  packagingOptions {
+    exclude 'META-INF/rxjava.properties'
+  }
 }
 
 dependencies {
   // Onegini SDK
-  compile('com.onegini.mobile.sdk.android:onegini-sdk:6.02.00@aar') {
+  compile('com.onegini.mobile.sdk.android:onegini-sdk:6.03.00@aar') {
     transitive = true
     exclude module: 'fido-client'
     exclude module: 'samsungsds-ccom'
@@ -86,12 +89,11 @@ dependencies {
   // DI for views
   compile 'com.jakewharton:butterknife:7.0.1'
   // RxJava
-  compile 'io.reactivex:rxandroid:1.1.0'
+  compile 'io.reactivex:rxandroid:1.2.1'
+  compile 'io.reactivex:rxjava:1.2.3'
 
   // Samsung's FIDO client
   compile 'com.samsung.sds.fido.uaf.sdk:fido-client:1.4.1@aar'
   compile 'org.fidoalliance.uaf.client.common:samsungsds-ccom:1.4.1@aar'
   compile 'com.samsung.sds.fido.uaf.message:samsungsds-um:1.4.1'
-  // Google Guava
-  compile 'com.google.guava:guava:19.0'
 }

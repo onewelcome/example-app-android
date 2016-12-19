@@ -38,6 +38,7 @@ import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.handler.RegistrationRequestHandler;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiRegistrationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiRegistrationError;
@@ -51,6 +52,9 @@ public class RegistrationActivity extends Activity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.create_profile_button)
   Button createProfileButton;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.cancel_registration_button)
+  Button cancelRegistrationButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.progress_bar_register)
   ProgressBar progressBar;
@@ -76,6 +80,7 @@ public class RegistrationActivity extends Activity {
   private void setupUserInterface() {
     createProfileButton.setEnabled(false);
     layoutRegisterContent.setVisibility(View.GONE);
+    cancelRegistrationButton.setVisibility(View.VISIBLE);
     progressBar.setVisibility(View.VISIBLE);
     userProfileDebugText.setText("");
     nameEditText.addTextChangedListener(new ProfileNameChangeListener());
@@ -88,9 +93,14 @@ public class RegistrationActivity extends Activity {
   }
 
   private void handleRedirection(final Uri uri) {
+    if (uri == null) {
+      return;
+    }
+
     final OneginiClient client = OneginiSDK.getOneginiClient(getApplicationContext());
-    if (uri != null && client.getConfigModel().getRedirectUri().startsWith(uri.getScheme())) {
-      client.getUserClient().handleRegistrationCallback(uri);
+    final String redirectUri = client.getConfigModel().getRedirectUri();
+    if (redirectUri.startsWith(uri.getScheme())) {
+      RegistrationRequestHandler.handleRegistrationCallback(uri);
     }
   }
 
@@ -139,6 +149,9 @@ public class RegistrationActivity extends Activity {
         handleGeneralError(oneginiRegistrationError);
         break;
     }
+    // start login screen again
+    startActivity(new Intent(this, LoginActivity.class));
+    finish();
   }
 
   private void handleGeneralError(final OneginiRegistrationError oneginiRegistrationError) {
@@ -156,6 +169,7 @@ public class RegistrationActivity extends Activity {
 
   private void askForProfileName() {
     progressBar.setVisibility(View.GONE);
+    cancelRegistrationButton.setVisibility(View.GONE);
     layoutRegisterContent.setVisibility(View.VISIBLE);
   }
 
@@ -164,6 +178,12 @@ public class RegistrationActivity extends Activity {
   public void onCreateProfileClick() {
     storeUserProfile();
     startDashboardActivity();
+  }
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.cancel_registration_button)
+  public void onCancelRegistrationButton() {
+    RegistrationRequestHandler.onRegistrationCanceled();
   }
 
   private void showToast(final String message) {

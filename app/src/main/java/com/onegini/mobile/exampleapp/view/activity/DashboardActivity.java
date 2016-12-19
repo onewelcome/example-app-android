@@ -62,6 +62,8 @@ public class DashboardActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_logout)
   public void logout() {
+    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
+    final UserProfile userProfile = oneginiClient.getUserClient().getAuthenticatedUserProfile();
     OneginiSDK.getOneginiClient(this).getUserClient().logout(
         new OneginiLogoutHandler() {
           @Override
@@ -73,20 +75,24 @@ public class DashboardActivity extends AppCompatActivity {
 
           @Override
           public void onError(final OneginiLogoutError oneginiLogoutError) {
-            handleLogoutError(oneginiLogoutError);
+            handleLogoutError(oneginiLogoutError, userProfile);
           }
         }
     );
   }
 
-  private void handleLogoutError(final OneginiLogoutError oneginiLogoutError) {
+  private void handleLogoutError(final OneginiLogoutError oneginiLogoutError, final UserProfile userProfile) {
     @OneginiLogoutError.LogoutErrorType final int errorType = oneginiLogoutError.getErrorType();
-    if (errorType == OneginiLogoutError.LOCAL_LOGOUT) {
-      showToast("The user was only logged out on the device. The access token has not been invalidated on the server-side.");
-    } else if (errorType == OneginiLogoutError.GENERAL_ERROR) {
-      // General error handling for other, less relevant errors
-      showToast("Logout error: " + oneginiLogoutError.getErrorDescription());
+
+    if (errorType == OneginiLogoutError.DEVICE_DEREGISTERED) {
+      new DeregistrationUtil(this).onDeviceDeregistered();
+    } else if (errorType == OneginiLogoutError.USER_DEREGISTERED) {
+      new DeregistrationUtil(this).onUserDeregistered(userProfile);
     }
+
+    // other errors don't really require our reaction, but you might consider displaying some message to the user
+    showToast("Logout error: " + oneginiLogoutError.getErrorDescription());
+
     startLoginActivity();
   }
 
@@ -100,36 +106,37 @@ public class DashboardActivity extends AppCompatActivity {
       return;
     }
 
+    new DeregistrationUtil(this).onUserDeregistered(userProfile);
     oneginiClient.getUserClient().deregisterUser(userProfile, new OneginiDeregisterUserProfileHandler() {
           @Override
           public void onSuccess() {
-            onUserDeregistered(userProfile);
+            onUserDeregistered();
           }
 
           @Override
           public void onError(final OneginiDeregistrationError oneginiDeregistrationError) {
-            onUserDeregistrationError(oneginiDeregistrationError, userProfile);
+            onUserDeregistrationError(oneginiDeregistrationError);
           }
         }
     );
   }
 
-  private void onUserDeregistered(final UserProfile userProfile) {
-    new DeregistrationUtil(this).onUserDeregistered(userProfile);
+  private void onUserDeregistered() {
     showToast("deregisterUserSuccess");
 
     startLoginActivity();
   }
 
-  private void onUserDeregistrationError(final OneginiDeregistrationError oneginiDeregistrationError, final UserProfile userProfile) {
-    new DeregistrationUtil(this).onUserDeregistered(userProfile);
+  private void onUserDeregistrationError(final OneginiDeregistrationError oneginiDeregistrationError) {
     @OneginiDeregistrationError.DeregistrationErrorType final int errorType = oneginiDeregistrationError.getErrorType();
-    if (errorType == OneginiDeregistrationError.LOCAL_DEREGISTRATION) {
-      showToast("The user was only logged out on the device. The access token has not been invalidated on the server-side.");
-    } else if (errorType == OneginiDeregistrationError.GENERAL_ERROR) {
-      // General error handling for other, less relevant errors
-      showToast("Logout error: " + oneginiDeregistrationError.getErrorDescription());
+    if (errorType == OneginiDeregistrationError.DEVICE_DEREGISTERED) {
+      // Deregistration failed due to missing device credentials. Register app once again.
+      new DeregistrationUtil(this).onDeviceDeregistered();
     }
+
+    // other errors don't really require our reaction, but you might consider displaying some message to the user
+    showToast("Deregistration error: " + oneginiDeregistrationError.getErrorDescription());
+
     startLoginActivity();
   }
 

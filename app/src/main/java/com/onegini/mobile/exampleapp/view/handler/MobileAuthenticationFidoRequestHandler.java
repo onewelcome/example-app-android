@@ -21,7 +21,7 @@ import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
 import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_USER_PROFILE_ID;
-import static com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFidoActivity.*;
+import static com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFidoActivity.EXTRA_MESSAGE;
 
 import android.content.Context;
 import android.content.Intent;
