@@ -58,4 +58,5 @@
     <string name="toolbar_name_devices_activity">Devices</string>
     <string name="settings_authenticators_possible_authenticators">Possible authenticators:</string>
     <string name="simple_push_message">Simple push message</string>
+    <string name="change_pin_finished_succesfully">Change PIN action finished successfully</string>
 </resources>
