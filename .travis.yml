@@ -4,7 +4,7 @@ jdk: oraclejdk8
 
 before_install:
  - chmod +x gradlew
- - source setupArtifactoryCredentialsForCircleCI.sh && copyEnvVarsToGradleProperties
+ - source setupArtifactoryCredentialsForTravisCI.sh && copyEnvVarsToGradleProperties
 
 android:
   components:
