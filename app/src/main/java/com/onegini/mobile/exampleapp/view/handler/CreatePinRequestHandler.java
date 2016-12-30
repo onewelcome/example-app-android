@@ -48,7 +48,7 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
   }
 
   @Override
-  public void startPinCreation(final UserProfile userProfile, final OneginiPinCallback oneginiPinCallback) {
+  public void startPinCreation(final UserProfile userProfile, final OneginiPinCallback oneginiPinCallback, final int pinLength) {
     PinActivity.setIsCreatePinFlow(true);
     notifyActivity(context.getString(R.string.pin_title_choose_pin), "");
 
