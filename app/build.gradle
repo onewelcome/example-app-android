@@ -73,7 +73,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  compile('com.onegini.mobile.sdk.android:onegini-sdk:6.03.01-SNAPSHOT@aar') {
+  compile('com.onegini.mobile.sdk.android:onegini-sdk:6.04.00-SNAPSHOT@aar') {
     transitive = true
     exclude module: 'fido-client'
     exclude module: 'samsungsds-ccom'
