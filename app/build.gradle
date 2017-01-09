@@ -79,6 +79,12 @@ dependencies {
     exclude module: 'samsungsds-ccom'
   }
 
+  // Rest Client
+  compile 'com.squareup.retrofit:retrofit:1.9.0'
+  compile 'com.squareup.retrofit2:retrofit:2.1.0'
+  compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+  compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+
   // Google Support
   compile 'com.android.support:appcompat-v7:23.3.0'
   compile 'com.android.support:cardview-v7:23.3.0'

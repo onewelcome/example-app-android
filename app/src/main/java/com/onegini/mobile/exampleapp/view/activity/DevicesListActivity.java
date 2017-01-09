@@ -34,6 +34,7 @@ import com.onegini.mobile.exampleapp.adapter.DevicesAdapter;
 import com.onegini.mobile.exampleapp.model.Device;
 import com.onegini.mobile.exampleapp.network.UserService;
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
+import com.onegini.mobile.exampleapp.storage.ClientSettingsStorage;
 import rx.Subscription;
 
 public class DevicesListActivity extends AppCompatActivity {
@@ -48,6 +49,7 @@ public class DevicesListActivity extends AppCompatActivity {
   @Bind(R.id.progress_bar)
   ProgressBar progressBar;
 
+  private ClientSettingsStorage clientSettingsStorage;
   private Subscription subscription;
 
   @Override
@@ -55,14 +57,15 @@ public class DevicesListActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_devices_list);
     ButterKnife.bind(this);
-
+    clientSettingsStorage = new ClientSettingsStorage(this);
     setupActionBar();
     fetchUserDevices();
   }
 
   private void fetchUserDevices() {
+    final boolean useRetrofit2 = clientSettingsStorage.shouldUseRetrofit2();
     subscription = UserService.getInstance(this)
-        .getDevices()
+        .getDevices(useRetrofit2)
         .subscribe(this::onDevicesFetched, throwable -> onDevicesFetchFailed(), this::onFetchComplete);
   }
 
