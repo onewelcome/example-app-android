@@ -36,7 +36,9 @@ public class UserService {
     return INSTANCE;
   }
 
+  // the client using Retrofit 1.9
   private final UserClient userRetrofitClient;
+  // the client using Retrofit 2.X
   private final UserClient2 userRetrofit2Client;
 
   private UserService(final Context context) {

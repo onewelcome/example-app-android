@@ -36,7 +36,9 @@ public class AnonymousService {
     return INSTANCE;
   }
 
+  // the client using Retrofit 1.9
   private final AnonymousClient applicationDetailsRetrofitClient;
+  // the client using Retrofit 2.X
   private final AnonymousClient2 applicationDetailsRetrofit2Client;
 
   private AnonymousService(final Context context) {
