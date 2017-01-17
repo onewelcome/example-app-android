@@ -24,7 +24,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +35,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.network.gcm.GCMRegistrationService;
-import com.onegini.mobile.exampleapp.storage.ClientSettingsStorage;
+import com.onegini.mobile.exampleapp.storage.RetrofitClientSettingsStorage;
 import com.onegini.mobile.exampleapp.storage.SettingsStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.handlers.OneginiChangePinHandler;
@@ -67,7 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
   RadioGroup retrofitRadio;
 
   private SettingsStorage settingsStorage;
-  private ClientSettingsStorage clientSettingsStorage;
+  private RetrofitClientSettingsStorage retrofitClientSettingsStorage;
   private UserProfile authenticatedUserProfile;
 
   @Override
@@ -77,11 +76,11 @@ public class SettingsActivity extends AppCompatActivity {
     ButterKnife.bind(this);
 
     settingsStorage = new SettingsStorage(this);
-    clientSettingsStorage = new ClientSettingsStorage(this);
+    retrofitClientSettingsStorage = new RetrofitClientSettingsStorage(this);
     authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
 
-    retrofitRadio.check(clientSettingsStorage.shouldUseRetrofit2() ? R.id.retrofit_2 : R.id.retrofit_1);
-    retrofitRadio.setOnCheckedChangeListener((group, checkedId) -> clientSettingsStorage.setShouldUseRetrofit2(checkedId == R.id.retrofit_2));
+    retrofitRadio.check(retrofitClientSettingsStorage.shouldUseRetrofit2() ? R.id.retrofit_2 : R.id.retrofit_1);
+    retrofitRadio.setOnCheckedChangeListener((group, checkedId) -> retrofitClientSettingsStorage.setShouldUseRetrofit2(checkedId == R.id.retrofit_2));
   }
 
   @Override

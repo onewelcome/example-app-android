@@ -19,14 +19,14 @@ package com.onegini.mobile.exampleapp.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class ClientSettingsStorage {
+public class RetrofitClientSettingsStorage {
 
   private static final String PREFS_NAME = "client_settings_storage";
   private static final String KEY_RETROFIT = "retrofit";
 
   private final SharedPreferences sharedPreferences;
 
-  public ClientSettingsStorage(final Context context) {
+  public RetrofitClientSettingsStorage(final Context context) {
     sharedPreferences = context.getSharedPreferences(PREFS_NAME, 0);
   }
 
