@@ -35,7 +35,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.network.gcm.GCMRegistrationService;
-import com.onegini.mobile.exampleapp.storage.RetrofitClientSettingsStorage;
+import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import com.onegini.mobile.exampleapp.storage.SettingsStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.handlers.OneginiChangePinHandler;
@@ -66,7 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
   RadioGroup retrofitRadio;
 
   private SettingsStorage settingsStorage;
-  private RetrofitClientSettingsStorage retrofitClientSettingsStorage;
+  private DeviceSettingsStorage deviceSettingsStorage;
   private UserProfile authenticatedUserProfile;
 
   @Override
@@ -76,11 +76,11 @@ public class SettingsActivity extends AppCompatActivity {
     ButterKnife.bind(this);
 
     settingsStorage = new SettingsStorage(this);
-    retrofitClientSettingsStorage = new RetrofitClientSettingsStorage(this);
+    deviceSettingsStorage = new DeviceSettingsStorage(this);
     authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
 
-    retrofitRadio.check(retrofitClientSettingsStorage.shouldUseRetrofit2() ? R.id.retrofit_2 : R.id.retrofit_1);
-    retrofitRadio.setOnCheckedChangeListener((group, checkedId) -> retrofitClientSettingsStorage.setShouldUseRetrofit2(checkedId == R.id.retrofit_2));
+    retrofitRadio.check(deviceSettingsStorage.shouldUseRetrofit2() ? R.id.retrofit_2 : R.id.retrofit_1);
+    retrofitRadio.setOnCheckedChangeListener((group, checkedId) -> deviceSettingsStorage.setShouldUseRetrofit2(checkedId == R.id.retrofit_2));
   }
 
   @Override

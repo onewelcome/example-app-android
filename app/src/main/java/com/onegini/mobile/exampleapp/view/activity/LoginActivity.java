@@ -39,7 +39,7 @@ import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.ApplicationDetails;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.network.AnonymousService;
-import com.onegini.mobile.exampleapp.storage.RetrofitClientSettingsStorage;
+import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
@@ -78,14 +78,14 @@ public class LoginActivity extends Activity {
   private boolean userIsLoggingIn = false;
   private Subscription subscription;
   private UserProfile authenticatedUserProfile;
-  private RetrofitClientSettingsStorage retrofitClientSettingsStorage;
+  private DeviceSettingsStorage deviceSettingsStorage;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
     ButterKnife.bind(this);
-    retrofitClientSettingsStorage = new RetrofitClientSettingsStorage(this);
+    deviceSettingsStorage = new DeviceSettingsStorage(this);
     authenticateDevice();
   }
 
@@ -114,7 +114,7 @@ public class LoginActivity extends Activity {
   }
 
   private void callAnonymousResourceCallToFetchApplicationDetails() {
-    final boolean useRetrofit2 = retrofitClientSettingsStorage.shouldUseRetrofit2();
+    final boolean useRetrofit2 = deviceSettingsStorage.shouldUseRetrofit2();
     subscription = AnonymousService.getInstance(this)
         .getApplicationDetails(useRetrofit2)
         .subscribe(this::onApplicationDetailsFetched, throwable -> onApplicationDetailsFetchFailed());

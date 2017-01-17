@@ -34,7 +34,7 @@ import com.onegini.mobile.exampleapp.adapter.DevicesAdapter;
 import com.onegini.mobile.exampleapp.model.Device;
 import com.onegini.mobile.exampleapp.network.UserService;
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
-import com.onegini.mobile.exampleapp.storage.RetrofitClientSettingsStorage;
+import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import rx.Subscription;
 
 public class DevicesListActivity extends AppCompatActivity {
@@ -49,7 +49,7 @@ public class DevicesListActivity extends AppCompatActivity {
   @Bind(R.id.progress_bar)
   ProgressBar progressBar;
 
-  private RetrofitClientSettingsStorage retrofitClientSettingsStorage;
+  private DeviceSettingsStorage deviceSettingsStorage;
   private Subscription subscription;
 
   @Override
@@ -57,13 +57,13 @@ public class DevicesListActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_devices_list);
     ButterKnife.bind(this);
-    retrofitClientSettingsStorage = new RetrofitClientSettingsStorage(this);
+    deviceSettingsStorage = new DeviceSettingsStorage(this);
     setupActionBar();
     fetchUserDevices();
   }
 
   private void fetchUserDevices() {
-    final boolean useRetrofit2 = retrofitClientSettingsStorage.shouldUseRetrofit2();
+    final boolean useRetrofit2 = deviceSettingsStorage.shouldUseRetrofit2();
     subscription = UserService.getInstance(this)
         .getDevices(useRetrofit2)
         .subscribe(this::onDevicesFetched, throwable -> onDevicesFetchFailed(), this::onFetchComplete);
