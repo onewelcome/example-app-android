@@ -18,27 +18,23 @@ package com.onegini.mobile.exampleapp.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
-public class SettingsStorage {
+public class DeviceSettingsStorage {
 
-  private static final String PREFS_NAME = "settings_storage";
+  private static final String PREFS_NAME = "client_settings_storage";
+  private static final String KEY_RETROFIT = "retrofit";
 
   private final SharedPreferences sharedPreferences;
 
-  public SettingsStorage(final Context context) {
+  public DeviceSettingsStorage(final Context context) {
     sharedPreferences = context.getSharedPreferences(PREFS_NAME, 0);
   }
 
-  public boolean isMobileAuthenticationEnabled(final UserProfile userProfile) {
-    return sharedPreferences.getBoolean(userProfile.getProfileId(), false);
+  public boolean shouldUseRetrofit2() {
+    return sharedPreferences.getBoolean(KEY_RETROFIT, false);
   }
 
-  public void setMobileAuthenticationEnabled(final UserProfile userProfile, final boolean isEnabled) {
-    sharedPreferences.edit().putBoolean(userProfile.getProfileId(), isEnabled).apply();
-  }
-
-  public void clearStorage() {
-    sharedPreferences.edit().clear().apply();
+  public void setShouldUseRetrofit2(final boolean use) {
+    sharedPreferences.edit().putBoolean(KEY_RETROFIT, use).commit();
   }
 }

@@ -16,12 +16,12 @@
 
 package com.onegini.mobile.exampleapp.network.client;
 
-import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
-import retrofit.http.GET;
+import com.onegini.mobile.exampleapp.model.ApplicationDetails;
+import retrofit2.http.GET;
 import rx.Observable;
 
-public interface UserClient {
+public interface AnonymousClient2 {
 
-  @GET("/devices")
-  Observable<DevicesResponse> getDevices();
+  @GET("application-details")
+  Observable<ApplicationDetails> getApplicationDetails();
 }

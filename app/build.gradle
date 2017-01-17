@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Onegini B.V.
+ * Copyright (c) 2016-2017 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,6 +78,12 @@ dependencies {
     exclude module: 'fido-client'
     exclude module: 'samsungsds-ccom'
   }
+
+  // Rest Client
+  compile 'com.squareup.retrofit:retrofit:1.9.0'
+  compile 'com.squareup.retrofit2:retrofit:2.1.0'
+  compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+  compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
 
   // Google Support
   compile 'com.android.support:appcompat-v7:23.3.0'

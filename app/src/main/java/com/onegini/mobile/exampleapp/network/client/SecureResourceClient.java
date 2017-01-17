@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Onegini B.V.
+ * Copyright (c) 2016-2017 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,9 @@ import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SecureResourceClient {
 
@@ -29,9 +32,11 @@ public class SecureResourceClient {
 
   private static final GsonConverter gsonConverter = new GsonConverter(new GsonBuilder().disableHtmlEscaping().create());
 
-  public static <T> T prepareSecuredUserClient(final Class<T> clazz, final Context context) {
+  // preparing the client using Retrofit 1.9
+  public static <T> T prepareSecuredUserRetrofitClient(final Class<T> clazz, final Context context) {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
     final RestAdapter restAdapter = new RestAdapter.Builder()
+        // deprecated method usage; please use https://github.com/JakeWharton/retrofit1-okhttp3-client instead
         .setClient(oneginiClient.getUserClient().getResourceRetrofitClient())
         .setEndpoint(oneginiClient.getConfigModel().getResourceBaseUrl())
         .setLogLevel(LOG_LEVEL)
@@ -40,14 +45,42 @@ public class SecureResourceClient {
     return restAdapter.create(clazz);
   }
 
-  public static <T> T prepareSecuredAnonymousClient(final Class<T> clazz, final Context context) {
+  // preparing the client using Retrofit 2.X
+  public static <T> T prepareSecuredUserRetrofit2Client(final Class<T> clazz, final Context context) {
+    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
+    final Retrofit retrofit = new Retrofit.Builder()
+        .client(oneginiClient.getUserClient().getResourceOkHttpClient())
+        .baseUrl(oneginiClient.getConfigModel().getResourceBaseUrl() + "/") // In Retrofit 2.X the base URL should end with '/'
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+        .build();
+
+    return retrofit.create(clazz);
+  }
+
+  // preparing the client using Retrofit 1.9
+  public static <T> T prepareSecuredAnonymousRetrofitClient(final Class<T> clazz, final Context context) {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
     final RestAdapter restAdapter = new RestAdapter.Builder()
+        // deprecated method usage; please use https://github.com/JakeWharton/retrofit1-okhttp3-client instead
         .setClient(oneginiClient.getDeviceClient().getAnonymousResourceRetrofitClient())
         .setEndpoint(oneginiClient.getConfigModel().getResourceBaseUrl())
         .setLogLevel(LOG_LEVEL)
         .setConverter(gsonConverter)
         .build();
     return restAdapter.create(clazz);
+  }
+
+  // preparing the client using Retrofit 2.X
+  public static <T> T prepareSecuredAnonymousRetrofit2Client(final Class<T> clazz, final Context context) {
+    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
+    final Retrofit retrofit = new Retrofit.Builder()
+        .client(oneginiClient.getDeviceClient().getAnonymousResourceOkHttpClient())
+        .baseUrl(oneginiClient.getConfigModel().getResourceBaseUrl() + "/") // In Retrofit 2.X the base URL should end with '/'
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+        .build();
+
+    return retrofit.create(clazz);
   }
 }
