@@ -50,8 +50,8 @@ android {
     applicationId "com.onegini.mobile.exampleapp"
     minSdkVersion 16
     targetSdkVersion 23
-    versionCode 6
-    versionName "2.3.0"
+    versionCode 7
+    versionName "2.4.0"
     multiDexEnabled true
   }
   buildTypes {
