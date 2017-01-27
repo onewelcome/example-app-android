@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Onegini B.V.
+ * Copyright (c) 2016-2017 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,6 +93,7 @@ public class SplashScreenActivity extends Activity {
   private void onDeviceDeregistered() {
     new DeregistrationUtil(this).onDeviceDeregistered();
     showToast("Device deregistered");
+    startLoginActivity();
   }
 
   private void displayError(final OneginiError error) {

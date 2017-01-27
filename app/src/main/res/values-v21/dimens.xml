@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright (c) 2016-2017 Onegini B.V.
 
@@ -15,10 +14,6 @@
   limitations under the License.
   -->
 
-<shape
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <solid android:color="#FFF"/>
-    <stroke android:width="2dp" android:color="#262626"/>
-    <size android:width="16dp" android:height="16dp"/>
-</shape>
+<resources>
+    <dimen name="activity_login_logo_margin_top">80dp</dimen>
+</resources>

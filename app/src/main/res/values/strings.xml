@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2016 Onegini B.V.
+  Copyright (c) 2016-2017 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -55,7 +55,9 @@
     <string name="settings_change_authentication">Change authentication</string>
     <string name="settings_authentication">Authentication</string>
     <string name="settings_authentication_method">Login Method</string>
+    <string name="settings_retrofit_client">Client for resource calls:</string>
     <string name="toolbar_name_devices_activity">Devices</string>
     <string name="settings_authenticators_possible_authenticators">Possible authenticators:</string>
     <string name="simple_push_message">Simple push message</string>
+    <string name="change_pin_finished_succesfully">Change PIN action finished successfully</string>
 </resources>

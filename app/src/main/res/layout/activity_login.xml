@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright (c) 2016 Onegini B.V.
+  Copyright (c) 2016-2017 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -67,14 +67,16 @@
             android:layout_below="@+id/users_spinner"
             android:layout_width="match_parent"
             android:text="@string/btn_login_label"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            tools:visibility="visible"
             android:id="@+id/application_details"
             android:layout_below="@+id/login_button"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="@dimen/activity_margin"
             android:layout_marginRight="@dimen/activity_margin"
             android:gravity="center_horizontal"/>
@@ -92,8 +94,9 @@
         android:id="@+id/register_button"
         style="@style/ButtonWideStyle"
         android:layout_width="match_parent"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="80dp"
         android:visibility="invisible"
+        tools:visibility="visible"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:text="@string/btn_register_label"/>

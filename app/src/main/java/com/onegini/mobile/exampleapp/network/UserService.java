@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Onegini B.V.
+ * Copyright (c) 2016-2017 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,29 +19,45 @@ package com.onegini.mobile.exampleapp.network;
 import android.content.Context;
 import com.onegini.mobile.exampleapp.network.client.UserClient;
 import com.onegini.mobile.exampleapp.network.client.SecureResourceClient;
+import com.onegini.mobile.exampleapp.network.client.UserClient2;
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class UserService {
 
-  private static UserService instance;
+  private static UserService INSTANCE;
 
   public static UserService getInstance(final Context context) {
-    if (instance == null) {
-      instance = new UserService(context);
+    if (INSTANCE == null) {
+      INSTANCE = new UserService(context);
     }
-    return instance;
+    return INSTANCE;
   }
 
-  private final UserClient userClient;
+  // the client using Retrofit 1.9
+  private final UserClient userRetrofitClient;
+  // the client using Retrofit 2.X
+  private final UserClient2 userRetrofit2Client;
 
   private UserService(final Context context) {
-    userClient = SecureResourceClient.prepareSecuredUserClient(UserClient.class, context);
+    userRetrofitClient = SecureResourceClient.prepareSecuredUserRetrofitClient(UserClient.class, context);
+    userRetrofit2Client = SecureResourceClient.prepareSecuredUserRetrofit2Client(UserClient2.class, context);
   }
 
-  public Observable<DevicesResponse> getDevices() {
-    return userClient.getDevices()
-        .observeOn(AndroidSchedulers.mainThread());
+  public Observable<DevicesResponse> getDevices(final boolean useRetrofit2) {
+    return getObservable(useRetrofit2)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .unsubscribeOn(Schedulers.io());
+  }
+
+  private Observable<DevicesResponse> getObservable(final boolean useRetrofit2) {
+    if (useRetrofit2) {
+      return userRetrofit2Client.getDevices();
+    } else {
+      return userRetrofitClient.getDevices();
+    }
   }
 }

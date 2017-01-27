@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright (c) 2016 Onegini B.V.
+  Copyright (c) 2016-2017 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -58,6 +58,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/message"
+                android:textAlignment="center"/>
             <Button
                 android:id="@+id/button_mobile_authentication"
                 style="@style/ButtonStyle"
@@ -72,7 +77,30 @@
                 style="@style/ButtonStyle"
                 android:layout_marginBottom="40dp"
                 android:text="@string/settings_change_authentication"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_retrofit_client"/>
+            <RadioGroup
+                android:id="@+id/retrofit_radio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/retrofit_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Retrofit 1.X" />
+                <RadioButton
+                    android:id="@+id/retrofit_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Retrofit 2.X" />
+            </RadioGroup>
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
+
 </LinearLayout>

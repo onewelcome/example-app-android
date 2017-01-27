@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Onegini B.V.
+ * Copyright (c) 2016-2017 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,6 +35,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.network.gcm.GCMRegistrationService;
+import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import com.onegini.mobile.exampleapp.storage.SettingsStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.handlers.OneginiChangePinHandler;
@@ -55,8 +58,15 @@ public class SettingsActivity extends AppCompatActivity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.button_change_authentication)
   Button changeAuthentication;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.message)
+  TextView message;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.retrofit_radio)
+  RadioGroup retrofitRadio;
 
   private SettingsStorage settingsStorage;
+  private DeviceSettingsStorage deviceSettingsStorage;
   private UserProfile authenticatedUserProfile;
 
   @Override
@@ -66,7 +76,11 @@ public class SettingsActivity extends AppCompatActivity {
     ButterKnife.bind(this);
 
     settingsStorage = new SettingsStorage(this);
+    deviceSettingsStorage = new DeviceSettingsStorage(this);
     authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
+
+    retrofitRadio.check(deviceSettingsStorage.shouldUseRetrofit2() ? R.id.retrofit_2 : R.id.retrofit_1);
+    retrofitRadio.setOnCheckedChangeListener((group, checkedId) -> deviceSettingsStorage.setShouldUseRetrofit2(checkedId == R.id.retrofit_2));
   }
 
   @Override
@@ -149,7 +163,7 @@ public class SettingsActivity extends AppCompatActivity {
     OneginiSDK.getOneginiClient(this).getUserClient().changePin(new OneginiChangePinHandler() {
       @Override
       public void onSuccess() {
-        showToast("Change PIN action finished successfully");
+        message.setText(R.string.change_pin_finished_succesfully);
       }
 
       @Override

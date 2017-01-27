@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2016 Onegini B.V.
+  Copyright (c) 2016-2017 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -27,8 +27,9 @@
     </style>
 
     <style name="ButtonStyle" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background">@color/light_blue</item>
         <item name="android:layout_width">240dp</item>
-        <item name="android:layout_height">64dp</item>
+        <item name="android:layout_height">50dp</item>
         <item name="android:textColor">#FFF</item>
         <item name="android:textSize">18sp</item>
         <item name="android:layout_marginTop">20dp</item>
