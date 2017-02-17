@@ -100,7 +100,31 @@ dependencies {
   compile 'io.reactivex:rxjava:1.2.3'
 
   // Samsung's FIDO client
-  compile 'com.samsung.sds.fido.uaf.sdk:fido-client:1.4.1@aar'
-  compile 'org.fidoalliance.uaf.client.common:samsungsds-ccom:1.4.1@aar'
-  compile 'com.samsung.sds.fido.uaf.message:samsungsds-um:1.4.1'
+  compile 'com.samsung.sds.fido.uaf.sdk:fido-client:1.5.0.20170216@aar'
+  compile 'com.samsung.sds.fido.uaf.message:samsungsds-um:1.5.0.20170216'
+  compile 'org.fidoalliance.uaf.client.common:samsungsds-ccom:1.5.0.20170216@aar'
+
+  // Samsung's FIDO biometrics libraries
+  compile 'com.samsung.sds.fido.uaf.android.biometrics.model:model-combiner:1.4.3@aar'
+  compile 'com.samsung.sds.fido.uaf.android.biometrics.model:model-face-lr:1.4.3@aar'
+  compile 'com.samsung.sds.fido.uaf.android.biometrics.model:model-voice-tssv-udp_enUS:1.4.3@aar'
+
+  compile 'com.samsung.sds.fido.uaf.android:samsungsds-biosdk:1.5.0.20170216@aar'
+  compile 'com.samsung.sds.fido.uaf.android:samsungsds-bm:1.5.0.20170216@aar'
+  compile 'com.samsung.sds.fido.uaf.android:samsungsds-sm:1.5.0.20170216@aar'
+  compile 'com.samsung.sds.fido.uaf.android:uaf-asm:1.5.0.20170216@aar'
+  compile 'com.samsung.sds.fido.uaf.android:uaf-authenticator:1.5.0.20170216@aar'
+  compile 'com.samsung.sds.fido.uaf.android:uaf-client:1.5.0.20170216@aar'
+
+  compile 'com.samsung.sds.fido.uaf.android:smma-android:3.1.0@aar'
+  compile 'com.samsung.sds.fido.uaf.android:vvutils:3.1.0@aar'
+
+  // Required Android libraries
+  compile 'com.android.support:appcompat-v7:23.3.0'
+
+  // Other libraries required by FIDO
+  compile 'org.slf4j:slf4j-api:1.7.5'
+  compile 'com.github.tony19:logback-android-classic:1.0.10-2'
+  compile 'com.github.tony19:logback-android-core:1.0.10-2'
+  compile 'org.restlet.jee:org.restlet:2.2.+'
 }
