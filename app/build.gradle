@@ -75,8 +75,6 @@ dependencies {
   // Onegini SDK
   compile('com.onegini.mobile.sdk.android:onegini-sdk:6.04.00@aar') {
     transitive = true
-    exclude module: 'fido-client'
-    exclude module: 'samsungsds-ccom'
   }
 
   // Rest Client
