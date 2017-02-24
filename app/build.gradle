@@ -75,8 +75,6 @@ dependencies {
   // Onegini SDK
   compile('com.onegini.mobile.sdk.android:onegini-sdk:6.05.00@aar') {
     transitive = true
-    exclude module: 'fido-client'
-    exclude module: 'samsungsds-ccom'
   }
 
   // Rest Client
@@ -100,9 +98,4 @@ dependencies {
   // RxJava
   compile 'io.reactivex:rxandroid:1.2.1'
   compile 'io.reactivex:rxjava:1.2.3'
-
-  // Samsung's FIDO client
-  compile 'com.samsung.sds.fido.uaf.sdk:fido-client:1.4.1@aar'
-  compile 'org.fidoalliance.uaf.client.common:samsungsds-ccom:1.4.1@aar'
-  compile 'com.samsung.sds.fido.uaf.message:samsungsds-um:1.4.1'
 }
