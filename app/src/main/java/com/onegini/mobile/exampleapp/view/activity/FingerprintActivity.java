@@ -56,8 +56,8 @@ public class FingerprintActivity extends AuthenticationActivity {
   protected void initialize() {
     parseIntent();
     updateTexts();
-    setupUi();
     setFingerprintAuthenticationPermissionVisibility(false);
+    setupUi();
   }
 
   protected void setupUi() {
