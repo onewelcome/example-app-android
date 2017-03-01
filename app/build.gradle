@@ -73,7 +73,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  compile('com.onegini.mobile.sdk.android:onegini-sdk:6.04.00@aar') {
+  compile('com.onegini.mobile.sdk.android:onegini-sdk:6.06.00-SNAPSHOT@aar') {
     transitive = true
   }
 
@@ -103,6 +103,7 @@ dependencies {
   compile 'com.samsung.sds.fido.uaf.sdk:fido-client:1.5.0.20170216@aar'
   compile 'com.samsung.sds.fido.uaf.message:samsungsds-um:1.5.0.20170216'
   compile 'org.fidoalliance.uaf.client.common:samsungsds-ccom:1.5.0.20170216@aar'
+  compile 'com.google.guava:guava:19.0'
 
   // Samsung's FIDO biometrics libraries
   compile 'com.samsung.sds.fido.uaf.android.biometrics.model:model-combiner:1.4.3@aar'
