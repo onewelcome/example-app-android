@@ -16,8 +16,11 @@
 
 package com.onegini.mobile.exampleapp.network.gcm;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import java.util.Set;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -26,6 +29,7 @@ import android.widget.Toast;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.activity.LoginActivity;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.exception.OneginiInitializationException;
 import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
@@ -92,6 +96,7 @@ public class GCMListenerService extends GcmListenerService {
           // the user was deregister, for example he provided a wrong PIN for too many times. You can handle the deregistration here, but since this application
           // supports multiple profiles we handle it when the user tries to login the next time because we don't know which user profile was deregistered at
           // this point.
+          startLoginActivity();
         } else if (errorType == OneginiMobileAuthenticationError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(getApplicationContext()).onDeviceDeregistered();
         }
@@ -110,5 +115,11 @@ public class GCMListenerService extends GcmListenerService {
       deregistrationUtil.onUserDeregistered(userProfile);
     }
     handleMobileAuthenticationRequest(extras);
+  }
+
+  private void startLoginActivity() {
+    final Intent intent = new Intent(this, LoginActivity.class);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+    startActivity(intent);
   }
 }
