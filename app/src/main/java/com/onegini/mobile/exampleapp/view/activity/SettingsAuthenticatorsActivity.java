@@ -16,6 +16,9 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -262,6 +265,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
   private void startLoginActivity() {
     final Intent intent = new Intent(this, LoginActivity.class);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
     startActivity(intent);
     finish();
   }
