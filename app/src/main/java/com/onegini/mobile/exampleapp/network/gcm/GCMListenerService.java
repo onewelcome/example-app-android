@@ -16,6 +16,7 @@
 
 package com.onegini.mobile.exampleapp.network.gcm;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import java.util.Set;
@@ -119,7 +120,7 @@ public class GCMListenerService extends GcmListenerService {
 
   private void startLoginActivity() {
     final Intent intent = new Intent(this, LoginActivity.class);
-    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
     startActivity(intent);
   }
 }
