@@ -18,6 +18,7 @@ package com.onegini.mobile.exampleapp.network.client;
 
 import android.content.Context;
 import com.google.gson.GsonBuilder;
+import com.jakewharton.retrofit.Ok3Client;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import retrofit.RestAdapter;
@@ -36,8 +37,7 @@ public class SecureResourceClient {
   public static <T> T prepareSecuredUserRetrofitClient(final Class<T> clazz, final Context context) {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
     final RestAdapter restAdapter = new RestAdapter.Builder()
-        // deprecated method usage; please use https://github.com/JakeWharton/retrofit1-okhttp3-client instead
-        .setClient(oneginiClient.getUserClient().getResourceRetrofitClient())
+        .setClient(new Ok3Client(oneginiClient.getUserClient().getResourceOkHttpClient()))
         .setEndpoint(oneginiClient.getConfigModel().getResourceBaseUrl())
         .setLogLevel(LOG_LEVEL)
         .setConverter(gsonConverter)
@@ -62,8 +62,7 @@ public class SecureResourceClient {
   public static <T> T prepareSecuredAnonymousRetrofitClient(final Class<T> clazz, final Context context) {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
     final RestAdapter restAdapter = new RestAdapter.Builder()
-        // deprecated method usage; please use https://github.com/JakeWharton/retrofit1-okhttp3-client instead
-        .setClient(oneginiClient.getDeviceClient().getAnonymousResourceRetrofitClient())
+        .setClient(new Ok3Client(oneginiClient.getDeviceClient().getAnonymousResourceOkHttpClient()))
         .setEndpoint(oneginiClient.getConfigModel().getResourceBaseUrl())
         .setLogLevel(LOG_LEVEL)
         .setConverter(gsonConverter)
