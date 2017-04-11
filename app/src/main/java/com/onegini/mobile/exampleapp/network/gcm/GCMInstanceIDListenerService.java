@@ -17,12 +17,9 @@
 package com.onegini.mobile.exampleapp.network.gcm;
 
 import com.google.android.gms.iid.InstanceIDListenerService;
-import com.onegini.mobile.exampleapp.OneginiSDK;
-import com.onegini.mobile.exampleapp.storage.SettingsStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
-import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationEnrollmentHandler;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationEnrollmentError;
-import com.onegini.mobile.sdk.android.model.entity.UserProfile;
+import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithPushEnrollmentHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithPushEnrollmentError;
 
 public class GCMInstanceIDListenerService extends InstanceIDListenerService {
 
@@ -32,33 +29,22 @@ public class GCMInstanceIDListenerService extends InstanceIDListenerService {
    */
   @Override
   public void onTokenRefresh() {
-    final OneginiMobileAuthenticationEnrollmentHandler mobileAuthenticationEnrollmentHandler = new OneginiMobileAuthenticationEnrollmentHandler() {
+    final OneginiMobileAuthWithPushEnrollmentHandler mobileAuthWithPushEnrollmentHandler = new OneginiMobileAuthWithPushEnrollmentHandler() {
       @Override
       public void onSuccess() {
-        setMobileAuthenticationEnabled(true);
+
       }
 
       @Override
-      public void onError(final OneginiMobileAuthenticationEnrollmentError error) {
-        @OneginiMobileAuthenticationEnrollmentError.MobileAuthenticationEnrollmentErrorType final int errorType = error.getErrorType();
+      public void onError(final OneginiMobileAuthWithPushEnrollmentError error) {
+        @OneginiMobileAuthWithPushEnrollmentError.MobileAuthWithPushEnrollmentErrorType final int errorType = error.getErrorType();
         // This method is called when a mobile authentication enrollment error occurs, for example when the device is deregistered
-        if (errorType == OneginiMobileAuthenticationEnrollmentError.DEVICE_DEREGISTERED) {
+        if (errorType == OneginiMobileAuthWithPushEnrollmentError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(GCMInstanceIDListenerService.this).onDeviceDeregistered();
         }
-        setMobileAuthenticationEnabled(false);
       }
     };
     final GCMRegistrationService gcmRegistrationService = new GCMRegistrationService(this);
-    gcmRegistrationService.registerGCMService(mobileAuthenticationEnrollmentHandler);
-  }
-
-  private void setMobileAuthenticationEnabled(final boolean isEnabled) {
-    UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
-    if (authenticatedUserProfile == null) {
-      return;
-    }
-
-    final SettingsStorage settingsStorage = new SettingsStorage(GCMInstanceIDListenerService.this);
-    settingsStorage.setMobileAuthenticationEnabled(authenticatedUserProfile, isEnabled);
+    gcmRegistrationService.registerGCMService(mobileAuthWithPushEnrollmentHandler);
   }
 }

@@ -18,7 +18,6 @@ package com.onegini.mobile.exampleapp.util;
 
 import android.content.Context;
 import android.util.Log;
-import com.onegini.mobile.exampleapp.storage.SettingsStorage;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
@@ -35,12 +34,10 @@ public class DeregistrationUtil {
       Log.e("DeregistrationUtil", "userProfile == null");
       return;
     }
-    new SettingsStorage(context).setMobileAuthenticationEnabled(userProfile, false);
     new UserStorage(context).removeUser(userProfile);
   }
 
   public void onDeviceDeregistered() {
-    new SettingsStorage(context).clearStorage();
     new UserStorage(context).clearStorage();
   }
 }
