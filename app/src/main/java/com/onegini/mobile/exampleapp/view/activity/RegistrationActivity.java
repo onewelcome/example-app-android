@@ -154,15 +154,12 @@ public class RegistrationActivity extends Activity {
     finish();
   }
 
-  private void handleGeneralError(final OneginiRegistrationError oneginiRegistrationError) {
-    final StringBuilder stringBuilder = new StringBuilder("General error: ");
-    stringBuilder.append(oneginiRegistrationError.getErrorDescription());
+  private void handleGeneralError(final OneginiRegistrationError error) {
+    final StringBuilder stringBuilder = new StringBuilder("Error: ");
+    stringBuilder.append(error.getMessage());
+    stringBuilder.append(" Check logcat for more details.");
 
-    final Exception exception = oneginiRegistrationError.getException();
-    if (exception != null) {
-      stringBuilder.append(" Check logcat for more details.");
-      exception.printStackTrace();
-    }
+    error.printStackTrace();
 
     showToast(stringBuilder.toString());
   }

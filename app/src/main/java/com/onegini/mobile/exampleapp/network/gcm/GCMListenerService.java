@@ -78,7 +78,7 @@ public class GCMListenerService extends GcmListenerService {
         if (errorType == OneginiInitializationError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(getApplicationContext()).onDeviceDeregistered();
         }
-        showToast(error.getErrorDescription());
+        showToast(error.getMessage());
       }
     });
   }
@@ -92,7 +92,7 @@ public class GCMListenerService extends GcmListenerService {
 
       @Override
       public void onError(final OneginiMobileAuthenticationError oneginiMobileAuthenticationError) {
-        showToast(oneginiMobileAuthenticationError.getErrorDescription());
+        showToast(oneginiMobileAuthenticationError.getMessage());
         @OneginiMobileAuthenticationError.MobileAuthenticationErrorType final int errorType = oneginiMobileAuthenticationError.getErrorType();
         if (errorType == OneginiMobileAuthenticationError.USER_DEREGISTERED) {
           // the user was deregister, for example he provided a wrong PIN for too many times. You can handle the deregistration here, but since this application

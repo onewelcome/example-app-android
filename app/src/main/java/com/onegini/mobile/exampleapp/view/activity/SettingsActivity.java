@@ -148,7 +148,7 @@ public class SettingsActivity extends AppCompatActivity {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
         }
 
-        showToast("Mobile authentication error - " + error.getErrorDescription());
+        showToast("Mobile authentication error - " + error.getMessage());
       }
     };
     OneginiSDK.getOneginiClient(this).getUserClient().enrollUserForMobileAuth(mobileAuthEnrollmentHandler);
@@ -171,7 +171,7 @@ public class SettingsActivity extends AppCompatActivity {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
         }
 
-        showToast("Mobile authentication error - " + error.getErrorDescription());
+        showToast("Mobile authentication error - " + error.getMessage());
       }
     };
     final GCMRegistrationService gcmRegistrationService = new GCMRegistrationService(this);
@@ -195,7 +195,7 @@ public class SettingsActivity extends AppCompatActivity {
         } else if (errorType == OneginiChangePinError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
         }
-        showToast(oneginiChangePinError.getErrorDescription());
+        showToast(oneginiChangePinError.getMessage());
       }
     });
   }
