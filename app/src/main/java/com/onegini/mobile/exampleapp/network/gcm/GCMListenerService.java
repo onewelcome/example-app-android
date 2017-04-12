@@ -36,6 +36,7 @@ import com.onegini.mobile.sdk.android.exception.OneginiInitializationException;
 import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiInitializationError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthEnrollmentError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
@@ -92,7 +93,7 @@ public class GCMListenerService extends GcmListenerService {
       @Override
       public void onError(final OneginiMobileAuthenticationError oneginiMobileAuthenticationError) {
         showToast(oneginiMobileAuthenticationError.getErrorDescription());
-        @OneginiMobileAuthenticationError.MobileAuthenticationEnrollmentErrorType final int errorType = oneginiMobileAuthenticationError.getErrorType();
+        @OneginiMobileAuthenticationError.MobileAuthenticationErrorType final int errorType = oneginiMobileAuthenticationError.getErrorType();
         if (errorType == OneginiMobileAuthenticationError.USER_DEREGISTERED) {
           // the user was deregister, for example he provided a wrong PIN for too many times. You can handle the deregistration here, but since this application
           // supports multiple profiles we handle it when the user tries to login the next time because we don't know which user profile was deregistered at
