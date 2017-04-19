@@ -144,7 +144,7 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
         new DeregistrationUtil(context).onDeviceDeregistered();
       case OneginiPinValidationError.GENERAL_ERROR:
       default:
-        notifyActivity(context.getString(R.string.pin_title_choose_pin), oneginiPinValidationError.getMessage());
+        notifyActivity(context.getString(R.string.pin_title_choose_pin), oneginiPinValidationError.getErrorDescription());
         break;
     }
   }

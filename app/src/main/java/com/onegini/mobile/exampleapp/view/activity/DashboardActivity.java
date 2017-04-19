@@ -91,7 +91,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     // other errors don't really require our reaction, but you might consider displaying some message to the user
-    showToast("Logout error: " + oneginiLogoutError.getMessage());
+    showToast("Logout error: " + oneginiLogoutError.getErrorDescription());
 
     startLoginActivity();
   }
@@ -135,7 +135,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     // other errors don't really require our reaction, but you might consider displaying some message to the user
-    showToast("Deregistration error: " + oneginiDeregistrationError.getMessage());
+    showToast("Deregistration error: " + oneginiDeregistrationError.getErrorDescription());
 
     startLoginActivity();
   }

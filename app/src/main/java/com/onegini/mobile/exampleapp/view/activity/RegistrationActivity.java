@@ -156,10 +156,12 @@ public class RegistrationActivity extends Activity {
 
   private void handleGeneralError(final OneginiRegistrationError error) {
     final StringBuilder stringBuilder = new StringBuilder("Error: ");
-    stringBuilder.append(error.getMessage());
+    stringBuilder.append(error.getErrorDescription());
     stringBuilder.append(" Check logcat for more details.");
 
-    error.printStackTrace();
+    if (error.getException() != null) {
+      error.getException().printStackTrace();
+    }
 
     showToast(stringBuilder.toString());
   }
