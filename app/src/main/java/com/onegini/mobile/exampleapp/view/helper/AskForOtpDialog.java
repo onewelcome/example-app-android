@@ -24,20 +24,20 @@ public class AskForOtpDialog {
     alertDialog.setMessage("Enter One Time Password encoded in Base64.");
 
     final EditText input = new EditText(activity);
-    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+    final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.MATCH_PARENT,
         LinearLayout.LayoutParams.MATCH_PARENT);
     input.setLayoutParams(lp);
     alertDialog.setView(input);
 
-    alertDialog.setPositiveButton("Confirm",
-        (dialog, which) -> {
-          final String otpCode = input.getText().toString();
-          final UserClient userClient = OneginiSDK.getOneginiClient(activity.getApplicationContext()).getUserClient();
+    alertDialog.setPositiveButton("Confirm", (dialog, which) -> {
+      final String otpCode = input.getText().toString();
+      final UserClient userClient = OneginiSDK.getOneginiClient(activity.getApplicationContext()).getUserClient();
 
-          userClient.handleMobileAuthWithOtp(otpCode, handler);
-        });
+      userClient.handleMobileAuthWithOtp(otpCode, handler);
+    });
 
     alertDialog.setNegativeButton("Dismiss", (dialog, which) -> dialog.cancel());
+    alertDialog.show();
   }
 }
