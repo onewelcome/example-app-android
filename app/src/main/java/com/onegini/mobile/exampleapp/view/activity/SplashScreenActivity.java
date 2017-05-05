@@ -98,12 +98,10 @@ public class SplashScreenActivity extends Activity {
 
   private void displayError(final OneginiError error) {
     final StringBuilder stringBuilder = new StringBuilder("Error: ");
-    stringBuilder.append(error.getErrorDescription());
+    stringBuilder.append(error.getMessage());
     stringBuilder.append(" Check logcat for more details.");
 
-    if (error.getException() != null) {
-      error.getException().printStackTrace();
-    }
+    error.printStackTrace();
 
     showToast(stringBuilder.toString());
   }

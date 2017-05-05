@@ -197,7 +197,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
           startLoginActivity();
         }
 
-        onErrorOccurred(position, error.getErrorDescription());
+        onErrorOccurred(position, error.getMessage());
       }
     });
   }
@@ -216,7 +216,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
       @Override
       public void onError(final OneginiAuthenticatorDeregistrationError error) {
-        onErrorOccurred(position, error.getErrorDescription());
+        onErrorOccurred(position, error.getMessage());
         @OneginiAuthenticatorDeregistrationError.AuthenticatorDeregistrationErrorType int errorType = error.getErrorType();
         if (errorType == OneginiAuthenticatorDeregistrationError.USER_NOT_AUTHENTICATED) {
           startLoginActivity();
