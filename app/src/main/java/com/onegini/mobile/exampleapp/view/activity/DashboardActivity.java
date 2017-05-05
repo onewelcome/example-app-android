@@ -73,7 +73,7 @@ public class DashboardActivity extends AppCompatActivity {
 
       @Override
       public void onError(final OneginiMobileAuthWithOtpError oneginiMobileAuthWithOtpError) {
-        showToast("Mobile auth with OTP error:" + oneginiMobileAuthWithOtpError.getErrorDescription());
+        showToast("Mobile auth with OTP error:" + oneginiMobileAuthWithOtpError.getMessage());
       }
     };
 

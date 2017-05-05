@@ -51,12 +51,11 @@ public class OneginiSDK {
         // handlers for optional functionalities
         .setFingerprintAuthenticatioRequestHandler(new FingerprintAuthenticationRequestHandler(applicationContext))
         .setFidoAuthenticationRequestHandler(new FidoAuthenticationRequestHandler(applicationContext))
-        .setMobileAuthenticationRequestHandler(new MobileAuthenticationRequestHandler(applicationContext))
-        .setMobileAuthenticationPinRequestHandler(new MobileAuthenticationPinRequestHandler(applicationContext))
-        .setFingerprintAuthenticatioRequestHandler(new FingerprintAuthenticationRequestHandler(applicationContext))
-        .setMobileAuthenticationFingerprintRequestHandler(new MobileAuthenticationFingerprintRequestHandler(applicationContext))
-        .setMobileAuthenticationFidoRequestHandler(new MobileAuthenticationFidoRequestHandler(applicationContext))
-        .setMobileAuthenticationOtpRequestHandler(new MobileAuthOtpRequestHandler())
+        .setMobileAuthWithPushRequestHandler(new MobileAuthenticationRequestHandler(applicationContext))
+        .setMobileAuthWithPushPinRequestHandler(new MobileAuthenticationPinRequestHandler(applicationContext))
+        .setMobileAuthWithPushFingerprintRequestHandler(new MobileAuthenticationFingerprintRequestHandler(applicationContext))
+        .setMobileAuthWithPushFidoRequestHandler(new MobileAuthenticationFidoRequestHandler(applicationContext))
+        .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler())
         .build();
   }
 }
