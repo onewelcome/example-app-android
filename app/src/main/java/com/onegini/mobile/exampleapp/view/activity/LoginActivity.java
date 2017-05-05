@@ -202,8 +202,10 @@ public class LoginActivity extends Activity {
         showToast("Authentication was cancelled");
         break;
       case OneginiAuthenticationError.NETWORK_CONNECTIVITY_PROBLEM:
-      case OneginiAuthenticationError.SERVER_NOT_REACHABLE:
         showToast("No internet connection.");
+        break;
+      case OneginiAuthenticationError.SERVER_NOT_REACHABLE:
+        showToast("The server is not reachable.");
         break;
       case OneginiAuthenticationError.OUTDATED_APP:
         showToast("Please update this application in order to use it.");
