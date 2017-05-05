@@ -16,11 +16,11 @@
 
 package com.onegini.mobile.exampleapp.view.handler;
 
-import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthOtpRequestHandler;
+import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithOtpRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiAcceptDenyCallback;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
 
-public class MobileAuthOtpRequestHandler implements OneginiMobileAuthOtpRequestHandler {
+public class MobileAuthOtpRequestHandler implements OneginiMobileAuthWithOtpRequestHandler {
 
   @Override
   public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest,

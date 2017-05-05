@@ -27,11 +27,11 @@ import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity
 import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFingerprintActivity;
-import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthenticationFingerprintRequestHandler;
+import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushFingerprintRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiFingerprintCallback;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
 
-public class MobileAuthenticationFingerprintRequestHandler implements OneginiMobileAuthenticationFingerprintRequestHandler {
+public class MobileAuthenticationFingerprintRequestHandler implements OneginiMobileAuthWithPushFingerprintRequestHandler {
 
   public static OneginiFingerprintCallback CALLBACK;
 

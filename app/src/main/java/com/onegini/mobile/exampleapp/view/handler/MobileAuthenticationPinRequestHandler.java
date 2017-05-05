@@ -28,12 +28,12 @@ import static com.onegini.mobile.exampleapp.view.activity.PinActivity.EXTRA_MAX_
 import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationPinActivity;
-import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthenticationPinRequestHandler;
+import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushPinRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiPinCallback;
 import com.onegini.mobile.sdk.android.model.entity.AuthenticationAttemptCounter;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
 
-public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthenticationPinRequestHandler {
+public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthWithPushPinRequestHandler {
 
   public static OneginiPinCallback CALLBACK;
 
