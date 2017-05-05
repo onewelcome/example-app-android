@@ -64,9 +64,6 @@ public class SettingsActivity extends AppCompatActivity {
   @Bind(R.id.button_change_authentication)
   Button changeAuthentication;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.message)
-  TextView message;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.retrofit_radio)
   RadioGroup retrofitRadio;
 
@@ -184,7 +181,7 @@ public class SettingsActivity extends AppCompatActivity {
     OneginiSDK.getOneginiClient(this).getUserClient().changePin(new OneginiChangePinHandler() {
       @Override
       public void onSuccess() {
-        message.setText(R.string.change_pin_finished_succesfully);
+        showToast("Change PIN action finished successfully");
       }
 
       @Override
