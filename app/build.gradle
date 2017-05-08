@@ -50,8 +50,8 @@ android {
     applicationId "com.onegini.mobile.exampleapp"
     minSdkVersion 16
     targetSdkVersion 23
-    versionCode 7
-    versionName "2.4.0"
+    versionCode 8
+    versionName "3.0.0-BETA"
     multiDexEnabled true
   }
   buildTypes {
@@ -73,7 +73,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  compile('com.onegini.mobile.sdk.android:onegini-sdk:7.0.0-SNAPSHOT@aar') {
+  compile('com.onegini.mobile.sdk.android:onegini-sdk:7.0.0-BETA@aar') {
     transitive = true
   }
 
