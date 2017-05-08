@@ -62,7 +62,6 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
 
   @Override
   public void finishPinCreation() {
-    Toast.makeText(context, "CreatePinRequestHandler#finishPinCreation", Toast.LENGTH_LONG).show();
     notifyActivity("", "", COMMAND_FINISH);
   }
 

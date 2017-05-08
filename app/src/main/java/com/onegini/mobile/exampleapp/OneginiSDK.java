@@ -20,6 +20,7 @@ import android.content.Context;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.FidoAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.MobileAuthOtpRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFidoRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFingerprintRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequestHandler;
@@ -50,11 +51,11 @@ public class OneginiSDK {
         // handlers for optional functionalities
         .setFingerprintAuthenticatioRequestHandler(new FingerprintAuthenticationRequestHandler(applicationContext))
         .setFidoAuthenticationRequestHandler(new FidoAuthenticationRequestHandler(applicationContext))
-        .setMobileAuthenticationRequestHandler(new MobileAuthenticationRequestHandler(applicationContext))
-        .setMobileAuthenticationPinRequestHandler(new MobileAuthenticationPinRequestHandler(applicationContext))
-        .setFingerprintAuthenticatioRequestHandler(new FingerprintAuthenticationRequestHandler(applicationContext))
-        .setMobileAuthenticationFingerprintRequestHandler(new MobileAuthenticationFingerprintRequestHandler(applicationContext))
-        .setMobileAuthenticationFidoRequestHandler(new MobileAuthenticationFidoRequestHandler(applicationContext))
+        .setMobileAuthWithPushRequestHandler(new MobileAuthenticationRequestHandler(applicationContext))
+        .setMobileAuthWithPushPinRequestHandler(new MobileAuthenticationPinRequestHandler(applicationContext))
+        .setMobileAuthWithPushFingerprintRequestHandler(new MobileAuthenticationFingerprintRequestHandler(applicationContext))
+        .setMobileAuthWithPushFidoRequestHandler(new MobileAuthenticationFidoRequestHandler(applicationContext))
+        .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler())
         .build();
   }
 }

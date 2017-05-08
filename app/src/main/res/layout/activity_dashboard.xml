@@ -72,6 +72,10 @@
                     android:text="@string/btn_your_devices"
                     android:layout_marginTop="32dp"/>
                 <Button
+                    android:id="@+id/button_auth_with_otp"
+                    style="@style/ButtonStyle"
+                    android:text="@string/btn_mobile_auth_with_otp_label"/>
+                <Button
                     android:id="@+id/button_settings"
                     style="@style/ButtonStyle"
                     android:text="@string/btn_settings_label"/>
