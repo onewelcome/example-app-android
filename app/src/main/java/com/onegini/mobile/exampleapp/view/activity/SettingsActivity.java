@@ -66,6 +66,9 @@ public class SettingsActivity extends AppCompatActivity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.retrofit_radio)
   RadioGroup retrofitRadio;
+  @Bind(R.id.message)
+  TextView message;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
 
   private DeviceSettingsStorage deviceSettingsStorage;
   private UserProfile authenticatedUserProfile;
@@ -192,7 +195,7 @@ public class SettingsActivity extends AppCompatActivity {
         } else if (errorType == OneginiChangePinError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
         }
-        showToast(oneginiChangePinError.getMessage());
+        message.setText(R.string.change_pin_finished_succesfully);
       }
     });
   }
