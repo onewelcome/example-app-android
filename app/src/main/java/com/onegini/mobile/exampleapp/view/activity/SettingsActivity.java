@@ -36,12 +36,14 @@ import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.network.gcm.GCMRegistrationService;
 import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
-import com.onegini.mobile.exampleapp.storage.SettingsStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiChangePinHandler;
-import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationEnrollmentHandler;
+import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthEnrollmentHandler;
+import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithPushEnrollmentHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiChangePinError;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationEnrollmentError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthEnrollmentError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithPushEnrollmentError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -53,19 +55,21 @@ public class SettingsActivity extends AppCompatActivity {
   @Bind(R.id.button_mobile_authentication)
   Button mobileAuthButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.button_mobile_authentication_push)
+  Button mobileAuthPushButton;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.button_change_pin)
   Button changePinButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.button_change_authentication)
   Button changeAuthentication;
   @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.retrofit_radio)
+  RadioGroup retrofitRadio;
   @Bind(R.id.message)
   TextView message;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.retrofit_radio)
-  RadioGroup retrofitRadio;
 
-  private SettingsStorage settingsStorage;
   private DeviceSettingsStorage deviceSettingsStorage;
   private UserProfile authenticatedUserProfile;
 
@@ -75,7 +79,6 @@ public class SettingsActivity extends AppCompatActivity {
     setContentView(R.layout.activity_settings);
     ButterKnife.bind(this);
 
-    settingsStorage = new SettingsStorage(this);
     deviceSettingsStorage = new DeviceSettingsStorage(this);
     authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
 
@@ -102,21 +105,17 @@ public class SettingsActivity extends AppCompatActivity {
 
   private void setupView() {
     setupActionBar();
-    setupMobileAuthButton();
+    setupMobileAuthButtons();
   }
 
-  private void setupMobileAuthButton() {
-    mobileAuthButton.setEnabled(false);
-    mobileAuthButton.setText(R.string.settings_mobile_enrollment_not_available);
+  private void setupMobileAuthButtons() {
+    mobileAuthButton.setText(R.string.settings_mobile_enrollment_off);
+    mobileAuthPushButton.setEnabled(false);
+    mobileAuthPushButton.setText(R.string.settings_mobile_push_enrollment_not_available);
 
-    final int googlePlayServicesAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
-    if (googlePlayServicesAvailable == ConnectionResult.SUCCESS) {
-      if (settingsStorage.isMobileAuthenticationEnabled(authenticatedUserProfile)) {
-        mobileAuthButton.setText(R.string.settings_mobile_enrollment_on);
-      } else {
-        mobileAuthButton.setText(R.string.settings_mobile_enrollment_off);
-        mobileAuthButton.setEnabled(true);
-      }
+    final UserClient userClient = OneginiSDK.getOneginiClient(this).getUserClient();
+    if (userClient.isUserEnrolledForMobileAuth(authenticatedUserProfile)) {
+      onMobileAuthEnabled();
     }
   }
 
@@ -135,26 +134,48 @@ public class SettingsActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_mobile_authentication)
   public void enrollMobileAuthentication() {
-    final OneginiMobileAuthenticationEnrollmentHandler mobileAuthenticationEnrollmentHandler = new OneginiMobileAuthenticationEnrollmentHandler() {
+    final OneginiMobileAuthEnrollmentHandler mobileAuthEnrollmentHandler = new OneginiMobileAuthEnrollmentHandler() {
       @Override
       public void onSuccess() {
-        settingsStorage.setMobileAuthenticationEnabled(authenticatedUserProfile, true);
         onMobileAuthEnabled();
         showToast("Mobile authentication enabled");
       }
 
       @Override
-      public void onError(final OneginiMobileAuthenticationEnrollmentError error) {
-        @OneginiMobileAuthenticationEnrollmentError.MobileAuthenticationEnrollmentErrorType final int errorType = error.getErrorType();
-        if (errorType == OneginiMobileAuthenticationEnrollmentError.DEVICE_DEREGISTERED) {
+      public void onError(final OneginiMobileAuthEnrollmentError error) {
+        @OneginiMobileAuthEnrollmentError.MobileAuthEnrollmentErrorType final int errorType = error.getErrorType();
+        if (errorType == OneginiMobileAuthEnrollmentError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
         }
 
-        showToast("Mobile authentication error - " + error.getErrorDescription());
+        showToast("Mobile authentication error - " + error.getMessage());
+      }
+    };
+    OneginiSDK.getOneginiClient(this).getUserClient().enrollUserForMobileAuth(mobileAuthEnrollmentHandler);
+  }
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.button_mobile_authentication_push)
+  public void enrollMobileAuthenticationWithPush() {
+    final OneginiMobileAuthWithPushEnrollmentHandler mobileAuthWithPushEnrollmentHandler = new OneginiMobileAuthWithPushEnrollmentHandler() {
+      @Override
+      public void onSuccess() {
+        showToast("Mobile authentication enabled");
+        mobileAuthPushButton.setText(R.string.settings_mobile_push_enrollment_on);
+      }
+
+      @Override
+      public void onError(final OneginiMobileAuthWithPushEnrollmentError error) {
+        @OneginiMobileAuthWithPushEnrollmentError.MobileAuthWithPushEnrollmentErrorType final int errorType = error.getErrorType();
+        if (errorType == OneginiMobileAuthWithPushEnrollmentError.DEVICE_DEREGISTERED) {
+          new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
+        }
+
+        showToast("Mobile authentication error - " + error.getMessage());
       }
     };
     final GCMRegistrationService gcmRegistrationService = new GCMRegistrationService(this);
-    gcmRegistrationService.registerGCMService(mobileAuthenticationEnrollmentHandler);
+    gcmRegistrationService.registerGCMService(mobileAuthWithPushEnrollmentHandler);
   }
 
   @SuppressWarnings("unused")
@@ -163,7 +184,7 @@ public class SettingsActivity extends AppCompatActivity {
     OneginiSDK.getOneginiClient(this).getUserClient().changePin(new OneginiChangePinHandler() {
       @Override
       public void onSuccess() {
-        message.setText(R.string.change_pin_finished_succesfully);
+        showToast("Change PIN action finished successfully");
       }
 
       @Override
@@ -174,7 +195,7 @@ public class SettingsActivity extends AppCompatActivity {
         } else if (errorType == OneginiChangePinError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
         }
-        showToast(oneginiChangePinError.getErrorDescription());
+        message.setText(R.string.change_pin_finished_succesfully);
       }
     });
   }
@@ -200,6 +221,13 @@ public class SettingsActivity extends AppCompatActivity {
 
   private void onMobileAuthEnabled() {
     mobileAuthButton.setText(R.string.settings_mobile_enrollment_on);
-    mobileAuthButton.setEnabled(false);
+    final int googlePlayServicesAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
+    if (googlePlayServicesAvailable == ConnectionResult.SUCCESS) {
+      mobileAuthPushButton.setEnabled(true);
+      mobileAuthPushButton.setText(R.string.settings_mobile_push_enrollment_off);
+      if (OneginiSDK.getOneginiClient(this).getUserClient().isUserEnrolledForMobileAuthWithPush(authenticatedUserProfile)) {
+        mobileAuthPushButton.setText(R.string.settings_mobile_push_enrollment_on);
+      }
+    }
   }
 }

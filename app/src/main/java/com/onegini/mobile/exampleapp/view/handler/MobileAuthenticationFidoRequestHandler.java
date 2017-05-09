@@ -26,11 +26,11 @@ import static com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFi
 import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFidoActivity;
-import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthenticationFidoRequestHandler;
+import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushFidoRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiFidoCallback;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
 
-public class MobileAuthenticationFidoRequestHandler implements OneginiMobileAuthenticationFidoRequestHandler {
+public class MobileAuthenticationFidoRequestHandler implements OneginiMobileAuthWithPushFidoRequestHandler {
 
   public static OneginiFidoCallback CALLBACK;
 

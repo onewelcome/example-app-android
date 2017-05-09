@@ -239,13 +239,10 @@ public class LoginActivity extends Activity {
 
   private void displayError(final OneginiError error) {
     final StringBuilder stringBuilder = new StringBuilder("Error: ");
-    stringBuilder.append(error.getErrorDescription());
+    stringBuilder.append(error.getMessage());
+    stringBuilder.append(" Check logcat for more details.");
 
-    final Exception exception = error.getException();
-    if (exception != null) {
-      stringBuilder.append(" Check logcat for more details.");
-      exception.printStackTrace();
-    }
+    error.printStackTrace();
 
     showToast(stringBuilder.toString());
   }

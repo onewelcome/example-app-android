@@ -16,8 +16,12 @@
 
 package com.onegini.mobile.exampleapp.network.gcm;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import java.util.Set;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -26,11 +30,13 @@ import android.widget.Toast;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.activity.LoginActivity;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.exception.OneginiInitializationException;
 import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiInitializationError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthEnrollmentError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
@@ -72,13 +78,13 @@ public class GCMListenerService extends GcmListenerService {
         if (errorType == OneginiInitializationError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(getApplicationContext()).onDeviceDeregistered();
         }
-        showToast(error.getErrorDescription());
+        showToast(error.getMessage());
       }
     });
   }
 
   private void handleMobileAuthenticationRequest(final Bundle extras) {
-    OneginiSDK.getOneginiClient(this).getUserClient().handleMobileAuthenticationRequest(extras, new OneginiMobileAuthenticationHandler() {
+    OneginiSDK.getOneginiClient(this).getUserClient().handleMobileAuthWithPushRequest(extras, new OneginiMobileAuthenticationHandler() {
       @Override
       public void onSuccess() {
         Toast.makeText(GCMListenerService.this, "Mobile authentication success", Toast.LENGTH_SHORT).show();
@@ -86,12 +92,13 @@ public class GCMListenerService extends GcmListenerService {
 
       @Override
       public void onError(final OneginiMobileAuthenticationError oneginiMobileAuthenticationError) {
-        showToast(oneginiMobileAuthenticationError.getErrorDescription());
-        @OneginiMobileAuthenticationError.MobileAuthenticationEnrollmentErrorType final int errorType = oneginiMobileAuthenticationError.getErrorType();
+        showToast(oneginiMobileAuthenticationError.getMessage());
+        @OneginiMobileAuthenticationError.MobileAuthenticationErrorType final int errorType = oneginiMobileAuthenticationError.getErrorType();
         if (errorType == OneginiMobileAuthenticationError.USER_DEREGISTERED) {
           // the user was deregister, for example he provided a wrong PIN for too many times. You can handle the deregistration here, but since this application
           // supports multiple profiles we handle it when the user tries to login the next time because we don't know which user profile was deregistered at
           // this point.
+          startLoginActivity();
         } else if (errorType == OneginiMobileAuthenticationError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(getApplicationContext()).onDeviceDeregistered();
         }
@@ -110,5 +117,11 @@ public class GCMListenerService extends GcmListenerService {
       deregistrationUtil.onUserDeregistered(userProfile);
     }
     handleMobileAuthenticationRequest(extras);
+  }
+
+  private void startLoginActivity() {
+    final Intent intent = new Intent(this, LoginActivity.class);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
+    startActivity(intent);
   }
 }

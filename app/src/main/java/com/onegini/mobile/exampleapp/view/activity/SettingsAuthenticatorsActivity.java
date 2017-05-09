@@ -16,6 +16,9 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -194,7 +197,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
           startLoginActivity();
         }
 
-        onErrorOccurred(position, error.getErrorDescription());
+        onErrorOccurred(position, error.getMessage());
       }
     });
   }
@@ -213,7 +216,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
       @Override
       public void onError(final OneginiAuthenticatorDeregistrationError error) {
-        onErrorOccurred(position, error.getErrorDescription());
+        onErrorOccurred(position, error.getMessage());
         @OneginiAuthenticatorDeregistrationError.AuthenticatorDeregistrationErrorType int errorType = error.getErrorType();
         if (errorType == OneginiAuthenticatorDeregistrationError.USER_NOT_AUTHENTICATED) {
           startLoginActivity();
@@ -262,6 +265,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
   private void startLoginActivity() {
     final Intent intent = new Intent(this, LoginActivity.class);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
     startActivity(intent);
     finish();
   }

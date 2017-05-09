@@ -28,8 +28,8 @@ import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.storage.GCMStorage;
 import com.onegini.mobile.sdk.android.client.UserClient;
-import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationEnrollmentHandler;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationEnrollmentError;
+import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithPushEnrollmentHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithPushEnrollmentError;
 
 public class GCMRegistrationService {
 
@@ -38,14 +38,14 @@ public class GCMRegistrationService {
   private final Context context;
   private final GCMStorage storage;
 
-  private OneginiMobileAuthenticationEnrollmentHandler enrollmentHandler;
+  private OneginiMobileAuthWithPushEnrollmentHandler enrollmentHandler;
 
   public GCMRegistrationService(final Context context) {
     this.context = context;
     storage = new GCMStorage(context);
   }
 
-  public void registerGCMService(final OneginiMobileAuthenticationEnrollmentHandler handler) {
+  public void registerGCMService(final OneginiMobileAuthWithPushEnrollmentHandler handler) {
     enrollmentHandler = handler;
     final String regid = getRegistrationId();
     if (regid.isEmpty()) {
@@ -92,7 +92,7 @@ public class GCMRegistrationService {
           storeRegisteredId(regid);
         } catch (final IOException ex) {
           enrollmentHandler
-              .onError(new OneginiMobileAuthenticationEnrollmentError(OneginiMobileAuthenticationEnrollmentError.GENERAL_ERROR, "Unable to register in GCM"));
+              .onError(new OneginiMobileAuthWithPushEnrollmentError(OneginiMobileAuthWithPushEnrollmentError.GENERAL_ERROR, "Unable to register in GCM"));
         }
         return null;
       }
@@ -107,6 +107,6 @@ public class GCMRegistrationService {
 
   private void enrollForMobileAuthentication(final String regId) {
     final UserClient userClient = OneginiSDK.getOneginiClient(context).getUserClient();
-    userClient.enrollUserForMobileAuthentication(regId, enrollmentHandler);
+    userClient.enrollUserForMobileAuthWithPush(regId, enrollmentHandler);
   }
 }

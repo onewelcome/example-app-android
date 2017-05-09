@@ -18,6 +18,7 @@
 -printseeds build/seeds.txt
 
 -dontwarn retrofit.**
+-dontwarn retrofit2.**
 -dontwarn android.test.**
 -dontwarn com.squareup.okhttp.**
 -dontwarn okio.**
@@ -29,7 +30,8 @@
 -keep class * implements com.onegini.mobile.sdk.android.library.model.OneginiClientConfigModel { *; }
 
 -keep interface retrofit.** { *; }
--keep class retrofit.* { *; }
+-keep class retrofit.** { *; }
+-keep class retrofit2.** { *; }
 -keep class com.squareup.okhttp.** { *; }
 -keep class com.google.gson.** { *; }
 -keep class com.google.inject.* { *; }
@@ -38,5 +40,8 @@
 -keep class javax.inject.* { *; }
 -keep class sun.misc.Unsafe { *; }
 -keep class org.spongycastle.jcajce.provider.** { *; }
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
+}
 
 -keepattributes Signature,InnerClasses,EnclosingMethod

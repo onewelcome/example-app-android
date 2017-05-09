@@ -46,9 +46,11 @@
     <string name="welcome_user_text">Hello, %1$s!</string>
     <string name="settings_title">Settings</string>
     <string name="btn_settings_label">SETTINGS</string>
-    <string name="settings_mobile_enrollment_off">Enable mobile authentication</string>
-    <string name="settings_mobile_enrollment_on">Mobile authentication enabled</string>
-    <string name="settings_mobile_enrollment_not_available">Mobile authentication not available</string>
+    <string name="settings_mobile_enrollment_off">Enroll for mobile auth</string>
+    <string name="settings_mobile_enrollment_on">Re-enroll for mobile auth</string>
+    <string name="settings_mobile_push_enrollment_off">Enroll for mobile auth with push</string>
+    <string name="settings_mobile_push_enrollment_on">Re-enroll for mobile auth with push</string>
+    <string name="settings_mobile_push_enrollment_not_available">Mobile auth with push not available</string>
     <string name="btn_auth_accept">Accept</string>
     <string name="btn_auth_deny">Deny</string>
     <string name="settings_change_pin">Change PIN</string>
@@ -60,4 +62,5 @@
     <string name="settings_authenticators_possible_authenticators">Possible authenticators:</string>
     <string name="simple_push_message">Simple push message</string>
     <string name="change_pin_finished_succesfully">Change PIN action finished successfully</string>
+    <string name="btn_mobile_auth_with_otp_label">Mobile auth with OTP</string>
 </resources>

@@ -62,7 +62,6 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
 
   @Override
   public void finishPinCreation() {
-    Toast.makeText(context, "CreatePinRequestHandler#finishPinCreation", Toast.LENGTH_LONG).show();
     notifyActivity("", "", COMMAND_FINISH);
   }
 
@@ -144,7 +143,7 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
         new DeregistrationUtil(context).onDeviceDeregistered();
       case OneginiPinValidationError.GENERAL_ERROR:
       default:
-        notifyActivity(context.getString(R.string.pin_title_choose_pin), oneginiPinValidationError.getErrorDescription());
+        notifyActivity(context.getString(R.string.pin_title_choose_pin), oneginiPinValidationError.getMessage());
         break;
     }
   }
