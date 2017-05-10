@@ -29,8 +29,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SecureResourceClient {
 
-  private static final RestAdapter.LogLevel LOG_LEVEL = RestAdapter.LogLevel.FULL;
-
   private static final GsonConverter gsonConverter = new GsonConverter(new GsonBuilder().disableHtmlEscaping().create());
 
   // preparing the client using Retrofit 1.9
@@ -39,7 +37,6 @@ public class SecureResourceClient {
     final RestAdapter restAdapter = new RestAdapter.Builder()
         .setClient(new Ok3Client(oneginiClient.getUserClient().getResourceOkHttpClient()))
         .setEndpoint(oneginiClient.getConfigModel().getResourceBaseUrl())
-        .setLogLevel(LOG_LEVEL)
         .setConverter(gsonConverter)
         .build();
     return restAdapter.create(clazz);
@@ -64,7 +61,6 @@ public class SecureResourceClient {
     final RestAdapter restAdapter = new RestAdapter.Builder()
         .setClient(new Ok3Client(oneginiClient.getDeviceClient().getAnonymousResourceOkHttpClient()))
         .setEndpoint(oneginiClient.getConfigModel().getResourceBaseUrl())
-        .setLogLevel(LOG_LEVEL)
         .setConverter(gsonConverter)
         .build();
     return restAdapter.create(clazz);
