@@ -31,11 +31,14 @@ import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.helper.AskForOtpDialog;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeregisterUserProfileHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiLogoutHandler;
+import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithOtpHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiDeregistrationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiLogoutError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithOtpError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -57,6 +60,25 @@ public class DashboardActivity extends AppCompatActivity {
 
     userStorage = new UserStorage(this);
     setupUserInterface();
+  }
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.button_auth_with_otp)
+  public void mobileAuthWithOtp() {
+    final OneginiMobileAuthWithOtpHandler oneginiMobileAuthWithOtpHandler = new OneginiMobileAuthWithOtpHandler() {
+      @Override
+      public void onSuccess() {
+        showToast("Mobile auth with OTP succeeded");
+      }
+
+      @Override
+      public void onError(final OneginiMobileAuthWithOtpError oneginiMobileAuthWithOtpError) {
+        showToast("Mobile auth with OTP error:" + oneginiMobileAuthWithOtpError.getMessage());
+      }
+    };
+
+    AskForOtpDialog askForOtpDialog = new AskForOtpDialog(this, oneginiMobileAuthWithOtpHandler);
+    askForOtpDialog.show();
   }
 
   @SuppressWarnings("unused")

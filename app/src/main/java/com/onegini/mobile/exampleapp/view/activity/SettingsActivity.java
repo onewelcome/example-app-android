@@ -64,11 +64,11 @@ public class SettingsActivity extends AppCompatActivity {
   @Bind(R.id.button_change_authentication)
   Button changeAuthentication;
   @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.retrofit_radio)
+  RadioGroup retrofitRadio;
   @Bind(R.id.message)
   TextView message;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.retrofit_radio)
-  RadioGroup retrofitRadio;
 
   private DeviceSettingsStorage deviceSettingsStorage;
   private UserProfile authenticatedUserProfile;
@@ -184,7 +184,7 @@ public class SettingsActivity extends AppCompatActivity {
     OneginiSDK.getOneginiClient(this).getUserClient().changePin(new OneginiChangePinHandler() {
       @Override
       public void onSuccess() {
-        message.setText(R.string.change_pin_finished_succesfully);
+        showToast("Change PIN action finished successfully");
       }
 
       @Override
@@ -195,7 +195,7 @@ public class SettingsActivity extends AppCompatActivity {
         } else if (errorType == OneginiChangePinError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
         }
-        showToast(oneginiChangePinError.getMessage());
+        message.setText(R.string.change_pin_finished_succesfully);
       }
     });
   }

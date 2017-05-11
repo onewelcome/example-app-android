@@ -84,7 +84,7 @@ public class GCMListenerService extends GcmListenerService {
   }
 
   private void handleMobileAuthenticationRequest(final Bundle extras) {
-    OneginiSDK.getOneginiClient(this).getUserClient().handleMobileAuthenticationRequest(extras, new OneginiMobileAuthenticationHandler() {
+    OneginiSDK.getOneginiClient(this).getUserClient().handleMobileAuthWithPushRequest(extras, new OneginiMobileAuthenticationHandler() {
       @Override
       public void onSuccess() {
         Toast.makeText(GCMListenerService.this, "Mobile authentication success", Toast.LENGTH_SHORT).show();

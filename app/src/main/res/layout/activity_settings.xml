@@ -66,12 +66,10 @@
             <Button
                 android:id="@+id/button_mobile_authentication"
                 style="@style/ButtonStyle"
-                android:layout_marginTop="40dp"
                 android:text="@string/settings_mobile_enrollment_off"/>
             <Button
                 android:id="@+id/button_mobile_authentication_push"
                 style="@style/ButtonStyle"
-                android:layout_marginTop="40dp"
                 android:text="@string/settings_mobile_push_enrollment_not_available"
                 android:enabled="false"
             />
