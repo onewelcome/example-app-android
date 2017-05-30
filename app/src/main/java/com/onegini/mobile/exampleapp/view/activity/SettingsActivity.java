@@ -184,7 +184,7 @@ public class SettingsActivity extends AppCompatActivity {
     OneginiSDK.getOneginiClient(this).getUserClient().changePin(new OneginiChangePinHandler() {
       @Override
       public void onSuccess() {
-        showToast("Change PIN action finished successfully");
+        message.setText(R.string.change_pin_finished_succesfully);
       }
 
       @Override
@@ -195,7 +195,7 @@ public class SettingsActivity extends AppCompatActivity {
         } else if (errorType == OneginiChangePinError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
         }
-        message.setText(R.string.change_pin_finished_succesfully);
+        message.setText(oneginiChangePinError.getMessage());
       }
     });
   }
