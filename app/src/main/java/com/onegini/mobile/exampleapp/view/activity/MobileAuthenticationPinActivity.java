@@ -35,6 +35,11 @@ public class MobileAuthenticationPinActivity extends PinActivity {
   }
 
   @Override
+  protected void setCancelButtonVisibility(){
+    authCancelButton.setVisibility(View.GONE);
+  }
+
+  @Override
   protected void updateErrorText() {
     if (failedAttemptsCount > 0) {
       final int remainingFailedAttempts = maxFailedAttempts - failedAttemptsCount;

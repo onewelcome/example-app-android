@@ -25,6 +25,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.PinAuthenticationRequestHandler;
@@ -41,6 +42,7 @@ public class PinActivity extends AuthenticationActivity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.pin_error_message)
   TextView errorTextView;
+
 
   protected int failedAttemptsCount;
   protected int maxFailedAttempts;
@@ -118,6 +120,11 @@ public class PinActivity extends AuthenticationActivity {
   private void initLayout() {
     initPinInputs();
     updateTexts();
+    setCancelButtonVisibility();
+  }
+
+  protected void setCancelButtonVisibility() {
+      authCancelButton.setVisibility(isCreatePinFlow ? View.GONE : View.VISIBLE);
   }
 
   private void initPinInputs() {
@@ -149,5 +156,11 @@ public class PinActivity extends AuthenticationActivity {
     } else {
       PinAuthenticationRequestHandler.CALLBACK.acceptAuthenticationRequest(pin);
     }
+  }
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.auth_cancel_button)
+  public void onCancelClicked() {
+      PinAuthenticationRequestHandler.CALLBACK.denyAuthenticationRequest();
   }
 }

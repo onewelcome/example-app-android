@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import butterknife.Bind;
 import com.onegini.mobile.exampleapp.R;
@@ -43,6 +44,10 @@ public abstract class AuthenticationActivity extends Activity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.authenticator_message)
   TextView authenticatorMessage;
+
+  @SuppressWarnings({"unused"})
+  @Bind(R.id.auth_cancel_button)
+  Button authCancelButton;
 
   protected String errorMessage;
   protected String command;
