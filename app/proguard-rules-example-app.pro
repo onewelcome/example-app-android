@@ -12,47 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Onegini Mobile Security Platform Android application proguard configuration
+###
+# Example app specific Proguard rules
+###
 
 -printmapping build/obfuscation-mapping.map
 -printseeds build/seeds.txt
-
--keep class com.onegini.mobile.sdk.android.internal.* { *; }
--keep class * implements com.onegini.mobile.sdk.android.model.OneginiClientConfigModel { *; }
--keepattributes Signature,InnerClasses,EnclosingMethod
--dontnote com.onegini.mobile.sdk.android.**
-
-# Bouncycastle
--keep class org.spongycastle.jcajce.provider.** { *; }
--dontwarn org.bouncycastle.**
--dontwarn org.spongycastle.**
--dontnote org.spongycastle.**
-
-# OkHttp
--keep class okhttp3.** { *; }
--dontwarn okhttp3.**
--dontwarn okio.**
--dontnote okio.**
--dontnote okhttp3.**
-
-# Retrofit 2
--dontwarn retrofit2.**
--keep class retrofit2.** { *; }
--keepclasseswithmembers class * {
-    @retrofit2.http.* <methods>;
-}
-
-# Samsung FIDO
--keep class com.samsung.sds.fido.** { *; }
--dontwarn com.samsung.sds.fido.**
--dontnote **
-
-# SQLCipher
--keep class net.sqlcipher.** { *; }
-
-###
-# Example app dependencies
-###
 
 -keep class com.onegini.mobile.exampleapp.SecurityController { *; }
 
