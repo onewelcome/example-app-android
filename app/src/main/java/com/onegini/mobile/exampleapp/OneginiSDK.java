@@ -56,6 +56,9 @@ public class OneginiSDK {
         .setMobileAuthWithPushFingerprintRequestHandler(new MobileAuthenticationFingerprintRequestHandler(applicationContext))
         .setMobileAuthWithPushFidoRequestHandler(new MobileAuthenticationFidoRequestHandler(applicationContext))
         .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler())
+        // Set http connect / read timeout
+        .setHttpConnectTimeout(5)
+        .setHttpReadTimeout(20)
         .build();
   }
 }
