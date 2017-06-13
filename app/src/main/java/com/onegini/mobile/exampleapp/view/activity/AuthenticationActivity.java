@@ -47,7 +47,7 @@ public abstract class AuthenticationActivity extends Activity {
 
   @SuppressWarnings({"unused"})
   @Bind(R.id.auth_cancel_button)
-  Button authCancelButton;
+  Button cancelButton;
 
   protected String errorMessage;
   protected String command;

@@ -31,7 +31,6 @@ import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.util.AnimationUtils;
 import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationRequestHandler;
-import com.onegini.mobile.exampleapp.view.handler.PinAuthenticationRequestHandler;
 
 public class FingerprintActivity extends AuthenticationActivity {
 
@@ -58,12 +57,12 @@ public class FingerprintActivity extends AuthenticationActivity {
     parseIntent();
     updateTexts();
     setFingerprintAuthenticationPermissionVisibility(false);
-    setupUi();
     setCancelButtonVisibility();
+    setupUi();
   }
 
   protected void setCancelButtonVisibility() {
-    authCancelButton.setVisibility(View.VISIBLE);
+    cancelButton.setVisibility(View.VISIBLE);
   }
 
   protected void setupUi() {
