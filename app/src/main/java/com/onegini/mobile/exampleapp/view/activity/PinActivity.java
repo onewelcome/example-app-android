@@ -124,7 +124,7 @@ public class PinActivity extends AuthenticationActivity {
   }
 
   protected void setCancelButtonVisibility() {
-      authCancelButton.setVisibility(isCreatePinFlow ? View.GONE : View.VISIBLE);
+      cancelButton.setVisibility(isCreatePinFlow ? View.GONE : View.VISIBLE);
   }
 
   private void initPinInputs() {
