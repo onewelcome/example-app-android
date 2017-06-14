@@ -127,7 +127,7 @@ public abstract class AuthenticationActivity extends Activity {
   }
 
   private boolean isCancelButtonVisible(){
-    if(authCancelButton == null || authCancelButton.getVisibility() == View.GONE){
+    if(cancelButton == null || cancelButton.getVisibility() == View.GONE){
       return false;
     }
     return true;
