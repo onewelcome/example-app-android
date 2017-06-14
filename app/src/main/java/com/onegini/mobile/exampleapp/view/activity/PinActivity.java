@@ -161,6 +161,15 @@ public class PinActivity extends AuthenticationActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.auth_cancel_button)
   public void onCancelClicked() {
+    cancelRequest();
+  }
+
+  @Override
+  protected void cancelRequest() {
+    if (isCreatePinFlow) {
+      CreatePinRequestHandler.CALLBACK.pinCancelled();
+    } else {
       PinAuthenticationRequestHandler.CALLBACK.denyAuthenticationRequest();
+    }
   }
 }

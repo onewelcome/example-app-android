@@ -95,9 +95,13 @@ public class FingerprintActivity extends AuthenticationActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.auth_cancel_button)
   public void onCancelClicked() {
+    cancelRequest();
+  }
+
+  @Override
+  protected void cancelRequest() {
     if(FingerprintAuthenticationRequestHandler.CALLBACK != null) {
       FingerprintAuthenticationRequestHandler.CALLBACK.denyAuthenticationRequest();
-      finish();
     }
   }
 }

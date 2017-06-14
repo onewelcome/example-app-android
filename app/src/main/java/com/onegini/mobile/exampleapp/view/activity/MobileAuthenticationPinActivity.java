@@ -70,4 +70,9 @@ public class MobileAuthenticationPinActivity extends PinActivity {
       MobileAuthenticationPinRequestHandler.CALLBACK.denyAuthenticationRequest();
     }
   }
+
+  @Override
+  protected void cancelRequest() {
+    //we don't want to cancel it. We already have accept and deny buttons - third option isn't needed
+  }
 }

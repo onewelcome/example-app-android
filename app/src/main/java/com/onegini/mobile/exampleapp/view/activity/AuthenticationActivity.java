@@ -116,11 +116,12 @@ public abstract class AuthenticationActivity extends Activity {
   @Override
   public void onBackPressed() {
     if(isCancellable()){
+      cancelRequest();
       super.onBackPressed();
     }
   }
 
-  private boolean isCancellable(){
+  protected boolean isCancellable(){
     //by default we don't want to be able to go back from the pin screen,
     //but if cancel button is visible, we want to be able to use back button as well
     return isCancelButtonVisible();
@@ -131,5 +132,8 @@ public abstract class AuthenticationActivity extends Activity {
       return false;
     }
     return true;
+  }
+
+  protected void cancelRequest(){
   }
 }
