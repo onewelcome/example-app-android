@@ -166,9 +166,7 @@ public class PinActivity extends AuthenticationActivity {
 
   @Override
   protected void cancelRequest() {
-    if (isCreatePinFlow) {
-      CreatePinRequestHandler.CALLBACK.pinCancelled();
-    } else {
+    if (!isCreatePinFlow) {
       PinAuthenticationRequestHandler.CALLBACK.denyAuthenticationRequest();
     }
   }
