@@ -16,7 +16,11 @@
 
 package com.onegini.mobile.exampleapp;
 
+import org.spongycastle.asn1.sec.SECNamedCurves;
+
 import android.content.Context;
+import android.icu.util.TimeUnit;
+import android.util.TimeUtils;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.FidoAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationRequestHandler;
@@ -57,8 +61,8 @@ public class OneginiSDK {
         .setMobileAuthWithPushFidoRequestHandler(new MobileAuthenticationFidoRequestHandler(applicationContext))
         .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler())
         // Set http connect / read timeout
-        .setHttpConnectTimeout(5)
-        .setHttpReadTimeout(20)
+        .setHttpConnectTimeout((int)java.util.concurrent.TimeUnit.SECONDS.toMillis(5))
+        .setHttpReadTimeout((int)java.util.concurrent.TimeUnit.SECONDS.toMillis(20))
         .build();
   }
 }
