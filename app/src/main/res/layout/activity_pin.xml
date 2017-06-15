@@ -104,6 +104,8 @@
             android:visibility="gone"
             android:text="@string/btn_auth_deny"/>
 
+        <include layout="@layout/cancel_button"/>
+
     </LinearLayout>
 
 </RelativeLayout>

@@ -57,7 +57,12 @@ public class FingerprintActivity extends AuthenticationActivity {
     parseIntent();
     updateTexts();
     setFingerprintAuthenticationPermissionVisibility(false);
+    setCancelButtonVisibility();
     setupUi();
+  }
+
+  protected void setCancelButtonVisibility() {
+    cancelButton.setVisibility(View.VISIBLE);
   }
 
   protected void setupUi() {
@@ -85,5 +90,19 @@ public class FingerprintActivity extends AuthenticationActivity {
     layoutAcceptDeny.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     layoutFingerprint.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     fallbackToPinButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+  }
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.auth_cancel_button)
+  public void onCancelClicked() {
+    cancelRequest();
+  }
+
+  @Override
+  protected void cancelRequest() {
+    if(FingerprintAuthenticationRequestHandler.CALLBACK != null) {
+      FingerprintAuthenticationRequestHandler.CALLBACK.denyAuthenticationRequest();
+      finish();
+    }
   }
 }
