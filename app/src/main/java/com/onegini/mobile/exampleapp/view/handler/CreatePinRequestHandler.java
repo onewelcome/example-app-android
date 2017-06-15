@@ -111,16 +111,23 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
       }
     }
 
+    public void pinCancelled(){
+      nullifyPinArray();
+      originalHandler.denyAuthenticationRequest();
+    }
+
     private boolean isPinSet() {
       return pin != null;
     }
 
     private void nullifyPinArray() {
-      final int arraySize = pin.length;
-      for (int i = 0; i < arraySize; i++) {
-        pin[i] = '\0';
+      if (isPinSet()) {
+        final int arraySize = pin.length;
+        for (int i = 0; i < arraySize; i++) {
+          pin[i] = '\0';
+        }
+        pin = null;
       }
-      pin = null;
     }
   }
 
