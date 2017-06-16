@@ -16,6 +16,8 @@
 
 package com.onegini.mobile.exampleapp;
 
+import java.util.concurrent.TimeUnit;
+
 import android.content.Context;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.FidoAuthenticationRequestHandler;
@@ -56,6 +58,9 @@ public class OneginiSDK {
         .setMobileAuthWithPushFingerprintRequestHandler(new MobileAuthenticationFingerprintRequestHandler(applicationContext))
         .setMobileAuthWithPushFidoRequestHandler(new MobileAuthenticationFidoRequestHandler(applicationContext))
         .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler())
+        // Set http connect / read timeout
+        .setHttpConnectTimeout((int) TimeUnit.SECONDS.toMillis(5))
+        .setHttpReadTimeout((int) TimeUnit.SECONDS.toMillis(20))
         .build();
   }
 }

@@ -68,8 +68,10 @@ public class SplashScreenActivity extends Activity {
     @OneginiInitializationError.InitializationErrorType int errorType = error.getErrorType();
     switch (errorType) {
       case OneginiInitializationError.NETWORK_CONNECTIVITY_PROBLEM:
-      case OneginiInitializationError.SERVER_NOT_REACHABLE:
         showToast("No internet connection.");
+        break;
+      case OneginiInitializationError.SERVER_NOT_REACHABLE:
+        showToast("The server is not reachable.");
         break;
       case OneginiInitializationError.OUTDATED_APP:
         showToast("Please update this application in order to use it.");

@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import butterknife.Bind;
 import com.onegini.mobile.exampleapp.R;
@@ -43,6 +44,10 @@ public abstract class AuthenticationActivity extends Activity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.authenticator_message)
   TextView authenticatorMessage;
+
+  @SuppressWarnings({"unused"})
+  @Bind(R.id.auth_cancel_button)
+  Button cancelButton;
 
   protected String errorMessage;
   protected String command;
@@ -110,6 +115,25 @@ public abstract class AuthenticationActivity extends Activity {
 
   @Override
   public void onBackPressed() {
-    // we don't want to be able to go back from the pin screen
+    if(isCancellable()){
+      cancelRequest();
+      super.onBackPressed();
+    }
+  }
+
+  protected boolean isCancellable(){
+    //by default we don't want to be able to go back from the pin screen,
+    //but if cancel button is visible, we want to be able to use back button as well
+    return isCancelButtonVisible();
+  }
+
+  private boolean isCancelButtonVisible(){
+    if(cancelButton == null || cancelButton.getVisibility() == View.GONE){
+      return false;
+    }
+    return true;
+  }
+
+  protected void cancelRequest(){
   }
 }

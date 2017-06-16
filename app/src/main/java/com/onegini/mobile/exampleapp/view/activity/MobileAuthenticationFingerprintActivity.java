@@ -18,6 +18,7 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_ASK_TO_ACCEPT_OR_DENY;
 
+import android.view.View;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFingerprintRequestHandler;
@@ -31,6 +32,11 @@ public class MobileAuthenticationFingerprintActivity extends FingerprintActivity
     } else {
       super.setupUi();
     }
+  }
+
+  @Override
+  protected void setCancelButtonVisibility() {
+    cancelButton.setVisibility(View.GONE);
   }
 
   @SuppressWarnings("unused")
@@ -58,5 +64,10 @@ public class MobileAuthenticationFingerprintActivity extends FingerprintActivity
       MobileAuthenticationFingerprintRequestHandler.CALLBACK.denyAuthenticationRequest();
       finish();
     }
+  }
+
+  @Override
+  protected void cancelRequest() {
+    //we don't want to cancel it. We already have accept and deny buttons - third option isn't needed
   }
 }

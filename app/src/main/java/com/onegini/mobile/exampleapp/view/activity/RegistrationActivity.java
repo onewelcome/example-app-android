@@ -41,6 +41,7 @@ import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.handler.RegistrationRequestHandler;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiRegistrationHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiRegistrationError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
@@ -133,9 +134,11 @@ public class RegistrationActivity extends Activity {
       case OneginiRegistrationError.ACTION_CANCELED:
         showToast("Registration was cancelled");
         break;
-      case OneginiRegistrationError.NETWORK_CONNECTIVITY_PROBLEM:
-      case OneginiRegistrationError.SERVER_NOT_REACHABLE:
+      case OneginiAuthenticationError.NETWORK_CONNECTIVITY_PROBLEM:
         showToast("No internet connection.");
+        break;
+      case OneginiAuthenticationError.SERVER_NOT_REACHABLE:
+        showToast("The server is not reachable.");
         break;
       case OneginiRegistrationError.OUTDATED_APP:
         showToast("Please update this application in order to use it.");

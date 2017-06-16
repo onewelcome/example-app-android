@@ -35,6 +35,11 @@ public class MobileAuthenticationPinActivity extends PinActivity {
   }
 
   @Override
+  protected void setCancelButtonVisibility(){
+    cancelButton.setVisibility(View.GONE);
+  }
+
+  @Override
   protected void updateErrorText() {
     if (failedAttemptsCount > 0) {
       final int remainingFailedAttempts = maxFailedAttempts - failedAttemptsCount;
@@ -64,5 +69,10 @@ public class MobileAuthenticationPinActivity extends PinActivity {
     if (MobileAuthenticationPinRequestHandler.CALLBACK != null) {
       MobileAuthenticationPinRequestHandler.CALLBACK.denyAuthenticationRequest();
     }
+  }
+
+  @Override
+  protected void cancelRequest() {
+    //we don't want to cancel it. We already have accept and deny buttons - third option isn't needed
   }
 }
