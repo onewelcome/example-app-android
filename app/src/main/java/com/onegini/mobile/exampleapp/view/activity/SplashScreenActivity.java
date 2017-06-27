@@ -96,7 +96,6 @@ public class SplashScreenActivity extends Activity {
   private void onDeviceDeregistered() {
     new DeregistrationUtil(this).onDeviceDeregistered();
     showError("Device deregistered");
-    startLoginActivity();
   }
 
   private void displayError(final OneginiError error) {
