@@ -73,7 +73,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  compile('com.onegini.mobile.sdk.android:onegini-sdk:7.0.1@aar') {
+  compile('com.onegini.mobile.sdk.android:onegini-sdk:7.0.2-SNAPSHOT@aar') {
     transitive = true
   }
 
