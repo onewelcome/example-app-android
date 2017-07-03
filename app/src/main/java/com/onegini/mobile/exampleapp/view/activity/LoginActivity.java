@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -30,7 +31,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -42,6 +42,7 @@ import com.onegini.mobile.exampleapp.network.AnonymousService;
 import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeviceAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
@@ -79,6 +80,7 @@ public class LoginActivity extends Activity {
   private Subscription subscription;
   private UserProfile authenticatedUserProfile;
   private DeviceSettingsStorage deviceSettingsStorage;
+  private String errorMessage;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -87,6 +89,20 @@ public class LoginActivity extends Activity {
     ButterKnife.bind(this);
     deviceSettingsStorage = new DeviceSettingsStorage(this);
     authenticateDevice();
+  }
+
+  @Override
+  public void onDestroy() {
+    if (subscription != null) {
+      subscription.unsubscribe();
+    }
+    super.onDestroy();
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    setupUserInterface();
   }
 
   private void authenticateDevice() {
@@ -106,7 +122,7 @@ public class LoginActivity extends Activity {
                 } else if (errorType == OneginiDeviceAuthenticationError.USER_DEREGISTERED) {
                   onUserDeregistered(authenticatedUserProfile);
                 } else {
-                  displayError(error);
+                  LoginActivity.this.onError(error);
                 }
               }
             }
@@ -126,12 +142,6 @@ public class LoginActivity extends Activity {
 
   private void onApplicationDetailsFetchFailed() {
     applicationDetailsTextView.setText("Application details fetch failed");
-  }
-
-  @Override
-  protected void onResume() {
-    super.onResume();
-    setupUserInterface();
   }
 
   @SuppressWarnings("unused")
@@ -168,6 +178,10 @@ public class LoginActivity extends Activity {
       usersSpinner.setVisibility(View.INVISIBLE);
       loginButton.setVisibility(View.INVISIBLE);
     }
+
+    if (errorMessage != null && !errorMessage.isEmpty()) {
+      showError();
+    }
   }
 
   private void setupUsersSpinner() {
@@ -199,19 +213,19 @@ public class LoginActivity extends Activity {
     @OneginiAuthenticationError.AuthenticationErrorType int errorType = error.getErrorType();
     switch (errorType) {
       case OneginiAuthenticationError.ACTION_CANCELED:
-        showToast("Authentication was cancelled");
+        errorMessage = "Authentication was cancelled";
         break;
       case OneginiAuthenticationError.NETWORK_CONNECTIVITY_PROBLEM:
-        showToast("No internet connection.");
+        errorMessage = "No internet connection.";
         break;
       case OneginiAuthenticationError.SERVER_NOT_REACHABLE:
-        showToast("The server is not reachable.");
+        errorMessage = "The server is not reachable.";
         break;
       case OneginiAuthenticationError.OUTDATED_APP:
-        showToast("Please update this application in order to use it.");
+        errorMessage = "Please update this application in order to use it.";
         break;
       case OneginiAuthenticationError.OUTDATED_OS:
-        showToast("Please update your Android version to use this application.");
+        errorMessage = "Please update your Android version to use this application.";
         break;
       case OneginiAuthenticationError.USER_DEREGISTERED:
         onUserDeregistered(userProfile);
@@ -222,31 +236,28 @@ public class LoginActivity extends Activity {
       case OneginiAuthenticationError.GENERAL_ERROR:
       default:
         // Just display the error for other, less relevant errors
-        displayError(error);
+        onError(error);
         break;
     }
   }
 
   private void onUserDeregistered(final UserProfile userProfile) {
     new DeregistrationUtil(this).onUserDeregistered(userProfile);
-    showToast("User deregistered");
-    setupUserInterface();
+    errorMessage = "User deregistered";
   }
 
   private void onDeviceDeregistered() {
     new DeregistrationUtil(this).onDeviceDeregistered();
-    showToast("Device deregistered");
-    setupUserInterface();
+    errorMessage = "Device deregistered";
   }
 
-  private void displayError(final OneginiError error) {
-    final StringBuilder stringBuilder = new StringBuilder("Error: ");
-    stringBuilder.append(error.getMessage());
+  private void onError(final OneginiError error) {
+    final StringBuilder stringBuilder = new StringBuilder(error.getMessage());
     stringBuilder.append(" Check logcat for more details.");
 
     error.printStackTrace();
 
-    showToast(stringBuilder.toString());
+    errorMessage = stringBuilder.toString();
   }
 
   private boolean isRegisteredAtLeastOneUser() {
@@ -270,20 +281,14 @@ public class LoginActivity extends Activity {
     listOfUsers = userStorage.loadUsers(userProfiles);
   }
 
-  private void showToast(final String message) {
-    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+  private void showError() {
+    final DialogFragment dialog = AlertDialogFragment.newInstance(errorMessage);
+    errorMessage = null;
+    dialog.show(getFragmentManager(), "alert_dialog");
   }
 
   private void startDashboardActivity() {
     startActivity(new Intent(this, DashboardActivity.class));
     finish();
-  }
-
-  @Override
-  public void onDestroy() {
-    if (subscription != null) {
-      subscription.unsubscribe();
-    }
-    super.onDestroy();
   }
 }
