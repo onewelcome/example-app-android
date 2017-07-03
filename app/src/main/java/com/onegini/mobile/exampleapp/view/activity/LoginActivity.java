@@ -16,7 +16,6 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -83,8 +82,6 @@ public class LoginActivity extends Activity {
   private DeviceSettingsStorage deviceSettingsStorage;
   private String errorMessage;
 
-  private static WeakReference<LoginActivity> loginActivityReference;
-
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -92,7 +89,6 @@ public class LoginActivity extends Activity {
     ButterKnife.bind(this);
     deviceSettingsStorage = new DeviceSettingsStorage(this);
     authenticateDevice();
-    loginActivityReference = new WeakReference<>(this);
   }
 
   @Override
@@ -126,7 +122,7 @@ public class LoginActivity extends Activity {
                 } else if (errorType == OneginiDeviceAuthenticationError.USER_DEREGISTERED) {
                   onUserDeregistered(authenticatedUserProfile);
                 } else {
-                  loginActivityReference.get().onError(error);
+                  LoginActivity.this.onError(error);
                 }
               }
             }
