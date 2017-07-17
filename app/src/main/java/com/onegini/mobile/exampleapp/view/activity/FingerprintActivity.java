@@ -62,7 +62,7 @@ public class FingerprintActivity extends AuthenticationActivity {
   }
 
   protected void setCancelButtonVisibility() {
-    cancelButton.setVisibility(View.VISIBLE);
+    setCancelButtonVisibility(View.VISIBLE);
   }
 
   protected void setupUi() {

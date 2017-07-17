@@ -36,7 +36,7 @@ public class MobileAuthenticationFingerprintActivity extends FingerprintActivity
 
   @Override
   protected void setCancelButtonVisibility() {
-    cancelButton.setVisibility(View.GONE);
+    setCancelButtonVisibility(View.GONE);
   }
 
   @SuppressWarnings("unused")

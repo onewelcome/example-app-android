@@ -23,6 +23,7 @@ import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -44,8 +45,8 @@ public abstract class AuthenticationActivity extends Activity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.authenticator_message)
   TextView authenticatorMessage;
-
-  @SuppressWarnings({"unused"})
+  @Nullable
+  @SuppressWarnings({ "unused" })
   @Bind(R.id.auth_cancel_button)
   Button cancelButton;
 
@@ -67,7 +68,7 @@ public abstract class AuthenticationActivity extends Activity {
     command = extras.getString(EXTRA_COMMAND);
     if (COMMAND_FINISH.equals(command)) {
       finish();
-    } else if(COMMAND_START.equals(command)) {
+    } else if (COMMAND_START.equals(command)) {
       message = extras.getString(EXTRA_MESSAGE, "");
       errorMessage = extras.getString(EXTRA_ERROR_MESSAGE, "");
 
@@ -100,7 +101,7 @@ public abstract class AuthenticationActivity extends Activity {
   private void updateAuthenticatorMessage() {
     if (isNotBlank(message)) {
       authenticatorMessage.setText(message);
-    } else if (isBlank(authenticatorMessage.getText().toString())){
+    } else if (isBlank(authenticatorMessage.getText().toString())) {
       authenticatorMessage.setVisibility(View.INVISIBLE);
     }
   }
@@ -115,25 +116,36 @@ public abstract class AuthenticationActivity extends Activity {
 
   @Override
   public void onBackPressed() {
-    if(isCancellable()){
+    if (isCancellable()) {
       cancelRequest();
       super.onBackPressed();
     }
   }
 
-  protected boolean isCancellable(){
+  protected boolean isCancellable() {
     //by default we don't want to be able to go back from the pin screen,
     //but if cancel button is visible, we want to be able to use back button as well
     return isCancelButtonVisible();
   }
 
-  private boolean isCancelButtonVisible(){
-    if(cancelButton == null || cancelButton.getVisibility() == View.GONE){
+  private boolean isCancelButtonVisible() {
+    if (cancelButton == null || cancelButton.getVisibility() == View.GONE) {
       return false;
     }
     return true;
   }
 
-  protected void cancelRequest(){
+  protected void setCancelButtonVisibility(final int visibility) {
+    if (cancelButton == null) {
+    } else if (checkIfVisibilityValueIsValid(visibility)) {
+      cancelButton.setVisibility(visibility);
+    }
+  }
+
+  private boolean checkIfVisibilityValueIsValid(final int visibility) {
+    return visibility == View.GONE || visibility == View.VISIBLE || visibility == View.INVISIBLE;
+  }
+
+  protected void cancelRequest() {
   }
 }
