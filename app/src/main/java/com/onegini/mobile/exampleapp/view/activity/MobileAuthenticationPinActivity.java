@@ -35,8 +35,8 @@ public class MobileAuthenticationPinActivity extends PinActivity {
   }
 
   @Override
-  protected void setCancelButtonVisibility(){
-    setCancelButtonVisibility(View.GONE);
+  protected void setCancelButtonVisibility() {
+    cancelButton.setVisibility(View.GONE);
   }
 
   @Override
