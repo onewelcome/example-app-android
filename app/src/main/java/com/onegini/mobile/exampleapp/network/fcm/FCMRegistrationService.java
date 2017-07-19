@@ -58,7 +58,6 @@ public class FCMRegistrationService {
    */
   private String getRegistrationId() {
     final String registrationId = storage.getRegistrationId();
-    Log.d("MARCIN", "registration token from storage: " + registrationId);
     if (registrationId == null || registrationId.isEmpty()) {
       Log.i(TAG, "Registration not found.");
       return "";
@@ -85,7 +84,6 @@ public class FCMRegistrationService {
       protected Void doInBackground(Void... params) {
         FirebaseApp.initializeApp(context);
         String fcmRefreshToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d("MARCIN", "Generated registration token: " + fcmRefreshToken);
         enrollForMobileAuthentication(fcmRefreshToken);
         storeRegisteredId(fcmRefreshToken);
         return null;
@@ -102,6 +100,5 @@ public class FCMRegistrationService {
   private void enrollForMobileAuthentication(final String regId) {
     final UserClient userClient = OneginiSDK.getOneginiClient(context).getUserClient();
     userClient.enrollUserForMobileAuthWithPush(regId, enrollmentHandler);
-    Log.d("MARCIN", "Saved registration token: " + regId);
   }
 }
