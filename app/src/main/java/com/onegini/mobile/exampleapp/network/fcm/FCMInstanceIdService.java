@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.onegini.mobile.exampleapp.network.gcm;
+package com.onegini.mobile.exampleapp.network.fcm;
 
-import com.google.android.gms.iid.InstanceIDListenerService;
+import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithPushEnrollmentHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithPushEnrollmentError;
 
-public class GCMInstanceIDListenerService extends InstanceIDListenerService {
+public class FCMInstanceIdService extends FirebaseInstanceIdService {
 
   /**
    * Called if InstanceID token is updated. This may occur if the security of the previous token had been compromised. This call is initiated by the InstanceID
@@ -40,11 +40,11 @@ public class GCMInstanceIDListenerService extends InstanceIDListenerService {
         @OneginiMobileAuthWithPushEnrollmentError.MobileAuthWithPushEnrollmentErrorType final int errorType = error.getErrorType();
         // This method is called when a mobile authentication enrollment error occurs, for example when the device is deregistered
         if (errorType == OneginiMobileAuthWithPushEnrollmentError.DEVICE_DEREGISTERED) {
-          new DeregistrationUtil(GCMInstanceIDListenerService.this).onDeviceDeregistered();
+          new DeregistrationUtil(FCMInstanceIdService.this).onDeviceDeregistered();
         }
       }
     };
-    final GCMRegistrationService gcmRegistrationService = new GCMRegistrationService(this);
-    gcmRegistrationService.registerGCMService(mobileAuthWithPushEnrollmentHandler);
+    final FCMRegistrationService FCMRegistrationService = new FCMRegistrationService(this);
+    FCMRegistrationService.registerFCMService(mobileAuthWithPushEnrollmentHandler);
   }
 }

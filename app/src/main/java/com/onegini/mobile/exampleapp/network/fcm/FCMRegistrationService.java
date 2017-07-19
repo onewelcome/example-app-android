@@ -14,38 +14,34 @@
  * limitations under the License.
  */
 
-package com.onegini.mobile.exampleapp.network.gcm;
-
-import java.io.IOException;
+package com.onegini.mobile.exampleapp.network.fcm;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.iid.InstanceID;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.onegini.mobile.exampleapp.BuildConfig;
-import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
-import com.onegini.mobile.exampleapp.storage.GCMStorage;
+import com.onegini.mobile.exampleapp.storage.FCMStorage;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithPushEnrollmentHandler;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithPushEnrollmentError;
 
-public class GCMRegistrationService {
+public class FCMRegistrationService {
 
-  private static final String TAG = "GCMRegistrationService";
+  private static final String TAG = "FCMRegistrationService";
 
   private final Context context;
-  private final GCMStorage storage;
+  private final FCMStorage storage;
 
   private OneginiMobileAuthWithPushEnrollmentHandler enrollmentHandler;
 
-  public GCMRegistrationService(final Context context) {
+  public FCMRegistrationService(final Context context) {
     this.context = context;
-    storage = new GCMStorage(context);
+    storage = new FCMStorage(context);
   }
 
-  public void registerGCMService(final OneginiMobileAuthWithPushEnrollmentHandler handler) {
+  public void registerFCMService(final OneginiMobileAuthWithPushEnrollmentHandler handler) {
     enrollmentHandler = handler;
     final String regid = getRegistrationId();
     if (regid.isEmpty()) {
@@ -56,12 +52,13 @@ public class GCMRegistrationService {
   }
 
   /**
-   * Gets the current registration ID for application on GCM service. If result is empty, the app needs to register.
+   * Gets the current registration ID for application on FCM service. If result is empty, the app needs to register.
    *
    * @return registration ID, or empty string if there is no existing registration ID.
    */
   private String getRegistrationId() {
     final String registrationId = storage.getRegistrationId();
+    Log.d("MARCIN", "registration token from storage: " + registrationId);
     if (registrationId == null || registrationId.isEmpty()) {
       Log.i(TAG, "Registration not found.");
       return "";
@@ -72,28 +69,25 @@ public class GCMRegistrationService {
     final int currentVersion = BuildConfig.VERSION_CODE;
     if (registeredVersion != currentVersion) {
       Log.i(TAG, "App version changed.");
+      //It this application version we migrate from GCM to FCM, so we should remove old GCM registration id and generate new FCM token instead
+      storage.removeDeprecatedGcmRegistrationId();
       return "";
     }
     return registrationId;
   }
 
   /**
-   * Registers the application with GCM servers asynchronously. Stores the registration ID and app versionCode in the application's shared preferences.
+   * Registers the application with FCM servers asynchronously. Stores the registration ID and app versionCode in the application's shared preferences.
    */
   private void registerInBackground() {
     new AsyncTask<Void, Void, Void>() {
       @Override
       protected Void doInBackground(Void... params) {
-        try {
-          InstanceID instanceID = InstanceID.getInstance(context);
-          String regid = instanceID.getToken(Constants.GCM_SENDER_ID,
-              GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-          enrollForMobileAuthentication(regid);
-          storeRegisteredId(regid);
-        } catch (final IOException ex) {
-          enrollmentHandler
-              .onError(new OneginiMobileAuthWithPushEnrollmentError(OneginiMobileAuthWithPushEnrollmentError.GENERAL_ERROR, "Unable to register in GCM"));
-        }
+        FirebaseApp.initializeApp(context);
+        String fcmRefreshToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d("MARCIN", "Generated registration token: " + fcmRefreshToken);
+        enrollForMobileAuthentication(fcmRefreshToken);
+        storeRegisteredId(fcmRefreshToken);
         return null;
       }
     }.execute(null, null, null);
@@ -108,5 +102,6 @@ public class GCMRegistrationService {
   private void enrollForMobileAuthentication(final String regId) {
     final UserClient userClient = OneginiSDK.getOneginiClient(context).getUserClient();
     userClient.enrollUserForMobileAuthWithPush(regId, enrollmentHandler);
+    Log.d("MARCIN", "Saved registration token: " + regId);
   }
 }

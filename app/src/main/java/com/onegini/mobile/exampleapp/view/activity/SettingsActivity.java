@@ -34,7 +34,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.network.gcm.GCMRegistrationService;
+import com.onegini.mobile.exampleapp.network.fcm.FCMRegistrationService;
 import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.client.UserClient;
@@ -174,8 +174,8 @@ public class SettingsActivity extends AppCompatActivity {
         showToast("Mobile authentication error - " + error.getMessage());
       }
     };
-    final GCMRegistrationService gcmRegistrationService = new GCMRegistrationService(this);
-    gcmRegistrationService.registerGCMService(mobileAuthWithPushEnrollmentHandler);
+    final FCMRegistrationService FCMRegistrationService = new FCMRegistrationService(this);
+    FCMRegistrationService.registerFCMService(mobileAuthWithPushEnrollmentHandler);
   }
 
   @SuppressWarnings("unused")
