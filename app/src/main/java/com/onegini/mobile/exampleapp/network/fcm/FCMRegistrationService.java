@@ -17,7 +17,6 @@
 package com.onegini.mobile.exampleapp.network.fcm;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -45,7 +44,7 @@ public class FCMRegistrationService {
     enrollmentHandler = handler;
     final String regid = getRegistrationId();
     if (regid.isEmpty()) {
-      registerInBackground();
+      register();
     } else {
       enrollForMobileAuthentication(regid);
     }
@@ -68,27 +67,19 @@ public class FCMRegistrationService {
     final int currentVersion = BuildConfig.VERSION_CODE;
     if (registeredVersion != currentVersion) {
       Log.i(TAG, "App version changed.");
-      //It this application version we migrate from GCM to FCM, so we should remove old GCM registration id and generate new FCM token instead
-      storage.removeDeprecatedGcmRegistrationId();
       return "";
     }
     return registrationId;
   }
 
   /**
-   * Registers the application with FCM servers asynchronously. Stores the registration ID and app versionCode in the application's shared preferences.
+   * Registers the application with FCM servers. Stores the registration ID and app versionCode in the application's shared preferences.
    */
-  private void registerInBackground() {
-    new AsyncTask<Void, Void, Void>() {
-      @Override
-      protected Void doInBackground(Void... params) {
-        FirebaseApp.initializeApp(context);
-        String fcmRefreshToken = FirebaseInstanceId.getInstance().getToken();
-        enrollForMobileAuthentication(fcmRefreshToken);
-        storeRegisteredId(fcmRefreshToken);
-        return null;
-      }
-    }.execute(null, null, null);
+  private void register() {
+    FirebaseApp.initializeApp(context);
+    String fcmRefreshToken = FirebaseInstanceId.getInstance().getToken();
+    enrollForMobileAuthentication(fcmRefreshToken);
+    storeRegisteredId(fcmRefreshToken);
   }
 
   private void storeRegisteredId(final String regid) {

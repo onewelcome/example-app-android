@@ -45,7 +45,7 @@ public class FCMListenerService extends FirebaseMessagingService {
 
 
   @Override
-  public void onMessageReceived(RemoteMessage message) {
+  public void onMessageReceived(final RemoteMessage message) {
     if (message != null) {
       Log.i(TAG, "Push message received");
 

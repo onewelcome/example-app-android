@@ -54,10 +54,12 @@ public class FCMStorage {
 
   public void save() {
     editor.apply();
+    //It this application version we migrate from GCM to FCM, so we should remove old GCM registration id and generate new FCM token instead
+    removeDeprecatedGcmRegistrationId();
   }
 
-  public void removeDeprecatedGcmRegistrationId() {
-    SharedPreferences gcmSharedPreferences = context.getSharedPreferences(DEPRECATED_GCM_FILENAME, Context.MODE_PRIVATE);
+  private void removeDeprecatedGcmRegistrationId() {
+    final SharedPreferences gcmSharedPreferences = context.getSharedPreferences(DEPRECATED_GCM_FILENAME, Context.MODE_PRIVATE);
     if (gcmSharedPreferences.contains(KEY_REGISTRATION_ID)) {
       gcmSharedPreferences.edit().clear().apply();
     }

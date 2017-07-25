@@ -89,9 +89,9 @@ dependencies {
   compile 'com.android.support:recyclerview-v7:25.3.1'
 
   // Google Play Services availability check
-  compile ("com.google.android.gms:play-services-base:9.6.1")
+  compile 'com.google.android.gms:play-services-base:11.0.2'
   //Firebase Cloud Messaging (FCM)
-  compile "com.google.firebase:firebase-messaging:9.6.1"
+  compile "com.google.firebase:firebase-messaging:11.0.2"
   // Support for multidex
   compile 'com.android.support:multidex:1.0.1'
   // DI for views
