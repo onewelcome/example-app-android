@@ -16,35 +16,41 @@
 
 package com.onegini.mobile.exampleapp.network.fcm;
 
+import android.util.Log;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
-import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithPushEnrollmentHandler;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithPushEnrollmentError;
+import com.onegini.mobile.sdk.android.handlers.OneginiRefreshMobileAuthPushTokenHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiRefreshMobileAuthPushTokenError;
 
 public class FCMInstanceIdService extends FirebaseInstanceIdService {
 
+  private static final String TAG = FCMInstanceIdService.class.getSimpleName();
+
   /**
-   * Called if InstanceID token is updated. This may occur if the security of the previous token had been compromised. This call is initiated by the InstanceID
-   * provider.
+   * Called if InstanceID token is created or updated. This may occur if the security of the previous token had been compromised.
+   * This call is initiated by the InstanceID provider.
    */
   @Override
   public void onTokenRefresh() {
-    final OneginiMobileAuthWithPushEnrollmentHandler mobileAuthWithPushEnrollmentHandler = new OneginiMobileAuthWithPushEnrollmentHandler() {
+    final String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+    Log.d(TAG, "Refreshed token: " + refreshedToken);
+
+    final FCMRegistrationService fcmRegistrationService = new FCMRegistrationService(this);
+    fcmRegistrationService.updatePushToken(refreshedToken, new OneginiRefreshMobileAuthPushTokenHandler() {
       @Override
       public void onSuccess() {
-
+        Log.d(TAG, "The token has been updated: " + refreshedToken);
       }
 
       @Override
-      public void onError(final OneginiMobileAuthWithPushEnrollmentError error) {
-        @OneginiMobileAuthWithPushEnrollmentError.MobileAuthWithPushEnrollmentErrorType final int errorType = error.getErrorType();
-        // This method is called when a mobile authentication enrollment error occurs, for example when the device is deregistered
-        if (errorType == OneginiMobileAuthWithPushEnrollmentError.DEVICE_DEREGISTERED) {
+      public void onError(final OneginiRefreshMobileAuthPushTokenError error) {
+        Log.e(TAG, "The push token update has failed: " + error.getMessage());
+        @OneginiRefreshMobileAuthPushTokenError.RefreshMobileAuthPushTokenErrorType final int errorType = error.getErrorType();
+        if (errorType == OneginiRefreshMobileAuthPushTokenError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(FCMInstanceIdService.this).onDeviceDeregistered();
         }
       }
-    };
-    final FCMRegistrationService FCMRegistrationService = new FCMRegistrationService(this);
-    FCMRegistrationService.registerFCMService(mobileAuthWithPushEnrollmentHandler);
+    });
   }
 }

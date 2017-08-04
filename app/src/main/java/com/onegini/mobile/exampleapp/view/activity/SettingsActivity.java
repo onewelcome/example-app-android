@@ -175,7 +175,7 @@ public class SettingsActivity extends AppCompatActivity {
       }
     };
     final FCMRegistrationService FCMRegistrationService = new FCMRegistrationService(this);
-    FCMRegistrationService.registerFCMService(mobileAuthWithPushEnrollmentHandler);
+    FCMRegistrationService.enrollForPush(mobileAuthWithPushEnrollmentHandler);
   }
 
   @SuppressWarnings("unused")

@@ -25,6 +25,8 @@ import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.storage.FCMStorage;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithPushEnrollmentHandler;
+import com.onegini.mobile.sdk.android.handlers.OneginiRefreshMobileAuthPushTokenHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiRefreshMobileAuthPushTokenError;
 
 public class FCMRegistrationService {
 
@@ -33,63 +35,69 @@ public class FCMRegistrationService {
   private final Context context;
   private final FCMStorage storage;
 
-  private OneginiMobileAuthWithPushEnrollmentHandler enrollmentHandler;
-
   public FCMRegistrationService(final Context context) {
     this.context = context;
     storage = new FCMStorage(context);
   }
 
-  public void registerFCMService(final OneginiMobileAuthWithPushEnrollmentHandler handler) {
-    enrollmentHandler = handler;
-    final String regid = getRegistrationId();
-    if (regid.isEmpty()) {
-      register();
+  public void enrollForPush(final OneginiMobileAuthWithPushEnrollmentHandler enrollmentHandler) {
+    FirebaseApp.initializeApp(context);
+    final String fcmRefreshToken = FirebaseInstanceId.getInstance().getToken();
+    final UserClient userClient = OneginiSDK.getOneginiClient(context).getUserClient();
+    //userClient.enrollUserForMobileAuthWithPush(fcmRefreshToken, enrollmentHandler);
+  }
+
+  public void updatePushToken(final String newRefreshToken, final OneginiRefreshMobileAuthPushTokenHandler originalHandler) {
+    if (shouldUpdateRefreshToken(newRefreshToken)) {
+      // notify server about new token
+      updateToken(newRefreshToken, originalHandler);
     } else {
-      enrollForMobileAuthentication(regid);
+      storeRefreshToken(newRefreshToken);
     }
   }
 
+  private boolean shouldUpdateRefreshToken(final String refreshToken) {
+    final String previousRefreshToken = getStoredRegistrationId();
+    if (previousRefreshToken.isEmpty()) {
+      return false;
+    }
+    return !previousRefreshToken.equals(refreshToken);
+  }
+
+  private void updateToken(final String newRefreshToken, final OneginiRefreshMobileAuthPushTokenHandler originalHandler) {
+    final OneginiRefreshMobileAuthPushTokenHandler handler = new OneginiRefreshMobileAuthPushTokenHandler() {
+      @Override
+      public void onSuccess() {
+        storeRefreshToken(newRefreshToken);
+        originalHandler.onSuccess();
+      }
+
+      @Override
+      public void onError(final OneginiRefreshMobileAuthPushTokenError error) {
+        storeRefreshToken("");
+        originalHandler.onError(error);
+      }
+    };
+
+    OneginiSDK.getOneginiClient(context).getDeviceClient().refreshMobileAuthPushToken(newRefreshToken, handler);
+  }
+
+  private void storeRefreshToken(final String refreshToken) {
+    storage.setRegistrationId(refreshToken);
+    storage.save();
+  }
+
   /**
-   * Gets the current registration ID for application on FCM service. If result is empty, the app needs to register.
+   * Gets the stored registration ID for application on FCM service. If result is empty, the app needs to register.
    *
    * @return registration ID, or empty string if there is no existing registration ID.
    */
-  private String getRegistrationId() {
+  private String getStoredRegistrationId() {
     final String registrationId = storage.getRegistrationId();
     if (registrationId == null || registrationId.isEmpty()) {
       Log.i(TAG, "Registration not found.");
       return "";
     }
-
-    // Check if app was updated; if so, it must clear the registration ID since the existing regID is not guaranteed to work with the new app version.
-    final int registeredVersion = storage.getAppVersion();
-    final int currentVersion = BuildConfig.VERSION_CODE;
-    if (registeredVersion != currentVersion) {
-      Log.i(TAG, "App version changed.");
-      return "";
-    }
     return registrationId;
-  }
-
-  /**
-   * Registers the application with FCM servers. Stores the registration ID and app versionCode in the application's shared preferences.
-   */
-  private void register() {
-    FirebaseApp.initializeApp(context);
-    String fcmRefreshToken = FirebaseInstanceId.getInstance().getToken();
-    enrollForMobileAuthentication(fcmRefreshToken);
-    storeRegisteredId(fcmRefreshToken);
-  }
-
-  private void storeRegisteredId(final String regid) {
-    storage.setRegistrationId(regid);
-    storage.setAppVersion(BuildConfig.VERSION_CODE);
-    storage.save();
-  }
-
-  private void enrollForMobileAuthentication(final String regId) {
-    final UserClient userClient = OneginiSDK.getOneginiClient(context).getUserClient();
-    userClient.enrollUserForMobileAuthWithPush(regId, enrollmentHandler);
   }
 }
