@@ -34,8 +34,6 @@ public class FCMInstanceIdService extends FirebaseInstanceIdService {
   @Override
   public void onTokenRefresh() {
     final String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-    Log.d(TAG, "Refreshed token: " + refreshedToken);
-
     final FCMRegistrationService fcmRegistrationService = new FCMRegistrationService(this);
     fcmRegistrationService.updatePushToken(refreshedToken, new OneginiRefreshMobileAuthPushTokenHandler() {
       @Override
