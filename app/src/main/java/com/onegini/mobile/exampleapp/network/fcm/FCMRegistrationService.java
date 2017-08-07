@@ -20,7 +20,6 @@ import android.content.Context;
 import android.util.Log;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.onegini.mobile.exampleapp.BuildConfig;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.storage.FCMStorage;
 import com.onegini.mobile.sdk.android.client.UserClient;
@@ -44,7 +43,7 @@ public class FCMRegistrationService {
     FirebaseApp.initializeApp(context);
     final String fcmRefreshToken = FirebaseInstanceId.getInstance().getToken();
     final UserClient userClient = OneginiSDK.getOneginiClient(context).getUserClient();
-    //userClient.enrollUserForMobileAuthWithPush(fcmRefreshToken, enrollmentHandler);
+    userClient.enrollUserForMobileAuthWithPush(fcmRefreshToken, enrollmentHandler);
   }
 
   public void updatePushToken(final String newRefreshToken, final OneginiRefreshMobileAuthPushTokenHandler originalHandler) {
