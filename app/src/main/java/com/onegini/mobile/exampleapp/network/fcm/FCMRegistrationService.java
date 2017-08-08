@@ -46,10 +46,10 @@ public class FCMRegistrationService {
     userClient.enrollUserForMobileAuthWithPush(fcmRefreshToken, enrollmentHandler);
   }
 
-  public void updatePushToken(final String newRefreshToken, final OneginiRefreshMobileAuthPushTokenHandler originalHandler) {
+  public void updatePushToken(final String newRefreshToken, final OneginiRefreshMobileAuthPushTokenHandler handler) {
     if (shouldUpdateRefreshToken(newRefreshToken)) {
       // notify server about new token
-      updateToken(newRefreshToken, originalHandler);
+      updateToken(newRefreshToken, handler);
     } else {
       storeRefreshToken(newRefreshToken);
     }
