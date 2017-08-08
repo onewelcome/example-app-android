@@ -35,20 +35,35 @@ public class FCMInstanceIdService extends FirebaseInstanceIdService {
   public void onTokenRefresh() {
     final String refreshedToken = FirebaseInstanceId.getInstance().getToken();
     final FCMRegistrationService fcmRegistrationService = new FCMRegistrationService(this);
-    fcmRegistrationService.updatePushToken(refreshedToken, new OneginiRefreshMobileAuthPushTokenHandler() {
-      @Override
-      public void onSuccess() {
-        Log.d(TAG, "The token has been updated: " + refreshedToken);
-      }
+    if (fcmRegistrationService.shouldUpdateRefreshToken(refreshedToken)) {
+      // the token was updated, notify the SDK
+      fcmRegistrationService.updateRefreshToken(refreshedToken, new TokenUpdateHandler(refreshedToken));
+    } else {
+      // the token is created for the first time
+      fcmRegistrationService.storeNewRefreshToken(refreshedToken);
+    }
+  }
 
-      @Override
-      public void onError(final OneginiRefreshMobileAuthPushTokenError error) {
-        Log.e(TAG, "The push token update has failed: " + error.getMessage());
-        @OneginiRefreshMobileAuthPushTokenError.RefreshMobileAuthPushTokenErrorType final int errorType = error.getErrorType();
-        if (errorType == OneginiRefreshMobileAuthPushTokenError.DEVICE_DEREGISTERED) {
-          new DeregistrationUtil(FCMInstanceIdService.this).onDeviceDeregistered();
-        }
+  private class TokenUpdateHandler implements OneginiRefreshMobileAuthPushTokenHandler {
+
+    private final String token;
+
+    public TokenUpdateHandler(final String token) {
+      this.token = token;
+    }
+
+    @Override
+    public void onSuccess() {
+      Log.d(TAG, "The token has been updated: " + token);
+    }
+
+    @Override
+    public void onError(final OneginiRefreshMobileAuthPushTokenError error) {
+      Log.e(TAG, "The push token update has failed: " + error.getMessage());
+      @OneginiRefreshMobileAuthPushTokenError.RefreshMobileAuthPushTokenErrorType final int errorType = error.getErrorType();
+      if (errorType == OneginiRefreshMobileAuthPushTokenError.DEVICE_DEREGISTERED) {
+        new DeregistrationUtil(FCMInstanceIdService.this).onDeviceDeregistered();
       }
-    });
+    }
   }
 }

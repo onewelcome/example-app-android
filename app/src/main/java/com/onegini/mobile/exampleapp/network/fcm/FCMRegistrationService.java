@@ -46,16 +46,7 @@ public class FCMRegistrationService {
     userClient.enrollUserForMobileAuthWithPush(fcmRefreshToken, enrollmentHandler);
   }
 
-  public void updatePushToken(final String newRefreshToken, final OneginiRefreshMobileAuthPushTokenHandler handler) {
-    if (shouldUpdateRefreshToken(newRefreshToken)) {
-      // notify server about new token
-      updateToken(newRefreshToken, handler);
-    } else {
-      storeRefreshToken(newRefreshToken);
-    }
-  }
-
-  private boolean shouldUpdateRefreshToken(final String refreshToken) {
+  public boolean shouldUpdateRefreshToken(final String refreshToken) {
     final String previousRefreshToken = getStoredRegistrationId();
     if (previousRefreshToken.isEmpty()) {
       return false;
@@ -63,27 +54,27 @@ public class FCMRegistrationService {
     return !previousRefreshToken.equals(refreshToken);
   }
 
-  private void updateToken(final String newRefreshToken, final OneginiRefreshMobileAuthPushTokenHandler originalHandler) {
+  public void storeNewRefreshToken(final String newRefreshToken) {
+    storage.setRegistrationId(newRefreshToken);
+    storage.save();
+  }
+
+  public void updateRefreshToken(final String newRefreshToken, final OneginiRefreshMobileAuthPushTokenHandler originalHandler) {
     final OneginiRefreshMobileAuthPushTokenHandler handler = new OneginiRefreshMobileAuthPushTokenHandler() {
       @Override
       public void onSuccess() {
-        storeRefreshToken(newRefreshToken);
+        storeNewRefreshToken(newRefreshToken);
         originalHandler.onSuccess();
       }
 
       @Override
       public void onError(final OneginiRefreshMobileAuthPushTokenError error) {
-        storeRefreshToken("");
+        storeNewRefreshToken("");
         originalHandler.onError(error);
       }
     };
 
     OneginiSDK.getOneginiClient(context).getDeviceClient().refreshMobileAuthPushToken(newRefreshToken, handler);
-  }
-
-  private void storeRefreshToken(final String refreshToken) {
-    storage.setRegistrationId(refreshToken);
-    storage.save();
   }
 
   /**
