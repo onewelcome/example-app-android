@@ -18,10 +18,12 @@ package com.onegini.mobile.exampleapp.network.fcm;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.onegini.mobile.exampleapp.BuildConfig;
 import com.onegini.mobile.exampleapp.OneginiSDK;
+import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.storage.FCMStorage;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithPushEnrollmentHandler;
@@ -78,8 +80,12 @@ public class FCMRegistrationService {
   private void register() {
     FirebaseApp.initializeApp(context);
     String fcmRefreshToken = FirebaseInstanceId.getInstance().getToken();
-    enrollForMobileAuthentication(fcmRefreshToken);
-    storeRegisteredId(fcmRefreshToken);
+    if (fcmRefreshToken == null) {
+      Toast.makeText(context, context.getString(R.string.push_token_is_null_error_message), Toast.LENGTH_LONG).show();
+    } else {
+      enrollForMobileAuthentication(fcmRefreshToken);
+      storeRegisteredId(fcmRefreshToken);
+    }
   }
 
   private void storeRegisteredId(final String regid) {
