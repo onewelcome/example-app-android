@@ -18,9 +18,11 @@ package com.onegini.mobile.exampleapp.network.fcm;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.onegini.mobile.exampleapp.OneginiSDK;
+import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.storage.FCMStorage;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithPushEnrollmentHandler;
@@ -42,8 +44,12 @@ public class FCMRegistrationService {
   public void enrollForPush(final OneginiMobileAuthWithPushEnrollmentHandler enrollmentHandler) {
     FirebaseApp.initializeApp(context);
     final String fcmRefreshToken = FirebaseInstanceId.getInstance().getToken();
-    final UserClient userClient = OneginiSDK.getOneginiClient(context).getUserClient();
-    userClient.enrollUserForMobileAuthWithPush(fcmRefreshToken, enrollmentHandler);
+    if (fcmRefreshToken == null) {
+      Toast.makeText(context, context.getString(R.string.push_token_is_null_error_message), Toast.LENGTH_LONG).show();
+    } else {
+      final UserClient userClient = OneginiSDK.getOneginiClient(context).getUserClient();
+      userClient.enrollUserForMobileAuthWithPush(fcmRefreshToken, enrollmentHandler);
+    }
   }
 
   public boolean shouldUpdateRefreshToken(final String refreshToken) {
