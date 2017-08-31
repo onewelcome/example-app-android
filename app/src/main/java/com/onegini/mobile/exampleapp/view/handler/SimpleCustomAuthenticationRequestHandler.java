@@ -16,21 +16,47 @@
 
 package com.onegini.mobile.exampleapp.view.handler;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
+import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_USER_PROFILE_ID;
+
+import android.content.Context;
+import android.content.Intent;
+import com.onegini.mobile.exampleapp.view.activity.CustomAuthActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiCustomAuthenticationRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomCallback;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class SimpleCustomAuthenticationRequestHandler implements OneginiCustomAuthenticationRequestHandler {
 
-  // TODO ask user for authentication
+  public static OneginiCustomCallback CALLBACK;
+
+  private final Context context;
+  private String userProfileId;
+
+  public SimpleCustomAuthenticationRequestHandler(final Context context) {
+    this.context = context;
+  }
 
   @Override
   public void startAuthentication(final UserProfile userProfile, final OneginiCustomCallback oneginiCustomCallback) {
-    oneginiCustomCallback.acceptAuthenticationRequest();
+    CALLBACK = oneginiCustomCallback;
+    userProfileId = userProfile.getProfileId();
+    notifyActivity(COMMAND_START);
   }
 
   @Override
   public void finishAuthentication() {
+    notifyActivity(COMMAND_FINISH);
+  }
 
+  private void notifyActivity(final String command) {
+    final Intent intent = new Intent(context, CustomAuthActivity.class);
+    intent.putExtra(EXTRA_COMMAND, command);
+    intent.putExtra(EXTRA_USER_PROFILE_ID, userProfileId);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+    context.startActivity(intent);
   }
 }
