@@ -16,14 +16,27 @@
 
 package com.onegini.mobile.exampleapp.view.action;
 
+import android.content.Context;
+import android.content.Intent;
+import com.onegini.mobile.exampleapp.view.activity.SimpleAuthenticatorAuthenticationActivity;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthAuthenticationAction;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthAuthenticationCallback;
 
-// TODO
 public class SimpleCustomAuthAuthenticationAction implements OneginiCustomAuthAuthenticationAction {
 
-  @Override
-  public void finishAuthentication(final OneginiCustomAuthAuthenticationCallback oneginiCustomAuthAuthenticationCallback, final String s) {
+  public static OneginiCustomAuthAuthenticationCallback CALLBACK;
 
+  private final Context context;
+
+  public SimpleCustomAuthAuthenticationAction(final Context context) {
+    this.context = context;
+  }
+
+  @Override
+  public void finishAuthentication(final OneginiCustomAuthAuthenticationCallback callback, final String s) {
+    CALLBACK = callback;
+
+    final Intent intent = new Intent(context, SimpleAuthenticatorAuthenticationActivity.class);
+    context.startActivity(intent);
   }
 }

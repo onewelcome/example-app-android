@@ -109,6 +109,10 @@
             android:name=".view.activity.SimpleAuthenticatorDeregistrationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.SimpleAuthenticatorAuthenticationActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".network.fcm.FCMListenerService">

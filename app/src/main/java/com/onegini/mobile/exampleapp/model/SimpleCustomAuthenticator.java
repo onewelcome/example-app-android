@@ -39,7 +39,7 @@ public class SimpleCustomAuthenticator implements OneginiCustomAuthenticator {
   public SimpleCustomAuthenticator(final Context context) {
     registrationAction = new SimpleCustomAuthRegistrationAction(context);
     deregistrationAction = new SimpleCustomAuthDeregistrationAction(context);
-    authAuthenticationAction = new SimpleCustomAuthAuthenticationAction();
+    authAuthenticationAction = new SimpleCustomAuthAuthenticationAction(context);
     mobileAuthenticationAction = new SimpleCustomAuthMobileAuthenticationAction();
   }
 
