@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -33,6 +34,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
@@ -43,11 +45,13 @@ import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
+import com.onegini.mobile.exampleapp.view.helper.RegisteredAuthenticatorsMenu;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeviceAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiDeviceAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
+import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 import rx.Subscription;
 
@@ -74,6 +78,9 @@ public class LoginActivity extends Activity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.application_details)
   TextView applicationDetailsTextView;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.login_with_default_authenticator)
+  SwitchCompat usePreferredAuthenticatorSwitchCompat;
 
   private List<User> listOfUsers = new ArrayList<>();
   private boolean userIsLoggingIn = false;
@@ -145,13 +152,37 @@ public class LoginActivity extends Activity {
   }
 
   @SuppressWarnings("unused")
+  @OnCheckedChanged(R.id.login_with_default_authenticator)
+  public void usePreferredAuthenticatorSwitchStateChanged() {
+    if (usePreferredAuthenticatorSwitchCompat.isChecked()) {
+      loginButton.setText(getString(R.string.btn_login_label));
+    } else {
+      loginButton.setText(getString(R.string.btn_login_with_label));
+    }
+  }
+
+  @SuppressWarnings("unused")
   @OnClick(R.id.login_button)
   public void loginButtonClicked() {
-    setProgressbarVisibility(true);
-
     final User user = listOfUsers.get(usersSpinner.getSelectedItemPosition());
-    loginUser(user.getUserProfile());
-    userIsLoggingIn = true;
+    if (usePreferredAuthenticatorSwitchCompat.isChecked()) {
+      setProgressbarVisibility(true);
+      loginUser(user.getUserProfile());
+      userIsLoggingIn = true;
+    } else {
+      showRegisteredAuthenticatorsPopup(user.getUserProfile());
+    }
+  }
+
+  private void showRegisteredAuthenticatorsPopup(final UserProfile userProfile) {
+    final Set<OneginiAuthenticator> registeredAuthenticators = OneginiSDK.getOneginiClient(this).getUserClient().getRegisteredAuthenticators(userProfile);
+
+    final RegisteredAuthenticatorsMenu menu = new RegisteredAuthenticatorsMenu(this, loginButton, registeredAuthenticators);
+    menu.setOnClickListener(authenticator -> {
+      setProgressbarVisibility(true);
+      loginUser(userProfile, authenticator);
+      userIsLoggingIn = true;
+    }).show();
   }
 
   @SuppressWarnings("unused")
@@ -174,9 +205,11 @@ public class LoginActivity extends Activity {
       prepareListOfProfiles();
       setupUsersSpinner();
       loginButton.setVisibility(View.VISIBLE);
+      usePreferredAuthenticatorSwitchCompat.setVisibility(View.VISIBLE);
     } else {
       usersSpinner.setVisibility(View.INVISIBLE);
       loginButton.setVisibility(View.INVISIBLE);
+      usePreferredAuthenticatorSwitchCompat.setVisibility(View.INVISIBLE);
     }
 
     if (errorMessage != null && !errorMessage.isEmpty()) {
@@ -192,6 +225,21 @@ public class LoginActivity extends Activity {
     usersSpinner.setAdapter(spinnerArrayAdapter);
   }
 
+  private void loginUser(final UserProfile userProfile, final OneginiAuthenticator oneginiAuthenticator) {
+    OneginiSDK.getOneginiClient(this).getUserClient().authenticateUser(userProfile, oneginiAuthenticator, new OneginiAuthenticationHandler() {
+
+      @Override
+      public void onSuccess(final UserProfile userProfile) {
+        startDashboardActivity();
+      }
+
+      @Override
+      public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
+        LoginActivity.this.onError(oneginiAuthenticationError, userProfile);
+      }
+    });
+  }
+
   private void loginUser(final UserProfile userProfile) {
     OneginiSDK.getOneginiClient(this).getUserClient().authenticateUser(userProfile, new OneginiAuthenticationHandler() {
 
@@ -202,11 +250,15 @@ public class LoginActivity extends Activity {
 
       @Override
       public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
-        userIsLoggingIn = false;
-        setProgressbarVisibility(true);
-        handleAuthenticationErrors(oneginiAuthenticationError, userProfile);
+        LoginActivity.this.onError(oneginiAuthenticationError, userProfile);
       }
     });
+  }
+
+  private void onError(final OneginiAuthenticationError oneginiAuthenticationError, final UserProfile userProfile) {
+    userIsLoggingIn = false;
+    setProgressbarVisibility(true);
+    handleAuthenticationErrors(oneginiAuthenticationError, userProfile);
   }
 
   private void handleAuthenticationErrors(final OneginiAuthenticationError error, final UserProfile userProfile) {
@@ -252,12 +304,8 @@ public class LoginActivity extends Activity {
   }
 
   private void onError(final OneginiError error) {
-    final StringBuilder stringBuilder = new StringBuilder(error.getMessage());
-    stringBuilder.append(" Check logcat for more details.");
-
     error.printStackTrace();
-
-    errorMessage = stringBuilder.toString();
+    errorMessage = error.getMessage() + " Check logcat for more details.";
   }
 
   private boolean isRegisteredAtLeastOneUser() {
@@ -272,6 +320,7 @@ public class LoginActivity extends Activity {
     layoutLoginContent.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     if (isRegisteredAtLeastOneUser()) {
       loginButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+      usePreferredAuthenticatorSwitchCompat.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     }
   }
 
