@@ -50,6 +50,7 @@ public class OneginiSDK {
     final RegistrationRequestHandler registrationRequestHandler = new RegistrationRequestHandler(applicationContext);
     final CreatePinRequestHandler createPinRequestHandler = new CreatePinRequestHandler(applicationContext);
     final PinAuthenticationRequestHandler pinAuthenticationRequestHandler = new PinAuthenticationRequestHandler(applicationContext);
+    final SimpleCustomAuthenticator simpleCustomAuthenticator = new SimpleCustomAuthenticator(applicationContext);
 
     // will throw OneginiConfigNotFoundException if OneginiConfigModel class can't be found
     return new OneginiClientBuilder(applicationContext, registrationRequestHandler, createPinRequestHandler, pinAuthenticationRequestHandler)
@@ -63,7 +64,7 @@ public class OneginiSDK {
         .setMobileAuthWithPushFidoRequestHandler(new MobileAuthenticationFidoRequestHandler(applicationContext))
         .setMobileAuthWithPushCustomRequestHandler(new MobileAuthenticationSimpleCustomRequestHandler())
         .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler())
-        .addCustomAuthenticator(new SimpleCustomAuthenticator())
+        .addCustomAuthenticator(simpleCustomAuthenticator)
         // Set http connect / read timeout
         .setHttpConnectTimeout((int) TimeUnit.SECONDS.toMillis(5))
         .setHttpReadTimeout((int) TimeUnit.SECONDS.toMillis(20))

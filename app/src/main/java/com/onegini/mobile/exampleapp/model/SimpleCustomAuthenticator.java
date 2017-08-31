@@ -16,6 +16,7 @@
 
 package com.onegini.mobile.exampleapp.model;
 
+import android.content.Context;
 import com.onegini.mobile.exampleapp.view.action.SimpleCustomAuthAuthenticationAction;
 import com.onegini.mobile.exampleapp.view.action.SimpleCustomAuthDeregistrationAction;
 import com.onegini.mobile.exampleapp.view.action.SimpleCustomAuthMobileAuthenticationAction;
@@ -28,12 +29,19 @@ import com.onegini.mobile.sdk.android.model.OneginiCustomAuthenticator;
 
 public class SimpleCustomAuthenticator implements OneginiCustomAuthenticator {
 
-  private final OneginiCustomAuthRegistrationAction registrationAction = new SimpleCustomAuthRegistrationAction();
-  private final OneginiCustomAuthDeregistrationAction deregistrationAction = new SimpleCustomAuthDeregistrationAction();
-  private final OneginiCustomAuthAuthenticationAction authAuthenticationAction = new SimpleCustomAuthAuthenticationAction();
-  private final OneginiCustomAuthMobileAuthenticationAction mobileAuthenticationAction = new SimpleCustomAuthMobileAuthenticationAction();
+  public static final String AUTH_DATA = "fakeAuthenticationData";
 
-  public SimpleCustomAuthenticator() { }
+  private final OneginiCustomAuthRegistrationAction registrationAction;
+  private final OneginiCustomAuthDeregistrationAction deregistrationAction;
+  private final OneginiCustomAuthAuthenticationAction authAuthenticationAction;
+  private final OneginiCustomAuthMobileAuthenticationAction mobileAuthenticationAction;
+
+  public SimpleCustomAuthenticator(final Context context) {
+    registrationAction = new SimpleCustomAuthRegistrationAction(context);
+    deregistrationAction = new SimpleCustomAuthDeregistrationAction();
+    authAuthenticationAction = new SimpleCustomAuthAuthenticationAction();
+    mobileAuthenticationAction = new SimpleCustomAuthMobileAuthenticationAction();
+  }
 
   @Override
   public OneginiCustomAuthRegistrationAction getRegistrationAction() {
@@ -57,6 +65,6 @@ public class SimpleCustomAuthenticator implements OneginiCustomAuthenticator {
 
   @Override
   public String getId() {
-    return "EXPERIMENTAL_CUSTOM_AUTHENTICATOR_ID"; // TODO change ID?
+    return "EXPERIMENTAL_CUSTOM_AUTHENTICATOR_ID";
   }
 }

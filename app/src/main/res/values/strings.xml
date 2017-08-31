@@ -65,4 +65,7 @@
     <string name="btn_mobile_auth_with_otp_label">Mobile auth with OTP</string>
     <string name="btn_auth_cancel_label">CANCEL</string>
     <string name="push_token_is_null_error_message">The push token is null, check if your Firebase configuration in google-services.json file is valid.</string>
+    <string name="custom_auth_positive_action">Return success</string>
+    <string name="custom_auth_negative_action">Return failure</string>
+    <string name="custom_auth_error_action">Return error</string>
 </resources>

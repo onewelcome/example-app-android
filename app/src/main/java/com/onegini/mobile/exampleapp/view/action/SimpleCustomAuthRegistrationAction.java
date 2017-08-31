@@ -16,14 +16,27 @@
 
 package com.onegini.mobile.exampleapp.view.action;
 
+import android.content.Context;
+import android.content.Intent;
+import com.onegini.mobile.exampleapp.view.activity.SimpleAuthenticatorActivity;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthRegistrationAction;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthRegistrationCallback;
 
-// TODO
 public class SimpleCustomAuthRegistrationAction implements OneginiCustomAuthRegistrationAction {
 
-  @Override
-  public void finishRegistration(final OneginiCustomAuthRegistrationCallback oneginiCustomAuthRegistrationCallback) {
+  public static OneginiCustomAuthRegistrationCallback CALLBACK;
 
+  private final Context context;
+
+  public SimpleCustomAuthRegistrationAction(final Context context) {
+    this.context = context;
+  }
+
+  @Override
+  public void finishRegistration(final OneginiCustomAuthRegistrationCallback callback) {
+    CALLBACK = callback;
+
+    final Intent intent = new Intent(context, SimpleAuthenticatorActivity.class);
+    context.startActivity(intent);
   }
 }

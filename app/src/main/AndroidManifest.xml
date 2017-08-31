@@ -97,6 +97,9 @@
             android:name=".view.activity.DevicesListActivity"
             android:parentActivityName=".view.activity.DashboardActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.SimpleAuthenticatorActivity"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".network.fcm.FCMListenerService">
