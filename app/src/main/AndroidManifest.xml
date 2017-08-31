@@ -98,7 +98,12 @@
             android:parentActivityName=".view.activity.DashboardActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".view.activity.SimpleAuthenticatorActivity"
+            android:name=".view.activity.SimpleAuthenticatorRegistrationActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.SimpleAuthenticatorDeregistrationActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <service

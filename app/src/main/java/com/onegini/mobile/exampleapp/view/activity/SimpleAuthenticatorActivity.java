@@ -24,10 +24,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.model.SimpleCustomAuthenticator;
-import com.onegini.mobile.exampleapp.view.action.SimpleCustomAuthRegistrationAction;
 
-public class SimpleAuthenticatorActivity extends AppCompatActivity {
+public abstract class SimpleAuthenticatorActivity extends AppCompatActivity {
 
   @SuppressWarnings({ "unused" })
   @Bind(R.id.title_text)
@@ -47,33 +45,27 @@ public class SimpleAuthenticatorActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_custom_auth_registration);
     ButterKnife.bind(this);
-    titleText.setText("Auth registration");
+    setTitle();
   }
 
   @SuppressWarnings("unused")
   @OnClick(R.id.custom_auth_positive_button)
   public void onPossitiveButtonClicked() {
-    if (SimpleCustomAuthRegistrationAction.CALLBACK != null) {
-      SimpleCustomAuthRegistrationAction.CALLBACK.acceptRegistrationRequest(SimpleCustomAuthenticator.AUTH_DATA);
-    }
+    onSuccess();
     finish();
   }
 
   @SuppressWarnings("unused")
   @OnClick(R.id.custom_auth_negative_button)
   public void onNegativeButtonClicked() {
-    if (SimpleCustomAuthRegistrationAction.CALLBACK != null) {
-      SimpleCustomAuthRegistrationAction.CALLBACK.denyRegistrationRequest();
-    }
+    onFailure();
     finish();
   }
 
   @SuppressWarnings("unused")
   @OnClick(R.id.custom_auth_error_button)
   public void onErrorButtonClicked() {
-    if (SimpleCustomAuthRegistrationAction.CALLBACK != null) {
-      SimpleCustomAuthRegistrationAction.CALLBACK.returnError(new Exception("Fake exception"));
-    }
+    onError();
     finish();
   }
 
@@ -81,4 +73,12 @@ public class SimpleAuthenticatorActivity extends AppCompatActivity {
   public void onBackPressed() {
     onNegativeButtonClicked();
   }
+
+  protected abstract void setTitle();
+
+  protected abstract void onSuccess();
+
+  protected abstract void onFailure();
+
+  protected abstract void onError();
 }

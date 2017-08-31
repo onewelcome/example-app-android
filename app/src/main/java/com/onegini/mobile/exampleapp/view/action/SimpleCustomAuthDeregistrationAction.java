@@ -16,14 +16,27 @@
 
 package com.onegini.mobile.exampleapp.view.action;
 
+import android.content.Context;
+import android.content.Intent;
+import com.onegini.mobile.exampleapp.view.activity.SimpleAuthenticatorDeregistrationActivity;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthDeregistrationAction;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthDeregistrationCallback;
 
-// TODO
 public class SimpleCustomAuthDeregistrationAction implements OneginiCustomAuthDeregistrationAction {
 
-  @Override
-  public void finishDeregistration(final OneginiCustomAuthDeregistrationCallback oneginiCustomAuthDeregistrationCallback, final String s) {
+  public static OneginiCustomAuthDeregistrationCallback CALLBACK;
 
+  private final Context context;
+
+  public SimpleCustomAuthDeregistrationAction(final Context context) {
+    this.context = context;
+  }
+
+  @Override
+  public void finishDeregistration(final OneginiCustomAuthDeregistrationCallback callback, final String s) {
+    CALLBACK = callback;
+
+    final Intent intent = new Intent(context, SimpleAuthenticatorDeregistrationActivity.class);
+    context.startActivity(intent);
   }
 }
