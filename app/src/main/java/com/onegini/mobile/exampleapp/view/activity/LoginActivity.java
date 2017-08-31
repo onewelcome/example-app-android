@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -174,7 +175,7 @@ public class LoginActivity extends Activity {
     }
   }
 
-  private void showRegisteredAuthenticatorsPopup(final UserProfile userProfile) {
+  private void showRegisteredAuthenticatorsPopup(@NonNull final UserProfile userProfile) {
     final Set<OneginiAuthenticator> registeredAuthenticators = OneginiSDK.getOneginiClient(this).getUserClient().getRegisteredAuthenticators(userProfile);
 
     final RegisteredAuthenticatorsMenu menu = new RegisteredAuthenticatorsMenu(this, loginButton, registeredAuthenticators);

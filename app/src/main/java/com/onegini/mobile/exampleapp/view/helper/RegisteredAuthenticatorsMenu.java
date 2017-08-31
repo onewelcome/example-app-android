@@ -47,7 +47,7 @@ public class RegisteredAuthenticatorsMenu {
     }
   }
 
-  public RegisteredAuthenticatorsMenu setOnClickListener(@NonNull OnMenuItemClickListener listener) {
+  public RegisteredAuthenticatorsMenu setOnClickListener(@NonNull final OnMenuItemClickListener listener) {
     this.popupMenu.setOnMenuItemClickListener(item -> {
       listener.onMenuItemClick(authenticators.get(item.getItemId()));
       return true;
