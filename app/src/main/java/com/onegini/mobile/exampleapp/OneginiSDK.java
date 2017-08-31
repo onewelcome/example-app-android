@@ -19,6 +19,7 @@ package com.onegini.mobile.exampleapp;
 import java.util.concurrent.TimeUnit;
 
 import android.content.Context;
+import com.onegini.mobile.exampleapp.model.SimpleCustomAuthenticator;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.FidoAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationRequestHandler;
@@ -27,8 +28,10 @@ import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFidoReques
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFingerprintRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationSimpleCustomRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.PinAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.RegistrationRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.SimpleCustomAuthenticationRequestHandler;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.client.OneginiClientBuilder;
 
@@ -53,11 +56,14 @@ public class OneginiSDK {
         // handlers for optional functionalities
         .setFingerprintAuthenticatioRequestHandler(new FingerprintAuthenticationRequestHandler(applicationContext))
         .setFidoAuthenticationRequestHandler(new FidoAuthenticationRequestHandler(applicationContext))
+        .setCustomAuthenticationRequestHandler(new SimpleCustomAuthenticationRequestHandler())
         .setMobileAuthWithPushRequestHandler(new MobileAuthenticationRequestHandler(applicationContext))
         .setMobileAuthWithPushPinRequestHandler(new MobileAuthenticationPinRequestHandler(applicationContext))
         .setMobileAuthWithPushFingerprintRequestHandler(new MobileAuthenticationFingerprintRequestHandler(applicationContext))
         .setMobileAuthWithPushFidoRequestHandler(new MobileAuthenticationFidoRequestHandler(applicationContext))
+        .setMobileAuthWithPushCustomRequestHandler(new MobileAuthenticationSimpleCustomRequestHandler())
         .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler())
+        .addCustomAuthenticator(new SimpleCustomAuthenticator())
         // Set http connect / read timeout
         .setHttpConnectTimeout((int) TimeUnit.SECONDS.toMillis(5))
         .setHttpReadTimeout((int) TimeUnit.SECONDS.toMillis(20))
