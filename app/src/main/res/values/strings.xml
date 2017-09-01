@@ -17,6 +17,7 @@
 <resources>
     <string name="app_name">Example App</string>
     <string name="btn_login_label">LOG IN</string>
+    <string name="btn_login_with_label">LOG IN WITH...</string>
     <string name="btn_register_label">REGISTER</string>
     <string name="pin_error_invalid_pin">Wrong PIN, %1$d attempt(s) left</string>
     <string name="pin_title_choose_pin">Create PIN</string>
@@ -65,6 +66,7 @@
     <string name="btn_mobile_auth_with_otp_label">Mobile auth with OTP</string>
     <string name="btn_auth_cancel_label">CANCEL</string>
     <string name="push_token_is_null_error_message">The push token is null, check if your Firebase configuration in google-services.json file is valid.</string>
+    <string name="use_preferred_authenticator_label">USE PREFERRED AUTHENTICATOR</string>
     <string name="custom_auth_positive_action">Return success</string>
     <string name="custom_auth_negative_action">Return failure</string>
     <string name="custom_auth_error_action">Return error</string>
