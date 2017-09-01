@@ -22,10 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
-import android.view.View;
+import android.view.Menu;
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
 
 
@@ -34,16 +33,17 @@ public class RegisteredAuthenticatorsMenu {
   private final List<OneginiAuthenticator> authenticators;
   private final PopupMenu popupMenu;
 
-  public RegisteredAuthenticatorsMenu(final Context context, final View view, final Set<OneginiAuthenticator> authenticators) {
+  public RegisteredAuthenticatorsMenu(final PopupMenu popupMenu, final Set<OneginiAuthenticator> authenticators) {
     this.authenticators = new ArrayList<>(authenticators);
-    popupMenu = new PopupMenu(context, view);
+    this.popupMenu = popupMenu;
     inflateMenu();
   }
 
   private void inflateMenu() {
+    final Menu menu = popupMenu.getMenu();
     for (int i = 0; i < authenticators.size(); i++) {
       final OneginiAuthenticator authenticator = authenticators.get(i);
-      popupMenu.getMenu().add(NONE, i, NONE, String.format("%s (id: %s)", authenticator.getName(), authenticator.getId()));
+      menu.add(NONE, i, NONE, String.format("%s (id: %s)", authenticator.getName(), authenticator.getId()));
     }
   }
 

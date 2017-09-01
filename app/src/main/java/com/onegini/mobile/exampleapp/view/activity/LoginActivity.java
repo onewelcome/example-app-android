@@ -25,6 +25,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -165,23 +166,23 @@ public class LoginActivity extends Activity {
   @SuppressWarnings("unused")
   @OnClick(R.id.login_button)
   public void loginButtonClicked() {
-    final User user = listOfUsers.get(usersSpinner.getSelectedItemPosition());
+    final UserProfile userProfile = listOfUsers.get(usersSpinner.getSelectedItemPosition()).getUserProfile();
     if (usePreferredAuthenticatorSwitchCompat.isChecked()) {
       setProgressbarVisibility(true);
-      loginUser(user.getUserProfile());
+      OneginiSDK.getOneginiClient(this).getUserClient().authenticateUser(userProfile, getAuthenticationHandler(userProfile));
       userIsLoggingIn = true;
     } else {
-      showRegisteredAuthenticatorsPopup(user.getUserProfile());
+      showRegisteredAuthenticatorsPopup(userProfile);
     }
   }
 
   private void showRegisteredAuthenticatorsPopup(@NonNull final UserProfile userProfile) {
     final Set<OneginiAuthenticator> registeredAuthenticators = OneginiSDK.getOneginiClient(this).getUserClient().getRegisteredAuthenticators(userProfile);
 
-    final RegisteredAuthenticatorsMenu menu = new RegisteredAuthenticatorsMenu(this, loginButton, registeredAuthenticators);
+    final RegisteredAuthenticatorsMenu menu = new RegisteredAuthenticatorsMenu(new PopupMenu(this, loginButton), registeredAuthenticators);
     menu.setOnClickListener(authenticator -> {
       setProgressbarVisibility(true);
-      loginUser(userProfile, authenticator);
+      OneginiSDK.getOneginiClient(this).getUserClient().authenticateUser(userProfile, authenticator, getAuthenticationHandler(userProfile));
       userIsLoggingIn = true;
     }).show();
   }
@@ -226,8 +227,8 @@ public class LoginActivity extends Activity {
     usersSpinner.setAdapter(spinnerArrayAdapter);
   }
 
-  private void loginUser(final UserProfile userProfile, final OneginiAuthenticator oneginiAuthenticator) {
-    OneginiSDK.getOneginiClient(this).getUserClient().authenticateUser(userProfile, oneginiAuthenticator, new OneginiAuthenticationHandler() {
+  private OneginiAuthenticationHandler getAuthenticationHandler(final UserProfile userProfile) {
+    return new OneginiAuthenticationHandler() {
 
       @Override
       public void onSuccess(final UserProfile userProfile) {
@@ -238,22 +239,7 @@ public class LoginActivity extends Activity {
       public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
         LoginActivity.this.onError(oneginiAuthenticationError, userProfile);
       }
-    });
-  }
-
-  private void loginUser(final UserProfile userProfile) {
-    OneginiSDK.getOneginiClient(this).getUserClient().authenticateUser(userProfile, new OneginiAuthenticationHandler() {
-
-      @Override
-      public void onSuccess(final UserProfile userProfile) {
-        startDashboardActivity();
-      }
-
-      @Override
-      public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
-        LoginActivity.this.onError(oneginiAuthenticationError, userProfile);
-      }
-    });
+    };
   }
 
   private void onError(final OneginiAuthenticationError oneginiAuthenticationError, final UserProfile userProfile) {
