@@ -25,6 +25,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
@@ -48,6 +49,7 @@ import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
 import com.onegini.mobile.exampleapp.view.helper.RegisteredAuthenticatorsMenu;
+import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeviceAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
@@ -168,9 +170,7 @@ public class LoginActivity extends Activity {
   public void loginButtonClicked() {
     final UserProfile userProfile = listOfUsers.get(usersSpinner.getSelectedItemPosition()).getUserProfile();
     if (usePreferredAuthenticatorSwitchCompat.isChecked()) {
-      setProgressbarVisibility(true);
-      OneginiSDK.getOneginiClient(this).getUserClient().authenticateUser(userProfile, getAuthenticationHandler(userProfile));
-      userIsLoggingIn = true;
+      authenticate(userProfile, null);
     } else {
       showRegisteredAuthenticatorsPopup(userProfile);
     }
@@ -178,13 +178,8 @@ public class LoginActivity extends Activity {
 
   private void showRegisteredAuthenticatorsPopup(@NonNull final UserProfile userProfile) {
     final Set<OneginiAuthenticator> registeredAuthenticators = OneginiSDK.getOneginiClient(this).getUserClient().getRegisteredAuthenticators(userProfile);
-
     final RegisteredAuthenticatorsMenu menu = new RegisteredAuthenticatorsMenu(new PopupMenu(this, loginButton), registeredAuthenticators);
-    menu.setOnClickListener(authenticator -> {
-      setProgressbarVisibility(true);
-      OneginiSDK.getOneginiClient(this).getUserClient().authenticateUser(userProfile, authenticator, getAuthenticationHandler(userProfile));
-      userIsLoggingIn = true;
-    }).show();
+    menu.setOnClickListener(authenticator -> authenticate(userProfile, authenticator)).show();
   }
 
   @SuppressWarnings("unused")
@@ -225,6 +220,20 @@ public class LoginActivity extends Activity {
     final ArrayAdapter<User> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listOfUsers);
     spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     usersSpinner.setAdapter(spinnerArrayAdapter);
+  }
+
+  private void authenticate(final UserProfile userProfile, @Nullable final OneginiAuthenticator authenticator) {
+    setProgressbarVisibility(true);
+    userIsLoggingIn = true;
+
+    final UserClient userClient = OneginiSDK.getOneginiClient(this).getUserClient();
+    final OneginiAuthenticationHandler handler = getAuthenticationHandler(userProfile);
+
+    if (authenticator == null) {
+      userClient.authenticateUser(userProfile, handler);
+    } else {
+      userClient.authenticateUser(userProfile, authenticator, handler);
+    }
   }
 
   private OneginiAuthenticationHandler getAuthenticationHandler(final UserProfile userProfile) {
