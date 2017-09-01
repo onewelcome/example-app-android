@@ -16,33 +16,34 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
-import com.onegini.mobile.exampleapp.view.action.SimpleCustomAuthDeregistrationAction;
+import com.onegini.mobile.exampleapp.R;
+import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthDeregistrationAction;
 
-public class SimpleAuthenticatorDeregistrationActivity extends SimpleAuthenticatorActivity {
+public class BasicAuthenticatorDeregistrationActivity extends BasicAuthenticatorActivity {
 
   @Override
   protected void setTitle() {
-    titleText.setText("Auth deregistration");
+    titleText.setText(R.string.custom_auth_registration_title);
   }
 
   @Override
   protected void onSuccess() {
-    if (SimpleCustomAuthDeregistrationAction.CALLBACK != null) {
-      SimpleCustomAuthDeregistrationAction.CALLBACK.acceptDeregistrationRequest("");
+    if (BasicCustomAuthDeregistrationAction.CALLBACK != null) {
+      BasicCustomAuthDeregistrationAction.CALLBACK.acceptDeregistrationRequest("");
     }
   }
 
   @Override
   protected void onFailure() {
-    if (SimpleCustomAuthDeregistrationAction.CALLBACK != null) {
-      SimpleCustomAuthDeregistrationAction.CALLBACK.denyDeregistrationRequest();
+    if (BasicCustomAuthDeregistrationAction.CALLBACK != null) {
+      BasicCustomAuthDeregistrationAction.CALLBACK.denyDeregistrationRequest();
     }
   }
 
   @Override
   protected void onError() {
-    if (SimpleCustomAuthDeregistrationAction.CALLBACK != null) {
-      SimpleCustomAuthDeregistrationAction.CALLBACK.returnError(new Exception("Fake exception"));
+    if (BasicCustomAuthDeregistrationAction.CALLBACK != null) {
+      BasicCustomAuthDeregistrationAction.CALLBACK.returnError(new Exception("Fake exception"));
     }
   }
 }

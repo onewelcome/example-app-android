@@ -18,25 +18,25 @@ package com.onegini.mobile.exampleapp.view.action;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.view.activity.SimpleAuthenticatorRegistrationActivity;
-import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthRegistrationAction;
-import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthRegistrationCallback;
+import com.onegini.mobile.exampleapp.view.activity.BasicAuthenticatorDeregistrationActivity;
+import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthDeregistrationAction;
+import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthDeregistrationCallback;
 
-public class SimpleCustomAuthRegistrationAction implements OneginiCustomAuthRegistrationAction {
+public class BasicCustomAuthDeregistrationAction implements OneginiCustomAuthDeregistrationAction {
 
-  public static OneginiCustomAuthRegistrationCallback CALLBACK;
+  public static OneginiCustomAuthDeregistrationCallback CALLBACK;
 
   private final Context context;
 
-  public SimpleCustomAuthRegistrationAction(final Context context) {
+  public BasicCustomAuthDeregistrationAction(final Context context) {
     this.context = context;
   }
 
   @Override
-  public void finishRegistration(final OneginiCustomAuthRegistrationCallback callback) {
+  public void finishDeregistration(final OneginiCustomAuthDeregistrationCallback callback, final String s) {
     CALLBACK = callback;
 
-    final Intent intent = new Intent(context, SimpleAuthenticatorRegistrationActivity.class);
+    final Intent intent = new Intent(context, BasicAuthenticatorDeregistrationActivity.class);
     context.startActivity(intent);
   }
 }

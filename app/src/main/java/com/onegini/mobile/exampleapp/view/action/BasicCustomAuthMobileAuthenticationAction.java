@@ -19,7 +19,7 @@ import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthMobil
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthAuthenticationCallback;
 
 // todo SDKAND-359
-public class SimpleCustomAuthMobileAuthenticationAction implements OneginiCustomAuthMobileAuthenticationAction {
+public class BasicCustomAuthMobileAuthenticationAction implements OneginiCustomAuthMobileAuthenticationAction {
 
   @Override
   public void finishAuthentication(final OneginiCustomAuthAuthenticationCallback oneginiCustomAuthAuthenticationCallback, final String s) {

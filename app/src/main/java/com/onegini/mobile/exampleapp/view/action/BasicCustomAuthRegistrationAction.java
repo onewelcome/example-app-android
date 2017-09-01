@@ -18,25 +18,25 @@ package com.onegini.mobile.exampleapp.view.action;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.view.activity.SimpleAuthenticatorAuthenticationActivity;
-import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthAuthenticationAction;
-import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthAuthenticationCallback;
+import com.onegini.mobile.exampleapp.view.activity.BasicAuthenticatorRegistrationActivity;
+import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthRegistrationAction;
+import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthRegistrationCallback;
 
-public class SimpleCustomAuthAuthenticationAction implements OneginiCustomAuthAuthenticationAction {
+public class BasicCustomAuthRegistrationAction implements OneginiCustomAuthRegistrationAction {
 
-  public static OneginiCustomAuthAuthenticationCallback CALLBACK;
+  public static OneginiCustomAuthRegistrationCallback CALLBACK;
 
   private final Context context;
 
-  public SimpleCustomAuthAuthenticationAction(final Context context) {
+  public BasicCustomAuthRegistrationAction(final Context context) {
     this.context = context;
   }
 
   @Override
-  public void finishAuthentication(final OneginiCustomAuthAuthenticationCallback callback, final String s) {
+  public void finishRegistration(final OneginiCustomAuthRegistrationCallback callback) {
     CALLBACK = callback;
 
-    final Intent intent = new Intent(context, SimpleAuthenticatorAuthenticationActivity.class);
+    final Intent intent = new Intent(context, BasicAuthenticatorRegistrationActivity.class);
     context.startActivity(intent);
   }
 }

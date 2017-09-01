@@ -102,15 +102,15 @@
             android:parentActivityName=".view.activity.DashboardActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".view.activity.SimpleAuthenticatorRegistrationActivity"
+            android:name=".view.activity.BasicAuthenticatorRegistrationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".view.activity.SimpleAuthenticatorDeregistrationActivity"
+            android:name=".view.activity.BasicAuthenticatorDeregistrationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".view.activity.SimpleAuthenticatorAuthenticationActivity"
+            android:name=".view.activity.BasicAuthenticatorAuthenticationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 

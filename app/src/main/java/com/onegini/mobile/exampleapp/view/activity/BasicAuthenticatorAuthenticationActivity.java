@@ -16,34 +16,35 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
-import com.onegini.mobile.exampleapp.model.SimpleCustomAuthenticator;
-import com.onegini.mobile.exampleapp.view.action.SimpleCustomAuthRegistrationAction;
+import com.onegini.mobile.exampleapp.R;
+import com.onegini.mobile.exampleapp.model.BasicCustomAuthenticator;
+import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthAuthenticationAction;
 
-public class SimpleAuthenticatorRegistrationActivity extends SimpleAuthenticatorActivity {
+public class BasicAuthenticatorAuthenticationActivity extends BasicAuthenticatorActivity {
 
   @Override
   protected void setTitle() {
-    titleText.setText("Auth registration");
+    titleText.setText(R.string.custom_auth_authentication_title);
   }
 
   @Override
   protected void onSuccess() {
-    if (SimpleCustomAuthRegistrationAction.CALLBACK != null) {
-      SimpleCustomAuthRegistrationAction.CALLBACK.acceptRegistrationRequest(SimpleCustomAuthenticator.AUTH_DATA);
+    if (BasicCustomAuthAuthenticationAction.CALLBACK != null) {
+      BasicCustomAuthAuthenticationAction.CALLBACK.returnSuccess(BasicCustomAuthenticator.AUTH_DATA);
     }
   }
 
   @Override
   protected void onFailure() {
-    if (SimpleCustomAuthRegistrationAction.CALLBACK != null) {
-      SimpleCustomAuthRegistrationAction.CALLBACK.denyRegistrationRequest();
+    if (BasicCustomAuthAuthenticationAction.CALLBACK != null) {
+      BasicCustomAuthAuthenticationAction.CALLBACK.returnError(new Exception("Authentication failed"));
     }
   }
 
   @Override
   protected void onError() {
-    if (SimpleCustomAuthRegistrationAction.CALLBACK != null) {
-      SimpleCustomAuthRegistrationAction.CALLBACK.returnError(new Exception("Fake exception"));
+    if (BasicCustomAuthAuthenticationAction.CALLBACK != null) {
+      BasicCustomAuthAuthenticationAction.CALLBACK.returnError(new Exception("Fake exception"));
     }
   }
 }

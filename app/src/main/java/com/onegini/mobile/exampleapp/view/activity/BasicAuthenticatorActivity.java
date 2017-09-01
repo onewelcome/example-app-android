@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 
-public abstract class SimpleAuthenticatorActivity extends AppCompatActivity {
+public abstract class BasicAuthenticatorActivity extends AppCompatActivity {
 
   @SuppressWarnings({ "unused" })
   @Bind(R.id.title_text)
@@ -50,7 +50,7 @@ public abstract class SimpleAuthenticatorActivity extends AppCompatActivity {
 
   @SuppressWarnings("unused")
   @OnClick(R.id.custom_auth_positive_button)
-  public void onPossitiveButtonClicked() {
+  public void onPositiveButtonClicked() {
     onSuccess();
     finish();
   }

@@ -19,7 +19,7 @@ package com.onegini.mobile.exampleapp;
 import java.util.concurrent.TimeUnit;
 
 import android.content.Context;
-import com.onegini.mobile.exampleapp.model.SimpleCustomAuthenticator;
+import com.onegini.mobile.exampleapp.model.BasicCustomAuthenticator;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.FidoAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationRequestHandler;
@@ -50,7 +50,7 @@ public class OneginiSDK {
     final RegistrationRequestHandler registrationRequestHandler = new RegistrationRequestHandler(applicationContext);
     final CreatePinRequestHandler createPinRequestHandler = new CreatePinRequestHandler(applicationContext);
     final PinAuthenticationRequestHandler pinAuthenticationRequestHandler = new PinAuthenticationRequestHandler(applicationContext);
-    final SimpleCustomAuthenticator simpleCustomAuthenticator = new SimpleCustomAuthenticator(applicationContext);
+    final BasicCustomAuthenticator basicCustomAuthenticator = new BasicCustomAuthenticator(applicationContext);
 
     // will throw OneginiConfigNotFoundException if OneginiConfigModel class can't be found
     return new OneginiClientBuilder(applicationContext, registrationRequestHandler, createPinRequestHandler, pinAuthenticationRequestHandler)
@@ -64,7 +64,7 @@ public class OneginiSDK {
         .setMobileAuthWithPushFidoRequestHandler(new MobileAuthenticationFidoRequestHandler(applicationContext))
         .setMobileAuthWithPushCustomRequestHandler(new MobileAuthenticationSimpleCustomRequestHandler())
         .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler())
-        .addCustomAuthenticator(simpleCustomAuthenticator)
+        .addCustomAuthenticator(basicCustomAuthenticator)
         // Set http connect / read timeout
         .setHttpConnectTimeout((int) TimeUnit.SECONDS.toMillis(5))
         .setHttpReadTimeout((int) TimeUnit.SECONDS.toMillis(20))

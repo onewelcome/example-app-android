@@ -17,17 +17,17 @@
 package com.onegini.mobile.exampleapp.model;
 
 import android.content.Context;
-import com.onegini.mobile.exampleapp.view.action.SimpleCustomAuthAuthenticationAction;
-import com.onegini.mobile.exampleapp.view.action.SimpleCustomAuthDeregistrationAction;
-import com.onegini.mobile.exampleapp.view.action.SimpleCustomAuthMobileAuthenticationAction;
-import com.onegini.mobile.exampleapp.view.action.SimpleCustomAuthRegistrationAction;
+import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthAuthenticationAction;
+import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthDeregistrationAction;
+import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthMobileAuthenticationAction;
+import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthRegistrationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthAuthenticationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthDeregistrationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthMobileAuthenticationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthRegistrationAction;
 import com.onegini.mobile.sdk.android.model.OneginiCustomAuthenticator;
 
-public class SimpleCustomAuthenticator implements OneginiCustomAuthenticator {
+public class BasicCustomAuthenticator implements OneginiCustomAuthenticator {
 
   public static final String AUTH_DATA = "fakeAuthenticationData";
 
@@ -36,11 +36,11 @@ public class SimpleCustomAuthenticator implements OneginiCustomAuthenticator {
   private final OneginiCustomAuthAuthenticationAction authAuthenticationAction;
   private final OneginiCustomAuthMobileAuthenticationAction mobileAuthenticationAction;
 
-  public SimpleCustomAuthenticator(final Context context) {
-    registrationAction = new SimpleCustomAuthRegistrationAction(context);
-    deregistrationAction = new SimpleCustomAuthDeregistrationAction(context);
-    authAuthenticationAction = new SimpleCustomAuthAuthenticationAction(context);
-    mobileAuthenticationAction = new SimpleCustomAuthMobileAuthenticationAction();
+  public BasicCustomAuthenticator(final Context context) {
+    registrationAction = new BasicCustomAuthRegistrationAction(context);
+    deregistrationAction = new BasicCustomAuthDeregistrationAction(context);
+    authAuthenticationAction = new BasicCustomAuthAuthenticationAction(context);
+    mobileAuthenticationAction = new BasicCustomAuthMobileAuthenticationAction();
   }
 
   @Override
