@@ -29,14 +29,14 @@ import com.onegini.mobile.sdk.android.handlers.request.OneginiCustomAuthenticati
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomCallback;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
-public class SimpleCustomAuthenticationRequestHandler implements OneginiCustomAuthenticationRequestHandler {
+public class BasicCustomAuthenticationRequestHandler implements OneginiCustomAuthenticationRequestHandler {
 
   public static OneginiCustomCallback CALLBACK;
 
   private final Context context;
   private String userProfileId;
 
-  public SimpleCustomAuthenticationRequestHandler(final Context context) {
+  public BasicCustomAuthenticationRequestHandler(final Context context) {
     this.context = context;
   }
 

@@ -21,7 +21,7 @@ import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomCal
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
 
 // todo SDKAND-359
-public class MobileAuthenticationSimpleCustomRequestHandler implements OneginiMobileAuthWithPushCustomRequestHandler {
+public class MobileAuthenticationBasicCustomRequestHandler implements OneginiMobileAuthWithPushCustomRequestHandler {
 
   @Override
   public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest,

@@ -20,7 +20,7 @@ import android.os.Bundle;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.view.handler.SimpleCustomAuthenticationRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.BasicCustomAuthenticationRequestHandler;
 
 public class CustomAuthActivity extends AuthenticationActivity {
 
@@ -41,16 +41,16 @@ public class CustomAuthActivity extends AuthenticationActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.auth_accept_button)
   public void onAcceptClicked() {
-    if (SimpleCustomAuthenticationRequestHandler.CALLBACK != null) {
-      SimpleCustomAuthenticationRequestHandler.CALLBACK.acceptAuthenticationRequest();
+    if (BasicCustomAuthenticationRequestHandler.CALLBACK != null) {
+      BasicCustomAuthenticationRequestHandler.CALLBACK.acceptAuthenticationRequest();
     }
   }
 
   @SuppressWarnings("unused")
   @OnClick(R.id.auth_deny_button)
   public void onDenyClicked() {
-    if (SimpleCustomAuthenticationRequestHandler.CALLBACK != null) {
-      SimpleCustomAuthenticationRequestHandler.CALLBACK.denyAuthenticationRequest();
+    if (BasicCustomAuthenticationRequestHandler.CALLBACK != null) {
+      BasicCustomAuthenticationRequestHandler.CALLBACK.denyAuthenticationRequest();
     }
   }
 
@@ -58,8 +58,8 @@ public class CustomAuthActivity extends AuthenticationActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.fallback_to_pin_button)
   public void onFallbackClicked() {
-    if (SimpleCustomAuthenticationRequestHandler.CALLBACK != null) {
-      SimpleCustomAuthenticationRequestHandler.CALLBACK.fallbackToPin();
+    if (BasicCustomAuthenticationRequestHandler.CALLBACK != null) {
+      BasicCustomAuthenticationRequestHandler.CALLBACK.fallbackToPin();
     }
   }
 }

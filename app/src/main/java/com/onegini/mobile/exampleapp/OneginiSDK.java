@@ -28,10 +28,10 @@ import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFidoReques
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFingerprintRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationRequestHandler;
-import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationSimpleCustomRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationBasicCustomRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.PinAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.RegistrationRequestHandler;
-import com.onegini.mobile.exampleapp.view.handler.SimpleCustomAuthenticationRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.BasicCustomAuthenticationRequestHandler;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.client.OneginiClientBuilder;
 
@@ -57,12 +57,12 @@ public class OneginiSDK {
         // handlers for optional functionalities
         .setFingerprintAuthenticatioRequestHandler(new FingerprintAuthenticationRequestHandler(applicationContext))
         .setFidoAuthenticationRequestHandler(new FidoAuthenticationRequestHandler(applicationContext))
-        .setCustomAuthenticationRequestHandler(new SimpleCustomAuthenticationRequestHandler(context))
+        .setCustomAuthenticationRequestHandler(new BasicCustomAuthenticationRequestHandler(context))
         .setMobileAuthWithPushRequestHandler(new MobileAuthenticationRequestHandler(applicationContext))
         .setMobileAuthWithPushPinRequestHandler(new MobileAuthenticationPinRequestHandler(applicationContext))
         .setMobileAuthWithPushFingerprintRequestHandler(new MobileAuthenticationFingerprintRequestHandler(applicationContext))
         .setMobileAuthWithPushFidoRequestHandler(new MobileAuthenticationFidoRequestHandler(applicationContext))
-        .setMobileAuthWithPushCustomRequestHandler(new MobileAuthenticationSimpleCustomRequestHandler())
+        .setMobileAuthWithPushCustomRequestHandler(new MobileAuthenticationBasicCustomRequestHandler())
         .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler())
         .addCustomAuthenticator(basicCustomAuthenticator)
         // Set http connect / read timeout
