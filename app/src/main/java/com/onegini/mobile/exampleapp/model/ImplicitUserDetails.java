@@ -19,28 +19,13 @@ package com.onegini.mobile.exampleapp.model;
 import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings("unused")
-public class ApplicationDetails {
+public class ImplicitUserDetails {
 
-  @SerializedName("application_identifier")
-  private String applicationIdentifier;
-  @SerializedName("application_platform")
-  private String applicationPlatform;
-  @SerializedName("application_version")
-  private String applicationVersion;
+  @SerializedName("decorated_user_id")
+  private String decoratedUserId;
 
-  private String getApplicationIdentifier() {
-    return applicationIdentifier;
-  }
-
-  private String getApplicationPlatform() {
-    return applicationPlatform;
-  }
-
-  private String getApplicationVersion() {
-    return applicationVersion;
-  }
-
-  public String getApplicationDetailsCombined() {
-    return String.format("%s %s %s", getApplicationPlatform(), getApplicationIdentifier(), getApplicationVersion());
+  @Override
+  public String toString() {
+    return decoratedUserId;
   }
 }

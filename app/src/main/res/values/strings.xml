@@ -67,4 +67,5 @@
     <string name="btn_auth_cancel_label">CANCEL</string>
     <string name="push_token_is_null_error_message">The push token is null, check if your Firebase configuration in google-services.json file is valid.</string>
     <string name="use_preferred_authenticator_label">USE PREFERRED AUTHENTICATOR</string>
+    <string name="implicit_user_details_fetch_failed_label">Implicit user details fetch failed</string>
 </resources>

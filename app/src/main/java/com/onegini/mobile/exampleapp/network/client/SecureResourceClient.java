@@ -19,8 +19,9 @@ package com.onegini.mobile.exampleapp.network.client;
 import android.content.Context;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit.Ok3Client;
-import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.exampleapp.OneginiSDK;
+import com.onegini.mobile.sdk.android.client.OneginiClient;
+import okhttp3.OkHttpClient;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 import retrofit2.Retrofit;
@@ -31,46 +32,59 @@ public class SecureResourceClient {
 
   private static final GsonConverter gsonConverter = new GsonConverter(new GsonBuilder().disableHtmlEscaping().create());
 
+  private SecureResourceClient() {
+  }
+
+  /*
+   * user clients
+   */
+
   // preparing the client using Retrofit 1.9
   public static <T> T prepareSecuredUserRetrofitClient(final Class<T> clazz, final Context context) {
-    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
-    final RestAdapter restAdapter = new RestAdapter.Builder()
-        .setClient(new Ok3Client(oneginiClient.getUserClient().getResourceOkHttpClient()))
-        .setEndpoint(oneginiClient.getConfigModel().getResourceBaseUrl())
-        .setConverter(gsonConverter)
-        .build();
-    return restAdapter.create(clazz);
+    return prepareSecuredRetrofitClient(clazz, context, OneginiSDK.getOneginiClient(context).getUserClient().getResourceOkHttpClient());
   }
 
   // preparing the client using Retrofit 2.X
   public static <T> T prepareSecuredUserRetrofit2Client(final Class<T> clazz, final Context context) {
-    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
-    final Retrofit retrofit = new Retrofit.Builder()
-        .client(oneginiClient.getUserClient().getResourceOkHttpClient())
-        .baseUrl(oneginiClient.getConfigModel().getResourceBaseUrl() + "/") // In Retrofit 2.X the base URL should end with '/'
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-        .build();
-
-    return retrofit.create(clazz);
+    return prepareSecuredRetrofit2Client(clazz, context, OneginiSDK.getOneginiClient(context).getUserClient().getResourceOkHttpClient());
   }
+
+  /*
+   * implicit user clients
+   */
+
+  // preparing the client using Retrofit 1.9
+  public static <T> T prepareSecuredImplicitUserRetrofitClient(final Class<T> clazz, final Context context) {
+    return prepareSecuredRetrofitClient(clazz, context, OneginiSDK.getOneginiClient(context).getUserClient().getImplicitResourceOkHttpClient());
+  }
+
+  // preparing the client using Retrofit 2.X
+  public static <T> T prepareSecuredImplicitUserRetrofit2Client(final Class<T> clazz, final Context context) {
+    return prepareSecuredRetrofit2Client(clazz, context, OneginiSDK.getOneginiClient(context).getUserClient().getImplicitResourceOkHttpClient());
+  }
+
+  /*
+   * anonymous clients
+   */
 
   // preparing the client using Retrofit 1.9
   public static <T> T prepareSecuredAnonymousRetrofitClient(final Class<T> clazz, final Context context) {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
-    final RestAdapter restAdapter = new RestAdapter.Builder()
-        .setClient(new Ok3Client(oneginiClient.getDeviceClient().getAnonymousResourceOkHttpClient()))
-        .setEndpoint(oneginiClient.getConfigModel().getResourceBaseUrl())
-        .setConverter(gsonConverter)
-        .build();
-    return restAdapter.create(clazz);
+    return prepareSecuredRetrofitClient(clazz, context, oneginiClient.getDeviceClient().getAnonymousResourceOkHttpClient());
   }
 
   // preparing the client using Retrofit 2.X
   public static <T> T prepareSecuredAnonymousRetrofit2Client(final Class<T> clazz, final Context context) {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
+    return prepareSecuredRetrofit2Client(clazz, context, oneginiClient.getDeviceClient().getAnonymousResourceOkHttpClient());
+  }
+
+
+  // preparing the client using Retrofit 2.X
+  private static <T> T prepareSecuredRetrofit2Client(final Class<T> clazz, final Context context, final OkHttpClient okHttpClient) {
+    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
     final Retrofit retrofit = new Retrofit.Builder()
-        .client(oneginiClient.getDeviceClient().getAnonymousResourceOkHttpClient())
+        .client(okHttpClient)
         .baseUrl(oneginiClient.getConfigModel().getResourceBaseUrl() + "/") // In Retrofit 2.X the base URL should end with '/'
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -78,4 +92,16 @@ public class SecureResourceClient {
 
     return retrofit.create(clazz);
   }
+
+  // preparing the client using Retrofit 1.9
+  private static <T> T prepareSecuredRetrofitClient(final Class<T> clazz, final Context context, final OkHttpClient okHttpClient) {
+    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
+    final RestAdapter restAdapter = new RestAdapter.Builder()
+        .setClient(new Ok3Client(okHttpClient))
+        .setEndpoint(oneginiClient.getConfigModel().getResourceBaseUrl())
+        .setConverter(gsonConverter)
+        .build();
+    return restAdapter.create(clazz);
+  }
+
 }

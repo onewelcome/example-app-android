@@ -38,24 +38,36 @@
             tools:ignore="contentDescription" />
 
         <TextView
+            android:id="@+id/label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:id="@+id/label"
             android:paddingTop="@dimen/activity_margin"
             android:textSize="18sp"
             android:text="@string/app_name"
             android:layout_below="@+id/img_logo" />
 
+        <TextView
+            android:id="@+id/implicit_user_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            tools:visibility="gone"
+            android:layout_below="@+id/label"
+            android:layout_marginTop="@dimen/activity_margin"
+            android:layout_marginBottom="@dimen/activity_margin_small"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
         <Spinner
             android:id="@+id/users_spinner"
-            android:layout_marginBottom="@dimen/activity_margin"
-            android:layout_marginTop="@dimen/activity_margin"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
             android:visibility="invisible"
             android:layout_width="fill_parent"
-            android:layout_below="@+id/label"
+            android:layout_below="@+id/implicit_user_details"
             android:layout_height="wrap_content" />
 
         <Button
@@ -68,23 +80,24 @@
             android:text="@string/btn_login_label" />
 
         <android.support.v7.widget.SwitchCompat
-            android:id="@+id/login_with_default_authenticator"
+            android:id="@+id/login_with_preferred_authenticator"
             android:checked="true"
             android:visibility="gone"
             tools:visibility="visible"
             android:text="@string/use_preferred_authenticator_label"
             android:layout_below="@+id/login_button"
+            android:layout_marginBottom="@dimen/activity_margin_small"
             style="@style/SwitchCompatStyle"/>
 
         <TextView
+            android:id="@+id/application_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             tools:visibility="visible"
-            android:id="@+id/application_details"
-            android:layout_below="@+id/login_with_default_authenticator"
+            android:layout_below="@+id/login_with_preferred_authenticator"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/activity_margin_small"
             android:layout_marginLeft="@dimen/activity_margin"
             android:layout_marginRight="@dimen/activity_margin"
             android:gravity="center_horizontal" />
@@ -102,7 +115,7 @@
         android:id="@+id/register_button"
         style="@style/ButtonWideStyle"
         android:layout_width="match_parent"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="40dp"
         android:visibility="invisible"
         tools:visibility="visible"
         android:layout_centerHorizontal="true"
