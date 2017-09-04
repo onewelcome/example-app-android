@@ -68,4 +68,11 @@
     <string name="push_token_is_null_error_message">The push token is null, check if your Firebase configuration in google-services.json file is valid.</string>
     <string name="use_preferred_authenticator_label">USE PREFERRED AUTHENTICATOR</string>
     <string name="implicit_user_details_fetch_failed_label">Implicit user details fetch failed</string>
+    <string name="custom_auth_positive_action">Return success</string>
+    <string name="custom_auth_negative_action">Return failure</string>
+    <string name="custom_auth_error_action">Return error</string>
+    <string name="do_you_want_to_confirm_with_custom_auth">Do you want to authenticate with custom authenticator?</string>
+    <string name="custom_auth_registration_title">Auth registration</string>
+    <string name="custom_auth_deregistration_title">Auth deregistration</string>
+    <string name="custom_auth_authentication_title">Authentication</string>
 </resources>

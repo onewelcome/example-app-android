@@ -15,11 +15,19 @@
   limitations under the License.
   -->
 
-<TextView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_marginTop="@dimen/activity_login_logo_margin_top"
-    android:layout_centerHorizontal="true"
-    android:layout_height="wrap_content"
-    style="@style/Base.TextAppearance.AppCompat.Headline"
-    android:text="@string/welcome_user_text"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/title_text"
+        layout="@layout/view_welcome_user_text"/>
+
+    <include
+        layout="@layout/view_custom_auth_buttons"
+        android:layout_below="@+id/title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

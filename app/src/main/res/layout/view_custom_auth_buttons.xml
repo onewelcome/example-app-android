@@ -15,11 +15,27 @@
   limitations under the License.
   -->
 
-<TextView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_marginTop="@dimen/activity_login_logo_margin_top"
-    android:layout_centerHorizontal="true"
+    android:id="@+id/content_accept_deny"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Base.TextAppearance.AppCompat.Headline"
-    android:text="@string/welcome_user_text"/>
+    android:orientation="vertical"
+    android:layout_marginTop="@dimen/activity_login_logo_margin_top">
+
+    <Button
+        android:id="@+id/custom_auth_positive_button"
+        style="@style/ButtonStyle"
+        android:text="@string/custom_auth_positive_action"/>
+
+    <Button
+        android:id="@+id/custom_auth_negative_button"
+        style="@style/ButtonStyle"
+        android:text="@string/custom_auth_negative_action"/>
+
+    <Button
+        android:id="@+id/custom_auth_error_button"
+        style="@style/ButtonStyle"
+        android:text="@string/custom_auth_error_action"/>
+
+</LinearLayout>
