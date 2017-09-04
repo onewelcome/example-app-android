@@ -71,6 +71,10 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTask"/>
         <activity
+            android:name=".view.activity.CustomAuthActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <activity
             android:name=".view.activity.DashboardActivity"
             android:screenOrientation="portrait"/>
         <activity
@@ -96,6 +100,18 @@
         <activity
             android:name=".view.activity.DevicesListActivity"
             android:parentActivityName=".view.activity.DashboardActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.BasicAuthenticatorRegistrationActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.BasicAuthenticatorDeregistrationActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.BasicAuthenticatorAuthenticationActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <service
