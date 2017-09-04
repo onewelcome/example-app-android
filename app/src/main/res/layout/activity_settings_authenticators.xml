@@ -54,6 +54,7 @@
         android:layout_marginBottom="32dp">
 
         <TextView
+            android:id="@+id/settings_authenticator_selector_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings_authentication_method"
@@ -63,18 +64,23 @@
             android:layout_marginLeft="16dp"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/blue"/>
+            android:textColor="@color/blue" />
 
         <TextView
             android:id="@+id/settings_authenticator_selector_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PIN"
+            android:text="EXPERIMENTAL_AUTHENTICAOTR_ID_TEST"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/settings_authenticator_selector_label"
+            android:layout_toEndOf="@id/settings_authenticator_selector_label"
+            android:gravity="right"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:maxLines="1" />
 
     </RelativeLayout>
 
