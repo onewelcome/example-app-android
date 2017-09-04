@@ -16,21 +16,52 @@
 
 package com.onegini.mobile.exampleapp.view.handler;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
+import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_MESSAGE;
+import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_USER_PROFILE_ID;
+
+import android.content.Context;
+import android.content.Intent;
+import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationCustomActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushCustomRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomCallback;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
 
-// todo SDKAND-359
 public class MobileAuthenticationBasicCustomRequestHandler implements OneginiMobileAuthWithPushCustomRequestHandler {
+
+  public static OneginiCustomCallback CALLBACK;
+
+  private String userProfileId;
+  private String message;
+  private final Context context;
+
+  public MobileAuthenticationBasicCustomRequestHandler(final Context context) {
+    this.context = context;
+  }
 
   @Override
   public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest,
                                   final OneginiCustomCallback oneginiCustomCallback) {
-
+    CALLBACK = oneginiCustomCallback;
+    userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
+    message = oneginiMobileAuthenticationRequest.getMessage();
+    notifyActivity(COMMAND_START);
   }
 
   @Override
   public void finishAuthentication() {
+    notifyActivity(COMMAND_FINISH);
+  }
 
+  private void notifyActivity(final String command) {
+    final Intent intent = new Intent(context, MobileAuthenticationCustomActivity.class);
+    intent.putExtra(EXTRA_COMMAND, command);
+    intent.putExtra(EXTRA_USER_PROFILE_ID, userProfileId);
+    intent.putExtra(EXTRA_MESSAGE, message);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+    context.startActivity(intent);
   }
 }
