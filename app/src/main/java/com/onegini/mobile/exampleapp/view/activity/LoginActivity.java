@@ -39,11 +39,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import butterknife.OnItemSelected;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.ApplicationDetails;
+import com.onegini.mobile.exampleapp.model.ImplicitUserDetails;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.network.AnonymousService;
+import com.onegini.mobile.exampleapp.network.ImplicitUserService;
 import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
@@ -52,9 +55,11 @@ import com.onegini.mobile.exampleapp.view.helper.RegisteredAuthenticatorsMenu;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeviceAuthenticationHandler;
+import com.onegini.mobile.sdk.android.handlers.OneginiImplicitAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiDeviceAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiImplicitTokenRequestError;
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 import rx.Subscription;
@@ -83,8 +88,11 @@ public class LoginActivity extends Activity {
   @Bind(R.id.application_details)
   TextView applicationDetailsTextView;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.login_with_default_authenticator)
+  @Bind(R.id.login_with_preferred_authenticator)
   SwitchCompat usePreferredAuthenticatorSwitchCompat;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.implicit_user_details)
+  TextView implicitUserDetailsTextView;
 
   private List<User> listOfUsers = new ArrayList<>();
   private boolean userIsLoggingIn = false;
@@ -156,7 +164,7 @@ public class LoginActivity extends Activity {
   }
 
   @SuppressWarnings("unused")
-  @OnCheckedChanged(R.id.login_with_default_authenticator)
+  @OnCheckedChanged(R.id.login_with_preferred_authenticator)
   public void usePreferredAuthenticatorSwitchStateChanged() {
     if (usePreferredAuthenticatorSwitchCompat.isChecked()) {
       loginButton.setText(getString(R.string.btn_login_label));
@@ -188,6 +196,65 @@ public class LoginActivity extends Activity {
     final Intent intent = new Intent(this, RegistrationActivity.class);
     startActivity(intent);
     finish();
+  }
+
+  @SuppressWarnings("unused")
+  @OnItemSelected(R.id.users_spinner)
+  void onItemSelected(int position) {
+    final User user = listOfUsers.get(position);
+    getImplicitUserDetails(user.getUserProfile());
+  }
+
+  private void getImplicitUserDetails(final UserProfile userProfile) {
+    OneginiSDK.getOneginiClient(this).getUserClient()
+        .authenticateUserImplicitly(userProfile, new String[]{ "read" }, new OneginiImplicitAuthenticationHandler() {
+          @Override
+          public void onSuccess(final UserProfile profile) {
+            callImplicitResourceCallToFetchImplicitUserDetails();
+          }
+
+          @Override
+          public void onError(final OneginiImplicitTokenRequestError oneginiImplicitTokenRequestError) {
+            handleImplicitAuthenticationErrors(oneginiImplicitTokenRequestError, userProfile);
+            implicitUserDetailsTextView.setText(R.string.implicit_user_details_fetch_failed_label);
+          }
+        });
+  }
+
+  private void callImplicitResourceCallToFetchImplicitUserDetails() {
+    final boolean useRetrofit2 = deviceSettingsStorage.shouldUseRetrofit2();
+    subscription = ImplicitUserService.getInstance(this)
+        .getImplicitUserDetails(useRetrofit2)
+        .subscribe(this::onImplicitUserDetailsFetched, this::onImplicitDetailsFetchFailed);
+  }
+
+  private void onImplicitUserDetailsFetched(final ImplicitUserDetails implicitUserDetails) {
+    implicitUserDetailsTextView.setText(implicitUserDetails.toString());
+  }
+
+  private void onImplicitDetailsFetchFailed(final Throwable throwable) {
+    implicitUserDetailsTextView.setText(R.string.implicit_user_details_fetch_failed_label);
+    throwable.printStackTrace();
+  }
+
+  private void handleImplicitAuthenticationErrors(final OneginiImplicitTokenRequestError error, final UserProfile userProfile) {
+    @OneginiImplicitTokenRequestError.ImplicitTokenRequestErrorType int errorType = error.getErrorType();
+    switch (errorType) {
+      case OneginiImplicitTokenRequestError.USER_DEREGISTERED:
+        onUserDeregistered(userProfile);
+        break;
+      case OneginiImplicitTokenRequestError.DEVICE_DEREGISTERED:
+        onDeviceDeregistered();
+        break;
+      case OneginiImplicitTokenRequestError.NETWORK_CONNECTIVITY_PROBLEM:
+      case OneginiImplicitTokenRequestError.SERVER_NOT_REACHABLE:
+      case OneginiImplicitTokenRequestError.CONFIGURATION_ERROR:
+      case OneginiImplicitTokenRequestError.GENERAL_ERROR:
+      default:
+        // Just display the error for other, less relevant errors
+        error.printStackTrace();
+        break;
+    }
   }
 
   private void setupUserInterface() {
