@@ -18,9 +18,9 @@ package com.onegini.mobile.exampleapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
-@SuppressWarnings("unused")
 public class ImplicitUserDetails {
 
+  @SuppressWarnings("unused")
   @SerializedName("decorated_user_id")
   private String decoratedUserId;
 

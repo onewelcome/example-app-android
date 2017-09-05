@@ -41,12 +41,14 @@ public class SecureResourceClient {
 
   // preparing the client using Retrofit 1.9
   public static <T> T prepareSecuredUserRetrofitClient(final Class<T> clazz, final Context context) {
-    return prepareSecuredRetrofitClient(clazz, context, OneginiSDK.getOneginiClient(context).getUserClient().getResourceOkHttpClient());
+    final OkHttpClient okHttpClient = OneginiSDK.getOneginiClient(context).getUserClient().getResourceOkHttpClient();
+    return prepareSecuredRetrofitClient(clazz, context, okHttpClient);
   }
 
   // preparing the client using Retrofit 2.X
   public static <T> T prepareSecuredUserRetrofit2Client(final Class<T> clazz, final Context context) {
-    return prepareSecuredRetrofit2Client(clazz, context, OneginiSDK.getOneginiClient(context).getUserClient().getResourceOkHttpClient());
+    final OkHttpClient okHttpClient = OneginiSDK.getOneginiClient(context).getUserClient().getResourceOkHttpClient();
+    return prepareSecuredRetrofit2Client(clazz, context, okHttpClient);
   }
 
   /*
@@ -55,12 +57,14 @@ public class SecureResourceClient {
 
   // preparing the client using Retrofit 1.9
   public static <T> T prepareSecuredImplicitUserRetrofitClient(final Class<T> clazz, final Context context) {
-    return prepareSecuredRetrofitClient(clazz, context, OneginiSDK.getOneginiClient(context).getUserClient().getImplicitResourceOkHttpClient());
+    final OkHttpClient okHttpClient = OneginiSDK.getOneginiClient(context).getUserClient().getImplicitResourceOkHttpClient();
+    return prepareSecuredRetrofitClient(clazz, context, okHttpClient);
   }
 
   // preparing the client using Retrofit 2.X
   public static <T> T prepareSecuredImplicitUserRetrofit2Client(final Class<T> clazz, final Context context) {
-    return prepareSecuredRetrofit2Client(clazz, context, OneginiSDK.getOneginiClient(context).getUserClient().getImplicitResourceOkHttpClient());
+    final OkHttpClient okHttpClient = OneginiSDK.getOneginiClient(context).getUserClient().getImplicitResourceOkHttpClient();
+    return prepareSecuredRetrofit2Client(clazz, context, okHttpClient);
   }
 
   /*
@@ -69,14 +73,14 @@ public class SecureResourceClient {
 
   // preparing the client using Retrofit 1.9
   public static <T> T prepareSecuredAnonymousRetrofitClient(final Class<T> clazz, final Context context) {
-    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
-    return prepareSecuredRetrofitClient(clazz, context, oneginiClient.getDeviceClient().getAnonymousResourceOkHttpClient());
+    final OkHttpClient okHttpClient = OneginiSDK.getOneginiClient(context).getDeviceClient().getAnonymousResourceOkHttpClient();
+    return prepareSecuredRetrofitClient(clazz, context, okHttpClient);
   }
 
   // preparing the client using Retrofit 2.X
   public static <T> T prepareSecuredAnonymousRetrofit2Client(final Class<T> clazz, final Context context) {
-    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
-    return prepareSecuredRetrofit2Client(clazz, context, oneginiClient.getDeviceClient().getAnonymousResourceOkHttpClient());
+    final OkHttpClient okHttpClient = OneginiSDK.getOneginiClient(context).getDeviceClient().getAnonymousResourceOkHttpClient();
+    return prepareSecuredRetrofit2Client(clazz, context, okHttpClient);
   }
 
 

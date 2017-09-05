@@ -28,15 +28,15 @@ public class ApplicationDetails {
   @SerializedName("application_version")
   private String applicationVersion;
 
-  private String getApplicationIdentifier() {
+  public String getApplicationIdentifier() {
     return applicationIdentifier;
   }
 
-  private String getApplicationPlatform() {
+  public String getApplicationPlatform() {
     return applicationPlatform;
   }
 
-  private String getApplicationVersion() {
+  public String getApplicationVersion() {
     return applicationVersion;
   }
 

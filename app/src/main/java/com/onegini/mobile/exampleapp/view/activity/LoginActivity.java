@@ -237,7 +237,7 @@ public class LoginActivity extends Activity {
     throwable.printStackTrace();
   }
 
-  private void handleImplicitAuthenticationErrors(OneginiImplicitTokenRequestError error, final UserProfile userProfile) {
+  private void handleImplicitAuthenticationErrors(final OneginiImplicitTokenRequestError error, final UserProfile userProfile) {
     @OneginiImplicitTokenRequestError.ImplicitTokenRequestErrorType int errorType = error.getErrorType();
     switch (errorType) {
       case OneginiImplicitTokenRequestError.USER_DEREGISTERED:

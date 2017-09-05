@@ -49,8 +49,7 @@ public class ImplicitUserService {
   public Observable<ImplicitUserDetails> getImplicitUserDetails(final boolean useRetrofit2) {
     return getObservable(useRetrofit2)
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .unsubscribeOn(Schedulers.io());
+        .observeOn(AndroidSchedulers.mainThread());
   }
 
   private Observable<ImplicitUserDetails> getObservable(final boolean useRetrofit2) {
