@@ -61,6 +61,7 @@
 
     <include
         layout="@layout/view_auth_accept_deny_buttons"
+        android:id="@+id/content_accept_deny"
         android:layout_below="@+id/content_fingerprint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

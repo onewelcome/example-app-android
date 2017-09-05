@@ -62,7 +62,7 @@ public class OneginiSDK {
         .setMobileAuthWithPushPinRequestHandler(new MobileAuthenticationPinRequestHandler(applicationContext))
         .setMobileAuthWithPushFingerprintRequestHandler(new MobileAuthenticationFingerprintRequestHandler(applicationContext))
         .setMobileAuthWithPushFidoRequestHandler(new MobileAuthenticationFidoRequestHandler(applicationContext))
-        .setMobileAuthWithPushCustomRequestHandler(new MobileAuthenticationBasicCustomRequestHandler())
+        .setMobileAuthWithPushCustomRequestHandler(new MobileAuthenticationBasicCustomRequestHandler(applicationContext))
         .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler())
         .addCustomAuthenticator(basicCustomAuthenticator)
         // Set http connect / read timeout

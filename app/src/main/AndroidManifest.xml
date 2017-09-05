@@ -98,6 +98,10 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".view.activity.MobileAuthenticationCustomActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".view.activity.DevicesListActivity"
             android:parentActivityName=".view.activity.DashboardActivity"
             android:screenOrientation="portrait"/>
