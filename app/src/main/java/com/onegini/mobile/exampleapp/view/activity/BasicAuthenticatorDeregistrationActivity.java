@@ -23,7 +23,7 @@ public class BasicAuthenticatorDeregistrationActivity extends BasicAuthenticator
 
   @Override
   protected void setTitle() {
-    titleText.setText(R.string.custom_auth_registration_title);
+    titleText.setText(R.string.custom_auth_deregistration_title);
   }
 
   @Override
