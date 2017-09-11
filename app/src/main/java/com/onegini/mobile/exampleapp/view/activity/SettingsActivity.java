@@ -184,7 +184,7 @@ public class SettingsActivity extends AppCompatActivity {
     OneginiSDK.getOneginiClient(this).getUserClient().changePin(new OneginiChangePinHandler() {
       @Override
       public void onSuccess() {
-        message.setText(R.string.change_pin_finished_succesfully);
+        message.setText(R.string.change_pin_finished_successfully);
       }
 
       @Override
