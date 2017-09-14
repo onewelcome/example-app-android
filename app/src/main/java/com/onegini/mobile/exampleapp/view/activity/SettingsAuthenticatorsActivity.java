@@ -64,6 +64,9 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @Bind(R.id.authenticators_list)
   RecyclerView authenticatorsRecyclerView;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @Bind(R.id.message)
+  TextView errorMessageTextView;
 
   private AuthenticatorListItem[] authenticators;
   private AuthenticatorsAdapter authenticatorsAdapter;
@@ -183,6 +186,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
       public void onSuccess() {
         authenticators[position].setIsProcessed(false);
         prepareAuthenticatorsList();
+        clearErrorMessage();
         Toast.makeText(SettingsAuthenticatorsActivity.this, "Authenticator registered", Toast.LENGTH_SHORT).show();
       }
 
@@ -211,6 +215,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
           setPinAsPreferredAuthenticator();
         }
         prepareAuthenticatorsList();
+        clearErrorMessage();
         Toast.makeText(SettingsAuthenticatorsActivity.this, "Authenticator deregistered", Toast.LENGTH_SHORT).show();
       }
 
@@ -231,7 +236,11 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
   private void onErrorOccurred(int position, String errorDescription) {
     authenticators[position].setIsProcessed(false);
-    Toast.makeText(SettingsAuthenticatorsActivity.this, errorDescription, Toast.LENGTH_SHORT).show();
+    errorMessageTextView.setText(errorDescription);
+  }
+
+  private void clearErrorMessage() {
+    errorMessageTextView.setText("");
   }
 
   private void setPinAsPreferredAuthenticator() {
