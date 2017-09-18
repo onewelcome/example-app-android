@@ -62,7 +62,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/message"
-                android:textAlignment="center"/>
+                android:layout_margin="16dp"
+                android:textAlignment="center"
+                android:ellipsize="end"
+                android:maxLines="3"/>
             <Button
                 android:id="@+id/button_mobile_authentication"
                 style="@style/ButtonStyle"

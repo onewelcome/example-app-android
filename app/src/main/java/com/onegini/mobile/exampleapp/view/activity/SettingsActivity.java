@@ -26,7 +26,6 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -106,6 +105,7 @@ public class SettingsActivity extends AppCompatActivity {
   private void setupView() {
     setupActionBar();
     setupMobileAuthButtons();
+    message.setText("");
   }
 
   private void setupMobileAuthButtons() {
@@ -138,7 +138,7 @@ public class SettingsActivity extends AppCompatActivity {
       @Override
       public void onSuccess() {
         onMobileAuthEnabled();
-        showToast("Mobile authentication enabled");
+        message.setText(R.string.enable_mobile_authentication_finished_successfully);
       }
 
       @Override
@@ -147,8 +147,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (errorType == OneginiMobileAuthEnrollmentError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
         }
-
-        showToast("Mobile authentication error - " + error.getMessage());
+        message.setText(error.getMessage());
       }
     };
     OneginiSDK.getOneginiClient(this).getUserClient().enrollUserForMobileAuth(mobileAuthEnrollmentHandler);
@@ -160,7 +159,6 @@ public class SettingsActivity extends AppCompatActivity {
     final OneginiMobileAuthWithPushEnrollmentHandler mobileAuthWithPushEnrollmentHandler = new OneginiMobileAuthWithPushEnrollmentHandler() {
       @Override
       public void onSuccess() {
-        showToast("Mobile authentication enabled");
         mobileAuthPushButton.setText(R.string.settings_mobile_push_enrollment_on);
       }
 
@@ -171,7 +169,7 @@ public class SettingsActivity extends AppCompatActivity {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
         }
 
-        showToast("Mobile authentication error - " + error.getMessage());
+        message.setText(error.getMessage());
       }
     };
     final FCMRegistrationService FCMRegistrationService = new FCMRegistrationService(this);
@@ -213,10 +211,6 @@ public class SettingsActivity extends AppCompatActivity {
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     startActivity(intent);
     finish();
-  }
-
-  private void showToast(final String message) {
-    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
   }
 
   private void onMobileAuthEnabled() {
