@@ -76,4 +76,5 @@
     <string name="custom_auth_deregistration_title">Auth deregistration</string>
     <string name="custom_auth_authentication_title">Authentication</string>
     <string name="enable_mobile_authentication_finished_successfully">Mobile authentication enabled</string>
+    <string name="enable_mobile_authentication_with_push_finished_successfully">Mobile authentication with push enabled</string>
 </resources>
