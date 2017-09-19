@@ -105,7 +105,6 @@ public class SettingsActivity extends AppCompatActivity {
   private void setupView() {
     setupActionBar();
     setupMobileAuthButtons();
-    message.setText("");
   }
 
   private void setupMobileAuthButtons() {
