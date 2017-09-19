@@ -91,7 +91,6 @@ public class DashboardActivity extends AppCompatActivity {
           @Override
           public void onSuccess() {
             // Go to login screen
-            showToast("logoutSuccess");
             startLoginActivity();
           }
 
