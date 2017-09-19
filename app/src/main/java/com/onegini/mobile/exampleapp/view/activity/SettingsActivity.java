@@ -105,7 +105,6 @@ public class SettingsActivity extends AppCompatActivity {
   private void setupView() {
     setupActionBar();
     setupMobileAuthButtons();
-    message.setText("");
   }
 
   private void setupMobileAuthButtons() {
@@ -160,6 +159,7 @@ public class SettingsActivity extends AppCompatActivity {
       @Override
       public void onSuccess() {
         mobileAuthPushButton.setText(R.string.settings_mobile_push_enrollment_on);
+        message.setText(R.string.enable_mobile_authentication_with_push_finished_successfully);
       }
 
       @Override
