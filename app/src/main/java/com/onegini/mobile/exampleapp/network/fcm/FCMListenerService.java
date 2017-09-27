@@ -37,6 +37,7 @@ import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiInitializationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationError;
+import com.onegini.mobile.sdk.android.model.entity.CustomAuthenticatorInfo;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class FCMListenerService extends FirebaseMessagingService {
@@ -85,7 +86,7 @@ public class FCMListenerService extends FirebaseMessagingService {
   private void handleMobileAuthenticationRequest(final RemoteMessage data) {
     OneginiSDK.getOneginiClient(this).getUserClient().handleMobileAuthWithPushRequest(data, new OneginiMobileAuthenticationHandler() {
       @Override
-      public void onSuccess() {
+      public void onSuccess(final CustomAuthenticatorInfo customAuthenticatorInfo) {
         Toast.makeText(FCMListenerService.this, "Mobile authentication success", Toast.LENGTH_SHORT).show();
       }
 
