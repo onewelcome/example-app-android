@@ -36,7 +36,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -56,16 +57,16 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.toolbar)
+  @BindView(R.id.toolbar)
   Toolbar toolbar;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.settings_authenticator_selector_text)
+  @BindView(R.id.settings_authenticator_selector_text)
   TextView loginMethodTextView;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.authenticators_list)
+  @BindView(R.id.authenticators_list)
   RecyclerView authenticatorsRecyclerView;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.message)
+  @BindView(R.id.message)
   TextView errorMessageTextView;
 
   private AuthenticatorListItem[] authenticators;

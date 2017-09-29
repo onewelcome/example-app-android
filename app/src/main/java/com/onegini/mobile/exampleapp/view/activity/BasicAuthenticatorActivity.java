@@ -20,7 +20,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
@@ -28,16 +29,16 @@ import com.onegini.mobile.exampleapp.R;
 public abstract class BasicAuthenticatorActivity extends AppCompatActivity {
 
   @SuppressWarnings({ "unused" })
-  @Bind(R.id.title_text)
+  @BindView(R.id.title_text)
   TextView titleText;
   @SuppressWarnings({ "unused" })
-  @Bind(R.id.custom_auth_positive_button)
+  @BindView(R.id.custom_auth_positive_button)
   Button positiveButton;
   @SuppressWarnings({ "unused" })
-  @Bind(R.id.custom_auth_negative_button)
+  @BindView(R.id.custom_auth_negative_button)
   Button negativeButton;
   @SuppressWarnings({ "unused" })
-  @Bind(R.id.custom_auth_error_button)
+  @BindView(R.id.custom_auth_error_button)
   Button errorButton;
 
   @Override

@@ -29,7 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.Constants;
@@ -48,22 +48,22 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 public class RegistrationActivity extends Activity {
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.name_edit_text)
+  @BindView(R.id.name_edit_text)
   EditText nameEditText;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.create_profile_button)
+  @BindView(R.id.create_profile_button)
   Button createProfileButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.cancel_registration_button)
+  @BindView(R.id.cancel_registration_button)
   Button cancelRegistrationButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.progress_bar_register)
+  @BindView(R.id.progress_bar_register)
   ProgressBar progressBar;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.layout_register_content)
+  @BindView(R.id.layout_register_content)
   LinearLayout layoutRegisterContent;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.user_profile_debug)
+  @BindView(R.id.user_profile_debug)
   TextView userProfileDebugText;
 
   private UserProfile registeredProfile;

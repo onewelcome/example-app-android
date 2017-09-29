@@ -18,14 +18,14 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import android.view.View;
 import android.widget.Button;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequestHandler;
 
 public class MobileAuthenticationPinActivity extends PinActivity {
 
-  @Bind(R.id.auth_deny_button)
+  @BindView(R.id.auth_deny_button)
   Button denyButton;
 
   @Override

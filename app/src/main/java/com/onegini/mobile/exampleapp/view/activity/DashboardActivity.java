@@ -23,7 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -44,10 +44,10 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 public class DashboardActivity extends AppCompatActivity {
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.toolbar)
+  @BindView(R.id.toolbar)
   Toolbar toolbar;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.dashboard_welcome_text)
+  @BindView(R.id.dashboard_welcome_text)
   TextView dashboardWelcomeText;
 
   private UserStorage userStorage;

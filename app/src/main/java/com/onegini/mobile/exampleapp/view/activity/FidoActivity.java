@@ -21,7 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
@@ -29,11 +29,11 @@ import com.onegini.mobile.exampleapp.view.handler.FidoAuthenticationRequestHandl
 
 public class FidoActivity extends AuthenticationActivity {
 
-  @Bind(R.id.content_accept_deny)
+  @BindView(R.id.content_accept_deny)
   LinearLayout layoutAcceptDeny;
-  @Bind(R.id.fallback_to_pin_button)
+  @BindView(R.id.fallback_to_pin_button)
   Button fallbackToPinButton;
-  @Bind(R.id.fido_progressbar)
+  @BindView(R.id.fido_progressbar)
   ProgressBar progressBar;
 
   @Override

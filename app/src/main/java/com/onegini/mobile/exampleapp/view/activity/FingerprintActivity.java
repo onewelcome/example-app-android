@@ -25,7 +25,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
@@ -34,13 +34,13 @@ import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationReque
 
 public class FingerprintActivity extends AuthenticationActivity {
 
-  @Bind(R.id.action_text)
+  @BindView(R.id.action_text)
   TextView actionTextView;
-  @Bind(R.id.content_fingerprint)
+  @BindView(R.id.content_fingerprint)
   LinearLayout layoutFingerprint;
-  @Bind(R.id.content_accept_deny)
+  @BindView(R.id.content_accept_deny)
   LinearLayout layoutAcceptDeny;
-  @Bind(R.id.fallback_to_pin_button)
+  @BindView(R.id.fallback_to_pin_button)
   Button fallbackToPinButton;
 
   @Override
