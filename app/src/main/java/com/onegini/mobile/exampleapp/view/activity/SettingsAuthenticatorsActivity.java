@@ -51,6 +51,7 @@ import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticatorRegistrationH
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorDeregistrationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorRegistrationError;
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
+import com.onegini.mobile.sdk.android.model.entity.CustomAuthenticatorInfo;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class SettingsAuthenticatorsActivity extends AppCompatActivity {
@@ -183,7 +184,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   private void registerAuthenticator(final OneginiAuthenticator authenticator, final int position) {
     userClient.registerAuthenticator(authenticator, new OneginiAuthenticatorRegistrationHandler() {
       @Override
-      public void onSuccess() {
+      public void onSuccess(final CustomAuthenticatorInfo customAuthenticatorInfo) {
         authenticators[position].setIsProcessed(false);
         prepareAuthenticatorsList();
         clearErrorMessage();
@@ -191,7 +192,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
       }
 
       @Override
-      public void onError(final OneginiAuthenticatorRegistrationError error) {
+      public void onError(final OneginiAuthenticatorRegistrationError error, final CustomAuthenticatorInfo customAuthenticatorInfo) {
         @OneginiAuthenticatorRegistrationError.AuthenticatorRegistrationErrorType int errorType = error.getErrorType();
         if (errorType == OneginiAuthenticatorRegistrationError.USER_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onUserDeregistered(authenticatedUserProfile);

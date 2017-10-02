@@ -61,6 +61,7 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiDeviceAuthentication
 import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiImplicitTokenRequestError;
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
+import com.onegini.mobile.sdk.android.model.entity.CustomAuthenticatorInfo;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 import rx.Subscription;
 
@@ -307,12 +308,12 @@ public class LoginActivity extends Activity {
     return new OneginiAuthenticationHandler() {
 
       @Override
-      public void onSuccess(final UserProfile userProfile) {
+      public void onSuccess(final UserProfile userProfile, final CustomAuthenticatorInfo customAuthenticatorInfo) {
         startDashboardActivity();
       }
 
       @Override
-      public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
+      public void onError(final OneginiAuthenticationError oneginiAuthenticationError, final CustomAuthenticatorInfo customAuthenticatorInfo) {
         LoginActivity.this.onError(oneginiAuthenticationError, userProfile);
       }
     };
