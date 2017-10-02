@@ -26,7 +26,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.google.android.gms.common.ConnectionResult;
@@ -48,24 +48,24 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 public class SettingsActivity extends AppCompatActivity {
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.toolbar)
+  @BindView(R.id.toolbar)
   Toolbar toolbar;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.button_mobile_authentication)
+  @BindView(R.id.button_mobile_authentication)
   Button mobileAuthButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.button_mobile_authentication_push)
+  @BindView(R.id.button_mobile_authentication_push)
   Button mobileAuthPushButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.button_change_pin)
+  @BindView(R.id.button_change_pin)
   Button changePinButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.button_change_authentication)
+  @BindView(R.id.button_change_authentication)
   Button changeAuthentication;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.retrofit_radio)
+  @BindView(R.id.retrofit_radio)
   RadioGroup retrofitRadio;
-  @Bind(R.id.message)
+  @BindView(R.id.message)
   TextView message;
   @SuppressWarnings({ "unused", "WeakerAccess" })
 

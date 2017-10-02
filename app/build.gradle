@@ -22,6 +22,11 @@ allprojects {
   repositories {
     mavenLocal()
     mavenCentral()
+    // REQUIRED: Google's new Maven repo is required for the latest
+    // support library that is compatible with Android 8.0
+    maven {
+      url 'https://maven.google.com'
+    }
     if (project.hasProperty('artifactory_user') && project.hasProperty('artifactory_password')) {
       maven {
         url "https://repo.onegini.com/artifactory/public"
@@ -38,8 +43,8 @@ allprojects {
 }
 
 android {
-  compileSdkVersion 25
-  buildToolsVersion "25.0.3"
+  compileSdkVersion 26
+  buildToolsVersion '26.0.2'
 
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
@@ -49,7 +54,7 @@ android {
   defaultConfig {
     applicationId "com.onegini.mobile.exampleapp"
     minSdkVersion 16
-    targetSdkVersion 25
+    targetSdkVersion 26
     versionCode 9
     versionName "3.0.1"
     multiDexEnabled true
@@ -73,7 +78,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  compile('com.onegini.mobile.sdk.android:onegini-sdk:7.1.0-SNAPSHOT@aar') {
+  compile('com.onegini.mobile.sdk.android:onegini-sdk:8.0.0-BETA-SNAPSHOT@aar') {
     transitive = true
   }
 
@@ -84,9 +89,9 @@ dependencies {
   compile 'com.jakewharton.retrofit:retrofit1-okhttp3-client:1.1.0'
 
   // Google Support
-  compile 'com.android.support:appcompat-v7:25.3.1'
-  compile 'com.android.support:cardview-v7:25.3.1'
-  compile 'com.android.support:recyclerview-v7:25.3.1'
+  compile 'com.android.support:appcompat-v7:26.0.1'
+  compile 'com.android.support:cardview-v7:26.0.1'
+  compile 'com.android.support:recyclerview-v7:26.0.1'
 
   // Google Play Services availability check
   compile 'com.google.android.gms:play-services-base:11.0.2'
@@ -95,7 +100,8 @@ dependencies {
   // Support for multidex
   compile 'com.android.support:multidex:1.0.1'
   // DI for views
-  compile 'com.jakewharton:butterknife:7.0.1'
+  compile 'com.jakewharton:butterknife:8.8.1'
+  annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
   // RxJava
   compile 'io.reactivex:rxandroid:1.2.1'
   compile 'io.reactivex:rxjava:1.2.3'

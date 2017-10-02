@@ -35,7 +35,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
@@ -68,31 +68,31 @@ import rx.Subscription;
 public class LoginActivity extends Activity {
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.label)
+  @BindView(R.id.label)
   TextView label;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.users_spinner)
+  @BindView(R.id.users_spinner)
   Spinner usersSpinner;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.login_button)
+  @BindView(R.id.login_button)
   Button loginButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.register_button)
+  @BindView(R.id.register_button)
   Button registerButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.progress_bar_login)
+  @BindView(R.id.progress_bar_login)
   ProgressBar progressBar;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.layout_login_content)
+  @BindView(R.id.layout_login_content)
   RelativeLayout layoutLoginContent;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.application_details)
+  @BindView(R.id.application_details)
   TextView applicationDetailsTextView;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.login_with_preferred_authenticator)
+  @BindView(R.id.login_with_preferred_authenticator)
   SwitchCompat usePreferredAuthenticatorSwitchCompat;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.implicit_user_details)
+  @BindView(R.id.implicit_user_details)
   TextView implicitUserDetailsTextView;
 
   private List<User> listOfUsers = new ArrayList<>();
