@@ -1,8 +1,6 @@
 # Android Example App
 
-[![Build Status](https://travis-ci.org/Onegini/android-example-app.svg?branch=master)](https://travis-ci.org/Onegini/android-example-app)
-
-The Android Example App is using the Onegini Android SDK to perform secure authentication and resource calls. Please have a look at the 
+The Android Example App is using the Onegini Android SDK to perform secure authentication and resource calls. Please have a look at the
 [App developer quickstart](https://docs.onegini.com/app-developer-quickstart.html) if you want more information about how to get setup with this 
 example app.
 
