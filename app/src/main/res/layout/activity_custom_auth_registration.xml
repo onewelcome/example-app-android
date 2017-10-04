@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright (c) 2016-2017 Onegini B.V.
 
@@ -14,10 +15,19 @@
   limitations under the License.
   -->
 
-<resources>
-    <!-- Example customization of dimensions originally defined in res/values/dimens.xml
-           (such as screen margins) for screens with more than 820dp of available width. This
-           would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
-    <dimen name="activity_margin">64dp</dimen>
-    <dimen name="activity_margin_small">32dp</dimen>
-</resources>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/title_text"
+        layout="@layout/view_welcome_user_text"/>
+
+    <include
+        layout="@layout/view_custom_auth_buttons"
+        android:layout_below="@+id/title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

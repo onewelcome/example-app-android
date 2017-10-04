@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package com.onegini.mobile.exampleapp;
+package com.onegini.mobile.exampleapp.network.client;
 
-public interface Constants {
-  String[] DEFAULT_SCOPES = { "read" };
-  String NEW_LINE = "\n";
-  String FCM_SENDER_ID = "586427927998";
-  String EXTRA_COMMAND = "command";
-  String COMMAND_START = "start";
-  String COMMAND_FINISH = "finish";
-  String COMMAND_SHOW_SCANNING = "show";
-  String COMMAND_RECEIVED_FINGERPRINT = "received";
-  String COMMAND_ASK_TO_ACCEPT_OR_DENY = "ask";
+import com.onegini.mobile.exampleapp.model.ImplicitUserDetails;
+import retrofit.http.GET;
+import rx.Observable;
+
+public interface ImplicitUserClient {
+
+  @GET("/user-id-decorated")
+  Observable<ImplicitUserDetails> getImplicitUserDetails();
 }

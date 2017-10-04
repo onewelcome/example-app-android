@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.onegini.mobile.exampleapp.network.gcm;
+package com.onegini.mobile.exampleapp.network.fcm;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -22,12 +22,12 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import java.util.Set;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
-import com.google.android.gms.gcm.GcmListenerService;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.activity.LoginActivity;
@@ -36,31 +36,31 @@ import com.onegini.mobile.sdk.android.exception.OneginiInitializationException;
 import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiInitializationError;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthEnrollmentError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationError;
+import com.onegini.mobile.sdk.android.model.entity.CustomAuthenticatorInfo;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
-public class GCMListenerService extends GcmListenerService {
+public class FCMListenerService extends FirebaseMessagingService {
 
-  private static final String TAG = GCMListenerService.class.getSimpleName();
+  private static final String TAG = FCMListenerService.class.getSimpleName();
 
 
   @Override
-  public void onMessageReceived(String from, Bundle data) {
-    if (!data.isEmpty()) {
+  public void onMessageReceived(final RemoteMessage message) {
+    if (message != null) {
       Log.i(TAG, "Push message received");
 
       try {
-        handleMobileAuthenticationRequest(data);
+        handleMobileAuthenticationRequest(message);
       } catch (OneginiInitializationException exception) {
         // Onegini SDK hasn't been started yet so we have to do it
         // before handling the mobile authentication request
-        setupOneginiSDK(data);
+        setupOneginiSDK(message);
       }
     }
   }
 
-  private void setupOneginiSDK(final Bundle extras) {
+  private void setupOneginiSDK(final RemoteMessage extras) {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
     oneginiClient.start(new OneginiInitializationHandler() {
       @Override
@@ -83,11 +83,11 @@ public class GCMListenerService extends GcmListenerService {
     });
   }
 
-  private void handleMobileAuthenticationRequest(final Bundle extras) {
-    OneginiSDK.getOneginiClient(this).getUserClient().handleMobileAuthWithPushRequest(extras, new OneginiMobileAuthenticationHandler() {
+  private void handleMobileAuthenticationRequest(final RemoteMessage data) {
+    OneginiSDK.getOneginiClient(this).getUserClient().handleMobileAuthWithPushRequest(data, new OneginiMobileAuthenticationHandler() {
       @Override
-      public void onSuccess() {
-        Toast.makeText(GCMListenerService.this, "Mobile authentication success", Toast.LENGTH_SHORT).show();
+      public void onSuccess(final CustomAuthenticatorInfo customAuthenticatorInfo) {
+        Toast.makeText(FCMListenerService.this, "Mobile authentication success", Toast.LENGTH_SHORT).show();
       }
 
       @Override
@@ -111,11 +111,9 @@ public class GCMListenerService extends GcmListenerService {
     handler.post(() -> Toast.makeText(getApplicationContext(), errorDescription, Toast.LENGTH_SHORT).show());
   }
 
-  private void removeUserProfiles(final Set<UserProfile> removedUserProfiles, final Bundle extras) {
+  private void removeUserProfiles(final Set<UserProfile> removedUserProfiles, final RemoteMessage extras) {
     final DeregistrationUtil deregistrationUtil = new DeregistrationUtil(this);
-    for (final UserProfile userProfile : removedUserProfiles) {
-      deregistrationUtil.onUserDeregistered(userProfile);
-    }
+    removedUserProfiles.forEach(deregistrationUtil::onUserDeregistered);
     handleMobileAuthenticationRequest(extras);
   }
 

@@ -23,7 +23,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
@@ -40,7 +40,7 @@ public class PinActivity extends AuthenticationActivity {
   protected static final int MAX_DIGITS = 5;
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.pin_error_message)
+  @BindView(R.id.pin_error_message)
   TextView errorTextView;
 
 
@@ -124,7 +124,7 @@ public class PinActivity extends AuthenticationActivity {
   }
 
   protected void setCancelButtonVisibility() {
-      cancelButton.setVisibility(View.VISIBLE);
+    cancelButton.setVisibility(View.VISIBLE);
   }
 
   private void initPinInputs() {

@@ -17,7 +17,6 @@
 package com.onegini.mobile.exampleapp.model;
 
 import com.google.gson.annotations.SerializedName;
-import com.onegini.mobile.exampleapp.Constants;
 
 @SuppressWarnings("unused")
 public class ApplicationDetails {
@@ -42,6 +41,6 @@ public class ApplicationDetails {
   }
 
   public String getApplicationDetailsCombined() {
-    return getApplicationIdentifier() + Constants.NEW_LINE + getApplicationPlatform() + Constants.NEW_LINE + getApplicationVersion();
+    return String.format("%s %s %s", getApplicationPlatform(), getApplicationIdentifier(), getApplicationVersion());
   }
 }

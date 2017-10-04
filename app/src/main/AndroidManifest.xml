@@ -17,9 +17,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
           package="com.onegini.mobile.exampleapp">
 
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-
     <uses-permission android:name="org.fidoalliance.uaf.permissions.FIDO_CLIENT"/>
 
     <application
@@ -74,6 +71,10 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTask"/>
         <activity
+            android:name=".view.activity.CustomAuthActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <activity
             android:name=".view.activity.DashboardActivity"
             android:screenOrientation="portrait"/>
         <activity
@@ -97,34 +98,38 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".view.activity.MobileAuthenticationCustomActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".view.activity.DevicesListActivity"
             android:parentActivityName=".view.activity.DashboardActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.BasicAuthenticatorRegistrationActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.BasicAuthenticatorDeregistrationActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.BasicAuthenticatorAuthenticationActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
 
         <service
-            android:name=".network.gcm.GCMListenerService"
-            android:exported="false">
+            android:name=".network.fcm.FCMListenerService">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
         <service
-            android:name=".network.gcm.GCMInstanceIDListenerService"
-            android:exported="false">
+            android:name=".network.fcm.FCMInstanceIdService">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
-
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <category android:name="com.onegini.mobile.exampleapp"/>
-            </intent-filter>
-        </receiver>
 
         <meta-data
             android:name="com.google.android.gms.version"

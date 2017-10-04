@@ -36,7 +36,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -51,19 +52,23 @@ import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticatorRegistrationH
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorDeregistrationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorRegistrationError;
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
+import com.onegini.mobile.sdk.android.model.entity.CustomAuthenticatorInfo;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.toolbar)
+  @BindView(R.id.toolbar)
   Toolbar toolbar;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.settings_authenticator_selector_text)
+  @BindView(R.id.settings_authenticator_selector_text)
   TextView loginMethodTextView;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.authenticators_list)
+  @BindView(R.id.authenticators_list)
   RecyclerView authenticatorsRecyclerView;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @BindView(R.id.message)
+  TextView errorMessageTextView;
 
   private AuthenticatorListItem[] authenticators;
   private AuthenticatorsAdapter authenticatorsAdapter;
@@ -180,14 +185,15 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   private void registerAuthenticator(final OneginiAuthenticator authenticator, final int position) {
     userClient.registerAuthenticator(authenticator, new OneginiAuthenticatorRegistrationHandler() {
       @Override
-      public void onSuccess() {
+      public void onSuccess(final CustomAuthenticatorInfo customAuthenticatorInfo) {
         authenticators[position].setIsProcessed(false);
         prepareAuthenticatorsList();
+        clearErrorMessage();
         Toast.makeText(SettingsAuthenticatorsActivity.this, "Authenticator registered", Toast.LENGTH_SHORT).show();
       }
 
       @Override
-      public void onError(final OneginiAuthenticatorRegistrationError error) {
+      public void onError(final OneginiAuthenticatorRegistrationError error, final CustomAuthenticatorInfo customAuthenticatorInfo) {
         @OneginiAuthenticatorRegistrationError.AuthenticatorRegistrationErrorType int errorType = error.getErrorType();
         if (errorType == OneginiAuthenticatorRegistrationError.USER_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onUserDeregistered(authenticatedUserProfile);
@@ -211,6 +217,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
           setPinAsPreferredAuthenticator();
         }
         prepareAuthenticatorsList();
+        clearErrorMessage();
         Toast.makeText(SettingsAuthenticatorsActivity.this, "Authenticator deregistered", Toast.LENGTH_SHORT).show();
       }
 
@@ -231,7 +238,11 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
   private void onErrorOccurred(int position, String errorDescription) {
     authenticators[position].setIsProcessed(false);
-    Toast.makeText(SettingsAuthenticatorsActivity.this, errorDescription, Toast.LENGTH_SHORT).show();
+    errorMessageTextView.setText(errorDescription);
+  }
+
+  private void clearErrorMessage() {
+    errorMessageTextView.setText("");
   }
 
   private void setPinAsPreferredAuthenticator() {

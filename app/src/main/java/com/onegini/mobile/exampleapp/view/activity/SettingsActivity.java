@@ -26,15 +26,14 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.network.gcm.GCMRegistrationService;
+import com.onegini.mobile.exampleapp.network.fcm.FCMRegistrationService;
 import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.client.UserClient;
@@ -49,24 +48,24 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 public class SettingsActivity extends AppCompatActivity {
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.toolbar)
+  @BindView(R.id.toolbar)
   Toolbar toolbar;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.button_mobile_authentication)
+  @BindView(R.id.button_mobile_authentication)
   Button mobileAuthButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.button_mobile_authentication_push)
+  @BindView(R.id.button_mobile_authentication_push)
   Button mobileAuthPushButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.button_change_pin)
+  @BindView(R.id.button_change_pin)
   Button changePinButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.button_change_authentication)
+  @BindView(R.id.button_change_authentication)
   Button changeAuthentication;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.retrofit_radio)
+  @BindView(R.id.retrofit_radio)
   RadioGroup retrofitRadio;
-  @Bind(R.id.message)
+  @BindView(R.id.message)
   TextView message;
   @SuppressWarnings({ "unused", "WeakerAccess" })
 
@@ -138,7 +137,7 @@ public class SettingsActivity extends AppCompatActivity {
       @Override
       public void onSuccess() {
         onMobileAuthEnabled();
-        showToast("Mobile authentication enabled");
+        message.setText(R.string.enable_mobile_authentication_finished_successfully);
       }
 
       @Override
@@ -147,8 +146,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (errorType == OneginiMobileAuthEnrollmentError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
         }
-
-        showToast("Mobile authentication error - " + error.getMessage());
+        message.setText(error.getMessage());
       }
     };
     OneginiSDK.getOneginiClient(this).getUserClient().enrollUserForMobileAuth(mobileAuthEnrollmentHandler);
@@ -160,8 +158,8 @@ public class SettingsActivity extends AppCompatActivity {
     final OneginiMobileAuthWithPushEnrollmentHandler mobileAuthWithPushEnrollmentHandler = new OneginiMobileAuthWithPushEnrollmentHandler() {
       @Override
       public void onSuccess() {
-        showToast("Mobile authentication enabled");
         mobileAuthPushButton.setText(R.string.settings_mobile_push_enrollment_on);
+        message.setText(R.string.enable_mobile_authentication_with_push_finished_successfully);
       }
 
       @Override
@@ -171,11 +169,11 @@ public class SettingsActivity extends AppCompatActivity {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
         }
 
-        showToast("Mobile authentication error - " + error.getMessage());
+        message.setText(error.getMessage());
       }
     };
-    final GCMRegistrationService gcmRegistrationService = new GCMRegistrationService(this);
-    gcmRegistrationService.registerGCMService(mobileAuthWithPushEnrollmentHandler);
+    final FCMRegistrationService FCMRegistrationService = new FCMRegistrationService(this);
+    FCMRegistrationService.enrollForPush(mobileAuthWithPushEnrollmentHandler);
   }
 
   @SuppressWarnings("unused")
@@ -184,7 +182,7 @@ public class SettingsActivity extends AppCompatActivity {
     OneginiSDK.getOneginiClient(this).getUserClient().changePin(new OneginiChangePinHandler() {
       @Override
       public void onSuccess() {
-        message.setText(R.string.change_pin_finished_succesfully);
+        message.setText(R.string.change_pin_finished_successfully);
       }
 
       @Override
@@ -213,10 +211,6 @@ public class SettingsActivity extends AppCompatActivity {
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     startActivity(intent);
     finish();
-  }
-
-  private void showToast(final String message) {
-    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
   }
 
   private void onMobileAuthEnabled() {

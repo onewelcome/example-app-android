@@ -15,25 +15,26 @@
   limitations under the License.
   -->
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="@dimen/activity_login_logo_margin_top">
 
-    <include
-        android:id="@+id/welcome_user_text"
-        layout="@layout/view_welcome_user_text"/>
+    <Button
+        android:id="@+id/custom_auth_positive_button"
+        style="@style/ButtonStyle"
+        android:text="@string/custom_auth_positive_action"/>
 
-    <TextView
-        android:id="@+id/authenticator_message"
-        android:layout_below="@id/welcome_user_text"
-        style="@style/AuthenticatorMessageStyle"/>
+    <Button
+        android:id="@+id/custom_auth_negative_button"
+        style="@style/ButtonStyle"
+        android:text="@string/custom_auth_negative_action"/>
 
-    <include
-        layout="@layout/view_auth_accept_deny_buttons"
-        android:layout_below="@+id/authenticator_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/custom_auth_error_button"
+        style="@style/ButtonStyle"
+        android:text="@string/custom_auth_error_action"/>
 
-    <include layout="@layout/cancel_button"/>
- </RelativeLayout>
+</LinearLayout>
