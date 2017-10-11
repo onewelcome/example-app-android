@@ -44,19 +44,19 @@ public class FCMListenerService extends FirebaseMessagingService {
 
   private static final String TAG = FCMListenerService.class.getSimpleName();
 
-
   @Override
   public void onMessageReceived(final RemoteMessage message) {
     if (message != null) {
       Log.i(TAG, "Push message received");
 
-      try {
+      new NotificationHelper(this).showNotification();
+      /*try {
         handleMobileAuthenticationRequest(message);
       } catch (OneginiInitializationException exception) {
         // Onegini SDK hasn't been started yet so we have to do it
         // before handling the mobile authentication request
         setupOneginiSDK(message);
-      }
+      }*/
     }
   }
 
@@ -113,7 +113,9 @@ public class FCMListenerService extends FirebaseMessagingService {
 
   private void removeUserProfiles(final Set<UserProfile> removedUserProfiles, final RemoteMessage extras) {
     final DeregistrationUtil deregistrationUtil = new DeregistrationUtil(this);
-    removedUserProfiles.forEach(deregistrationUtil::onUserDeregistered);
+    for (UserProfile removedUserProfile : removedUserProfiles) {
+      deregistrationUtil.onUserDeregistered(removedUserProfile);
+    }
     handleMobileAuthenticationRequest(extras);
   }
 
