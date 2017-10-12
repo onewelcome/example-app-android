@@ -3,7 +3,9 @@ package com.onegini.mobile.exampleapp.network.fcm;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -23,12 +25,14 @@ public class NotificationHelper {
     }
   }
 
-  public void showNotification() {
+  public void showNotification(final String message, final Intent intent) {
     final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(R.mipmap.ic_launcher)
-        .setContentTitle("Transaction pending")
-        .setContentText("Click to confirm pending transaction")
-        .setPriority(NotificationCompat.PRIORITY_MAX);
+        .setContentTitle("Confirm the transaction")
+        .setContentText(message)
+        .setContentIntent(getPendingIntent(intent))
+        .setPriority(NotificationCompat.PRIORITY_MAX)
+        .setAutoCancel(true);
 
     getManager().notify(1, builder.build());
   }
@@ -36,7 +40,7 @@ public class NotificationHelper {
   @RequiresApi(api = Build.VERSION_CODES.O)
   private final void registerNotificationChannel() {
     final NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "Transactions", NotificationManager.IMPORTANCE_HIGH);
-    notificationChannel.setDescription("Confirm the transaction");
+    notificationChannel.setDescription("Onegini SDK");
     notificationChannel.enableLights(true);
     notificationChannel.setLightColor(Color.BLUE);
     notificationChannel.enableVibration(true);
@@ -47,5 +51,9 @@ public class NotificationHelper {
 
   private NotificationManager getManager() {
     return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+  }
+
+  private PendingIntent getPendingIntent(final Intent intent) {
+    return PendingIntent.getActivity(context, 0, intent, 0);
   }
 }

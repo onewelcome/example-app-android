@@ -49,14 +49,13 @@ public class FCMListenerService extends FirebaseMessagingService {
     if (message != null) {
       Log.i(TAG, "Push message received");
 
-      new NotificationHelper(this).showNotification();
-      /*try {
+      try {
         handleMobileAuthenticationRequest(message);
       } catch (OneginiInitializationException exception) {
         // Onegini SDK hasn't been started yet so we have to do it
         // before handling the mobile authentication request
         setupOneginiSDK(message);
-      }*/
+      }
     }
   }
 
