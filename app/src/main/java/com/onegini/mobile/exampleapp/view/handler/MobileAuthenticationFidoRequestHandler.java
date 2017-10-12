@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFidoActivity;
+import com.onegini.mobile.exampleapp.view.helper.AppLifecycleListener;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushFidoRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiFidoCallback;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
@@ -50,7 +51,13 @@ public class MobileAuthenticationFidoRequestHandler implements OneginiMobileAuth
     CALLBACK = oneginiFidoCallback;
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
     message = oneginiMobileAuthenticationRequest.getMessage();
-    notificationHelper.showNotification(message, prepareActivityIntent(COMMAND_START));
+
+    final Intent intent = prepareActivityIntent(COMMAND_START);
+    if (AppLifecycleListener.isAppInForeground()) {
+      context.startActivity(intent);
+    } else {
+      notificationHelper.showNotification(message, intent);
+    }
   }
 
   @Override

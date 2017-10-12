@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationActivity;
+import com.onegini.mobile.exampleapp.view.helper.AppLifecycleListener;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiAcceptDenyCallback;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
@@ -52,16 +53,18 @@ public class MobileAuthenticationRequestHandler implements OneginiMobileAuthWith
     CALLBACK = oneginiAcceptDenyCallback;
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
     message = oneginiMobileAuthenticationRequest.getMessage();
-    notificationHelper.showNotification(message, prepareActivityIntent(COMMAND_START));
+
+    final Intent intent = prepareActivityIntent(COMMAND_START);
+    if (AppLifecycleListener.isAppInForeground()) {
+      context.startActivity(intent);
+    } else {
+      notificationHelper.showNotification(message, intent);
+    }
   }
 
   @Override
   public void finishAuthentication() {
-    notifyActivity(COMMAND_FINISH);
-  }
-
-  private void notifyActivity(final String command) {
-    final Intent intent = prepareActivityIntent(command);
+    final Intent intent = prepareActivityIntent(COMMAND_FINISH);
     context.startActivity(intent);
   }
 
