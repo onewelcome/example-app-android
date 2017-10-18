@@ -16,6 +16,8 @@
 
 package com.onegini.mobile.exampleapp.view.action;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.view.activity.BasicAuthenticatorRegistrationActivity;
@@ -37,6 +39,7 @@ public class BasicCustomAuthRegistrationAction implements OneginiCustomAuthRegis
     CALLBACK = callback;
 
     final Intent intent = new Intent(context, BasicAuthenticatorRegistrationActivity.class);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }
 }
