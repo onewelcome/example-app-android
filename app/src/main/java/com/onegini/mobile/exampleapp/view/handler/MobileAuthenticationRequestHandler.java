@@ -27,7 +27,6 @@ import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationActivity;
-import com.onegini.mobile.exampleapp.view.helper.AppLifecycleListener;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiAcceptDenyCallback;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
@@ -55,11 +54,7 @@ public class MobileAuthenticationRequestHandler implements OneginiMobileAuthWith
     message = oneginiMobileAuthenticationRequest.getMessage();
 
     final Intent intent = prepareActivityIntent(COMMAND_START);
-    if (AppLifecycleListener.isAppInForeground()) {
-      context.startActivity(intent);
-    } else {
-      notificationHelper.showNotification(message, intent);
-    }
+    notificationHelper.handleIntent(intent, message);
   }
 
   @Override

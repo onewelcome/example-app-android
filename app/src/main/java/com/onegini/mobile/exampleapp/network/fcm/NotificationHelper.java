@@ -28,6 +28,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.NotificationId;
+import com.onegini.mobile.exampleapp.view.helper.AppLifecycleListener;
 
 public class NotificationHelper {
 
@@ -42,7 +43,15 @@ public class NotificationHelper {
     }
   }
 
-  public void showNotification(final String message, final Intent intent) {
+  public void handleIntent(final Intent intent, final String message) {
+    if (AppLifecycleListener.isAppInForeground()) {
+      context.startActivity(intent);
+    } else {
+      showNotification(intent, message);
+    }
+  }
+
+  private void showNotification(final Intent intent, final String message) {
     final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(R.mipmap.ic_launcher)
         .setContentTitle("Confirm the transaction")
@@ -55,7 +64,7 @@ public class NotificationHelper {
   }
 
   @RequiresApi(api = Build.VERSION_CODES.O)
-  private final void registerNotificationChannel() {
+  private void registerNotificationChannel() {
     final NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "Transactions", NotificationManager.IMPORTANCE_HIGH);
     notificationChannel.setDescription("Onegini SDK");
     notificationChannel.enableLights(true);

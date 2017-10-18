@@ -28,7 +28,6 @@ import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFingerprintActivity;
-import com.onegini.mobile.exampleapp.view.helper.AppLifecycleListener;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushFingerprintRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiFingerprintCallback;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
@@ -56,11 +55,7 @@ public class MobileAuthenticationFingerprintRequestHandler implements OneginiMob
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
 
     final Intent intent = prepareActivityIntent(COMMAND_ASK_TO_ACCEPT_OR_DENY);
-    if (AppLifecycleListener.isAppInForeground()) {
-      context.startActivity(intent);
-    } else {
-      notificationHelper.showNotification(message, intent);
-    }
+    notificationHelper.handleIntent(intent, message);
   }
 
   @Override
