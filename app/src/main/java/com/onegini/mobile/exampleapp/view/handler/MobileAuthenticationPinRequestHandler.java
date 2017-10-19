@@ -27,6 +27,7 @@ import static com.onegini.mobile.exampleapp.view.activity.PinActivity.EXTRA_MAX_
 
 import android.content.Context;
 import android.content.Intent;
+import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationPinActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushPinRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiPinCallback;
@@ -43,9 +44,11 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthW
   private String userProfileId;
 
   private final Context context;
+  private final NotificationHelper notificationHelper;
 
   public MobileAuthenticationPinRequestHandler(final Context context) {
     this.context = context;
+    this.notificationHelper = new NotificationHelper(context);
   }
 
   @Override
@@ -55,7 +58,9 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthW
     message = oneginiMobileAuthenticationRequest.getMessage();
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
     failedAttemptsCount = maxAttemptsCount = 0;
-    notifyActivity(COMMAND_START);
+
+    final Intent intent = prepareActivityIntent(COMMAND_START);
+    notificationHelper.handleIntent(intent, message);
   }
 
   @Override
@@ -71,6 +76,11 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthW
   }
 
   private void notifyActivity(final String command) {
+    final Intent intent = prepareActivityIntent(command);
+    context.startActivity(intent);
+  }
+
+  private Intent prepareActivityIntent(final String command) {
     final Intent intent = new Intent(context, MobileAuthenticationPinActivity.class);
     intent.putExtra(EXTRA_COMMAND, command);
     intent.putExtra(EXTRA_MESSAGE, message);
@@ -78,6 +88,6 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthW
     intent.putExtra(EXTRA_FAILED_ATTEMPTS_COUNT, failedAttemptsCount);
     intent.putExtra(EXTRA_MAX_FAILED_ATTEMPTS, maxAttemptsCount);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-    context.startActivity(intent);
+    return intent;
   }
 }

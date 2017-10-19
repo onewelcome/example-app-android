@@ -44,7 +44,6 @@ public class FCMListenerService extends FirebaseMessagingService {
 
   private static final String TAG = FCMListenerService.class.getSimpleName();
 
-
   @Override
   public void onMessageReceived(final RemoteMessage message) {
     if (message != null) {
@@ -113,7 +112,9 @@ public class FCMListenerService extends FirebaseMessagingService {
 
   private void removeUserProfiles(final Set<UserProfile> removedUserProfiles, final RemoteMessage extras) {
     final DeregistrationUtil deregistrationUtil = new DeregistrationUtil(this);
-    removedUserProfiles.forEach(deregistrationUtil::onUserDeregistered);
+    for (UserProfile removedUserProfile : removedUserProfiles) {
+      deregistrationUtil.onUserDeregistered(removedUserProfile);
+    }
     handleMobileAuthenticationRequest(extras);
   }
 

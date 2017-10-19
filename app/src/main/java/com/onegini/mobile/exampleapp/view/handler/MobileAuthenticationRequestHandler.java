@@ -25,6 +25,7 @@ import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity
 
 import android.content.Context;
 import android.content.Intent;
+import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiAcceptDenyCallback;
@@ -35,11 +36,14 @@ public class MobileAuthenticationRequestHandler implements OneginiMobileAuthWith
   public static OneginiAcceptDenyCallback CALLBACK;
 
   private final Context context;
+  private final NotificationHelper notificationHelper;
+
   private String userProfileId;
   private String message;
 
   public MobileAuthenticationRequestHandler(final Context context) {
     this.context = context;
+    this.notificationHelper = new NotificationHelper(context);
   }
 
   @Override
@@ -48,20 +52,23 @@ public class MobileAuthenticationRequestHandler implements OneginiMobileAuthWith
     CALLBACK = oneginiAcceptDenyCallback;
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
     message = oneginiMobileAuthenticationRequest.getMessage();
-    notifyActivity(COMMAND_START);
+
+    final Intent intent = prepareActivityIntent(COMMAND_START);
+    notificationHelper.handleIntent(intent, message);
   }
 
   @Override
   public void finishAuthentication() {
-    notifyActivity(COMMAND_FINISH);
+    final Intent intent = prepareActivityIntent(COMMAND_FINISH);
+    context.startActivity(intent);
   }
 
-  private void notifyActivity(final String command) {
+  private Intent prepareActivityIntent(final String command) {
     final Intent intent = new Intent(context, MobileAuthenticationActivity.class);
     intent.putExtra(EXTRA_COMMAND, command);
     intent.putExtra(EXTRA_MESSAGE, message);
     intent.putExtra(EXTRA_USER_PROFILE_ID, userProfileId);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-    context.startActivity(intent);
+    return intent;
   }
 }

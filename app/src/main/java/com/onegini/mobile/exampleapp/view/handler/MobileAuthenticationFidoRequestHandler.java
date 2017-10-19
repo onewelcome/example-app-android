@@ -25,6 +25,7 @@ import static com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFi
 
 import android.content.Context;
 import android.content.Intent;
+import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFidoActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushFidoRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiFidoCallback;
@@ -37,9 +38,11 @@ public class MobileAuthenticationFidoRequestHandler implements OneginiMobileAuth
   private String userProfileId;
   private String message;
   private final Context context;
+  private final NotificationHelper notificationHelper;
 
   public MobileAuthenticationFidoRequestHandler(final Context context) {
     this.context = context;
+    this.notificationHelper = new NotificationHelper(context);
   }
 
   @Override
@@ -47,8 +50,12 @@ public class MobileAuthenticationFidoRequestHandler implements OneginiMobileAuth
     CALLBACK = oneginiFidoCallback;
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
     message = oneginiMobileAuthenticationRequest.getMessage();
-    notifyActivity(COMMAND_START);
+
+    final Intent intent = prepareActivityIntent(COMMAND_START);
+    notificationHelper.handleIntent(intent, message);
   }
+
+
 
   @Override
   public void finishAuthentication() {
@@ -56,11 +63,16 @@ public class MobileAuthenticationFidoRequestHandler implements OneginiMobileAuth
   }
 
   private void notifyActivity(final String command) {
+    final Intent intent = prepareActivityIntent(command);
+    context.startActivity(intent);
+  }
+
+  private Intent prepareActivityIntent(final String command) {
     final Intent intent = new Intent(context, MobileAuthenticationFidoActivity.class);
     intent.putExtra(EXTRA_COMMAND, command);
     intent.putExtra(EXTRA_USER_PROFILE_ID, userProfileId);
     intent.putExtra(EXTRA_MESSAGE, message);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-    context.startActivity(intent);
+    return intent;
   }
 }
