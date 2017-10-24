@@ -18,6 +18,7 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.onegini.mobile.exampleapp.view.helper.ErrorMessageParser.parseErrorMessage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +37,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -67,8 +67,8 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   @BindView(R.id.authenticators_list)
   RecyclerView authenticatorsRecyclerView;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.message)
-  TextView errorMessageTextView;
+  @BindView(R.id.result)
+  TextView resultTextView;
 
   private AuthenticatorListItem[] authenticators;
   private AuthenticatorsAdapter authenticatorsAdapter;
@@ -195,15 +195,16 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
       @Override
       public void onError(final OneginiAuthenticatorRegistrationError error, final CustomAuthenticatorInfo customAuthenticatorInfo) {
         @OneginiAuthenticatorRegistrationError.AuthenticatorRegistrationErrorType int errorType = error.getErrorType();
+        final String errorMessage = parseErrorMessage(error);
         if (errorType == OneginiAuthenticatorRegistrationError.USER_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onUserDeregistered(authenticatedUserProfile);
-          startLoginActivity();
+          startLoginActivity(errorMessage);
         } else if (errorType == OneginiAuthenticatorRegistrationError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onDeviceDeregistered();
-          startLoginActivity();
+          startLoginActivity(errorMessage);
         }
 
-        onErrorOccurred(position, error.getMessage());
+        onErrorOccurred(position, errorMessage);
       }
     });
   }
@@ -223,14 +224,17 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
       @Override
       public void onError(final OneginiAuthenticatorDeregistrationError error) {
-        onErrorOccurred(position, error.getMessage());
         @OneginiAuthenticatorDeregistrationError.AuthenticatorDeregistrationErrorType int errorType = error.getErrorType();
+        final String errorMessage = parseErrorMessage(error);
+        onErrorOccurred(position, errorMessage);
         if (errorType == OneginiAuthenticatorDeregistrationError.USER_NOT_AUTHENTICATED) {
-          startLoginActivity();
+          startLoginActivity(errorMessage);
         } else if (errorType == OneginiAuthenticatorDeregistrationError.USER_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onUserDeregistered(authenticatedUserProfile);
+          startLoginActivity(errorMessage);
         } else if (errorType == OneginiAuthenticatorDeregistrationError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onDeviceDeregistered();
+          startLoginActivity(errorMessage);
         }
       }
     });
@@ -238,11 +242,11 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
   private void onErrorOccurred(int position, String errorDescription) {
     authenticators[position].setIsProcessed(false);
-    errorMessageTextView.setText(errorDescription);
+    resultTextView.setText(errorDescription);
   }
 
   private void clearErrorMessage() {
-    errorMessageTextView.setText("");
+    resultTextView.setText("");
   }
 
   private void setPinAsPreferredAuthenticator() {
@@ -274,8 +278,9 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     }
   }
 
-  private void startLoginActivity() {
+  private void startLoginActivity(final String errorMessage) {
     final Intent intent = new Intent(this, LoginActivity.class);
+    intent.putExtra(LoginActivity.ERROR_MESSAGE_EXTRA, errorMessage);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
     startActivity(intent);
     finish();

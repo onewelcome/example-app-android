@@ -16,6 +16,8 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
+import static com.onegini.mobile.exampleapp.view.helper.ErrorMessageParser.parseErrorMessage;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -95,6 +97,8 @@ public class LoginActivity extends Activity {
   @BindView(R.id.implicit_user_details)
   TextView implicitUserDetailsTextView;
 
+  public static final String ERROR_MESSAGE_EXTRA = "error_message";
+
   private List<User> listOfUsers = new ArrayList<>();
   private boolean userIsLoggingIn = false;
   private Subscription subscription;
@@ -122,7 +126,14 @@ public class LoginActivity extends Activity {
   @Override
   protected void onResume() {
     super.onResume();
+    getErrorMessage();
     setupUserInterface();
+  }
+
+  private void getErrorMessage() {
+    if (getIntent().hasExtra(ERROR_MESSAGE_EXTRA)) {
+      errorMessage = getIntent().getStringExtra(ERROR_MESSAGE_EXTRA);
+    }
   }
 
   private void authenticateDevice() {
@@ -137,10 +148,11 @@ public class LoginActivity extends Activity {
               @Override
               public void onError(final OneginiDeviceAuthenticationError error) {
                 final @OneginiDeviceAuthenticationError.DeviceAuthenticationErrorType int errorType = error.getErrorType();
+                errorMessage = parseErrorMessage(error);
                 if (errorType == OneginiDeviceAuthenticationError.DEVICE_DEREGISTERED) {
                   onDeviceDeregistered();
                 } else if (errorType == OneginiDeviceAuthenticationError.USER_DEREGISTERED) {
-                  onUserDeregistered(authenticatedUserProfile);
+                  onUserDeregistered();
                 } else {
                   LoginActivity.this.onError(error);
                 }
@@ -242,10 +254,10 @@ public class LoginActivity extends Activity {
     @OneginiImplicitTokenRequestError.ImplicitTokenRequestErrorType int errorType = error.getErrorType();
     switch (errorType) {
       case OneginiImplicitTokenRequestError.USER_DEREGISTERED:
-        onUserDeregistered(userProfile);
+        new DeregistrationUtil(this).onUserDeregistered(userProfile);
         break;
       case OneginiImplicitTokenRequestError.DEVICE_DEREGISTERED:
-        onDeviceDeregistered();
+        new DeregistrationUtil(this).onDeviceDeregistered();
         break;
       case OneginiImplicitTokenRequestError.NETWORK_CONNECTIVITY_PROBLEM:
       case OneginiImplicitTokenRequestError.SERVER_NOT_REACHABLE:
@@ -327,27 +339,30 @@ public class LoginActivity extends Activity {
 
   private void handleAuthenticationErrors(final OneginiAuthenticationError error, final UserProfile userProfile) {
     @OneginiAuthenticationError.AuthenticationErrorType int errorType = error.getErrorType();
+    errorMessage = error.getErrorType() + ": ";
     switch (errorType) {
       case OneginiAuthenticationError.ACTION_CANCELED:
-        errorMessage = "Authentication was cancelled";
+        errorMessage += "Authentication was cancelled";
         break;
       case OneginiAuthenticationError.NETWORK_CONNECTIVITY_PROBLEM:
-        errorMessage = "No internet connection.";
+        errorMessage += "No internet connection.";
         break;
       case OneginiAuthenticationError.SERVER_NOT_REACHABLE:
-        errorMessage = "The server is not reachable.";
+        errorMessage += "The server is not reachable.";
         break;
       case OneginiAuthenticationError.OUTDATED_APP:
-        errorMessage = "Please update this application in order to use it.";
+        errorMessage += "Please update this application in order to use it.";
         break;
       case OneginiAuthenticationError.OUTDATED_OS:
-        errorMessage = "Please update your Android version to use this application.";
+        errorMessage += "Please update your Android version to use this application.";
         break;
       case OneginiAuthenticationError.USER_DEREGISTERED:
-        onUserDeregistered(userProfile);
+        new DeregistrationUtil(this).onUserDeregistered(userProfile);
+        errorMessage += "User deregistered";
         break;
       case OneginiAuthenticationError.DEVICE_DEREGISTERED:
-        onDeviceDeregistered();
+        new DeregistrationUtil(this).onDeviceDeregistered();
+        errorMessage += "Device deregistered";
         break;
       case OneginiAuthenticationError.GENERAL_ERROR:
       default:
@@ -357,14 +372,14 @@ public class LoginActivity extends Activity {
     }
   }
 
-  private void onUserDeregistered(final UserProfile userProfile) {
-    new DeregistrationUtil(this).onUserDeregistered(userProfile);
-    errorMessage = "User deregistered";
-  }
-
   private void onDeviceDeregistered() {
     new DeregistrationUtil(this).onDeviceDeregistered();
-    errorMessage = "Device deregistered";
+    showError();
+  }
+
+  private void onUserDeregistered() {
+    new DeregistrationUtil(this).onUserDeregistered(authenticatedUserProfile);
+    showError();
   }
 
   private void onError(final OneginiError error) {
@@ -404,4 +419,5 @@ public class LoginActivity extends Activity {
     startActivity(new Intent(this, DashboardActivity.class));
     finish();
   }
+
 }

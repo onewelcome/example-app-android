@@ -16,6 +16,10 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.onegini.mobile.exampleapp.view.helper.ErrorMessageParser.parseErrorMessage;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -65,8 +69,8 @@ public class SettingsActivity extends AppCompatActivity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.retrofit_radio)
   RadioGroup retrofitRadio;
-  @BindView(R.id.message)
-  TextView message;
+  @BindView(R.id.result)
+  TextView resultTextView;
   @SuppressWarnings({ "unused", "WeakerAccess" })
 
   private DeviceSettingsStorage deviceSettingsStorage;
@@ -137,16 +141,21 @@ public class SettingsActivity extends AppCompatActivity {
       @Override
       public void onSuccess() {
         onMobileAuthEnabled();
-        message.setText(R.string.enable_mobile_authentication_finished_successfully);
+        resultTextView.setText(R.string.enable_mobile_authentication_finished_successfully);
       }
 
       @Override
       public void onError(final OneginiMobileAuthEnrollmentError error) {
         @OneginiMobileAuthEnrollmentError.MobileAuthEnrollmentErrorType final int errorType = error.getErrorType();
+        final String errorMessage = parseErrorMessage(error);
         if (errorType == OneginiMobileAuthEnrollmentError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
+          startLoginActivity(errorMessage);
+        } else if (errorType == OneginiMobileAuthEnrollmentError.USER_NOT_AUTHENTICATED) {
+          startLoginActivity(errorMessage);
+        } else {
+          resultTextView.setText(errorMessage);
         }
-        message.setText(error.getMessage());
       }
     };
     OneginiSDK.getOneginiClient(this).getUserClient().enrollUserForMobileAuth(mobileAuthEnrollmentHandler);
@@ -159,7 +168,7 @@ public class SettingsActivity extends AppCompatActivity {
       @Override
       public void onSuccess() {
         mobileAuthPushButton.setText(R.string.settings_mobile_push_enrollment_on);
-        message.setText(R.string.enable_mobile_authentication_with_push_finished_successfully);
+        resultTextView.setText(R.string.enable_mobile_authentication_with_push_finished_successfully);
       }
 
       @Override
@@ -167,9 +176,10 @@ public class SettingsActivity extends AppCompatActivity {
         @OneginiMobileAuthWithPushEnrollmentError.MobileAuthWithPushEnrollmentErrorType final int errorType = error.getErrorType();
         if (errorType == OneginiMobileAuthWithPushEnrollmentError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
+          startLoginActivity(parseErrorMessage(error));
         }
 
-        message.setText(error.getMessage());
+        resultTextView.setText(parseErrorMessage(error));
       }
     };
     final FCMRegistrationService FCMRegistrationService = new FCMRegistrationService(this);
@@ -182,18 +192,21 @@ public class SettingsActivity extends AppCompatActivity {
     OneginiSDK.getOneginiClient(this).getUserClient().changePin(new OneginiChangePinHandler() {
       @Override
       public void onSuccess() {
-        message.setText(R.string.change_pin_finished_successfully);
+        resultTextView.setText(R.string.change_pin_finished_successfully);
       }
 
       @Override
       public void onError(final OneginiChangePinError oneginiChangePinError) {
         @OneginiChangePinError.ChangePinErrorType int errorType = oneginiChangePinError.getErrorType();
+        final String errorMessage = parseErrorMessage(oneginiChangePinError);
         if (errorType == OneginiChangePinError.USER_DEREGISTERED) {
-          userDeregistered();
+          new DeregistrationUtil(SettingsActivity.this).onUserDeregistered(authenticatedUserProfile);
+          startLoginActivity(errorMessage);
         } else if (errorType == OneginiChangePinError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
+          startLoginActivity(errorMessage);
         }
-        message.setText(oneginiChangePinError.getMessage());
+        resultTextView.setText(errorMessage);
       }
     });
   }
@@ -202,15 +215,6 @@ public class SettingsActivity extends AppCompatActivity {
   @OnClick(R.id.button_change_authentication)
   public void changeAuthentication() {
     startActivity(new Intent(this, SettingsAuthenticatorsActivity.class));
-  }
-
-  private void userDeregistered() {
-    new DeregistrationUtil(this).onUserDeregistered(authenticatedUserProfile);
-
-    final Intent intent = new Intent(this, LoginActivity.class);
-    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-    startActivity(intent);
-    finish();
   }
 
   private void onMobileAuthEnabled() {
@@ -223,5 +227,12 @@ public class SettingsActivity extends AppCompatActivity {
         mobileAuthPushButton.setText(R.string.settings_mobile_push_enrollment_on);
       }
     }
+  }
+
+  private void startLoginActivity(final String errorMessage) {
+    final Intent intent = new Intent(this, LoginActivity.class);
+    intent.putExtra(LoginActivity.ERROR_MESSAGE_EXTRA, errorMessage);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
+    startActivity(intent);
   }
 }
