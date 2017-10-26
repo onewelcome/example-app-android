@@ -24,9 +24,7 @@ allprojects {
     mavenCentral()
     // REQUIRED: Google's new Maven repo is required for the latest
     // support library that is compatible with Android 8.0
-    maven {
-      url 'https://maven.google.com'
-    }
+    google()
     if (project.hasProperty('artifactory_user') && project.hasProperty('artifactory_password')) {
       maven {
         url "https://repo.onegini.com/artifactory/public"
