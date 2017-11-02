@@ -313,7 +313,7 @@ public class LoginActivity extends Activity {
       }
 
       @Override
-      public void onError(final OneginiAuthenticationError oneginiAuthenticationError, final CustomAuthenticatorInfo customAuthenticatorInfo) {
+      public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
         LoginActivity.this.onError(oneginiAuthenticationError, userProfile);
       }
     };

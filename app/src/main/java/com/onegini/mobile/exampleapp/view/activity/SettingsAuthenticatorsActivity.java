@@ -193,7 +193,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
       }
 
       @Override
-      public void onError(final OneginiAuthenticatorRegistrationError error, final CustomAuthenticatorInfo customAuthenticatorInfo) {
+      public void onError(final OneginiAuthenticatorRegistrationError error) {
         @OneginiAuthenticatorRegistrationError.AuthenticatorRegistrationErrorType int errorType = error.getErrorType();
         if (errorType == OneginiAuthenticatorRegistrationError.USER_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onUserDeregistered(authenticatedUserProfile);
