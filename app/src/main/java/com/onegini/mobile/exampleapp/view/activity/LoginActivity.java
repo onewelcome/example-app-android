@@ -229,7 +229,8 @@ public class LoginActivity extends Activity {
           @Override
           public void onError(final OneginiImplicitTokenRequestError oneginiImplicitTokenRequestError) {
             handleImplicitAuthenticationErrors(oneginiImplicitTokenRequestError, userProfile);
-            implicitUserDetailsTextView.setText(R.string.implicit_user_details_fetch_failed_label);
+            implicitUserDetailsTextView.setText(oneginiImplicitTokenRequestError.getErrorType() + ": " +
+                getString(R.string.implicit_user_details_fetch_failed_label));
           }
         });
   }

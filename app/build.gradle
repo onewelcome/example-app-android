@@ -24,9 +24,7 @@ allprojects {
     mavenCentral()
     // REQUIRED: Google's new Maven repo is required for the latest
     // support library that is compatible with Android 8.0
-    maven {
-      url 'https://maven.google.com'
-    }
+    google()
     if (project.hasProperty('artifactory_user') && project.hasProperty('artifactory_password')) {
       maven {
         url "https://repo.onegini.com/artifactory/public"
@@ -78,33 +76,33 @@ android {
 
 dependencies {
   // Onegini SDK
-  compile('com.onegini.mobile.sdk.android:onegini-sdk:8.0.0-SNAPSHOT@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:8.0.0-SNAPSHOT@aar') {
     transitive = true
   }
 
   // Rest Client
-  compile 'com.squareup.retrofit:retrofit:1.9.0'
-  compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+  implementation 'com.squareup.retrofit:retrofit:1.9.0'
+  implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
   // we have to use this wrapper for Retrofit 1 + OkHttp 3 usage
-  compile 'com.jakewharton.retrofit:retrofit1-okhttp3-client:1.1.0'
+  implementation 'com.jakewharton.retrofit:retrofit1-okhttp3-client:1.1.0'
 
   // Google Support
-  compile 'com.android.support:appcompat-v7:26.1.0'
-  compile 'com.android.support:cardview-v7:26.1.0'
-  compile 'com.android.support:recyclerview-v7:26.1.0'
+  implementation 'com.android.support:appcompat-v7:26.1.0'
+  implementation 'com.android.support:cardview-v7:26.1.0'
+  implementation 'com.android.support:recyclerview-v7:26.1.0'
 
   // Google Play Services availability check
-  compile 'com.google.android.gms:play-services-base:11.0.2'
+  implementation 'com.google.android.gms:play-services-base:11.0.2'
   //Firebase Cloud Messaging (FCM)
-  compile "com.google.firebase:firebase-messaging:11.0.2"
+  implementation "com.google.firebase:firebase-messaging:11.0.2"
   // Support for multidex
-  compile 'com.android.support:multidex:1.0.1'
+  implementation 'com.android.support:multidex:1.0.1'
   // DI for views
-  compile 'com.jakewharton:butterknife:8.8.1'
+  implementation 'com.jakewharton:butterknife:8.8.1'
   annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
   // RxJava
-  compile 'io.reactivex:rxandroid:1.2.1'
-  compile 'io.reactivex:rxjava:1.2.3'
+  implementation 'io.reactivex:rxandroid:1.2.1'
+  implementation 'io.reactivex:rxjava:1.2.3'
 }
 
 //according to google documentation, this plugin has to be applied at the end of the file
