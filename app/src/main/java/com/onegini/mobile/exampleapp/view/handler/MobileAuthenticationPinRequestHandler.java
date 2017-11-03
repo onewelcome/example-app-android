@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationPinActivity;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushPinRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiPinCallback;
 import com.onegini.mobile.sdk.android.model.entity.AuthenticationAttemptCounter;
@@ -53,7 +54,8 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthW
 
   @Override
   public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest, final OneginiPinCallback oneginiPinCallback,
-                                  final AuthenticationAttemptCounter attemptCounter) {
+                                  final AuthenticationAttemptCounter authenticationAttemptCounter,
+                                  final OneginiMobileAuthenticationError oneginiMobileAuthenticationError) {
     CALLBACK = oneginiPinCallback;
     message = oneginiMobileAuthenticationRequest.getMessage();
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
