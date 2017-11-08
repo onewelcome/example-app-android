@@ -76,11 +76,6 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   }
 
   @Override
-  public boolean shouldGetIdToken() {
-    return false;
-  }
-
-  @Override
   public String toString() {
     return "ConfigModel{" +
         "  appIdentifier='" + appIdentifier + "'" +
