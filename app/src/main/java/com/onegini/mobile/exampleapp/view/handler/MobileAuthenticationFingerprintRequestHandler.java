@@ -26,6 +26,7 @@ import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity
 
 import android.content.Context;
 import android.content.Intent;
+import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationFingerprintActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushFingerprintRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiFingerprintCallback;
@@ -39,9 +40,11 @@ public class MobileAuthenticationFingerprintRequestHandler implements OneginiMob
   private String userProfileId;
 
   private final Context context;
+  private final NotificationHelper notificationHelper;
 
   public MobileAuthenticationFingerprintRequestHandler(final Context context) {
     this.context = context;
+    this.notificationHelper = new NotificationHelper(context);
   }
 
   @Override
@@ -50,7 +53,9 @@ public class MobileAuthenticationFingerprintRequestHandler implements OneginiMob
     CALLBACK = oneginiFingerprintCallback;
     message = oneginiMobileAuthenticationRequest.getMessage();
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
-    notifyActivity(COMMAND_ASK_TO_ACCEPT_OR_DENY);
+
+    final Intent intent = prepareActivityIntent(COMMAND_ASK_TO_ACCEPT_OR_DENY);
+    notificationHelper.handleIntent(intent, message);
   }
 
   @Override
@@ -69,11 +74,16 @@ public class MobileAuthenticationFingerprintRequestHandler implements OneginiMob
   }
 
   private void notifyActivity(final String command) {
+    final Intent intent = prepareActivityIntent(command);
+    context.startActivity(intent);
+  }
+
+  private Intent prepareActivityIntent(final String command) {
     final Intent intent = new Intent(context, MobileAuthenticationFingerprintActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.putExtra(EXTRA_COMMAND, command);
     intent.putExtra(EXTRA_MESSAGE, message);
     intent.putExtra(EXTRA_USER_PROFILE_ID, userProfileId);
-    context.startActivity(intent);
+    return intent;
   }
 }

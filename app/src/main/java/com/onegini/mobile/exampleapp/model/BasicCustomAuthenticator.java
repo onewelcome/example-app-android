@@ -56,6 +56,6 @@ public class BasicCustomAuthenticator implements OneginiCustomAuthenticator {
 
   @Override
   public String getId() {
-    return "EXPERIMENTAL_CUSTOM_AUTHENTICATOR_ID";
+    return "EXPERIMENTAL_CA_ID";
   }
 }

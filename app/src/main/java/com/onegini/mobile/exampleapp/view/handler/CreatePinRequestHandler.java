@@ -16,20 +16,23 @@
 
 package com.onegini.mobile.exampleapp.view.handler;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
 import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_ERROR_MESSAGE;
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_MESSAGE;
+import static com.onegini.mobile.exampleapp.view.helper.ErrorMessageParser.parseErrorMessage;
 
 import java.util.Arrays;
 
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.activity.LoginActivity;
 import com.onegini.mobile.exampleapp.view.activity.PinActivity;
 import com.onegini.mobile.sdk.android.handlers.OneginiPinValidationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiPinValidationError;
@@ -148,6 +151,8 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
         break;
       case OneginiPinValidationError.DEVICE_DEREGISTERED:
         new DeregistrationUtil(context).onDeviceDeregistered();
+        startLoginActivity(parseErrorMessage(oneginiPinValidationError));
+        break;
       case OneginiPinValidationError.GENERAL_ERROR:
       default:
         notifyActivity(context.getString(R.string.pin_title_choose_pin), oneginiPinValidationError.getMessage());
@@ -161,11 +166,19 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
 
   private void notifyActivity(final String message, final String errorMessage, final String command) {
     final Intent intent = new Intent(context, PinActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     intent.putExtra(EXTRA_MESSAGE, message);
     intent.putExtra(EXTRA_ERROR_MESSAGE, errorMessage);
     intent.putExtra(EXTRA_COMMAND, command);
     context.startActivity(intent);
   }
+
+  private void startLoginActivity(final String errorMessage) {
+    final Intent intent = new Intent(context, LoginActivity.class);
+    intent.putExtra(LoginActivity.ERROR_MESSAGE_EXTRA, errorMessage);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
+    context.startActivity(intent);
+  }
+
 }
