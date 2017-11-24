@@ -18,15 +18,17 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import java.util.Set;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -35,6 +37,7 @@ import com.onegini.mobile.exampleapp.adapter.PendingPushMessagesAdapter;
 import com.onegini.mobile.sdk.android.handlers.OneginiPendingMobileAuthWithPushRequestsHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiPendingMobileAuthWithPushRequestError;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
+import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class PendingPushMessagesActivity extends AppCompatActivity {
 
@@ -45,48 +48,85 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.recycler_view)
   RecyclerView recyclerView;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.progress_bar)
-  ProgressBar progressBar;
+  @BindView(R.id.pending_notifications_error)
+  TextView errorTextView;
+  @BindView(R.id.bottom_navigation)
+  BottomNavigationView bottomNavigationView;
+  @BindView(R.id.notifications_refresh_layout)
+  SwipeRefreshLayout swipeRefreshLayout;
+
+  private final PendingPushMessagesAdapter adapter = new PendingPushMessagesAdapter();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_devices_list);
+    setContentView(R.layout.activity_pending_notifications);
     ButterKnife.bind(this);
-    setupActionBar();
+    setupUi();
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
     fetchPendingTransactions();
   }
 
+  private void setupUi() {
+    setupActionBar();
+    setupListView();
+    setupNavigationBar();
+  }
+
+  private void setupListView() {
+    recyclerView.setAdapter(adapter);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    swipeRefreshLayout.setOnRefreshListener(() -> {
+      fetchPendingTransactions();
+    });
+  }
+
+  private void setupNavigationBar() {
+    bottomNavigationView.getMenu().findItem(R.id.action_notifications).setChecked(true);
+    bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+      final int itemId = item.getItemId();
+      if (itemId == R.id.action_resources) {
+        onHttpClicked();
+      } else if (itemId == R.id.action_notifications) {
+        onNotificationsClicked();
+      } else {
+        onHomeClicked();
+      }
+      return true;
+    });
+  }
+
   private void fetchPendingTransactions() {
+    swipeRefreshLayout.setRefreshing(true);
+    recyclerView.setVisibility(View.GONE);
+    errorTextView.setVisibility(View.GONE);
     OneginiSDK.getOneginiClient(this).getUserClient().getPendingMobileAuthWithPushRequests(new OneginiPendingMobileAuthWithPushRequestsHandler() {
       @Override
       public void onSuccess(final Set<OneginiMobileAuthWithPushRequest> set) {
+        swipeRefreshLayout.setRefreshing(false);
         displayFetchedMessages(set);
-        progressBar.setVisibility(View.INVISIBLE);
       }
 
       @Override
       public void onError(final OneginiPendingMobileAuthWithPushRequestError oneginiPendingMobileAuthWithPushRequestError) {
-        showToast("Fetch transactions error: "+oneginiPendingMobileAuthWithPushRequestError.getMessage());
+        swipeRefreshLayout.setRefreshing(false);
+        showError(oneginiPendingMobileAuthWithPushRequestError.getMessage());
       }
     });
   }
 
-
   private void displayFetchedMessages(final Set<OneginiMobileAuthWithPushRequest> set) {
     if (set.isEmpty()) {
-      showToast("No pending transactions");
-      return;
+      showError(getString(R.string.no_notifications));
+    } else {
+      recyclerView.setVisibility(View.VISIBLE);
+      errorTextView.setVisibility(View.GONE);
+      adapter.update(set);
     }
-
-    final PendingPushMessagesAdapter adapter = new PendingPushMessagesAdapter(set);
-    recyclerView.setAdapter(adapter);
-    recyclerView.setLayoutManager(new LinearLayoutManager(this));
-  }
-
-  private void showToast(final String message) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
   }
 
   private void setupActionBar() {
@@ -94,10 +134,33 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
 
     final ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {
-      actionBar.setDisplayHomeAsUpEnabled(true);
       actionBar.setLogo(R.mipmap.ic_launcher);
       actionBar.setDisplayUseLogoEnabled(true);
       actionBar.setDisplayShowTitleEnabled(false);
     }
+  }
+
+  private void onHomeClicked() {
+    final UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
+    if (authenticatedUserProfile == null) {
+      startActivity(new Intent(this, LoginActivity.class));
+    } else {
+      startActivity(new Intent(this, DashboardActivity.class));
+    }
+    finish();
+  }
+
+  private void onNotificationsClicked() {
+    fetchPendingTransactions();
+  }
+
+  private void onHttpClicked() {
+    // todo
+  }
+
+  private void showError(final String text) {
+    errorTextView.setText(text);
+    errorTextView.setVisibility(View.VISIBLE);
+    recyclerView.setVisibility(View.GONE);
   }
 }

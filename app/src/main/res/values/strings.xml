@@ -60,6 +60,7 @@
     <string name="settings_authentication_method">Login Method</string>
     <string name="settings_retrofit_client">Client for resource calls:</string>
     <string name="toolbar_name_devices_activity">Devices</string>
+    <string name="toolbar_name_pending_notifications">Pending notifications</string>
     <string name="settings_authenticators_possible_authenticators">Possible authenticators:</string>
     <string name="simple_push_message">Simple push message</string>
     <string name="change_pin_finished_successfully">Change PIN action finished successfully</string>

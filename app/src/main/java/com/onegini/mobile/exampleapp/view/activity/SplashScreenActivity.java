@@ -42,7 +42,7 @@ public class SplashScreenActivity extends Activity {
     super.onCreate(savedInstanceState);
     this.userStorage = new UserStorage(this);
 
-    setContentView(R.layout.activity_login);
+    setContentView(R.layout.activity_splashscreen);
     setupOneginiSDK();
   }
 

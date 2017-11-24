@@ -37,21 +37,14 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
   private final List<OneginiMobileAuthWithPushRequest> list;
   private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd.MM.yy", Locale.US);
 
-  public PendingPushMessagesAdapter(final Set<OneginiMobileAuthWithPushRequest> set) {
-    list = new ArrayList<>(set);
+  public PendingPushMessagesAdapter() {
+    list = new ArrayList<>();
   }
 
-  static class ViewHolder extends RecyclerView.ViewHolder {
-
-    final TextView messageTextView;
-    final TextView dateTextView;
-
-    ViewHolder(View itemView) {
-      super(itemView);
-
-      messageTextView = itemView.findViewById(R.id.pending_message);
-      dateTextView = itemView.findViewById(R.id.pending_message_timestamp);
-    }
+  public void update(final Set<OneginiMobileAuthWithPushRequest> set) {
+    list.clear();
+    list.addAll(set);
+    notifyDataSetChanged();
   }
 
   @Override
@@ -80,5 +73,18 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
   @Override
   public int getItemCount() {
     return list.size();
+  }
+
+  static class ViewHolder extends RecyclerView.ViewHolder {
+
+    final TextView messageTextView;
+    final TextView dateTextView;
+
+    ViewHolder(View itemView) {
+      super(itemView);
+
+      messageTextView = itemView.findViewById(R.id.pending_message);
+      dateTextView = itemView.findViewById(R.id.pending_message_timestamp);
+    }
   }
 }

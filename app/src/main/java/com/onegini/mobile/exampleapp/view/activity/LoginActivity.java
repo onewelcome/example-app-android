@@ -144,7 +144,7 @@ public class LoginActivity extends Activity {
   }
 
   private void authenticateDevice() {
-    /*authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
+    authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
     OneginiSDK.getOneginiClient(this).getDeviceClient()
         .authenticateDevice(new String[]{ "application-details" }, new OneginiDeviceAuthenticationHandler() {
               @Override
@@ -165,7 +165,7 @@ public class LoginActivity extends Activity {
                 }
               }
             }
-        );*/
+        );
   }
 
   private void callAnonymousResourceCallToFetchApplicationDetails() {
@@ -430,6 +430,15 @@ public class LoginActivity extends Activity {
   }
 
   private void setupNavigationDrawer() {
+    bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+      if (item.getItemId() == R.id.action_notifications) {
+        startActivity(new Intent(LoginActivity.this, PendingPushMessagesActivity.class));
+        return true;
+      }
+      return false;
+    });
+
+
     OneginiSDK.getOneginiClient(this).getUserClient().getPendingMobileAuthWithPushRequests(new OneginiPendingMobileAuthWithPushRequestsHandler() {
       @Override
       public void onSuccess(final Set<OneginiMobileAuthWithPushRequest> set) {
