@@ -28,8 +28,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SwitchCompat;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -58,12 +60,15 @@ import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeviceAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiImplicitAuthenticationHandler;
+import com.onegini.mobile.sdk.android.handlers.OneginiPendingMobileAuthWithPushRequestsHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiDeviceAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiImplicitTokenRequestError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiPendingMobileAuthWithPushRequestError;
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
 import com.onegini.mobile.sdk.android.model.entity.CustomAuthenticatorInfo;
+import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 import rx.Subscription;
 
@@ -96,6 +101,8 @@ public class LoginActivity extends Activity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.implicit_user_details)
   TextView implicitUserDetailsTextView;
+  @BindView(R.id.bottom_navigation)
+  BottomNavigationView bottomNavigationView;
 
   public static final String ERROR_MESSAGE_EXTRA = "error_message";
 
@@ -137,7 +144,7 @@ public class LoginActivity extends Activity {
   }
 
   private void authenticateDevice() {
-    authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
+    /*authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
     OneginiSDK.getOneginiClient(this).getDeviceClient()
         .authenticateDevice(new String[]{ "application-details" }, new OneginiDeviceAuthenticationHandler() {
               @Override
@@ -158,7 +165,7 @@ public class LoginActivity extends Activity {
                 }
               }
             }
-        );
+        );*/
   }
 
   private void callAnonymousResourceCallToFetchApplicationDetails() {
@@ -293,6 +300,7 @@ public class LoginActivity extends Activity {
     if (errorMessage != null && !errorMessage.isEmpty()) {
       showError();
     }
+    setupNavigationDrawer();
   }
 
   private void setupUsersSpinner() {
@@ -421,4 +429,37 @@ public class LoginActivity extends Activity {
     finish();
   }
 
+  private void setupNavigationDrawer() {
+    OneginiSDK.getOneginiClient(this).getUserClient().getPendingMobileAuthWithPushRequests(new OneginiPendingMobileAuthWithPushRequestsHandler() {
+      @Override
+      public void onSuccess(final Set<OneginiMobileAuthWithPushRequest> set) {
+        final MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_notifications);
+        menuItem.setIcon(getNotificationIcon(set.size()));
+        menuItem.setTitle(getNotificationTitle(set.size()));
+      }
+
+      @Override
+      public void onError(final OneginiPendingMobileAuthWithPushRequestError oneginiPendingMobileAuthWithPushRequestError) {
+
+      }
+    });
+  }
+
+  private int getNotificationIcon(final int notificationsCount) {
+    if (notificationsCount > 0) {
+      return R.drawable.ic_notifications_active_white_24dp;
+    } else {
+      return R.drawable.ic_notifications_white_24dp;
+    }
+  }
+
+  private String getNotificationTitle(final int notificationsCount) {
+    if (notificationsCount == 0) {
+      return getString(R.string.no_notifications);
+    } else if (notificationsCount == 1) {
+      return getString(R.string.one_notification);
+    } else {
+      return getString(R.string.multiple_notifications);
+    }
+  }
 }

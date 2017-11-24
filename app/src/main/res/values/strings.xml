@@ -77,4 +77,9 @@
     <string name="custom_auth_authentication_title">Authentication</string>
     <string name="enable_mobile_authentication_finished_successfully">Mobile authentication enabled</string>
     <string name="enable_mobile_authentication_with_push_finished_successfully">Mobile authentication with push enabled</string>
+    <string name="navigation_menu_home">Home</string>
+    <string name="navigation_menu_resource_call">Resource call</string>
+    <string name="no_notifications">No notifications</string>
+    <string name="one_notification">1 notification</string>
+    <string name="multiple_notifications">%1$d notifications</string>
 </resources>
