@@ -27,8 +27,7 @@ import android.widget.TextView;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.Device;
 
-public class DevicesAdapter extends
-    RecyclerView.Adapter<DevicesAdapter.ViewHolder> {
+public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHolder> {
 
   private final List<Device> devices;
 
@@ -43,7 +42,7 @@ public class DevicesAdapter extends
     ViewHolder(View itemView) {
       super(itemView);
 
-      nameTextView = (TextView) itemView.findViewById(R.id.textView);
+      nameTextView = itemView.findViewById(R.id.textView);
     }
   }
 
