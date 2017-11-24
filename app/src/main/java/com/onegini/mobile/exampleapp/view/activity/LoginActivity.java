@@ -55,6 +55,7 @@ import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
+import com.onegini.mobile.exampleapp.view.helper.NotificationMenuHelper;
 import com.onegini.mobile.exampleapp.view.helper.RegisteredAuthenticatorsMenu;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
@@ -438,37 +439,18 @@ public class LoginActivity extends Activity {
       return false;
     });
 
-
     OneginiSDK.getOneginiClient(this).getUserClient().getPendingMobileAuthWithPushRequests(new OneginiPendingMobileAuthWithPushRequestsHandler() {
       @Override
       public void onSuccess(final Set<OneginiMobileAuthWithPushRequest> set) {
         final MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_notifications);
-        menuItem.setIcon(getNotificationIcon(set.size()));
-        menuItem.setTitle(getNotificationTitle(set.size()));
+        menuItem.setIcon(NotificationMenuHelper.getNotificationIcon(set.size()));
+        menuItem.setTitle(NotificationMenuHelper.getNotificationTitle(LoginActivity.this, set.size()));
       }
 
       @Override
       public void onError(final OneginiPendingMobileAuthWithPushRequestError oneginiPendingMobileAuthWithPushRequestError) {
-
+        LoginActivity.this.onError(oneginiPendingMobileAuthWithPushRequestError);
       }
     });
-  }
-
-  private int getNotificationIcon(final int notificationsCount) {
-    if (notificationsCount > 0) {
-      return R.drawable.ic_notifications_active_white_24dp;
-    } else {
-      return R.drawable.ic_notifications_white_24dp;
-    }
-  }
-
-  private String getNotificationTitle(final int notificationsCount) {
-    if (notificationsCount == 0) {
-      return getString(R.string.no_notifications);
-    } else if (notificationsCount == 1) {
-      return getString(R.string.one_notification);
-    } else {
-      return getString(R.string.multiple_notifications);
-    }
   }
 }

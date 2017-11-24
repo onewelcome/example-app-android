@@ -27,6 +27,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -34,6 +35,7 @@ import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.adapter.PendingPushMessagesAdapter;
+import com.onegini.mobile.exampleapp.view.helper.NotificationMenuHelper;
 import com.onegini.mobile.sdk.android.handlers.OneginiPendingMobileAuthWithPushRequestsHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiPendingMobileAuthWithPushRequestError;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
@@ -120,6 +122,7 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
   }
 
   private void displayFetchedMessages(final Set<OneginiMobileAuthWithPushRequest> set) {
+    updateNotificationsButton(set.size());
     if (set.isEmpty()) {
       showError(getString(R.string.no_notifications));
     } else {
@@ -162,5 +165,11 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
     errorTextView.setText(text);
     errorTextView.setVisibility(View.VISIBLE);
     recyclerView.setVisibility(View.GONE);
+  }
+
+  private void updateNotificationsButton(final int notificationsCount) {
+    final MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_notifications);
+    menuItem.setIcon(NotificationMenuHelper.getNotificationIcon(notificationsCount));
+    menuItem.setTitle(NotificationMenuHelper.getNotificationTitle(PendingPushMessagesActivity.this, notificationsCount));
   }
 }

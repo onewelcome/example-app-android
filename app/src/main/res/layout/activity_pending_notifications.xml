@@ -46,6 +46,15 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <TextView
+        android:id="@+id/pending_notifications_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:visibility="gone" />
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/notifications_refresh_layout"
         android:layout_below="@id/toolbar"
@@ -60,15 +69,6 @@
             android:visibility="gone"
             tools:listitem="@layout/row_item_device" />
     </android.support.v4.widget.SwipeRefreshLayout>
-
-    <TextView
-        android:id="@+id/pending_notifications_error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:visibility="gone" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
