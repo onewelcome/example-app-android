@@ -30,15 +30,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.onegini.mobile.exampleapp.R;
+import com.onegini.mobile.exampleapp.model.User;
+import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
+import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPushMessagesAdapter.ViewHolder> {
 
+  private final Context context;
   private final List<OneginiMobileAuthWithPushRequest> list;
-  private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd.MM.yy", Locale.US);
+  private final UserStorage userStorage;
+  private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.US);
 
-  public PendingPushMessagesAdapter() {
+  public PendingPushMessagesAdapter(final Context context) {
+    this.context = context;
     list = new ArrayList<>();
+    userStorage = new UserStorage(context);
   }
 
   public void update(final Set<OneginiMobileAuthWithPushRequest> set) {
@@ -60,14 +67,14 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
   @Override
   public void onBindViewHolder(final PendingPushMessagesAdapter.ViewHolder viewHolder, final int position) {
     final OneginiMobileAuthWithPushRequest oneginiMobileAuthWithPushRequest = list.get(position);
-    final String message = new StringBuilder(oneginiMobileAuthWithPushRequest.getUserProfileId())
-        .append(": ")
-        .append(oneginiMobileAuthWithPushRequest.getMessage())
-        .toString();
-    final String date = sdf.format(new Date(oneginiMobileAuthWithPushRequest.getTimestamp()));
+    final Date dateCreated = new Date(oneginiMobileAuthWithPushRequest.getTimestamp());
+    final Date dateExpires = new Date(oneginiMobileAuthWithPushRequest.getTimestamp() + oneginiMobileAuthWithPushRequest.getTimeToLiveSeconds() * 1000L);
+    final User user = userStorage.loadUser(new UserProfile(oneginiMobileAuthWithPushRequest.getUserProfileId()));
 
-    viewHolder.messageTextView.setText(message);
-    viewHolder.dateTextView.setText(date);
+    viewHolder.profileTextView.setText(user.getName());
+    viewHolder.messageTextView.setText(oneginiMobileAuthWithPushRequest.getMessage());
+    viewHolder.dateTextView.setText(sdf.format(dateCreated));
+    viewHolder.expiresTextView.setText(context.getString(R.string.notification_expires_at, sdf.format(dateExpires)));
   }
 
   @Override
@@ -79,12 +86,16 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
 
     final TextView messageTextView;
     final TextView dateTextView;
+    final TextView profileTextView;
+    final TextView expiresTextView;
 
     ViewHolder(View itemView) {
       super(itemView);
 
       messageTextView = itemView.findViewById(R.id.pending_message);
       dateTextView = itemView.findViewById(R.id.pending_message_timestamp);
+      profileTextView = itemView.findViewById(R.id.pending_message_profile);
+      expiresTextView = itemView.findViewById(R.id.pending_message_expires);
     }
   }
 }

@@ -39,6 +39,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -432,8 +433,12 @@ public class LoginActivity extends Activity {
 
   private void setupNavigationDrawer() {
     bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-      if (item.getItemId() == R.id.action_notifications) {
+      final int itemId = item.getItemId();
+      if (itemId == R.id.action_notifications) {
         startActivity(new Intent(LoginActivity.this, PendingPushMessagesActivity.class));
+        return true;
+      } else if (itemId == R.id.action_resources) {
+        Toast.makeText(LoginActivity.this, "Not implemented yet", Toast.LENGTH_SHORT).show();
         return true;
       }
       return false;

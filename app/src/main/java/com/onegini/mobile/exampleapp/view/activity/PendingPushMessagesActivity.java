@@ -30,6 +30,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -57,7 +58,7 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
   @BindView(R.id.notifications_refresh_layout)
   SwipeRefreshLayout swipeRefreshLayout;
 
-  private final PendingPushMessagesAdapter adapter = new PendingPushMessagesAdapter();
+  private PendingPushMessagesAdapter adapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +81,10 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
   }
 
   private void setupListView() {
+    adapter = new PendingPushMessagesAdapter(this);
     recyclerView.setAdapter(adapter);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    swipeRefreshLayout.setOnRefreshListener(() -> {
-      fetchPendingTransactions();
-    });
+    swipeRefreshLayout.setOnRefreshListener(() -> fetchPendingTransactions());
   }
 
   private void setupNavigationBar() {
@@ -158,7 +158,7 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
   }
 
   private void onHttpClicked() {
-    // todo
+    Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
   }
 
   private void showError(final String text) {
