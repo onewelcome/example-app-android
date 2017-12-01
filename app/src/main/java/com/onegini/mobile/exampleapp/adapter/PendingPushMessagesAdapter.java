@@ -18,7 +18,7 @@ package com.onegini.mobile.exampleapp.adapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -67,14 +67,16 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
   @Override
   public void onBindViewHolder(final PendingPushMessagesAdapter.ViewHolder viewHolder, final int position) {
     final OneginiMobileAuthWithPushRequest oneginiMobileAuthWithPushRequest = list.get(position);
-    final Date dateCreated = new Date(oneginiMobileAuthWithPushRequest.getTimestamp());
-    final Date dateExpires = new Date(oneginiMobileAuthWithPushRequest.getTimestamp() + oneginiMobileAuthWithPushRequest.getTimeToLiveSeconds() * 1000L);
     final User user = userStorage.loadUser(new UserProfile(oneginiMobileAuthWithPushRequest.getUserProfileId()));
-
     viewHolder.profileTextView.setText(user.getName());
     viewHolder.messageTextView.setText(oneginiMobileAuthWithPushRequest.getMessage());
-    viewHolder.dateTextView.setText(sdf.format(dateCreated));
-    viewHolder.expiresTextView.setText(context.getString(R.string.notification_expires_at, sdf.format(dateExpires)));
+
+    final Calendar calendar = Calendar.getInstance();
+    calendar.setTimeInMillis(oneginiMobileAuthWithPushRequest.getTimestamp());
+    viewHolder.dateTextView.setText(sdf.format(calendar.getTime()));
+
+    calendar.add(Calendar.SECOND, oneginiMobileAuthWithPushRequest.getTimeToLiveSeconds());
+    viewHolder.expiresTextView.setText(context.getString(R.string.notification_expires_at, sdf.format(calendar.getTime())));
   }
 
   @Override
@@ -89,7 +91,7 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
     final TextView profileTextView;
     final TextView expiresTextView;
 
-    ViewHolder(View itemView) {
+    ViewHolder(final View itemView) {
       super(itemView);
 
       messageTextView = itemView.findViewById(R.id.pending_message);

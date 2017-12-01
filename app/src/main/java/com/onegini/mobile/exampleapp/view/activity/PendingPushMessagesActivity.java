@@ -36,14 +36,13 @@ import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.adapter.PendingPushMessagesAdapter;
-import com.onegini.mobile.exampleapp.view.helper.NotificationMenuHelper;
+import com.onegini.mobile.exampleapp.view.helper.ErrorMessageParser;
 import com.onegini.mobile.sdk.android.handlers.OneginiPendingMobileAuthWithPushRequestsHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiPendingMobileAuthWithPushRequestError;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class PendingPushMessagesActivity extends AppCompatActivity {
-
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.toolbar)
@@ -84,7 +83,7 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
     adapter = new PendingPushMessagesAdapter(this);
     recyclerView.setAdapter(adapter);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    swipeRefreshLayout.setOnRefreshListener(() -> fetchPendingTransactions());
+    swipeRefreshLayout.setOnRefreshListener(this::fetchPendingTransactions);
   }
 
   private void setupNavigationBar() {
@@ -116,7 +115,7 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
       @Override
       public void onError(final OneginiPendingMobileAuthWithPushRequestError oneginiPendingMobileAuthWithPushRequestError) {
         swipeRefreshLayout.setRefreshing(false);
-        showError(oneginiPendingMobileAuthWithPushRequestError.getMessage());
+        showError(ErrorMessageParser.parseErrorMessage(oneginiPendingMobileAuthWithPushRequestError));
       }
     });
   }
@@ -169,7 +168,12 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
 
   private void updateNotificationsButton(final int notificationsCount) {
     final MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_notifications);
-    menuItem.setIcon(NotificationMenuHelper.getNotificationIcon(notificationsCount));
-    menuItem.setTitle(NotificationMenuHelper.getNotificationTitle(PendingPushMessagesActivity.this, notificationsCount));
+    if (notificationsCount == 0) {
+      menuItem.setIcon(R.drawable.ic_notifications_white_24dp);
+      menuItem.setTitle(getString(R.string.no_notifications));
+    } else {
+      menuItem.setIcon(R.drawable.ic_notifications_active_white_24dp);
+      menuItem.setTitle(getString(R.string.multiple_notifications, notificationsCount));
+    }
   }
 }

@@ -56,7 +56,6 @@ import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
-import com.onegini.mobile.exampleapp.view.helper.NotificationMenuHelper;
 import com.onegini.mobile.exampleapp.view.helper.RegisteredAuthenticatorsMenu;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
@@ -448,8 +447,13 @@ public class LoginActivity extends Activity {
       @Override
       public void onSuccess(final Set<OneginiMobileAuthWithPushRequest> set) {
         final MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_notifications);
-        menuItem.setIcon(NotificationMenuHelper.getNotificationIcon(set.size()));
-        menuItem.setTitle(NotificationMenuHelper.getNotificationTitle(LoginActivity.this, set.size()));
+        if (set.isEmpty()) {
+          menuItem.setIcon(R.drawable.ic_notifications_white_24dp);
+          menuItem.setTitle(getString(R.string.no_notifications));
+        } else {
+          menuItem.setIcon(R.drawable.ic_notifications_active_white_24dp);
+          menuItem.setTitle(getString(R.string.multiple_notifications, set.size()));
+        }
       }
 
       @Override

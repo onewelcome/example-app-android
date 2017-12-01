@@ -81,7 +81,6 @@
     <string name="navigation_menu_home">Home</string>
     <string name="navigation_menu_resource_call">Resource call</string>
     <string name="no_notifications">No notifications</string>
-    <string name="one_notification">1 notification</string>
-    <string name="multiple_notifications">%1$d notifications</string>
+    <string name="multiple_notifications">Notifications: %1$d</string>
     <string name="notification_expires_at">Will expire at %1$s</string>
 </resources>
