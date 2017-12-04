@@ -35,14 +35,12 @@ public class MobileAuthenticationFidoRequestHandler implements OneginiMobileAuth
 
   public static OneginiFidoCallback CALLBACK;
 
+  private final Context context;
   private String userProfileId;
   private String message;
-  private final Context context;
-  private final NotificationHelper notificationHelper;
 
   public MobileAuthenticationFidoRequestHandler(final Context context) {
     this.context = context;
-    this.notificationHelper = new NotificationHelper(context);
   }
 
   @Override
@@ -50,12 +48,8 @@ public class MobileAuthenticationFidoRequestHandler implements OneginiMobileAuth
     CALLBACK = oneginiFidoCallback;
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
     message = oneginiMobileAuthenticationRequest.getMessage();
-
-    final Intent intent = prepareActivityIntent(COMMAND_START);
-    notificationHelper.handleIntent(intent, message);
+    notifyActivity(COMMAND_START);
   }
-
-
 
   @Override
   public void finishAuthentication() {

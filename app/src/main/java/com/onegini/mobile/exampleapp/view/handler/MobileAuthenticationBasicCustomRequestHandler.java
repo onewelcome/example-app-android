@@ -25,7 +25,6 @@ import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationCustomActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushCustomRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomCallback;
@@ -38,11 +37,9 @@ public class MobileAuthenticationBasicCustomRequestHandler implements OneginiMob
   private String userProfileId;
   private String message;
   private final Context context;
-  private final NotificationHelper notificationHelper;
 
   public MobileAuthenticationBasicCustomRequestHandler(final Context context) {
     this.context = context;
-    this.notificationHelper = new NotificationHelper(context);
   }
 
   @Override
@@ -51,9 +48,7 @@ public class MobileAuthenticationBasicCustomRequestHandler implements OneginiMob
     CALLBACK = oneginiCustomCallback;
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
     message = oneginiMobileAuthenticationRequest.getMessage();
-
-    final Intent intent = prepareActivityIntent(COMMAND_START);
-    notificationHelper.handleIntent(intent, message);
+    notifyActivity(COMMAND_START);
   }
 
   @Override
