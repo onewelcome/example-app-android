@@ -21,6 +21,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -45,16 +46,18 @@ public class NotificationHelper {
     getManager().cancelAll();
   }
 
-  void showNotification(final PendingIntent pendingIntent, final String message) {
+  void showNotification(final Intent intent, final String message) {
+    final int uniqueId = NotificationId.getId();
+
     final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(R.mipmap.ic_launcher)
         .setContentTitle("Confirm the transaction")
         .setContentText(message)
-        .setContentIntent(pendingIntent)
+        .setContentIntent(PendingIntent.getService(context, uniqueId, intent, 0))
         .setPriority(NotificationCompat.PRIORITY_MAX)
         .setAutoCancel(true);
 
-    getManager().notify(NotificationId.getId(), builder.build());
+    getManager().notify(uniqueId, builder.build());
   }
 
   @RequiresApi(api = Build.VERSION_CODES.O)

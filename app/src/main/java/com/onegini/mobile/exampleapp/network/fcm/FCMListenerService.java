@@ -40,7 +40,7 @@ public class FCMListenerService extends FirebaseMessagingService {
       if (AppLifecycleListener.isAppInForeground()) {
         startService(serviceIntent);
       } else {
-        notificationHelper.showNotification(getPendingIntent(serviceIntent), mobileAuthWithPushRequest.getMessage());
+        notificationHelper.showNotification(serviceIntent, mobileAuthWithPushRequest.getMessage());
       }
     }
   }
@@ -67,9 +67,5 @@ public class FCMListenerService extends FirebaseMessagingService {
     intent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE, mobileAuthWithPushRequest.getMessage());
     intent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID, mobileAuthWithPushRequest.getUserProfileId());
     return intent;
-  }
-
-  private PendingIntent getPendingIntent(final Intent intent) {
-    return PendingIntent.getService(this, 0, intent, 0);
   }
 }
