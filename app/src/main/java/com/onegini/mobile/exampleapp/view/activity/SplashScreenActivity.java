@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
+import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
@@ -42,8 +43,9 @@ public class SplashScreenActivity extends Activity {
     super.onCreate(savedInstanceState);
     this.userStorage = new UserStorage(this);
 
-    setContentView(R.layout.activity_login);
+    setContentView(R.layout.activity_splashscreen);
     setupOneginiSDK();
+    cancelAllNotifications();
   }
 
   private void setupOneginiSDK() {
@@ -63,6 +65,10 @@ public class SplashScreenActivity extends Activity {
         handleInitializationErrors(error);
       }
     });
+  }
+
+  private void cancelAllNotifications() {
+    new NotificationHelper(this).cancelAllNotifications();
   }
 
   private void handleInitializationErrors(final OneginiInitializationError error) {

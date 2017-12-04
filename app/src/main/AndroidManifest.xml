@@ -116,6 +116,10 @@
             android:parentActivityName=".view.activity.DashboardActivity"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".view.activity.PendingPushMessagesActivity"
+            android:parentActivityName=".view.activity.DashboardActivity"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".view.activity.BasicAuthenticatorRegistrationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>

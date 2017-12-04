@@ -51,6 +51,10 @@ public class NotificationHelper {
     }
   }
 
+  public void cancelAllNotifications() {
+    getManager().cancelAll();
+  }
+
   private void showNotification(final Intent intent, final String message) {
     final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(R.mipmap.ic_launcher)

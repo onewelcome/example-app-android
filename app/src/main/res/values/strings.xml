@@ -60,6 +60,7 @@
     <string name="settings_authentication_method">Login Method</string>
     <string name="settings_retrofit_client">Client for resource calls:</string>
     <string name="toolbar_name_devices_activity">Devices</string>
+    <string name="toolbar_name_pending_notifications">Pending notifications</string>
     <string name="settings_authenticators_possible_authenticators">Possible authenticators:</string>
     <string name="simple_push_message">Simple push message</string>
     <string name="change_pin_finished_successfully">Change PIN action finished successfully</string>
@@ -77,4 +78,9 @@
     <string name="custom_auth_authentication_title">Authentication</string>
     <string name="enable_mobile_authentication_finished_successfully">Mobile authentication enabled</string>
     <string name="enable_mobile_authentication_with_push_finished_successfully">Mobile authentication with push enabled</string>
+    <string name="navigation_menu_home">Home</string>
+    <string name="navigation_menu_resource_call">Resource call</string>
+    <string name="no_notifications">No notifications</string>
+    <string name="multiple_notifications">Notifications: %1$d</string>
+    <string name="notification_expires_at">Will expire at %1$s</string>
 </resources>
