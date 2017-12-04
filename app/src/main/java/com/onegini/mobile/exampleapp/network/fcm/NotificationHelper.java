@@ -21,14 +21,12 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.NotificationId;
-import com.onegini.mobile.exampleapp.view.helper.AppLifecycleListener;
 
 public class NotificationHelper {
 
@@ -43,24 +41,16 @@ public class NotificationHelper {
     }
   }
 
-  public void handleIntent(final Intent intent, final String message) {
-    if (AppLifecycleListener.isAppInForeground()) {
-      context.startActivity(intent);
-    } else {
-      showNotification(intent, message);
-    }
-  }
-
   public void cancelAllNotifications() {
     getManager().cancelAll();
   }
 
-  private void showNotification(final Intent intent, final String message) {
+  void showNotification(final PendingIntent pendingIntent, final String message) {
     final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(R.mipmap.ic_launcher)
         .setContentTitle("Confirm the transaction")
         .setContentText(message)
-        .setContentIntent(getPendingIntent(intent))
+        .setContentIntent(pendingIntent)
         .setPriority(NotificationCompat.PRIORITY_MAX)
         .setAutoCancel(true);
 
@@ -81,9 +71,5 @@ public class NotificationHelper {
 
   private NotificationManager getManager() {
     return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-  }
-
-  private PendingIntent getPendingIntent(final Intent intent) {
-    return PendingIntent.getActivity(context, 0, intent, 0);
   }
 }
