@@ -90,7 +90,7 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
   }
 
   private Intent getServiceIntent(final OneginiMobileAuthWithPushRequest mobileAuthWithPushRequest) {
-    final Intent intent =  new Intent(context, MobileAuthenticationService.class);
+    final Intent intent = new Intent(context, MobileAuthenticationService.class);
     intent.putExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID, mobileAuthWithPushRequest.getTransactionId());
     intent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE, mobileAuthWithPushRequest.getMessage());
     intent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID, mobileAuthWithPushRequest.getUserProfileId());

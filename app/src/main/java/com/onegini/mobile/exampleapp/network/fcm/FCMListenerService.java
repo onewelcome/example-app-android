@@ -27,8 +27,8 @@ import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequ
 
 public class FCMListenerService extends FirebaseMessagingService {
 
-  private Gson gson = new Gson();
-  private NotificationHelper notificationHelper = new NotificationHelper(this);
+  private final Gson gson = new Gson();
+  private final NotificationHelper notificationHelper = new NotificationHelper(this);
 
   @Override
   public void onMessageReceived(final RemoteMessage message) {
@@ -58,7 +58,7 @@ public class FCMListenerService extends FirebaseMessagingService {
   }
 
   private Intent getServiceIntent(final OneginiMobileAuthWithPushRequest mobileAuthWithPushRequest) {
-    final Intent intent =  new Intent(this, MobileAuthenticationService.class);
+    final Intent intent = new Intent(this, MobileAuthenticationService.class);
     intent.putExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID, mobileAuthWithPushRequest.getTransactionId());
     intent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE, mobileAuthWithPushRequest.getMessage());
     intent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID, mobileAuthWithPushRequest.getUserProfileId());
