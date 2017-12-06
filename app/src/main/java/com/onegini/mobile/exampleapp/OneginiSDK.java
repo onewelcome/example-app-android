@@ -20,18 +20,18 @@ import java.util.concurrent.TimeUnit;
 
 import android.content.Context;
 import com.onegini.mobile.exampleapp.model.BasicCustomAuthenticator;
+import com.onegini.mobile.exampleapp.view.handler.BasicCustomAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.FidoAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthOtpRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationBasicCustomRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFidoRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFingerprintRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationRequestHandler;
-import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationBasicCustomRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.PinAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.RegistrationRequestHandler;
-import com.onegini.mobile.exampleapp.view.handler.BasicCustomAuthenticationRequestHandler;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.client.OneginiClientBuilder;
 

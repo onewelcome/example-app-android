@@ -16,10 +16,8 @@
 
 package com.onegini.mobile.exampleapp.network.fcm;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
@@ -47,13 +45,11 @@ public class FCMListenerService extends FirebaseMessagingService {
 
   @Nullable
   private OneginiMobileAuthWithPushRequest parseOneginiMobileAuthRequest(final RemoteMessage message) {
-    Log.d("FCM", "trying to parse message");
     if (message == null || message.getData() == null) {
       return null;
     }
 
     final String json = message.getData().get("content");
-    Log.d("FCM", "content is: "+json);
     try {
       return gson.fromJson(json, OneginiMobileAuthWithPushRequest.class);
     } catch (final JsonSyntaxException e) {

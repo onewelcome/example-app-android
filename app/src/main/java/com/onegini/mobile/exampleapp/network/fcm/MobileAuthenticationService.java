@@ -51,7 +51,7 @@ public class MobileAuthenticationService extends IntentService {
   protected void onHandleIntent(@Nullable final Intent intent) {
     final OneginiMobileAuthWithPushRequest request = parseRequest(intent);
     if (request != null) {
-      Log.d(TAG, "Mobile authentication request received");
+      Log.d(TAG, "Mobile authentication request " + request.getTransactionId() + " received");
       try {
         handleMobileAuthenticationRequest(request);
       } catch (final OneginiInitializationException exception) {
@@ -77,7 +77,6 @@ public class MobileAuthenticationService extends IntentService {
   }
 
   private void setupOneginiSDK(final OneginiMobileAuthWithPushRequest request) {
-    Log.d(TAG, "setup onegini SDK");
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
     oneginiClient.start(new OneginiInitializationHandler() {
       @Override
@@ -91,7 +90,6 @@ public class MobileAuthenticationService extends IntentService {
 
       @Override
       public void onError(final OneginiInitializationError error) {
-        Log.d(TAG, "initialization exception");
         @OneginiInitializationError.InitializationErrorType final int errorType = error.getErrorType();
         if (errorType == OneginiInitializationError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(getApplicationContext()).onDeviceDeregistered();
@@ -101,17 +99,16 @@ public class MobileAuthenticationService extends IntentService {
   }
 
   private void handleMobileAuthenticationRequest(final OneginiMobileAuthWithPushRequest request) {
-    Log.d(TAG, "handle "+request.getTransactionId());
     OneginiSDK.getOneginiClient(this).getUserClient().handleMobileAuthWithPushRequest(request, new OneginiMobileAuthenticationHandler() {
       @Override
       public void onSuccess(final CustomAuthenticatorInfo customAuthenticatorInfo) {
-        Log.d(TAG, "handle "+request.getTransactionId()+" success");
-        //Toast.makeText(FCMListenerService.this, "Mobile authentication success", Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "The mobile authentication request " + request.getTransactionId() + " has finished with success");
       }
 
       @Override
       public void onError(final OneginiMobileAuthenticationError oneginiMobileAuthenticationError) {
-        Log.d(TAG, "handle "+request.getTransactionId()+" error "+oneginiMobileAuthenticationError.getMessage());
+        Log.e(TAG, "The mobile authentication request  " + request.getTransactionId() +
+            " has finished with error: " + oneginiMobileAuthenticationError.getMessage());
         @OneginiMobileAuthenticationError.MobileAuthenticationErrorType final int errorType = oneginiMobileAuthenticationError.getErrorType();
         if (errorType == OneginiMobileAuthenticationError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(getApplicationContext()).onDeviceDeregistered();

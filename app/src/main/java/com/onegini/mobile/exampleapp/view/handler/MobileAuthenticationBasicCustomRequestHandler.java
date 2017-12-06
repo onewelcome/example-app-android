@@ -34,9 +34,9 @@ public class MobileAuthenticationBasicCustomRequestHandler implements OneginiMob
 
   public static OneginiCustomCallback CALLBACK;
 
+  private final Context context;
   private String userProfileId;
   private String message;
-  private final Context context;
 
   public MobileAuthenticationBasicCustomRequestHandler(final Context context) {
     this.context = context;
