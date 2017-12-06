@@ -68,7 +68,7 @@ public class SplashScreenActivity extends Activity {
   }
 
   private void cancelAllNotifications() {
-    new NotificationHelper(this).cancelAllNotifications();
+    NotificationHelper.getInstance(this).cancelAllNotifications();
   }
 
   private void handleInitializationErrors(final OneginiInitializationError error) {

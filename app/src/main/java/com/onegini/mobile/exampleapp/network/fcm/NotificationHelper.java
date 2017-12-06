@@ -31,11 +31,20 @@ import com.onegini.mobile.exampleapp.model.NotificationId;
 
 public class NotificationHelper {
 
+  private static NotificationHelper INSTANCE;
+
+  public static NotificationHelper getInstance(final Context context) {
+    if (INSTANCE == null) {
+      INSTANCE = new NotificationHelper(context.getApplicationContext());
+    }
+    return INSTANCE;
+  }
+
   private static final String CHANNEL_ID = "transactions";
 
   private final Context context;
 
-  public NotificationHelper(final Context context) {
+  private NotificationHelper(final Context context) {
     this.context = context;
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       registerNotificationChannel();

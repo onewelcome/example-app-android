@@ -28,7 +28,6 @@ import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequ
 public class FCMListenerService extends FirebaseMessagingService {
 
   private final Gson gson = new Gson();
-  private final NotificationHelper notificationHelper = new NotificationHelper(this);
 
   @Override
   public void onMessageReceived(final RemoteMessage message) {
@@ -38,7 +37,7 @@ public class FCMListenerService extends FirebaseMessagingService {
       if (AppLifecycleListener.isAppInForeground()) {
         startService(serviceIntent);
       } else {
-        notificationHelper.showNotification(serviceIntent, mobileAuthWithPushRequest.getMessage());
+        NotificationHelper.getInstance(this).showNotification(serviceIntent, mobileAuthWithPushRequest.getMessage());
       }
     }
   }
