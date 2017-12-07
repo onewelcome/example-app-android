@@ -17,8 +17,8 @@
 package com.onegini.mobile.exampleapp.network;
 
 import android.content.Context;
-import com.onegini.mobile.exampleapp.network.client.UserClient;
 import com.onegini.mobile.exampleapp.network.client.SecureResourceClient;
+import com.onegini.mobile.exampleapp.network.client.UserClient;
 import com.onegini.mobile.exampleapp.network.client.UserClient2;
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
 import rx.Observable;

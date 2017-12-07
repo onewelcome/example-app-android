@@ -28,26 +28,26 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.NotificationId;
-import com.onegini.mobile.exampleapp.view.helper.AppLifecycleListener;
 
 public class NotificationHelper {
+
+  private static NotificationHelper INSTANCE;
+
+  public static NotificationHelper getInstance(final Context context) {
+    if (INSTANCE == null) {
+      INSTANCE = new NotificationHelper(context.getApplicationContext());
+    }
+    return INSTANCE;
+  }
 
   private static final String CHANNEL_ID = "transactions";
 
   private final Context context;
 
-  public NotificationHelper(final Context context) {
+  private NotificationHelper(final Context context) {
     this.context = context;
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       registerNotificationChannel();
-    }
-  }
-
-  public void handleIntent(final Intent intent, final String message) {
-    if (AppLifecycleListener.isAppInForeground()) {
-      context.startActivity(intent);
-    } else {
-      showNotification(intent, message);
     }
   }
 
@@ -55,16 +55,18 @@ public class NotificationHelper {
     getManager().cancelAll();
   }
 
-  private void showNotification(final Intent intent, final String message) {
+  void showNotification(final Intent intent, final String message) {
+    final int uniqueId = NotificationId.getId();
+
     final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(R.mipmap.ic_launcher)
         .setContentTitle("Confirm the transaction")
         .setContentText(message)
-        .setContentIntent(getPendingIntent(intent))
+        .setContentIntent(PendingIntent.getService(context, uniqueId, intent, 0))
         .setPriority(NotificationCompat.PRIORITY_MAX)
         .setAutoCancel(true);
 
-    getManager().notify(NotificationId.getId(), builder.build());
+    getManager().notify(uniqueId, builder.build());
   }
 
   @RequiresApi(api = Build.VERSION_CODES.O)
@@ -81,9 +83,5 @@ public class NotificationHelper {
 
   private NotificationManager getManager() {
     return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-  }
-
-  private PendingIntent getPendingIntent(final Intent intent) {
-    return PendingIntent.getActivity(context, 0, intent, 0);
   }
 }

@@ -27,7 +27,6 @@ import static com.onegini.mobile.exampleapp.view.activity.PinActivity.EXTRA_MAX_
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationPinActivity;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushPinRequestHandler;
@@ -39,17 +38,14 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthW
 
   public static OneginiPinCallback CALLBACK;
 
+  private final Context context;
   private int failedAttemptsCount;
   private int maxAttemptsCount;
   private String message;
   private String userProfileId;
 
-  private final Context context;
-  private final NotificationHelper notificationHelper;
-
   public MobileAuthenticationPinRequestHandler(final Context context) {
     this.context = context;
-    this.notificationHelper = new NotificationHelper(context);
   }
 
   @Override
@@ -60,9 +56,7 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthW
     message = oneginiMobileAuthenticationRequest.getMessage();
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
     failedAttemptsCount = maxAttemptsCount = 0;
-
-    final Intent intent = prepareActivityIntent(COMMAND_START);
-    notificationHelper.handleIntent(intent, message);
+    notifyActivity(COMMAND_START);
   }
 
   @Override

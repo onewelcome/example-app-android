@@ -24,13 +24,16 @@ import java.util.Locale;
 import java.util.Set;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
+import com.onegini.mobile.exampleapp.network.fcm.MobileAuthenticationService;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
@@ -77,11 +80,21 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
 
     calendar.add(Calendar.SECOND, oneginiMobileAuthWithPushRequest.getTimeToLiveSeconds());
     viewHolder.expiresTextView.setText(context.getString(R.string.notification_expires_at, sdf.format(calendar.getTime())));
+
+    viewHolder.onClickListener = v -> context.startService(getServiceIntent(oneginiMobileAuthWithPushRequest));
   }
 
   @Override
   public int getItemCount() {
     return list.size();
+  }
+
+  private Intent getServiceIntent(final OneginiMobileAuthWithPushRequest mobileAuthWithPushRequest) {
+    final Intent intent = new Intent(context, MobileAuthenticationService.class);
+    intent.putExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID, mobileAuthWithPushRequest.getTransactionId());
+    intent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE, mobileAuthWithPushRequest.getMessage());
+    intent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID, mobileAuthWithPushRequest.getUserProfileId());
+    return intent;
   }
 
   static class ViewHolder extends RecyclerView.ViewHolder {
@@ -91,6 +104,8 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
     final TextView profileTextView;
     final TextView expiresTextView;
 
+    OnClickListener onClickListener;
+
     ViewHolder(final View itemView) {
       super(itemView);
 
@@ -98,6 +113,11 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
       dateTextView = itemView.findViewById(R.id.pending_message_timestamp);
       profileTextView = itemView.findViewById(R.id.pending_message_profile);
       expiresTextView = itemView.findViewById(R.id.pending_message_expires);
+      itemView.setOnClickListener(v -> {
+        if (onClickListener != null) {
+          onClickListener.onClick(v);
+        }
+      });
     }
   }
 }
