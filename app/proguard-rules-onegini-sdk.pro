@@ -18,12 +18,15 @@
 -keep class * implements com.onegini.mobile.sdk.android.model.OneginiClientConfigModel { *; }
 -keepattributes Signature,InnerClasses,EnclosingMethod
 -dontnote com.onegini.mobile.sdk.android.**
+-dontwarn android.test.**
+-dontwarn com.onegini.mobile.sdk.android.model.OneginiAuthenticator$OneginiAuthenticatorType
 
 # Bouncycastle
 -keep class org.spongycastle.jcajce.provider.** { *; }
 -dontwarn org.bouncycastle.**
 -dontwarn org.spongycastle.**
 -dontnote org.spongycastle.**
+-dontwarn org.junit.**
 
 # OkHttp
 -keep class okhttp3.** { *; }

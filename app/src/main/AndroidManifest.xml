@@ -116,6 +116,10 @@
             android:parentActivityName=".view.activity.DashboardActivity"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".view.activity.PendingPushMessagesActivity"
+            android:parentActivityName=".view.activity.DashboardActivity"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".view.activity.BasicAuthenticatorRegistrationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
@@ -140,6 +144,9 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
+        <service
+            android:name=".network.fcm.MobileAuthenticationService"
+            android:exported="false"/>
 
         <meta-data
             android:name="com.google.android.gms.version"
