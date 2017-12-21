@@ -62,10 +62,6 @@ android {
       minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-onegini-sdk.pro', 'proguard-rules-example-app.pro'
     }
-    debug {
-      minifyEnabled true
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-onegini-sdk.pro', 'proguard-rules-example-app.pro'
-    }
   }
   dexOptions {
     javaMaxHeapSize "4g"
