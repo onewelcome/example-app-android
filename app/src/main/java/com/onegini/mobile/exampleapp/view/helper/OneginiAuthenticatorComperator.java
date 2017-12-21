@@ -24,7 +24,7 @@ import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
  * Order provided authenticators in following order:
  * 1. PIN authenticator
  * 2. Android fingerprint authenticator
- * 3. FIDO authenticators ordered by name
+ * 3. Custom authenticators ordered by name
  */
 public class OneginiAuthenticatorComperator implements Comparator<OneginiAuthenticator> {
 
@@ -43,22 +43,22 @@ public class OneginiAuthenticatorComperator implements Comparator<OneginiAuthent
       return 0;
     }
 
-    // o1 == PIN && o2 == FINGERPRINT || FIDO
+    // o1 == PIN && o2 == FINGERPRINT || CUSTOM
     if (o1 == OneginiAuthenticator.PIN) {
       return -1;
     }
 
-    // o2 == PIN && o1 == FINGERPRINT || FIDO
+    // o2 == PIN && o1 == FINGERPRINT || CUSTOM
     if (o2 == OneginiAuthenticator.PIN) {
       return 1;
     }
 
-    // o1 == FINGERPRINT && o2 == FIDO
+    // o1 == FINGERPRINT && o2 == CUSTOM
     if (o1 == OneginiAuthenticator.FINGERPRINT) {
       return -1;
     }
 
-    // o2 == FINGERPRINT && o1 == FIDO
+    // o2 == FINGERPRINT && o1 == CUSTOM
     return 1;
   }
 

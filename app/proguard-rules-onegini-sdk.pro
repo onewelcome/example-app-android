@@ -42,9 +42,6 @@
     @retrofit2.http.* <methods>;
 }
 
-# Samsung FIDO
--keep class com.samsung.sds.fido.** { *; }
--dontwarn com.samsung.sds.fido.**
 -dontnote **
 
 # SQLCipher
