@@ -17,9 +17,9 @@
 package com.onegini.mobile.exampleapp.model;
 
 import android.content.Context;
-import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthAuthenticationAction;
-import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthDeregistrationAction;
-import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthRegistrationAction;
+import com.onegini.mobile.exampleapp.view.action.basiccustomauth.BasicCustomAuthAuthenticationAction;
+import com.onegini.mobile.exampleapp.view.action.basiccustomauth.BasicCustomAuthDeregistrationAction;
+import com.onegini.mobile.exampleapp.view.action.basiccustomauth.BasicCustomAuthRegistrationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthAuthenticationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthDeregistrationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthRegistrationAction;
@@ -28,6 +28,7 @@ import com.onegini.mobile.sdk.android.model.OneginiCustomAuthenticator;
 public class BasicCustomAuthenticator implements OneginiCustomAuthenticator {
 
   public static final String AUTH_DATA = "fakeAuthenticationData";
+  public static final String BASIC_CUSTOM_AUTHENTICATOR_ID = "EXPERIMENTAL_CA_ID";
 
   private final OneginiCustomAuthRegistrationAction registrationAction;
   private final OneginiCustomAuthDeregistrationAction deregistrationAction;
@@ -56,6 +57,6 @@ public class BasicCustomAuthenticator implements OneginiCustomAuthenticator {
 
   @Override
   public String getId() {
-    return "EXPERIMENTAL_CA_ID";
+    return BASIC_CUSTOM_AUTHENTICATOR_ID;
   }
 }

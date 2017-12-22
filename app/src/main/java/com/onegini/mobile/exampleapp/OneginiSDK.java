@@ -20,11 +20,12 @@ import java.util.concurrent.TimeUnit;
 
 import android.content.Context;
 import com.onegini.mobile.exampleapp.model.BasicCustomAuthenticator;
-import com.onegini.mobile.exampleapp.view.handler.BasicCustomAuthenticationRequestHandler;
+import com.onegini.mobile.exampleapp.model.PasswordCustomAuthenticator;
+import com.onegini.mobile.exampleapp.view.handler.CustomAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthOtpRequestHandler;
-import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationBasicCustomRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationCustomRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFingerprintRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationRequestHandler;
@@ -49,18 +50,20 @@ public class OneginiSDK {
     final CreatePinRequestHandler createPinRequestHandler = new CreatePinRequestHandler(applicationContext);
     final PinAuthenticationRequestHandler pinAuthenticationRequestHandler = new PinAuthenticationRequestHandler(applicationContext);
     final BasicCustomAuthenticator basicCustomAuthenticator = new BasicCustomAuthenticator(applicationContext);
+    final PasswordCustomAuthenticator passwordCustomAuthenticator = new PasswordCustomAuthenticator(applicationContext);
 
     // will throw OneginiConfigNotFoundException if OneginiConfigModel class can't be found
     return new OneginiClientBuilder(applicationContext, registrationRequestHandler, createPinRequestHandler, pinAuthenticationRequestHandler)
         // handlers for optional functionalities
         .setFingerprintAuthenticatioRequestHandler(new FingerprintAuthenticationRequestHandler(applicationContext))
-        .setCustomAuthenticationRequestHandler(new BasicCustomAuthenticationRequestHandler(applicationContext))
+        .setCustomAuthenticationRequestHandler(new CustomAuthenticationRequestHandler(applicationContext))
         .setMobileAuthWithPushRequestHandler(new MobileAuthenticationRequestHandler(applicationContext))
         .setMobileAuthWithPushPinRequestHandler(new MobileAuthenticationPinRequestHandler(applicationContext))
         .setMobileAuthWithPushFingerprintRequestHandler(new MobileAuthenticationFingerprintRequestHandler(applicationContext))
-        .setMobileAuthWithPushCustomRequestHandler(new MobileAuthenticationBasicCustomRequestHandler(applicationContext))
+        .setMobileAuthWithPushCustomRequestHandler(new MobileAuthenticationCustomRequestHandler(applicationContext))
         .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler())
         .addCustomAuthenticator(basicCustomAuthenticator)
+        .addCustomAuthenticator(passwordCustomAuthenticator)
         // Set http connect / read timeout
         .setHttpConnectTimeout((int) TimeUnit.SECONDS.toMillis(5))
         .setHttpReadTimeout((int) TimeUnit.SECONDS.toMillis(20))

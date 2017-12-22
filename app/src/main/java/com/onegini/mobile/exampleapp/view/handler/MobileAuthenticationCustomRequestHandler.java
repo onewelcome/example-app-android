@@ -20,17 +20,23 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
 import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
+import static com.onegini.mobile.exampleapp.model.BasicCustomAuthenticator.BASIC_CUSTOM_AUTHENTICATOR_ID;
+import static com.onegini.mobile.exampleapp.model.PasswordCustomAuthenticator.PASSWORD_CUSTOM_AUTHENTICATOR_ID;
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_MESSAGE;
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_USER_PROFILE_ID;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationCustomActivity;
+import android.util.Log;
+import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationBasicCustomActivity;
+import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationPasswordCustomActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushCustomRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomCallback;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
 
-public class MobileAuthenticationBasicCustomRequestHandler implements OneginiMobileAuthWithPushCustomRequestHandler {
+public class MobileAuthenticationCustomRequestHandler implements OneginiMobileAuthWithPushCustomRequestHandler {
+
+  private static final String TAG = CustomAuthenticationRequestHandler.class.getSimpleName();
 
   public static OneginiCustomCallback CALLBACK;
 
@@ -38,35 +44,45 @@ public class MobileAuthenticationBasicCustomRequestHandler implements OneginiMob
   private String userProfileId;
   private String message;
 
-  public MobileAuthenticationBasicCustomRequestHandler(final Context context) {
+  public MobileAuthenticationCustomRequestHandler(final Context context) {
     this.context = context;
   }
 
   @Override
   public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest,
-                                  final OneginiCustomCallback oneginiCustomCallback) {
+                                  final String authenticatorId, final OneginiCustomCallback oneginiCustomCallback) {
     CALLBACK = oneginiCustomCallback;
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
     message = oneginiMobileAuthenticationRequest.getMessage();
-    notifyActivity(COMMAND_START);
+    notifyActivity(COMMAND_START, authenticatorId);
   }
 
   @Override
-  public void finishAuthentication() {
-    notifyActivity(COMMAND_FINISH);
+  public void finishAuthentication(final String authenticatorId) {
+    notifyActivity(COMMAND_FINISH, authenticatorId);
   }
 
-  private void notifyActivity(final String command) {
-    final Intent intent = prepareActivityIntent(command);
-    context.startActivity(intent);
+  private void notifyActivity(final String command, final String authenticatorId) {
+    try {
+      final Intent intent = createIntent(authenticatorId);
+      intent.putExtra(EXTRA_COMMAND, command);
+      intent.putExtra(EXTRA_USER_PROFILE_ID, userProfileId);
+      intent.putExtra(EXTRA_MESSAGE, message);
+      intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+      context.startActivity(intent);
+    }catch (Exception e){
+      Log.d(TAG, e.getMessage());
+    }
   }
 
-  private Intent prepareActivityIntent(final String command) {
-    final Intent intent = new Intent(context, MobileAuthenticationCustomActivity.class);
-    intent.putExtra(EXTRA_COMMAND, command);
-    intent.putExtra(EXTRA_USER_PROFILE_ID, userProfileId);
-    intent.putExtra(EXTRA_MESSAGE, message);
-    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-    return intent;
+  private Intent createIntent(final String authenticatorId) throws Exception {
+    switch (authenticatorId) {
+      case BASIC_CUSTOM_AUTHENTICATOR_ID:
+        return new Intent(context, MobileAuthenticationBasicCustomActivity.class);
+      case PASSWORD_CUSTOM_AUTHENTICATOR_ID:
+        return new Intent(context, MobileAuthenticationPasswordCustomActivity.class);
+      default:
+        throw new Exception("Authenticator with id: " + authenticatorId + " not implemented yet.");
+    }
   }
 }
