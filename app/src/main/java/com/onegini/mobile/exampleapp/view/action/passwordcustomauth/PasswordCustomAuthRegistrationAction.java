@@ -14,31 +14,31 @@
  * limitations under the License.
  */
 
-package com.onegini.mobile.exampleapp.view.action;
+package com.onegini.mobile.exampleapp.view.action.passwordcustomauth;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.view.activity.BasicAuthenticatorAuthenticationActivity;
-import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthAuthenticationAction;
-import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthAuthenticationCallback;
+import com.onegini.mobile.exampleapp.view.activity.PasswordAuthenticatorRegistrationActivity;
+import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthRegistrationAction;
+import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthRegistrationCallback;
 
-public class BasicCustomAuthAuthenticationAction implements OneginiCustomAuthAuthenticationAction {
+public class PasswordCustomAuthRegistrationAction implements OneginiCustomAuthRegistrationAction {
 
-  public static OneginiCustomAuthAuthenticationCallback CALLBACK;
+  public static OneginiCustomAuthRegistrationCallback CALLBACK;
 
-  private final Context context;
+  private Context context;
 
-  public BasicCustomAuthAuthenticationAction(final Context context) {
+  public PasswordCustomAuthRegistrationAction(final Context context) {
     this.context = context;
   }
 
   @Override
-  public void finishAuthentication(final OneginiCustomAuthAuthenticationCallback callback, final String s) {
+  public void finishRegistration(final OneginiCustomAuthRegistrationCallback callback) {
     CALLBACK = callback;
 
-    final Intent intent = new Intent(context, BasicAuthenticatorAuthenticationActivity.class);
+    final Intent intent = new Intent(context, PasswordAuthenticatorRegistrationActivity.class);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }

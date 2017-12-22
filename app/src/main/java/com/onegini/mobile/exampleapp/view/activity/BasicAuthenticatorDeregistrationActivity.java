@@ -17,7 +17,7 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthDeregistrationAction;
+import com.onegini.mobile.exampleapp.view.action.basiccustomauth.BasicCustomAuthDeregistrationAction;
 
 public class BasicAuthenticatorDeregistrationActivity extends BasicAuthenticatorActivity {
 

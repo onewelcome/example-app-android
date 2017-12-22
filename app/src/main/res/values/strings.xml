@@ -81,4 +81,5 @@
     <string name="no_notifications">No notifications</string>
     <string name="multiple_notifications">Notifications: %1$d</string>
     <string name="notification_expires_at">Will expire at %1$s</string>
+    <string name="confirm_with_password">Confirm with password</string>
 </resources>
