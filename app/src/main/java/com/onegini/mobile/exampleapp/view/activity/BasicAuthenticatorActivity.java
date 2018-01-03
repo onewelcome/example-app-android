@@ -43,7 +43,7 @@ public abstract class BasicAuthenticatorActivity extends AppCompatActivity {
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_custom_auth_registration);
+    setContentView(R.layout.activity_basic_authenticator);
     ButterKnife.bind(this);
     setTitle();
   }

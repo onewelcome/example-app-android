@@ -16,9 +16,9 @@
 package com.onegini.mobile.exampleapp.model;
 
 import android.content.Context;
-import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthAuthenticationAction;
-import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthDeregistrationAction;
-import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthRegistrationAction;
+import com.onegini.mobile.exampleapp.view.action.passwordauth.PasswordCustomAuthAuthenticationAction;
+import com.onegini.mobile.exampleapp.view.action.passwordauth.PasswordCustomAuthDeregistrationAction;
+import com.onegini.mobile.exampleapp.view.action.passwordauth.PasswordCustomAuthRegistrationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthAuthenticationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthDeregistrationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthRegistrationAction;
@@ -31,9 +31,9 @@ public class PasswordCustomAuthenticator implements OneginiCustomAuthenticator {
   private final OneginiCustomAuthAuthenticationAction authAuthenticationAction;
 
   public PasswordCustomAuthenticator(final Context context) {
-    registrationAction = new BasicCustomAuthRegistrationAction(context);
-    deregistrationAction = new BasicCustomAuthDeregistrationAction(context);
-    authAuthenticationAction = new BasicCustomAuthAuthenticationAction(context);
+    registrationAction = new PasswordCustomAuthRegistrationAction(context);
+    deregistrationAction = new PasswordCustomAuthDeregistrationAction(context);
+    authAuthenticationAction = new PasswordCustomAuthAuthenticationAction(context);
   }
 
   @Override

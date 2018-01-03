@@ -14,31 +14,31 @@
  * limitations under the License.
  */
 
-package com.onegini.mobile.exampleapp.view.action;
+package com.onegini.mobile.exampleapp.view.action.basicauth;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.view.activity.BasicAuthenticatorRegistrationActivity;
-import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthRegistrationAction;
-import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthRegistrationCallback;
+import com.onegini.mobile.exampleapp.view.activity.BasicAuthenticatorDeregistrationActivity;
+import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthDeregistrationAction;
+import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthDeregistrationCallback;
 
-public class BasicCustomAuthRegistrationAction implements OneginiCustomAuthRegistrationAction {
+public class BasicCustomAuthDeregistrationAction implements OneginiCustomAuthDeregistrationAction {
 
-  public static OneginiCustomAuthRegistrationCallback CALLBACK;
+  public static OneginiCustomAuthDeregistrationCallback CALLBACK;
 
   private final Context context;
 
-  public BasicCustomAuthRegistrationAction(final Context context) {
+  public BasicCustomAuthDeregistrationAction(final Context context) {
     this.context = context;
   }
 
   @Override
-  public void finishRegistration(final OneginiCustomAuthRegistrationCallback callback) {
+  public void finishDeregistration(final OneginiCustomAuthDeregistrationCallback callback, final String s) {
     CALLBACK = callback;
 
-    final Intent intent = new Intent(context, BasicAuthenticatorRegistrationActivity.class);
+    final Intent intent = new Intent(context, BasicAuthenticatorDeregistrationActivity.class);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }

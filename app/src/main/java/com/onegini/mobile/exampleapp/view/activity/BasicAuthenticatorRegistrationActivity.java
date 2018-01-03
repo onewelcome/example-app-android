@@ -18,7 +18,7 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.BasicCustomAuthenticator;
-import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthRegistrationAction;
+import com.onegini.mobile.exampleapp.view.action.basicauth.BasicCustomAuthRegistrationAction;
 
 public class BasicAuthenticatorRegistrationActivity extends BasicAuthenticatorActivity {
 

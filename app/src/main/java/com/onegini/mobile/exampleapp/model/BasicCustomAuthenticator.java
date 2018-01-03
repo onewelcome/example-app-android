@@ -17,9 +17,9 @@
 package com.onegini.mobile.exampleapp.model;
 
 import android.content.Context;
-import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthAuthenticationAction;
-import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthDeregistrationAction;
-import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthRegistrationAction;
+import com.onegini.mobile.exampleapp.view.action.basicauth.BasicCustomAuthAuthenticationAction;
+import com.onegini.mobile.exampleapp.view.action.basicauth.BasicCustomAuthDeregistrationAction;
+import com.onegini.mobile.exampleapp.view.action.basicauth.BasicCustomAuthRegistrationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthAuthenticationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthDeregistrationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthRegistrationAction;
