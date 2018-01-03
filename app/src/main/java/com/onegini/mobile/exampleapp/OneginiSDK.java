@@ -16,10 +16,13 @@
 
 package com.onegini.mobile.exampleapp;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import android.content.Context;
 import com.onegini.mobile.exampleapp.model.BasicCustomAuthenticator;
+import com.onegini.mobile.exampleapp.model.PasswordCustomAuthenticator;
 import com.onegini.mobile.exampleapp.view.handler.BasicCustomAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationRequestHandler;
@@ -32,6 +35,7 @@ import com.onegini.mobile.exampleapp.view.handler.PinAuthenticationRequestHandle
 import com.onegini.mobile.exampleapp.view.handler.RegistrationRequestHandler;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.client.OneginiClientBuilder;
+import com.onegini.mobile.sdk.android.model.OneginiCustomAuthenticator;
 
 public class OneginiSDK {
 
@@ -48,7 +52,6 @@ public class OneginiSDK {
     final RegistrationRequestHandler registrationRequestHandler = new RegistrationRequestHandler(applicationContext);
     final CreatePinRequestHandler createPinRequestHandler = new CreatePinRequestHandler(applicationContext);
     final PinAuthenticationRequestHandler pinAuthenticationRequestHandler = new PinAuthenticationRequestHandler(applicationContext);
-    final BasicCustomAuthenticator basicCustomAuthenticator = new BasicCustomAuthenticator(applicationContext);
 
     // will throw OneginiConfigNotFoundException if OneginiConfigModel class can't be found
     return new OneginiClientBuilder(applicationContext, registrationRequestHandler, createPinRequestHandler, pinAuthenticationRequestHandler)
@@ -60,10 +63,18 @@ public class OneginiSDK {
         .setMobileAuthWithPushFingerprintRequestHandler(new MobileAuthenticationFingerprintRequestHandler(applicationContext))
         .setMobileAuthWithPushCustomRequestHandler(new MobileAuthenticationBasicCustomRequestHandler(applicationContext))
         .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler())
-        .addCustomAuthenticator(basicCustomAuthenticator)
+        // add custom authenticators
+        .setCustomAuthenticators(prepareCustomAuthenticators(applicationContext))
         // Set http connect / read timeout
         .setHttpConnectTimeout((int) TimeUnit.SECONDS.toMillis(5))
         .setHttpReadTimeout((int) TimeUnit.SECONDS.toMillis(20))
         .build();
+  }
+
+  private static Set<OneginiCustomAuthenticator> prepareCustomAuthenticators(final Context applicationContext) {
+    final Set<OneginiCustomAuthenticator> authenticators = new HashSet<>(2);
+    authenticators.add(new BasicCustomAuthenticator(applicationContext));
+    authenticators.add(new PasswordCustomAuthenticator(applicationContext));
+    return authenticators;
   }
 }
