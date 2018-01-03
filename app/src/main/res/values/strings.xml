@@ -70,6 +70,9 @@
     <string name="custom_auth_positive_action">Return success</string>
     <string name="custom_auth_negative_action">Return failure</string>
     <string name="custom_auth_error_action">Return error</string>
+    <string name="custom_auth_password_enter">Confirm</string>
+    <string name="custom_auth_password_cancel">Cancel</string>
+    <string name="custom_auth_password">Password</string>
     <string name="do_you_want_to_confirm_with_custom_auth">Do you want to authenticate with custom authenticator?</string>
     <string name="custom_auth_registration_title">Auth registration</string>
     <string name="custom_auth_deregistration_title">Auth deregistration</string>

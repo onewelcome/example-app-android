@@ -19,7 +19,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.view.activity.BasicAuthenticatorAuthenticationActivity;
+import com.onegini.mobile.exampleapp.view.activity.PasswordAuthenticatorAuthenticationActivity;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthAuthenticationAction;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthAuthenticationCallback;
 
@@ -36,9 +36,8 @@ public class PasswordCustomAuthAuthenticationAction implements OneginiCustomAuth
   public void finishAuthentication(final OneginiCustomAuthAuthenticationCallback callback, final String s) {
     CALLBACK = callback;
 
-    final Intent intent = new Intent(context, BasicAuthenticatorAuthenticationActivity.class);
+    final Intent intent = new Intent(context, PasswordAuthenticatorAuthenticationActivity.class);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }
-
 }

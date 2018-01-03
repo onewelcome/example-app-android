@@ -20,7 +20,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.view.activity.BasicAuthenticatorRegistrationActivity;
+import com.onegini.mobile.exampleapp.view.activity.PasswordAuthenticatorRegistrationActivity;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthRegistrationAction;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthRegistrationCallback;
 
@@ -38,7 +38,7 @@ public class PasswordCustomAuthRegistrationAction implements OneginiCustomAuthRe
   public void finishRegistration(final OneginiCustomAuthRegistrationCallback callback) {
     CALLBACK = callback;
 
-    final Intent intent = new Intent(context, BasicAuthenticatorRegistrationActivity.class);
+    final Intent intent = new Intent(context, PasswordAuthenticatorRegistrationActivity.class);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }

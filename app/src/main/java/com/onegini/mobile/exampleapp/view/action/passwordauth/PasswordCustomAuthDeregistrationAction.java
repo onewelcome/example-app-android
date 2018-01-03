@@ -19,7 +19,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.view.activity.BasicAuthenticatorDeregistrationActivity;
+import com.onegini.mobile.exampleapp.view.activity.PasswordAuthenticatorDeregistrationActivity;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthDeregistrationAction;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthDeregistrationCallback;
 
@@ -37,7 +37,7 @@ public class PasswordCustomAuthDeregistrationAction implements OneginiCustomAuth
   public void finishDeregistration(final OneginiCustomAuthDeregistrationCallback callback, final String s) {
     CALLBACK = callback;
 
-    final Intent intent = new Intent(context, BasicAuthenticatorDeregistrationActivity.class);
+    final Intent intent = new Intent(context, PasswordAuthenticatorDeregistrationActivity.class);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }
