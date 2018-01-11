@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package com.onegini.mobile.exampleapp.view.action;
+package com.onegini.mobile.exampleapp.view.action.passwordauth;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.view.activity.BasicAuthenticatorRegistrationActivity;
+import com.onegini.mobile.exampleapp.view.activity.PasswordAuthenticatorRegistrationActivity;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthRegistrationAction;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthRegistrationCallback;
 
-public class BasicCustomAuthRegistrationAction implements OneginiCustomAuthRegistrationAction {
+public class PasswordCustomAuthRegistrationAction implements OneginiCustomAuthRegistrationAction {
 
   public static OneginiCustomAuthRegistrationCallback CALLBACK;
 
   private final Context context;
 
-  public BasicCustomAuthRegistrationAction(final Context context) {
+  public PasswordCustomAuthRegistrationAction(final Context context) {
     this.context = context;
   }
 
@@ -38,7 +38,7 @@ public class BasicCustomAuthRegistrationAction implements OneginiCustomAuthRegis
   public void finishRegistration(final OneginiCustomAuthRegistrationCallback callback) {
     CALLBACK = callback;
 
-    final Intent intent = new Intent(context, BasicAuthenticatorRegistrationActivity.class);
+    final Intent intent = new Intent(context, PasswordAuthenticatorRegistrationActivity.class);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,30 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.onegini.mobile.exampleapp.model;
 
 import android.content.Context;
-import com.onegini.mobile.exampleapp.view.action.basicauth.BasicCustomAuthAuthenticationAction;
-import com.onegini.mobile.exampleapp.view.action.basicauth.BasicCustomAuthDeregistrationAction;
-import com.onegini.mobile.exampleapp.view.action.basicauth.BasicCustomAuthRegistrationAction;
+import com.onegini.mobile.exampleapp.view.action.passwordauth.PasswordCustomAuthAuthenticationAction;
+import com.onegini.mobile.exampleapp.view.action.passwordauth.PasswordCustomAuthDeregistrationAction;
+import com.onegini.mobile.exampleapp.view.action.passwordauth.PasswordCustomAuthRegistrationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthAuthenticationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthDeregistrationAction;
 import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthRegistrationAction;
 import com.onegini.mobile.sdk.android.model.OneginiCustomAuthenticator;
 
-public class BasicCustomAuthenticator implements OneginiCustomAuthenticator {
-
-  public static final String AUTH_DATA = "fakeAuthenticationData";
+public class PasswordCustomAuthenticator implements OneginiCustomAuthenticator {
 
   private final OneginiCustomAuthRegistrationAction registrationAction;
   private final OneginiCustomAuthDeregistrationAction deregistrationAction;
   private final OneginiCustomAuthAuthenticationAction authAuthenticationAction;
 
-  public BasicCustomAuthenticator(final Context context) {
-    registrationAction = new BasicCustomAuthRegistrationAction(context);
-    deregistrationAction = new BasicCustomAuthDeregistrationAction(context);
-    authAuthenticationAction = new BasicCustomAuthAuthenticationAction(context);
+  public PasswordCustomAuthenticator(final Context context) {
+    registrationAction = new PasswordCustomAuthRegistrationAction(context);
+    deregistrationAction = new PasswordCustomAuthDeregistrationAction(context);
+    authAuthenticationAction = new PasswordCustomAuthAuthenticationAction(context);
   }
 
   @Override
@@ -56,6 +53,6 @@ public class BasicCustomAuthenticator implements OneginiCustomAuthenticator {
 
   @Override
   public String getId() {
-    return "EXPERIMENTAL_CA_ID";
+    return "PASSWORD_CA_ID";
   }
 }

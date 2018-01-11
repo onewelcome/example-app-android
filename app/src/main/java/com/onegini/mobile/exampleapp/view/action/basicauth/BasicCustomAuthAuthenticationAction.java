@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.onegini.mobile.exampleapp.view.action;
+package com.onegini.mobile.exampleapp.view.action.basicauth;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 

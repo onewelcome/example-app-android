@@ -18,54 +18,36 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 
-public abstract class BasicAuthenticatorActivity extends AppCompatActivity {
+public abstract class PasswordAuthenticatorActivity extends AppCompatActivity {
 
   @SuppressWarnings({ "unused" })
-  @BindView(R.id.title_text)
-  TextView titleText;
-  @SuppressWarnings({ "unused" })
-  @BindView(R.id.custom_auth_positive_button)
-  Button positiveButton;
-  @SuppressWarnings({ "unused" })
-  @BindView(R.id.custom_auth_negative_button)
-  Button negativeButton;
-  @SuppressWarnings({ "unused" })
-  @BindView(R.id.custom_auth_error_button)
-  Button errorButton;
+  @BindView(R.id.custom_auth_password)
+  EditText passwordEditText;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_basic_authenticator);
+    setContentView(R.layout.activity_password_authenticator);
     ButterKnife.bind(this);
-    setTitle();
   }
 
   @SuppressWarnings("unused")
-  @OnClick(R.id.custom_auth_positive_button)
+  @OnClick(R.id.custom_auth_password_send)
   public void onPositiveButtonClicked() {
-    onSuccess();
+    onSuccess(passwordEditText.getText().toString());
     finish();
   }
 
   @SuppressWarnings("unused")
-  @OnClick(R.id.custom_auth_negative_button)
+  @OnClick(R.id.custom_auth_password_cancel)
   public void onNegativeButtonClicked() {
-    onFailure();
-    finish();
-  }
-
-  @SuppressWarnings("unused")
-  @OnClick(R.id.custom_auth_error_button)
-  public void onErrorButtonClicked() {
-    onError();
+    onCanceled();
     finish();
   }
 
@@ -74,11 +56,7 @@ public abstract class BasicAuthenticatorActivity extends AppCompatActivity {
     onNegativeButtonClicked();
   }
 
-  protected abstract void setTitle();
+  protected abstract void onSuccess(final String password);
 
-  protected abstract void onSuccess();
-
-  protected abstract void onFailure();
-
-  protected abstract void onError();
+  protected abstract void onCanceled();
 }
