@@ -30,7 +30,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -73,6 +72,12 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
     fetchPendingTransactions();
   }
 
+  @Override
+  protected void onPause() {
+    super.onPause();
+    overridePendingTransition(0, 0);
+  }
+
   private void setupUi() {
     setupActionBar();
     setupListView();
@@ -90,8 +95,8 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
     bottomNavigationView.getMenu().findItem(R.id.action_notifications).setChecked(true);
     bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
       final int itemId = item.getItemId();
-      if (itemId == R.id.action_resources) {
-        onHttpClicked();
+      if (itemId == R.id.action_info) {
+        onInfoClicked();
       } else if (itemId == R.id.action_notifications) {
         onNotificationsClicked();
       } else {
@@ -156,8 +161,9 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
     fetchPendingTransactions();
   }
 
-  private void onHttpClicked() {
-    Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
+  private void onInfoClicked() {
+    startActivity(new Intent(this, InfoActivity.class));
+    finish();
   }
 
   private void showError(final String text) {
