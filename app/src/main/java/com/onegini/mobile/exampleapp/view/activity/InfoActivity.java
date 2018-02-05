@@ -214,9 +214,9 @@ public class InfoActivity extends AppCompatActivity {
           public void onError(final OneginiImplicitTokenRequestError error) {
             onImplicitDetailsFetchFailed(error);
             @OneginiImplicitTokenRequestError.ImplicitTokenRequestErrorType int errorType = error.getErrorType();
-            if (errorType == OneginiDeviceAuthenticationError.DEVICE_DEREGISTERED) {
+            if (errorType == OneginiImplicitTokenRequestError.DEVICE_DEREGISTERED) {
               new DeregistrationUtil(InfoActivity.this).onDeviceDeregistered();
-            } else if (errorType == OneginiDeviceAuthenticationError.USER_DEREGISTERED) {
+            } else if (errorType == OneginiImplicitTokenRequestError.USER_DEREGISTERED) {
               new DeregistrationUtil(InfoActivity.this).onUserDeregistered(userProfile);
             }
           }
