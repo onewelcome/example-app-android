@@ -59,6 +59,7 @@
     <string name="settings_retrofit_client">Client for resource calls:</string>
     <string name="toolbar_name_devices_activity">Devices</string>
     <string name="toolbar_name_pending_notifications">Pending notifications</string>
+    <string name="toolbar_name_info">Info</string>
     <string name="settings_authenticators_possible_authenticators">Possible authenticators:</string>
     <string name="simple_push_message">Simple push message</string>
     <string name="change_pin_finished_successfully">Change PIN action finished successfully</string>
@@ -66,7 +67,7 @@
     <string name="btn_auth_cancel_label">CANCEL</string>
     <string name="push_token_is_null_error_message">The push token is null, check if your Firebase configuration in google-services.json file is valid.</string>
     <string name="use_preferred_authenticator_label">USE PREFERRED AUTHENTICATOR</string>
-    <string name="implicit_user_details_fetch_failed_label">Implicit user details fetch failed</string>
+    <string name="implicit_user_details_fetch_failed_label">failed to fetch</string>
     <string name="custom_auth_positive_action">Return success</string>
     <string name="custom_auth_negative_action">Return failure</string>
     <string name="custom_auth_error_action">Return error</string>
@@ -80,8 +81,17 @@
     <string name="enable_mobile_authentication_finished_successfully">Mobile authentication enabled</string>
     <string name="enable_mobile_authentication_with_push_finished_successfully">Mobile authentication with push enabled</string>
     <string name="navigation_menu_home">Home</string>
-    <string name="navigation_menu_resource_call">Resource call</string>
+    <string name="navigation_menu_info">Info</string>
     <string name="no_notifications">No notifications</string>
     <string name="multiple_notifications">Notifications: %1$d</string>
     <string name="notification_expires_at">Will expire at %1$s</string>
+    <string name="user_details_label_text">User details:</string>
+    <string name="user_profile_id_label_text">User profile ID:</string>
+    <string name="user_profile_name_label_text">User profile name:</string>
+    <string name="implicit_details_label_text">Implicit details:</string>
+    <string name="device_details_label_text">Device details:</string>
+    <string name="application_id_label_text">Application ID:</string>
+    <string name="application_version_label_text">Application version:</string>
+    <string name="fetch_application_details_exception">Couldn\'t fetch application details</string>
+    <string name="platform_label_text">Platform:</string>
 </resources>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright (c) 2016-2018 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +12,9 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.onegini.mobile.exampleapp">
 
     <application
@@ -25,7 +25,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-
         <activity
             android:name=".view.activity.SplashScreenActivity"
             android:screenOrientation="portrait">
@@ -38,8 +37,7 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".view.activity.RegistrationActivity"
             android:launchMode="singleTask"
@@ -62,43 +60,43 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.CustomAuthActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.DashboardActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.SettingsAuthenticatorsActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".view.activity.SettingsActivity"/>
+            android:parentActivityName=".view.activity.SettingsActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.SettingsActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".view.activity.DashboardActivity"/>
+            android:parentActivityName=".view.activity.DashboardActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.MobileAuthenticationActivity"
-            android:launchMode="singleTask"
-            android:taskAffinity=""
             android:excludeFromRecents="true"
-            android:screenOrientation="portrait"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity=""/>
         <activity
             android:name=".view.activity.MobileAuthenticationPinActivity"
-            android:launchMode="singleTask"
-            android:taskAffinity=""
             android:excludeFromRecents="true"
-            android:screenOrientation="portrait"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity=""/>
         <activity
             android:name=".view.activity.MobileAuthenticationFingerprintActivity"
-            android:launchMode="singleTask"
-            android:taskAffinity=""
             android:excludeFromRecents="true"
-            android:screenOrientation="portrait"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity=""/>
         <activity
             android:name=".view.activity.MobileAuthenticationCustomActivity"
-            android:launchMode="singleTask"
-            android:taskAffinity=""
             android:excludeFromRecents="true"
-            android:screenOrientation="portrait"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity=""/>
         <activity
             android:name=".view.activity.DevicesListActivity"
             android:parentActivityName=".view.activity.DashboardActivity"
@@ -131,15 +129,16 @@
             android:name=".view.activity.PasswordAuthenticatorAuthenticationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
-
-        <service
-            android:name=".network.fcm.FCMListenerService">
+        <activity
+            android:name=".view.activity.InfoActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <service android:name=".network.fcm.FCMListenerService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-        <service
-            android:name=".network.fcm.FCMInstanceIdService">
+        <service android:name=".network.fcm.FCMInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
@@ -151,6 +150,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
+
 
     </application>
 

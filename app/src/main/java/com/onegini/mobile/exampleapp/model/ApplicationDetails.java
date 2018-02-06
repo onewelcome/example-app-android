@@ -39,8 +39,4 @@ public class ApplicationDetails {
   public String getApplicationVersion() {
     return applicationVersion;
   }
-
-  public String getApplicationDetailsCombined() {
-    return String.format("%s %s %s", getApplicationPlatform(), getApplicationIdentifier(), getApplicationVersion());
-  }
 }
