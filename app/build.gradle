@@ -76,7 +76,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:8.1.1-SNAPSHOT@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:8.2.1-SNAPSHOT@aar') {
     transitive = true
   }
 
