@@ -69,6 +69,9 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
   @Override
   protected void onResume() {
     super.onResume();
+    bottomNavigationView.getMenu()
+        .findItem(R.id.action_notifications)
+        .setChecked(true);
     fetchPendingTransactions();
   }
 
@@ -92,7 +95,6 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
   }
 
   private void setupNavigationBar() {
-    bottomNavigationView.getMenu().findItem(R.id.action_notifications).setChecked(true);
     bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
       final int itemId = item.getItemId();
       if (itemId == R.id.action_info) {

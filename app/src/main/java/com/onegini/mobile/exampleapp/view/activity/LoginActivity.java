@@ -106,6 +106,9 @@ public class LoginActivity extends Activity {
     super.onResume();
     getErrorMessage();
     setupUserInterface();
+    bottomNavigationView.getMenu()
+        .findItem(R.id.action_home)
+        .setChecked(true);
   }
 
   @Override

@@ -75,13 +75,21 @@ public class InfoActivity extends AppCompatActivity {
     ButterKnife.bind(this);
     setupUi();
     deviceSettingsStorage = new DeviceSettingsStorage(this);
-    authenticateDevice();
   }
 
   @Override
   protected void onPause() {
     super.onPause();
     overridePendingTransition(0, 0);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    bottomNavigationView.getMenu()
+        .findItem(R.id.action_info)
+        .setChecked(true);
+    authenticateDevice();
   }
 
   @Override
