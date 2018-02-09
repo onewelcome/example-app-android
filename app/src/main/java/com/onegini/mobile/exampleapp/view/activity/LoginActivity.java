@@ -53,7 +53,6 @@ import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiPendingMobileAuthWithPushRequestsHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiPendingMobileAuthWithPushRequestError;
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
 import com.onegini.mobile.sdk.android.model.entity.CustomAuthenticatorInfo;
@@ -92,7 +91,8 @@ public class LoginActivity extends Activity {
 
   private List<User> listOfUsers = new ArrayList<>();
   private boolean userIsLoggingIn = false;
-  private String errorMessage;
+  private String lastErrorMessage;
+  private boolean isAppVisilbe = false;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -104,22 +104,25 @@ public class LoginActivity extends Activity {
   @Override
   protected void onResume() {
     super.onResume();
+    isAppVisilbe = true;
     getErrorMessage();
     setupUserInterface();
     bottomNavigationView.getMenu()
         .findItem(R.id.action_home)
         .setChecked(true);
+    showError();
   }
 
   @Override
   protected void onPause() {
     super.onPause();
+    isAppVisilbe = false;
     overridePendingTransition(0, 0);
   }
 
   private void getErrorMessage() {
-    if (getIntent().hasExtra(ERROR_MESSAGE_EXTRA)) {
-      errorMessage = getIntent().getStringExtra(ERROR_MESSAGE_EXTRA);
+    if (isNoErrorMessagePending() && getIntent().hasExtra(ERROR_MESSAGE_EXTRA)) {
+      lastErrorMessage = getIntent().getStringExtra(ERROR_MESSAGE_EXTRA);
     }
   }
 
@@ -181,10 +184,6 @@ public class LoginActivity extends Activity {
       loginButton.setVisibility(View.INVISIBLE);
       usePreferredAuthenticatorSwitchCompat.setVisibility(View.INVISIBLE);
     }
-
-    if (errorMessage != null && !errorMessage.isEmpty()) {
-      showError();
-    }
     setupNavigationDrawer();
   }
 
@@ -220,7 +219,9 @@ public class LoginActivity extends Activity {
 
       @Override
       public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
-        LoginActivity.this.onError(oneginiAuthenticationError, userProfile);
+        if (isNoErrorMessagePending()) {
+          LoginActivity.this.onError(oneginiAuthenticationError, userProfile);
+        }
       }
     };
   }
@@ -233,42 +234,46 @@ public class LoginActivity extends Activity {
 
   private void handleAuthenticationErrors(final OneginiAuthenticationError error, final UserProfile userProfile) {
     @OneginiAuthenticationError.AuthenticationErrorType int errorType = error.getErrorType();
-    errorMessage = error.getErrorType() + ": ";
+    final StringBuilder stringBuilder = new StringBuilder()
+        .append(errorType)
+        .append(": ");
     switch (errorType) {
       case OneginiAuthenticationError.ACTION_CANCELED:
-        errorMessage += "Authentication was cancelled";
+        stringBuilder.append("Authentication was cancelled.");
         break;
       case OneginiAuthenticationError.NETWORK_CONNECTIVITY_PROBLEM:
-        errorMessage += "No internet connection.";
+        stringBuilder.append("No internet connection.");
         break;
       case OneginiAuthenticationError.SERVER_NOT_REACHABLE:
-        errorMessage += "The server is not reachable.";
+        stringBuilder.append("The server is not reachable.");
         break;
       case OneginiAuthenticationError.OUTDATED_APP:
-        errorMessage += "Please update this application in order to use it.";
+        stringBuilder.append("Please update this application in order to use it.");
         break;
       case OneginiAuthenticationError.OUTDATED_OS:
-        errorMessage += "Please update your Android version to use this application.";
+        stringBuilder.append("Please update your Android version to use this application.");
         break;
       case OneginiAuthenticationError.USER_DEREGISTERED:
+        stringBuilder.append("User deregistered.");
         new DeregistrationUtil(this).onUserDeregistered(userProfile);
-        errorMessage += "User deregistered";
         break;
       case OneginiAuthenticationError.DEVICE_DEREGISTERED:
+        stringBuilder.append("Device deregistered.");
         new DeregistrationUtil(this).onDeviceDeregistered();
-        errorMessage += "Device deregistered";
         break;
       case OneginiAuthenticationError.GENERAL_ERROR:
       default:
         // Just display the error for other, less relevant errors
-        onError(error);
+        error.printStackTrace();
+        stringBuilder.append(error.getMessage())
+            .append(" ")
+            .append("Check logcat for more details.");
         break;
     }
-  }
-
-  private void onError(final OneginiError error) {
-    error.printStackTrace();
-    errorMessage = error.getMessage() + " Check logcat for more details.";
+    lastErrorMessage = stringBuilder.toString();
+    if (isAppVisilbe) {
+      showError();
+    }
   }
 
   private boolean isRegisteredAtLeastOneUser() {
@@ -294,9 +299,11 @@ public class LoginActivity extends Activity {
   }
 
   private void showError() {
-    final DialogFragment dialog = AlertDialogFragment.newInstance(errorMessage);
-    errorMessage = null;
-    dialog.show(getFragmentManager(), "alert_dialog");
+    if (isErrorMessagePending()) {
+      final DialogFragment dialog = AlertDialogFragment.newInstance(lastErrorMessage);
+      lastErrorMessage = null;
+      dialog.show(getFragmentManager(), "alert_dialog");
+    }
   }
 
   private void startDashboardActivity() {
@@ -329,9 +336,51 @@ public class LoginActivity extends Activity {
       }
 
       @Override
-      public void onError(final OneginiPendingMobileAuthWithPushRequestError oneginiPendingMobileAuthWithPushRequestError) {
-        LoginActivity.this.onError(oneginiPendingMobileAuthWithPushRequestError);
+      public void onError(final OneginiPendingMobileAuthWithPushRequestError error) {
+        if (isNoErrorMessagePending()) {
+          LoginActivity.this.handlePendingMobileRequestsErrors(error);
+        }
       }
     });
+  }
+
+  private void handlePendingMobileRequestsErrors(final OneginiPendingMobileAuthWithPushRequestError error) {
+    @OneginiPendingMobileAuthWithPushRequestError.OneginiFetchPendingMobileAuthMessagesErrorType int errorType = error.getErrorType();
+    final StringBuilder stringBuilder = new StringBuilder()
+        .append(errorType)
+        .append(": ");
+    switch (errorType) {
+      case OneginiPendingMobileAuthWithPushRequestError.NETWORK_CONNECTIVITY_PROBLEM:
+        stringBuilder.append("No internet connection.");
+        break;
+      case OneginiPendingMobileAuthWithPushRequestError.SERVER_NOT_REACHABLE:
+        stringBuilder.append("The server is not reachable.");
+        break;
+      case OneginiPendingMobileAuthWithPushRequestError.DEVICE_DEREGISTERED:
+        stringBuilder.append("Device deregistered");
+        new DeregistrationUtil(this).onDeviceDeregistered();
+        break;
+      case OneginiPendingMobileAuthWithPushRequestError.GENERAL_ERROR:
+      case OneginiPendingMobileAuthWithPushRequestError.CONFIGURATION_ERROR:
+      default:
+        // Just display the error for other, less relevant errors
+        error.printStackTrace();
+        stringBuilder.append(error.getMessage())
+            .append(" ")
+            .append("Check logcat for more details.");
+        break;
+    }
+    lastErrorMessage = stringBuilder.toString();
+    if (isAppVisilbe) {
+      showError();
+    }
+  }
+
+  private boolean isNoErrorMessagePending() {
+    return lastErrorMessage == null || lastErrorMessage.isEmpty();
+  }
+
+  private boolean isErrorMessagePending() {
+    return !isNoErrorMessagePending();
   }
 }
