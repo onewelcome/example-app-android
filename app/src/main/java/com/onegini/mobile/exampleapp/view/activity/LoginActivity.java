@@ -16,6 +16,8 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
+import static com.onegini.mobile.exampleapp.view.activity.RegistrationActivity.IDENTITY_PROVIDER_EXTRA;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -92,7 +94,6 @@ public class LoginActivity extends Activity {
   BottomNavigationView bottomNavigationView;
 
   public static final String ERROR_MESSAGE_EXTRA = "error_message";
-  public static final String IDENTITY_PROVIDER_EXTRA = "identity_provider_id";
 
   public static User selectedUser;
 

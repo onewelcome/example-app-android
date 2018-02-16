@@ -41,8 +41,8 @@ public class AvailableIdentityProvidersMenu {
   private void inflateMenu() {
     final Menu menu = popupMenu.getMenu();
     for (int i = 0; i < identityProviders.size(); i++) {
-      final OneginiIdentityProvider authenticator = identityProviders.get(i);
-      menu.add(NONE, i, NONE, String.format("%s (id: %s)", authenticator.getName(), authenticator.getId()));
+      final OneginiIdentityProvider identityProvider = identityProviders.get(i);
+      menu.add(NONE, i, NONE, String.format("%s (id: %s)", identityProvider.getName(), identityProvider.getId()));
     }
   }
 

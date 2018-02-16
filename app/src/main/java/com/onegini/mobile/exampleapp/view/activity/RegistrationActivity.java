@@ -68,6 +68,8 @@ public class RegistrationActivity extends Activity {
   @BindView(R.id.user_profile_debug)
   TextView userProfileDebugText;
 
+  public static final String IDENTITY_PROVIDER_EXTRA = "identity_provider_id";
+
   private UserProfile registeredProfile;
 
   @Override
@@ -77,8 +79,8 @@ public class RegistrationActivity extends Activity {
     ButterKnife.bind(this);
 
     setupUserInterface();
-    final ParcelableOneginiIdentityProvider parcelableOneginiIdentityProvider = getIntent().getParcelableExtra(LoginActivity.IDENTITY_PROVIDER_EXTRA);
-    if(parcelableOneginiIdentityProvider == null) {
+    final ParcelableOneginiIdentityProvider parcelableOneginiIdentityProvider = getIntent().getParcelableExtra(IDENTITY_PROVIDER_EXTRA);
+    if (parcelableOneginiIdentityProvider == null) {
       registerUser();
     } else {
       registerUser(parcelableOneginiIdentityProvider);
@@ -114,39 +116,28 @@ public class RegistrationActivity extends Activity {
 
   private void registerUser() {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    oneginiClient.getUserClient().registerUser(Constants.DEFAULT_SCOPES, new OneginiRegistrationHandler() {
-
-      @Override
-      public void onSuccess(final UserProfile userProfile) {
-        registeredProfile = userProfile;
-        userProfileDebugText.setText(userProfile.getProfileId());
-        askForProfileName();
-      }
-
-      @Override
-      public void onError(final OneginiRegistrationError oneginiRegistrationError) {
-        handleRegistrationErrors(oneginiRegistrationError);
-      }
-    });
+    oneginiClient.getUserClient().registerUser(Constants.DEFAULT_SCOPES, registrationHandler);
   }
 
   private void registerUser(final OneginiIdentityProvider identityProvider) {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    oneginiClient.getUserClient().registerUser(identityProvider, Constants.DEFAULT_SCOPES, new OneginiRegistrationHandler() {
-
-      @Override
-      public void onSuccess(final UserProfile userProfile) {
-        registeredProfile = userProfile;
-        userProfileDebugText.setText(userProfile.getProfileId());
-        askForProfileName();
-      }
-
-      @Override
-      public void onError(final OneginiRegistrationError oneginiRegistrationError) {
-        handleRegistrationErrors(oneginiRegistrationError);
-      }
-    });
+    oneginiClient.getUserClient().registerUser(identityProvider, Constants.DEFAULT_SCOPES, registrationHandler);
   }
+
+  final OneginiRegistrationHandler registrationHandler = new OneginiRegistrationHandler() {
+
+    @Override
+    public void onSuccess(final UserProfile userProfile) {
+      registeredProfile = userProfile;
+      userProfileDebugText.setText(userProfile.getProfileId());
+      askForProfileName();
+    }
+
+    @Override
+    public void onError(final OneginiRegistrationError oneginiRegistrationError) {
+      handleRegistrationErrors(oneginiRegistrationError);
+    }
+  };
 
   private void handleRegistrationErrors(final OneginiRegistrationError oneginiRegistrationError) {
     @OneginiRegistrationError.RegistrationErrorType final int errorType = oneginiRegistrationError.getErrorType();
