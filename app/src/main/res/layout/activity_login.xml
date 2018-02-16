@@ -92,12 +92,19 @@
         android:id="@+id/register_button"
         style="@style/ButtonWideStyle"
         android:layout_width="match_parent"
-        android:layout_marginBottom="20dp"
         android:visibility="invisible"
         tools:visibility="visible"
         android:text="@string/btn_register_label"
-        android:layout_above="@+id/bottom_navigation"
+        android:layout_above="@+id/register_with_preferred_identity_provider"
         android:layout_centerHorizontal="true"/>
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/register_with_preferred_identity_provider"
+        android:checked="true"
+        android:text="@string/use_default_identity_provider_label"
+        android:layout_above="@+id/bottom_navigation"
+        android:layout_marginBottom="40dp"
+        style="@style/SwitchCompatStyle"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"

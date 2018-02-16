@@ -16,6 +16,8 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
+import static com.onegini.mobile.exampleapp.view.activity.RegistrationActivity.IDENTITY_PROVIDER_EXTRA;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -48,6 +50,8 @@ import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
+import com.onegini.mobile.exampleapp.view.helper.AvailableIdentityProvidersMenu;
+import com.onegini.mobile.exampleapp.view.helper.ParcelableOneginiIdentityProvider;
 import com.onegini.mobile.exampleapp.view.helper.RegisteredAuthenticatorsMenu;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
@@ -55,6 +59,7 @@ import com.onegini.mobile.sdk.android.handlers.OneginiPendingMobileAuthWithPushR
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiPendingMobileAuthWithPushRequestError;
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
+import com.onegini.mobile.sdk.android.model.OneginiIdentityProvider;
 import com.onegini.mobile.sdk.android.model.entity.CustomAuthenticatorInfo;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
@@ -82,6 +87,9 @@ public class LoginActivity extends Activity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.login_with_preferred_authenticator)
   SwitchCompat usePreferredAuthenticatorSwitchCompat;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @BindView(R.id.register_with_preferred_identity_provider)
+  SwitchCompat usePreferredIdentityProviderSwitchCompat;
   @BindView(R.id.bottom_navigation)
   BottomNavigationView bottomNavigationView;
 
@@ -92,7 +100,7 @@ public class LoginActivity extends Activity {
   private List<User> listOfUsers = new ArrayList<>();
   private boolean userIsLoggingIn = false;
   private String lastErrorMessage;
-  private boolean isAppVisilbe = false;
+  private boolean isAppVisible = false;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -104,7 +112,7 @@ public class LoginActivity extends Activity {
   @Override
   protected void onResume() {
     super.onResume();
-    isAppVisilbe = true;
+    isAppVisible = true;
     getErrorMessage();
     setupUserInterface();
     bottomNavigationView.getMenu()
@@ -116,7 +124,7 @@ public class LoginActivity extends Activity {
   @Override
   protected void onPause() {
     super.onPause();
-    isAppVisilbe = false;
+    isAppVisible = false;
     overridePendingTransition(0, 0);
   }
 
@@ -146,16 +154,45 @@ public class LoginActivity extends Activity {
     }
   }
 
+  @SuppressWarnings("unused")
+  @OnCheckedChanged(R.id.register_with_preferred_identity_provider)
+  public void setUsePreferredIdentityProviderSwitchStateChanged() {
+    if (usePreferredIdentityProviderSwitchCompat.isChecked()) {
+      registerButton.setText(getString(R.string.btn_register_label));
+    } else {
+      registerButton.setText(getString(R.string.btn_register_with_label));
+    }
+  }
+
   private void showRegisteredAuthenticatorsPopup(@NonNull final UserProfile userProfile) {
     final Set<OneginiAuthenticator> registeredAuthenticators = OneginiSDK.getOneginiClient(this).getUserClient().getRegisteredAuthenticators(userProfile);
     final RegisteredAuthenticatorsMenu menu = new RegisteredAuthenticatorsMenu(new PopupMenu(this, loginButton), registeredAuthenticators);
     menu.setOnClickListener(authenticator -> authenticate(userProfile, authenticator)).show();
   }
 
+  private void showAvailableIdentityProvidersPopup() {
+    final Set<OneginiIdentityProvider> identityProviders = OneginiSDK.getOneginiClient(this).getUserClient().getIdentityProviders();
+    final AvailableIdentityProvidersMenu menu = new AvailableIdentityProvidersMenu(new PopupMenu(this, registerButton), identityProviders);
+    menu.setOnClickListener(identityProvider -> registerUser(identityProvider)).show();
+  }
+
   @SuppressWarnings("unused")
   @OnClick(R.id.register_button)
   public void registerButtonClicked() {
+    if(usePreferredIdentityProviderSwitchCompat.isChecked()) {
+      registerUser(null);
+    } else {
+      showAvailableIdentityProvidersPopup();
+    }
+  }
+
+  private void registerUser(final OneginiIdentityProvider identityProvider) {
     final Intent intent = new Intent(this, RegistrationActivity.class);
+    if (identityProvider != null) {
+      final ParcelableOneginiIdentityProvider parcelableOneginiIdentityProvider =
+          new ParcelableOneginiIdentityProvider(identityProvider.getId(), identityProvider.getName());
+      intent.putExtra(IDENTITY_PROVIDER_EXTRA, parcelableOneginiIdentityProvider);
+    }
     startActivity(intent);
     finish();
   }
@@ -271,7 +308,7 @@ public class LoginActivity extends Activity {
         break;
     }
     lastErrorMessage = stringBuilder.toString();
-    if (isAppVisilbe) {
+    if (isAppVisible) {
       showError();
     }
   }
@@ -371,7 +408,7 @@ public class LoginActivity extends Activity {
         break;
     }
     lastErrorMessage = stringBuilder.toString();
-    if (isAppVisilbe) {
+    if (isAppVisible) {
       showError();
     }
   }
