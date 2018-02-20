@@ -108,7 +108,7 @@ public class InfoActivity extends AppCompatActivity {
 
   private void setupUserDetails() {
     final User user = LoginActivity.selectedUser;
-    if(user == null) {
+    if (user == null) {
       return;
     }
 
@@ -161,28 +161,24 @@ public class InfoActivity extends AppCompatActivity {
   }
 
   private void authenticateDevice() {
-    final UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
-    OneginiSDK.getOneginiClient(this).getDeviceClient()
-        .authenticateDevice(new String[]{ "application-details" }, new OneginiDeviceAuthenticationHandler() {
-              @Override
-              public void onSuccess() {
-                callAnonymousResourceCallToFetchApplicationDetails();
-              }
+    OneginiSDK.getOneginiClient(this).getDeviceClient().authenticateDevice(new String[]{ "application-details" }, new OneginiDeviceAuthenticationHandler() {
+          @Override
+          public void onSuccess() {
+            callAnonymousResourceCallToFetchApplicationDetails();
+          }
 
-              @Override
-              public void onError(final OneginiDeviceAuthenticationError error) {
-                onApplicationDetailsFetchFailed();
-                final @OneginiDeviceAuthenticationError.DeviceAuthenticationErrorType int errorType = error.getErrorType();
+          @Override
+          public void onError(final OneginiDeviceAuthenticationError error) {
+            onApplicationDetailsFetchFailed();
+            final @OneginiDeviceAuthenticationError.DeviceAuthenticationErrorType int errorType = error.getErrorType();
 
-                if (errorType == OneginiDeviceAuthenticationError.DEVICE_DEREGISTERED) {
-                  new DeregistrationUtil(InfoActivity.this).onDeviceDeregistered();
-                } else if (errorType == OneginiDeviceAuthenticationError.USER_DEREGISTERED) {
-                  new DeregistrationUtil(InfoActivity.this).onUserDeregistered(authenticatedUserProfile);
-                }
-                InfoActivity.this.onError(error);
-              }
+            if (errorType == OneginiDeviceAuthenticationError.DEVICE_DEREGISTERED) {
+              new DeregistrationUtil(InfoActivity.this).onDeviceDeregistered();
             }
-        );
+            InfoActivity.this.onError(error);
+          }
+        }
+    );
   }
 
   private void callAnonymousResourceCallToFetchApplicationDetails() {
