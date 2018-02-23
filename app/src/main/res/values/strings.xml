@@ -65,7 +65,8 @@
     <string name="simple_push_message">Simple push message</string>
     <string name="change_pin_finished_successfully">Change PIN action finished successfully</string>
     <string name="btn_mobile_auth_with_otp_label">Mobile auth with OTP</string>
-    <string name="btn_auth_cancel_label">CANCEL</string>
+    <string name="btn_cancel_label">CANCEL</string>
+    <string name="btn_ok_label">OK</string>
     <string name="push_token_is_null_error_message">The push token is null, check if your Firebase configuration in google-services.json file is valid.</string>
     <string name="use_preferred_authenticator_label">USE PREFERRED AUTHENTICATOR</string>
     <string name="use_default_identity_provider_label">USE DEFAULT IDENTITY PROVIDER</string>
@@ -96,4 +97,7 @@
     <string name="application_version_label_text">Application version:</string>
     <string name="fetch_application_details_exception">Couldn\'t fetch application details</string>
     <string name="platform_label_text">Platform:</string>
+    <string name="two_way_otp_message">One-Time Password</string>
+    <string name="two_way_otp_challenge_code_label">Challenge code</string>
+    <string name="two_way_otp_response_code_label">Response code</string>
 </resources>

@@ -20,7 +20,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.view.activity.PasswordAuthenticatorDeregistrationActivity;
-import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthDeregistrationAction;
+import com.onegini.mobile.sdk.android.handlers.action.OneginiCustomAuthDeregistrationAction;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomAuthDeregistrationCallback;
 
 public class PasswordCustomAuthDeregistrationAction implements OneginiCustomAuthDeregistrationAction {
