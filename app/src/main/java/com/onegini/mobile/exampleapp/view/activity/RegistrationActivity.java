@@ -45,6 +45,7 @@ import com.onegini.mobile.sdk.android.handlers.OneginiRegistrationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiRegistrationError;
 import com.onegini.mobile.sdk.android.model.OneginiIdentityProvider;
+import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class RegistrationActivity extends Activity {
@@ -127,7 +128,7 @@ public class RegistrationActivity extends Activity {
   final OneginiRegistrationHandler registrationHandler = new OneginiRegistrationHandler() {
 
     @Override
-    public void onSuccess(final UserProfile userProfile) {
+    public void onSuccess(final UserProfile userProfile, final CustomInfo customInfo) {
       registeredProfile = userProfile;
       userProfileDebugText.setText(userProfile.getProfileId());
       askForProfileName();
@@ -161,6 +162,15 @@ public class RegistrationActivity extends Activity {
         break;
       case OneginiRegistrationError.OUTDATED_OS:
         showToast("Please update your Android version to use this application.");
+        break;
+      case OneginiRegistrationError.INVALID_IDENTITY_PROVIDER:
+        showToast("The Identity provider you were trying to use is invalid.");
+        break;
+      case OneginiRegistrationError.CUSTOM_REGISTRATION_EXPIRED:
+        showToast("Custom registration has expired. Please retry.");
+        break;
+      case OneginiRegistrationError.CUSTOM_REGISTRATION_FAILURE:
+        showToast("Custom registration failed, see logcat for more details.");
         break;
       case OneginiRegistrationError.GENERAL_ERROR:
       default:

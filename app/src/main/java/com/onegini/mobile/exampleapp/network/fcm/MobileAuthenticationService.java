@@ -31,7 +31,7 @@ import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiInitializationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationError;
-import com.onegini.mobile.sdk.android.model.entity.CustomAuthenticatorInfo;
+import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
@@ -101,7 +101,7 @@ public class MobileAuthenticationService extends IntentService {
   private void handleMobileAuthenticationRequest(final OneginiMobileAuthWithPushRequest request) {
     OneginiSDK.getOneginiClient(this).getUserClient().handleMobileAuthWithPushRequest(request, new OneginiMobileAuthenticationHandler() {
       @Override
-      public void onSuccess(final CustomAuthenticatorInfo customAuthenticatorInfo) {
+      public void onSuccess(final CustomInfo customInfo) {
         Log.i(TAG, "The mobile authentication request " + request.getTransactionId() + " has finished with success");
       }
 

@@ -60,7 +60,7 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiPendingMobileAuthWithPushRequestError;
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
 import com.onegini.mobile.sdk.android.model.OneginiIdentityProvider;
-import com.onegini.mobile.sdk.android.model.entity.CustomAuthenticatorInfo;
+import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
@@ -250,7 +250,7 @@ public class LoginActivity extends Activity {
     return new OneginiAuthenticationHandler() {
 
       @Override
-      public void onSuccess(final UserProfile userProfile, final CustomAuthenticatorInfo customAuthenticatorInfo) {
+      public void onSuccess(final UserProfile userProfile, final CustomInfo customInfo) {
         startDashboardActivity();
       }
 
