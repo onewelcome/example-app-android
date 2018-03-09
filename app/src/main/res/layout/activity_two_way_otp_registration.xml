@@ -56,7 +56,7 @@
         android:layout_margin="@dimen/activity_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textShortMessage"
+        android:inputType="number"
         android:textAlignment="center"
         android:minWidth="200dp"
         android:maxLines="1"/>

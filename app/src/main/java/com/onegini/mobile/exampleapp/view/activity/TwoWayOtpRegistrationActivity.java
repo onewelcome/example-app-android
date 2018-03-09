@@ -37,7 +37,7 @@ public class TwoWayOtpRegistrationActivity extends AppCompatActivity {
   TextView challengeCodeTextView;
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_two_way_otp_registration);
     ButterKnife.bind(this);

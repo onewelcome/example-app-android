@@ -18,11 +18,12 @@ package com.onegini.mobile.exampleapp.model;
 import android.content.Context;
 import com.onegini.mobile.exampleapp.view.action.twowayotpidentityprovider.TwoWayOtpRegistrationAction;
 import com.onegini.mobile.sdk.android.handlers.action.OneginiCustomRegistrationAction;
+import com.onegini.mobile.sdk.android.handlers.action.OneginiCustomTwoStepRegistrationAction;
 import com.onegini.mobile.sdk.android.model.OneginiCustomIdentityProvider;
 
 public class TwoWayOtpIdentityProvider implements OneginiCustomIdentityProvider {
 
-  private final OneginiCustomRegistrationAction registrationAction;
+  private final OneginiCustomTwoStepRegistrationAction registrationAction;
 
   public TwoWayOtpIdentityProvider(final Context context) {
     this.registrationAction = new TwoWayOtpRegistrationAction(context);
@@ -35,6 +36,6 @@ public class TwoWayOtpIdentityProvider implements OneginiCustomIdentityProvider 
 
   @Override
   public String getId() {
-    return "TWO_WAY_OTP";
+    return "2-way-otp-api";
   }
 }

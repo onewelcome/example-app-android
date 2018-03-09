@@ -51,7 +51,6 @@ import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
 import com.onegini.mobile.exampleapp.view.helper.AvailableIdentityProvidersMenu;
-import com.onegini.mobile.exampleapp.view.helper.ParcelableOneginiIdentityProvider;
 import com.onegini.mobile.exampleapp.view.helper.RegisteredAuthenticatorsMenu;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
@@ -189,9 +188,7 @@ public class LoginActivity extends Activity {
   private void registerUser(final OneginiIdentityProvider identityProvider) {
     final Intent intent = new Intent(this, RegistrationActivity.class);
     if (identityProvider != null) {
-      final ParcelableOneginiIdentityProvider parcelableOneginiIdentityProvider =
-          new ParcelableOneginiIdentityProvider(identityProvider.getId(), identityProvider.getName());
-      intent.putExtra(IDENTITY_PROVIDER_EXTRA, parcelableOneginiIdentityProvider);
+      intent.putExtra(IDENTITY_PROVIDER_EXTRA, identityProvider);
     }
     startActivity(intent);
     finish();
