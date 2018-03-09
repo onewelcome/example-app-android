@@ -19,9 +19,9 @@ import android.content.Context;
 import com.onegini.mobile.exampleapp.view.action.passwordauth.PasswordCustomAuthAuthenticationAction;
 import com.onegini.mobile.exampleapp.view.action.passwordauth.PasswordCustomAuthDeregistrationAction;
 import com.onegini.mobile.exampleapp.view.action.passwordauth.PasswordCustomAuthRegistrationAction;
-import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthAuthenticationAction;
-import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthDeregistrationAction;
-import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthRegistrationAction;
+import com.onegini.mobile.sdk.android.handlers.action.OneginiCustomAuthAuthenticationAction;
+import com.onegini.mobile.sdk.android.handlers.action.OneginiCustomAuthDeregistrationAction;
+import com.onegini.mobile.sdk.android.handlers.action.OneginiCustomAuthRegistrationAction;
 import com.onegini.mobile.sdk.android.model.OneginiCustomAuthenticator;
 
 public class PasswordCustomAuthenticator implements OneginiCustomAuthenticator {

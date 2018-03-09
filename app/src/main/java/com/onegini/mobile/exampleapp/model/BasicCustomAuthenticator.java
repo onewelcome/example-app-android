@@ -20,9 +20,9 @@ import android.content.Context;
 import com.onegini.mobile.exampleapp.view.action.basicauth.BasicCustomAuthAuthenticationAction;
 import com.onegini.mobile.exampleapp.view.action.basicauth.BasicCustomAuthDeregistrationAction;
 import com.onegini.mobile.exampleapp.view.action.basicauth.BasicCustomAuthRegistrationAction;
-import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthAuthenticationAction;
-import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthDeregistrationAction;
-import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthRegistrationAction;
+import com.onegini.mobile.sdk.android.handlers.action.OneginiCustomAuthAuthenticationAction;
+import com.onegini.mobile.sdk.android.handlers.action.OneginiCustomAuthDeregistrationAction;
+import com.onegini.mobile.sdk.android.handlers.action.OneginiCustomAuthRegistrationAction;
 import com.onegini.mobile.sdk.android.model.OneginiCustomAuthenticator;
 
 public class BasicCustomAuthenticator implements OneginiCustomAuthenticator {

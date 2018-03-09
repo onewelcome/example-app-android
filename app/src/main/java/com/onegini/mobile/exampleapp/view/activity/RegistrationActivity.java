@@ -39,12 +39,12 @@ import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.handler.RegistrationRequestHandler;
-import com.onegini.mobile.exampleapp.view.helper.ParcelableOneginiIdentityProvider;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiRegistrationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiRegistrationError;
 import com.onegini.mobile.sdk.android.model.OneginiIdentityProvider;
+import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class RegistrationActivity extends Activity {
@@ -72,6 +72,21 @@ public class RegistrationActivity extends Activity {
 
   private UserProfile registeredProfile;
 
+  final OneginiRegistrationHandler registrationHandler = new OneginiRegistrationHandler() {
+
+    @Override
+    public void onSuccess(final UserProfile userProfile, final CustomInfo customInfo) {
+      registeredProfile = userProfile;
+      userProfileDebugText.setText(userProfile.getProfileId());
+      askForProfileName();
+    }
+
+    @Override
+    public void onError(final OneginiRegistrationError oneginiRegistrationError) {
+      handleRegistrationErrors(oneginiRegistrationError);
+    }
+  };
+
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -79,11 +94,11 @@ public class RegistrationActivity extends Activity {
     ButterKnife.bind(this);
 
     setupUserInterface();
-    final ParcelableOneginiIdentityProvider parcelableOneginiIdentityProvider = getIntent().getParcelableExtra(IDENTITY_PROVIDER_EXTRA);
-    if (parcelableOneginiIdentityProvider == null) {
+    final OneginiIdentityProvider oneginiIdentityProvider = getIntent().getParcelableExtra(IDENTITY_PROVIDER_EXTRA);
+    if (oneginiIdentityProvider == null) {
       registerUser();
     } else {
-      registerUser(parcelableOneginiIdentityProvider);
+      registerUser(oneginiIdentityProvider);
     }
   }
 
@@ -124,21 +139,6 @@ public class RegistrationActivity extends Activity {
     oneginiClient.getUserClient().registerUser(identityProvider, Constants.DEFAULT_SCOPES, registrationHandler);
   }
 
-  final OneginiRegistrationHandler registrationHandler = new OneginiRegistrationHandler() {
-
-    @Override
-    public void onSuccess(final UserProfile userProfile) {
-      registeredProfile = userProfile;
-      userProfileDebugText.setText(userProfile.getProfileId());
-      askForProfileName();
-    }
-
-    @Override
-    public void onError(final OneginiRegistrationError oneginiRegistrationError) {
-      handleRegistrationErrors(oneginiRegistrationError);
-    }
-  };
-
   private void handleRegistrationErrors(final OneginiRegistrationError oneginiRegistrationError) {
     @OneginiRegistrationError.RegistrationErrorType final int errorType = oneginiRegistrationError.getErrorType();
     switch (errorType) {
@@ -161,6 +161,15 @@ public class RegistrationActivity extends Activity {
         break;
       case OneginiRegistrationError.OUTDATED_OS:
         showToast("Please update your Android version to use this application.");
+        break;
+      case OneginiRegistrationError.INVALID_IDENTITY_PROVIDER:
+        showToast("The Identity provider you were trying to use is invalid.");
+        break;
+      case OneginiRegistrationError.CUSTOM_REGISTRATION_EXPIRED:
+        showToast("Custom registration request has expired. Please retry.");
+        break;
+      case OneginiRegistrationError.CUSTOM_REGISTRATION_FAILURE:
+        showToast("Custom registration request has failed, see logcat for more details.");
         break;
       case OneginiRegistrationError.GENERAL_ERROR:
       default:
@@ -223,12 +232,12 @@ public class RegistrationActivity extends Activity {
 
     @Override
     public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
-
+      //nothing to do here
     }
 
     @Override
     public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-
+      //nothing to do here
     }
 
     @Override

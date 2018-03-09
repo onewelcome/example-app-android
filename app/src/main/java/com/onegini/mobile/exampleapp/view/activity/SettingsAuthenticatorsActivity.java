@@ -52,7 +52,7 @@ import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticatorRegistrationH
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorDeregistrationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorRegistrationError;
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
-import com.onegini.mobile.sdk.android.model.entity.CustomAuthenticatorInfo;
+import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class SettingsAuthenticatorsActivity extends AppCompatActivity {
@@ -185,7 +185,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   private void registerAuthenticator(final OneginiAuthenticator authenticator, final int position) {
     userClient.registerAuthenticator(authenticator, new OneginiAuthenticatorRegistrationHandler() {
       @Override
-      public void onSuccess(final CustomAuthenticatorInfo customAuthenticatorInfo) {
+      public void onSuccess(final CustomInfo customInfo) {
         authenticators[position].setIsProcessed(false);
         prepareAuthenticatorsList();
         clearErrorMessage();

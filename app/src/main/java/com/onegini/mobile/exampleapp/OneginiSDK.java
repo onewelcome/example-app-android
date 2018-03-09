@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 import android.content.Context;
 import com.onegini.mobile.exampleapp.model.BasicCustomAuthenticator;
 import com.onegini.mobile.exampleapp.model.PasswordCustomAuthenticator;
+import com.onegini.mobile.exampleapp.model.TwoWayOtpIdentityProvider;
 import com.onegini.mobile.exampleapp.view.handler.BasicCustomAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationRequestHandler;
@@ -65,6 +66,8 @@ public class OneginiSDK {
         .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler())
         // add custom authenticators
         .setCustomAuthenticators(prepareCustomAuthenticators(applicationContext))
+        // add a custom identity provider
+        .addCustomIdentityProvider(new TwoWayOtpIdentityProvider(applicationContext))
         // Set http connect / read timeout
         .setHttpConnectTimeout((int) TimeUnit.SECONDS.toMillis(5))
         .setHttpReadTimeout((int) TimeUnit.SECONDS.toMillis(20))
