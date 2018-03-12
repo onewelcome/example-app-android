@@ -95,11 +95,7 @@ public class RegistrationActivity extends Activity {
 
     setupUserInterface();
     final OneginiIdentityProvider oneginiIdentityProvider = getIntent().getParcelableExtra(IDENTITY_PROVIDER_EXTRA);
-    if (oneginiIdentityProvider == null) {
-      registerUser();
-    } else {
-      registerUser(oneginiIdentityProvider);
-    }
+    registerUser(oneginiIdentityProvider);
   }
 
   private void setupUserInterface() {
@@ -127,11 +123,6 @@ public class RegistrationActivity extends Activity {
     if (redirectUri.startsWith(uri.getScheme())) {
       RegistrationRequestHandler.handleRegistrationCallback(uri);
     }
-  }
-
-  private void registerUser() {
-    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    oneginiClient.getUserClient().registerUser(Constants.DEFAULT_SCOPES, registrationHandler);
   }
 
   private void registerUser(final OneginiIdentityProvider identityProvider) {
