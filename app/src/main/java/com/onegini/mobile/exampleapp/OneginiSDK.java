@@ -55,8 +55,9 @@ public class OneginiSDK {
     final PinAuthenticationRequestHandler pinAuthenticationRequestHandler = new PinAuthenticationRequestHandler(applicationContext);
 
     // will throw OneginiConfigNotFoundException if OneginiConfigModel class can't be found
-    return new OneginiClientBuilder(applicationContext, registrationRequestHandler, createPinRequestHandler, pinAuthenticationRequestHandler)
+    return new OneginiClientBuilder(applicationContext, createPinRequestHandler, pinAuthenticationRequestHandler)
         // handlers for optional functionalities
+        .setBrowserRegistrationRequestHandler(registrationRequestHandler)
         .setFingerprintAuthenticationRequestHandler(new FingerprintAuthenticationRequestHandler(applicationContext))
         .setCustomAuthenticationRequestHandler(new BasicCustomAuthenticationRequestHandler(applicationContext))
         .setMobileAuthWithPushRequestHandler(new MobileAuthenticationRequestHandler(applicationContext))
