@@ -35,7 +35,7 @@ public class TwoWayOtpRegistrationAction implements OneginiCustomTwoStepRegistra
   }
 
   @Override
-  public void initRegistration(final OneginiCustomRegistrationCallback callback) {
+  public void initRegistration(final OneginiCustomRegistrationCallback callback, final CustomInfo customInfo) {
     callback.returnSuccess(null);
   }
 
