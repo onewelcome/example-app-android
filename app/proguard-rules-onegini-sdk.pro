@@ -46,3 +46,7 @@
 
 # SQLCipher
 -keep class net.sqlcipher.** { *; }
+
+-dontwarn com.guardsquare.dexguard.runtime.encryption.EncryptedXWalkCordovaResourceClient
+-dontwarn com.guardsquare.dexguard.runtime.encryption.EncryptedSystemWebViewClient
+-dontwarn com.guardsquare.dexguard.runtime.encryption.EncryptedCordovaWebViewClient
