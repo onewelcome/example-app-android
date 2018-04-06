@@ -100,4 +100,5 @@
     <string name="two_way_otp_message">One-Time Password</string>
     <string name="two_way_otp_challenge_code_label">Challenge code</string>
     <string name="two_way_otp_response_code_label">Response code</string>
+    <string name="qr_code_message">Scan QR code</string>
 </resources>
