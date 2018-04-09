@@ -77,6 +77,8 @@ public class QrCodeRegistrationActivity extends AppCompatActivity {
     if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
       if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         startCamera();
+      } else {
+        cancelQrCodeScanning(new Exception("Camera permission denied by the user"));
       }
     }
   }
@@ -94,8 +96,12 @@ public class QrCodeRegistrationActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.qr_code_cancel_button)
   public void onCancelButtonClicked() {
+    cancelQrCodeScanning(new Exception("Registration canceled"));
+  }
+
+  private void cancelQrCodeScanning(final Exception exception) {
     if (QrCodeRegistrationAction.CALLBACK != null) {
-      QrCodeRegistrationAction.CALLBACK.returnError(new Exception("Registration canceled"));
+      QrCodeRegistrationAction.CALLBACK.returnError(exception);
     }
     finish();
   }
