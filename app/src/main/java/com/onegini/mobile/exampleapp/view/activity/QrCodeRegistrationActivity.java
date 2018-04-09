@@ -50,53 +50,25 @@ public class QrCodeRegistrationActivity extends AppCompatActivity {
   }
 
   private void initQrCodeScanner() {
-    final BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(this)
+    final BarcodeDetector barcodeDetector = buildBarcodeDetector();
+    cameraSource = buildCameraSource(barcodeDetector);
+
+    barcodeDetector.setProcessor(new QrCodeDetectorProcessor());
+    qrCodeScanner.getHolder().addCallback(new QrCodeSurfaceHolderCallback());
+  }
+
+  private BarcodeDetector buildBarcodeDetector() {
+    return new BarcodeDetector.Builder(this)
         .setBarcodeFormats(Barcode.QR_CODE)
         .build();
-    cameraSource = new CameraSource.Builder(this, barcodeDetector)
+  }
+
+  private CameraSource buildCameraSource(final BarcodeDetector barcodeDetector) {
+    return new CameraSource.Builder(this, barcodeDetector)
         .setAutoFocusEnabled(true)
         .setRequestedPreviewSize(640, 480)
         .setFacing(CameraSource.CAMERA_FACING_BACK)
         .build();
-
-    barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
-      @Override
-      public void release() {
-      }
-
-      @Override
-      public void receiveDetections(final Detector.Detections<Barcode> detections) {
-        final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
-        if (qrCodes.size() != 0) {
-          if (QrCodeRegistrationAction.CALLBACK != null) {
-            final String qrCode = qrCodes.valueAt(0).displayValue;
-            QrCodeRegistrationAction.CALLBACK.returnSuccess(qrCode);
-          }
-          finish();
-        }
-      }
-    });
-
-    qrCodeScanner.getHolder().addCallback(new SurfaceHolder.Callback() {
-      @Override
-      public void surfaceCreated(final SurfaceHolder surfaceHolder) {
-        if (ActivityCompat.checkSelfPermission(QrCodeRegistrationActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-          ActivityCompat.requestPermissions(QrCodeRegistrationActivity.this, new String[]{ Manifest.permission.CAMERA }, CAMERA_PERMISSION_REQUEST_CODE);
-        } else {
-          startCamera();
-        }
-      }
-
-      @Override
-      public void surfaceChanged(final SurfaceHolder surfaceHolder, final int i, final int i1, final int i2) {
-
-      }
-
-      @Override
-      public void surfaceDestroyed(final SurfaceHolder surfaceHolder) {
-        cameraSource.stop();
-      }
-    });
   }
 
   @Override
@@ -138,5 +110,47 @@ public class QrCodeRegistrationActivity extends AppCompatActivity {
     super.onDestroy();
     cameraSource.stop();
     cameraSource.release();
+  }
+
+  private class QrCodeDetectorProcessor implements Detector.Processor<Barcode> {
+
+    @Override
+    public void release() {
+
+    }
+
+    @Override
+    public void receiveDetections(final Detector.Detections<Barcode> detections) {
+      final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
+      if (qrCodes.size() != 0) {
+        if (QrCodeRegistrationAction.CALLBACK != null) {
+          final String qrCode = qrCodes.valueAt(0).displayValue;
+          QrCodeRegistrationAction.CALLBACK.returnSuccess(qrCode);
+        }
+        finish();
+      }
+    }
+  }
+
+  private class QrCodeSurfaceHolderCallback implements SurfaceHolder.Callback {
+
+    @Override
+    public void surfaceCreated(final SurfaceHolder surfaceHolder) {
+      if (ActivityCompat.checkSelfPermission(QrCodeRegistrationActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(QrCodeRegistrationActivity.this, new String[]{ Manifest.permission.CAMERA }, CAMERA_PERMISSION_REQUEST_CODE);
+      } else {
+        startCamera();
+      }
+    }
+
+    @Override
+    public void surfaceChanged(final SurfaceHolder surfaceHolder, final int i, final int i1, final int i2) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(final SurfaceHolder surfaceHolder) {
+      cameraSource.stop();
+    }
   }
 }
