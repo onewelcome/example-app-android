@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  Copyright (c) 2016-2017 Onegini B.V.
+  Copyright (c) 2016-2018 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".view.activity.LoginActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/root_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                tools:context=".view.activity.LoginActivity">
 
     <RelativeLayout
         android:id="@+id/layout_login_content"
@@ -36,40 +36,28 @@
             android:src="@drawable/logo_onegini"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/activity_login_logo_margin_top"
-            tools:ignore="contentDescription" />
+            tools:ignore="contentDescription"/>
 
         <TextView
             android:id="@+id/label"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:paddingTop="@dimen/activity_margin"
             android:textSize="18sp"
             android:text="@string/app_name"
-            android:layout_below="@+id/img_logo" />
-
-        <TextView
-            android:id="@+id/implicit_user_details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            tools:visibility="gone"
-            android:layout_below="@+id/label"
-            android:layout_marginTop="@dimen/activity_margin"
-            android:layout_marginBottom="@dimen/activity_margin_small"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal"
-            android:maxLines="1"
-            android:ellipsize="end" />
+            android:layout_alignBottom="@+id/img_logo"
+            android:layout_alignRight="@+id/img_logo"
+            android:layout_alignEnd="@+id/img_logo"/>
 
         <Spinner
             android:id="@+id/users_spinner"
+            android:layout_marginTop="80dp"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
             android:visibility="invisible"
             android:layout_width="fill_parent"
-            android:layout_below="@+id/implicit_user_details"
-            android:layout_height="wrap_content" />
+            android:layout_below="@+id/label"
+            android:layout_height="wrap_content"/>
 
         <Button
             android:id="@+id/login_button"
@@ -78,7 +66,7 @@
             style="@style/ButtonWideStyle"
             android:layout_below="@+id/users_spinner"
             android:layout_width="match_parent"
-            android:text="@string/btn_login_label" />
+            android:text="@string/btn_login_label"/>
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/login_with_preferred_authenticator"
@@ -90,18 +78,6 @@
             android:layout_marginBottom="@dimen/activity_margin_small"
             style="@style/SwitchCompatStyle"/>
 
-        <TextView
-            android:id="@+id/application_details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            tools:visibility="visible"
-            android:layout_below="@+id/login_with_preferred_authenticator"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/activity_margin_small"
-            android:layout_marginLeft="@dimen/activity_margin"
-            android:layout_marginRight="@dimen/activity_margin"
-            android:gravity="center_horizontal" />
     </RelativeLayout>
 
     <ProgressBar
@@ -110,18 +86,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/register_button"
         style="@style/ButtonWideStyle"
         android:layout_width="match_parent"
-        android:layout_marginBottom="20dp"
         android:visibility="invisible"
         tools:visibility="visible"
         android:text="@string/btn_register_label"
-        android:layout_above="@+id/bottom_navigation"
+        android:layout_above="@+id/register_with_preferred_identity_provider"
         android:layout_centerHorizontal="true"/>
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/register_with_preferred_identity_provider"
+        android:checked="true"
+        android:text="@string/use_default_identity_provider_label"
+        android:layout_above="@+id/bottom_navigation"
+        android:layout_marginBottom="40dp"
+        style="@style/SwitchCompatStyle"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -131,6 +114,6 @@
         app:itemBackground="@color/colorPrimary"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:menu="@menu/bottom_navigation_menu"/>
 
 </RelativeLayout>

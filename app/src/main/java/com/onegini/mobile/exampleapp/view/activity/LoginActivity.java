@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
-import static com.onegini.mobile.exampleapp.view.helper.ErrorMessageParser.parseErrorMessage;
+import static com.onegini.mobile.exampleapp.view.activity.RegistrationActivity.IDENTITY_PROVIDER_EXTRA;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -47,31 +46,22 @@ import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.model.ApplicationDetails;
-import com.onegini.mobile.exampleapp.model.ImplicitUserDetails;
 import com.onegini.mobile.exampleapp.model.User;
-import com.onegini.mobile.exampleapp.network.AnonymousService;
-import com.onegini.mobile.exampleapp.network.ImplicitUserService;
-import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
+import com.onegini.mobile.exampleapp.view.helper.AvailableIdentityProvidersMenu;
 import com.onegini.mobile.exampleapp.view.helper.RegisteredAuthenticatorsMenu;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticationHandler;
-import com.onegini.mobile.sdk.android.handlers.OneginiDeviceAuthenticationHandler;
-import com.onegini.mobile.sdk.android.handlers.OneginiImplicitAuthenticationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiPendingMobileAuthWithPushRequestsHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiDeviceAuthenticationError;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiImplicitTokenRequestError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiPendingMobileAuthWithPushRequestError;
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
-import com.onegini.mobile.sdk.android.model.entity.CustomAuthenticatorInfo;
+import com.onegini.mobile.sdk.android.model.OneginiIdentityProvider;
+import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
-import rx.Subscription;
 
 public class LoginActivity extends Activity {
 
@@ -94,94 +84,53 @@ public class LoginActivity extends Activity {
   @BindView(R.id.layout_login_content)
   RelativeLayout layoutLoginContent;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.application_details)
-  TextView applicationDetailsTextView;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.login_with_preferred_authenticator)
   SwitchCompat usePreferredAuthenticatorSwitchCompat;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.implicit_user_details)
-  TextView implicitUserDetailsTextView;
+  @BindView(R.id.register_with_preferred_identity_provider)
+  SwitchCompat usePreferredIdentityProviderSwitchCompat;
   @BindView(R.id.bottom_navigation)
   BottomNavigationView bottomNavigationView;
 
   public static final String ERROR_MESSAGE_EXTRA = "error_message";
 
+  public static User selectedUser;
+
   private List<User> listOfUsers = new ArrayList<>();
   private boolean userIsLoggingIn = false;
-  private Subscription subscription;
-  private UserProfile authenticatedUserProfile;
-  private DeviceSettingsStorage deviceSettingsStorage;
-  private String errorMessage;
+  private String lastErrorMessage;
+  private boolean isAppVisible = false;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
     ButterKnife.bind(this);
-    deviceSettingsStorage = new DeviceSettingsStorage(this);
-    authenticateDevice();
-  }
-
-  @Override
-  public void onDestroy() {
-    if (subscription != null) {
-      subscription.unsubscribe();
-    }
-    super.onDestroy();
   }
 
   @Override
   protected void onResume() {
     super.onResume();
+    isAppVisible = true;
     getErrorMessage();
     setupUserInterface();
+    bottomNavigationView.getMenu()
+        .findItem(R.id.action_home)
+        .setChecked(true);
+    showError();
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    isAppVisible = false;
+    overridePendingTransition(0, 0);
   }
 
   private void getErrorMessage() {
-    if (getIntent().hasExtra(ERROR_MESSAGE_EXTRA)) {
-      errorMessage = getIntent().getStringExtra(ERROR_MESSAGE_EXTRA);
+    if (isNoErrorMessagePending() && getIntent().hasExtra(ERROR_MESSAGE_EXTRA)) {
+      lastErrorMessage = getIntent().getStringExtra(ERROR_MESSAGE_EXTRA);
     }
-  }
-
-  private void authenticateDevice() {
-    authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
-    OneginiSDK.getOneginiClient(this).getDeviceClient()
-        .authenticateDevice(new String[]{ "application-details" }, new OneginiDeviceAuthenticationHandler() {
-              @Override
-              public void onSuccess() {
-                callAnonymousResourceCallToFetchApplicationDetails();
-              }
-
-              @Override
-              public void onError(final OneginiDeviceAuthenticationError error) {
-                final @OneginiDeviceAuthenticationError.DeviceAuthenticationErrorType int errorType = error.getErrorType();
-                errorMessage = parseErrorMessage(error);
-                if (errorType == OneginiDeviceAuthenticationError.DEVICE_DEREGISTERED) {
-                  onDeviceDeregistered();
-                } else if (errorType == OneginiDeviceAuthenticationError.USER_DEREGISTERED) {
-                  onUserDeregistered();
-                } else {
-                  LoginActivity.this.onError(error);
-                }
-              }
-            }
-        );
-  }
-
-  private void callAnonymousResourceCallToFetchApplicationDetails() {
-    final boolean useRetrofit2 = deviceSettingsStorage.shouldUseRetrofit2();
-    subscription = AnonymousService.getInstance(this)
-        .getApplicationDetails(useRetrofit2)
-        .subscribe(this::onApplicationDetailsFetched, throwable -> onApplicationDetailsFetchFailed());
-  }
-
-  private void onApplicationDetailsFetched(final ApplicationDetails applicationDetails) {
-    applicationDetailsTextView.setText(applicationDetails.getApplicationDetailsCombined());
-  }
-
-  private void onApplicationDetailsFetchFailed() {
-    applicationDetailsTextView.setText("Application details fetch failed");
   }
 
   @SuppressWarnings("unused")
@@ -197,11 +146,20 @@ public class LoginActivity extends Activity {
   @SuppressWarnings("unused")
   @OnClick(R.id.login_button)
   public void loginButtonClicked() {
-    final UserProfile userProfile = listOfUsers.get(usersSpinner.getSelectedItemPosition()).getUserProfile();
     if (usePreferredAuthenticatorSwitchCompat.isChecked()) {
-      authenticate(userProfile, null);
+      authenticate(selectedUser.getUserProfile(), null);
     } else {
-      showRegisteredAuthenticatorsPopup(userProfile);
+      showRegisteredAuthenticatorsPopup(selectedUser.getUserProfile());
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @OnCheckedChanged(R.id.register_with_preferred_identity_provider)
+  public void setUsePreferredIdentityProviderSwitchStateChanged() {
+    if (usePreferredIdentityProviderSwitchCompat.isChecked()) {
+      registerButton.setText(getString(R.string.btn_register_label));
+    } else {
+      registerButton.setText(getString(R.string.btn_register_with_label));
     }
   }
 
@@ -211,10 +169,27 @@ public class LoginActivity extends Activity {
     menu.setOnClickListener(authenticator -> authenticate(userProfile, authenticator)).show();
   }
 
+  private void showAvailableIdentityProvidersPopup() {
+    final Set<OneginiIdentityProvider> identityProviders = OneginiSDK.getOneginiClient(this).getUserClient().getIdentityProviders();
+    final AvailableIdentityProvidersMenu menu = new AvailableIdentityProvidersMenu(new PopupMenu(this, registerButton), identityProviders);
+    menu.setOnClickListener(identityProvider -> registerUser(identityProvider)).show();
+  }
+
   @SuppressWarnings("unused")
   @OnClick(R.id.register_button)
   public void registerButtonClicked() {
+    if(usePreferredIdentityProviderSwitchCompat.isChecked()) {
+      registerUser(null);
+    } else {
+      showAvailableIdentityProvidersPopup();
+    }
+  }
+
+  private void registerUser(final OneginiIdentityProvider identityProvider) {
     final Intent intent = new Intent(this, RegistrationActivity.class);
+    if (identityProvider != null) {
+      intent.putExtra(IDENTITY_PROVIDER_EXTRA, identityProvider);
+    }
     startActivity(intent);
     finish();
   }
@@ -222,61 +197,7 @@ public class LoginActivity extends Activity {
   @SuppressWarnings("unused")
   @OnItemSelected(R.id.users_spinner)
   void onItemSelected(int position) {
-    final User user = listOfUsers.get(position);
-    getImplicitUserDetails(user.getUserProfile());
-  }
-
-  private void getImplicitUserDetails(final UserProfile userProfile) {
-    OneginiSDK.getOneginiClient(this).getUserClient()
-        .authenticateUserImplicitly(userProfile, new String[]{ "read" }, new OneginiImplicitAuthenticationHandler() {
-          @Override
-          public void onSuccess(final UserProfile profile) {
-            callImplicitResourceCallToFetchImplicitUserDetails();
-          }
-
-          @Override
-          public void onError(final OneginiImplicitTokenRequestError oneginiImplicitTokenRequestError) {
-            handleImplicitAuthenticationErrors(oneginiImplicitTokenRequestError, userProfile);
-            implicitUserDetailsTextView.setText(oneginiImplicitTokenRequestError.getErrorType() + ": " +
-                getString(R.string.implicit_user_details_fetch_failed_label));
-          }
-        });
-  }
-
-  private void callImplicitResourceCallToFetchImplicitUserDetails() {
-    final boolean useRetrofit2 = deviceSettingsStorage.shouldUseRetrofit2();
-    subscription = ImplicitUserService.getInstance(this)
-        .getImplicitUserDetails(useRetrofit2)
-        .subscribe(this::onImplicitUserDetailsFetched, this::onImplicitDetailsFetchFailed);
-  }
-
-  private void onImplicitUserDetailsFetched(final ImplicitUserDetails implicitUserDetails) {
-    implicitUserDetailsTextView.setText(implicitUserDetails.toString());
-  }
-
-  private void onImplicitDetailsFetchFailed(final Throwable throwable) {
-    implicitUserDetailsTextView.setText(R.string.implicit_user_details_fetch_failed_label);
-    throwable.printStackTrace();
-  }
-
-  private void handleImplicitAuthenticationErrors(final OneginiImplicitTokenRequestError error, final UserProfile userProfile) {
-    @OneginiImplicitTokenRequestError.ImplicitTokenRequestErrorType int errorType = error.getErrorType();
-    switch (errorType) {
-      case OneginiImplicitTokenRequestError.USER_DEREGISTERED:
-        new DeregistrationUtil(this).onUserDeregistered(userProfile);
-        break;
-      case OneginiImplicitTokenRequestError.DEVICE_DEREGISTERED:
-        new DeregistrationUtil(this).onDeviceDeregistered();
-        break;
-      case OneginiImplicitTokenRequestError.NETWORK_CONNECTIVITY_PROBLEM:
-      case OneginiImplicitTokenRequestError.SERVER_NOT_REACHABLE:
-      case OneginiImplicitTokenRequestError.CONFIGURATION_ERROR:
-      case OneginiImplicitTokenRequestError.GENERAL_ERROR:
-      default:
-        // Just display the error for other, less relevant errors
-        error.printStackTrace();
-        break;
-    }
+    selectedUser = listOfUsers.get(position);
   }
 
   private void setupUserInterface() {
@@ -296,10 +217,6 @@ public class LoginActivity extends Activity {
       usersSpinner.setVisibility(View.INVISIBLE);
       loginButton.setVisibility(View.INVISIBLE);
       usePreferredAuthenticatorSwitchCompat.setVisibility(View.INVISIBLE);
-    }
-
-    if (errorMessage != null && !errorMessage.isEmpty()) {
-      showError();
     }
     setupNavigationDrawer();
   }
@@ -330,13 +247,15 @@ public class LoginActivity extends Activity {
     return new OneginiAuthenticationHandler() {
 
       @Override
-      public void onSuccess(final UserProfile userProfile, final CustomAuthenticatorInfo customAuthenticatorInfo) {
+      public void onSuccess(final UserProfile userProfile, final CustomInfo customInfo) {
         startDashboardActivity();
       }
 
       @Override
       public void onError(final OneginiAuthenticationError oneginiAuthenticationError) {
-        LoginActivity.this.onError(oneginiAuthenticationError, userProfile);
+        if (isNoErrorMessagePending()) {
+          LoginActivity.this.onError(oneginiAuthenticationError, userProfile);
+        }
       }
     };
   }
@@ -349,52 +268,46 @@ public class LoginActivity extends Activity {
 
   private void handleAuthenticationErrors(final OneginiAuthenticationError error, final UserProfile userProfile) {
     @OneginiAuthenticationError.AuthenticationErrorType int errorType = error.getErrorType();
-    errorMessage = error.getErrorType() + ": ";
+    final StringBuilder stringBuilder = new StringBuilder()
+        .append(errorType)
+        .append(": ");
     switch (errorType) {
       case OneginiAuthenticationError.ACTION_CANCELED:
-        errorMessage += "Authentication was cancelled";
+        stringBuilder.append("Authentication was cancelled.");
         break;
       case OneginiAuthenticationError.NETWORK_CONNECTIVITY_PROBLEM:
-        errorMessage += "No internet connection.";
+        stringBuilder.append("No internet connection.");
         break;
       case OneginiAuthenticationError.SERVER_NOT_REACHABLE:
-        errorMessage += "The server is not reachable.";
+        stringBuilder.append("The server is not reachable.");
         break;
       case OneginiAuthenticationError.OUTDATED_APP:
-        errorMessage += "Please update this application in order to use it.";
+        stringBuilder.append("Please update this application in order to use it.");
         break;
       case OneginiAuthenticationError.OUTDATED_OS:
-        errorMessage += "Please update your Android version to use this application.";
+        stringBuilder.append("Please update your Android version to use this application.");
         break;
       case OneginiAuthenticationError.USER_DEREGISTERED:
+        stringBuilder.append("User deregistered.");
         new DeregistrationUtil(this).onUserDeregistered(userProfile);
-        errorMessage += "User deregistered";
         break;
       case OneginiAuthenticationError.DEVICE_DEREGISTERED:
+        stringBuilder.append("Device deregistered.");
         new DeregistrationUtil(this).onDeviceDeregistered();
-        errorMessage += "Device deregistered";
         break;
       case OneginiAuthenticationError.GENERAL_ERROR:
       default:
         // Just display the error for other, less relevant errors
-        onError(error);
+        error.printStackTrace();
+        stringBuilder.append(error.getMessage())
+            .append(" ")
+            .append("Check logcat for more details.");
         break;
     }
-  }
-
-  private void onDeviceDeregistered() {
-    new DeregistrationUtil(this).onDeviceDeregistered();
-    showError();
-  }
-
-  private void onUserDeregistered() {
-    new DeregistrationUtil(this).onUserDeregistered(authenticatedUserProfile);
-    showError();
-  }
-
-  private void onError(final OneginiError error) {
-    error.printStackTrace();
-    errorMessage = error.getMessage() + " Check logcat for more details.";
+    lastErrorMessage = stringBuilder.toString();
+    if (isAppVisible) {
+      showError();
+    }
   }
 
   private boolean isRegisteredAtLeastOneUser() {
@@ -420,9 +333,11 @@ public class LoginActivity extends Activity {
   }
 
   private void showError() {
-    final DialogFragment dialog = AlertDialogFragment.newInstance(errorMessage);
-    errorMessage = null;
-    dialog.show(getFragmentManager(), "alert_dialog");
+    if (isErrorMessagePending()) {
+      final DialogFragment dialog = AlertDialogFragment.newInstance(lastErrorMessage);
+      lastErrorMessage = null;
+      dialog.show(getFragmentManager(), "alert_dialog");
+    }
   }
 
   private void startDashboardActivity() {
@@ -435,12 +350,10 @@ public class LoginActivity extends Activity {
       final int itemId = item.getItemId();
       if (itemId == R.id.action_notifications) {
         startActivity(new Intent(LoginActivity.this, PendingPushMessagesActivity.class));
-        return true;
-      } else if (itemId == R.id.action_resources) {
-        Toast.makeText(LoginActivity.this, "Not implemented yet", Toast.LENGTH_SHORT).show();
-        return true;
+      } else if (itemId == R.id.action_info) {
+        startActivity(new Intent(LoginActivity.this, InfoActivity.class));
       }
-      return false;
+      return true;
     });
 
     OneginiSDK.getOneginiClient(this).getUserClient().getPendingMobileAuthWithPushRequests(new OneginiPendingMobileAuthWithPushRequestsHandler() {
@@ -457,9 +370,51 @@ public class LoginActivity extends Activity {
       }
 
       @Override
-      public void onError(final OneginiPendingMobileAuthWithPushRequestError oneginiPendingMobileAuthWithPushRequestError) {
-        LoginActivity.this.onError(oneginiPendingMobileAuthWithPushRequestError);
+      public void onError(final OneginiPendingMobileAuthWithPushRequestError error) {
+        if (isNoErrorMessagePending()) {
+          LoginActivity.this.handlePendingMobileRequestsErrors(error);
+        }
       }
     });
+  }
+
+  private void handlePendingMobileRequestsErrors(final OneginiPendingMobileAuthWithPushRequestError error) {
+    @OneginiPendingMobileAuthWithPushRequestError.OneginiFetchPendingMobileAuthMessagesErrorType int errorType = error.getErrorType();
+    final StringBuilder stringBuilder = new StringBuilder()
+        .append(errorType)
+        .append(": ");
+    switch (errorType) {
+      case OneginiPendingMobileAuthWithPushRequestError.NETWORK_CONNECTIVITY_PROBLEM:
+        stringBuilder.append("No internet connection.");
+        break;
+      case OneginiPendingMobileAuthWithPushRequestError.SERVER_NOT_REACHABLE:
+        stringBuilder.append("The server is not reachable.");
+        break;
+      case OneginiPendingMobileAuthWithPushRequestError.DEVICE_DEREGISTERED:
+        stringBuilder.append("Device deregistered");
+        new DeregistrationUtil(this).onDeviceDeregistered();
+        break;
+      case OneginiPendingMobileAuthWithPushRequestError.GENERAL_ERROR:
+      case OneginiPendingMobileAuthWithPushRequestError.CONFIGURATION_ERROR:
+      default:
+        // Just display the error for other, less relevant errors
+        error.printStackTrace();
+        stringBuilder.append(error.getMessage())
+            .append(" ")
+            .append("Check logcat for more details.");
+        break;
+    }
+    lastErrorMessage = stringBuilder.toString();
+    if (isAppVisible) {
+      showError();
+    }
+  }
+
+  private boolean isNoErrorMessagePending() {
+    return lastErrorMessage == null || lastErrorMessage.isEmpty();
+  }
+
+  private boolean isErrorMessagePending() {
+    return !isNoErrorMessagePending();
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ public abstract class BasicAuthenticatorActivity extends AppCompatActivity {
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_custom_auth_registration);
+    setContentView(R.layout.activity_basic_authenticator);
     ButterKnife.bind(this);
     setTitle();
   }

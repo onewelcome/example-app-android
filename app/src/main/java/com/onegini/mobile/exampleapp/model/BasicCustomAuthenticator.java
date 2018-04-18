@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@
 package com.onegini.mobile.exampleapp.model;
 
 import android.content.Context;
-import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthAuthenticationAction;
-import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthDeregistrationAction;
-import com.onegini.mobile.exampleapp.view.action.BasicCustomAuthRegistrationAction;
-import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthAuthenticationAction;
-import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthDeregistrationAction;
-import com.onegini.mobile.sdk.android.handlers.customauth.OneginiCustomAuthRegistrationAction;
+import com.onegini.mobile.exampleapp.view.action.basicauth.BasicCustomAuthAuthenticationAction;
+import com.onegini.mobile.exampleapp.view.action.basicauth.BasicCustomAuthDeregistrationAction;
+import com.onegini.mobile.exampleapp.view.action.basicauth.BasicCustomAuthRegistrationAction;
+import com.onegini.mobile.sdk.android.handlers.action.OneginiCustomAuthAuthenticationAction;
+import com.onegini.mobile.sdk.android.handlers.action.OneginiCustomAuthDeregistrationAction;
+import com.onegini.mobile.sdk.android.handlers.action.OneginiCustomAuthRegistrationAction;
 import com.onegini.mobile.sdk.android.model.OneginiCustomAuthenticator;
 
 public class BasicCustomAuthenticator implements OneginiCustomAuthenticator {

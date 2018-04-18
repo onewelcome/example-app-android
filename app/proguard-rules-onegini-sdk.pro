@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2017 Onegini B.V.
+# Copyright (c) 2016-2018 Onegini B.V.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,9 +42,6 @@
     @retrofit2.http.* <methods>;
 }
 
-# Samsung FIDO
--keep class com.samsung.sds.fido.** { *; }
--dontwarn com.samsung.sds.fido.**
 -dontnote **
 
 # SQLCipher

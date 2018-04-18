@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,9 +38,5 @@ public class ApplicationDetails {
 
   public String getApplicationVersion() {
     return applicationVersion;
-  }
-
-  public String getApplicationDetailsCombined() {
-    return String.format("%s %s %s", getApplicationPlatform(), getApplicationIdentifier(), getApplicationVersion());
   }
 }
