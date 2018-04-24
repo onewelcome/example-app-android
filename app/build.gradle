@@ -82,7 +82,7 @@ dependencies {
 
   // Rest Client
   implementation 'com.squareup.retrofit:retrofit:1.9.0'
-  implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+  implementation 'com.squareup.retrofit2:adapter-rxjava:2.4.0'
   // we have to use this wrapper for Retrofit 1 + OkHttp 3 usage
   implementation 'com.jakewharton.retrofit:retrofit1-okhttp3-client:1.1.0'
 
