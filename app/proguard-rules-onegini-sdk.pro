@@ -16,6 +16,7 @@
 
 -keep class com.onegini.mobile.sdk.android.internal.* { *; }
 -keep class * implements com.onegini.mobile.sdk.android.model.OneginiClientConfigModel { *; }
+-keep class com.onegini.mobile.sdk.android.model.OneginiClientConfigModel { *; }
 -keepattributes Signature,InnerClasses,EnclosingMethod
 -dontnote com.onegini.mobile.sdk.android.**
 -dontwarn android.test.**
@@ -30,6 +31,7 @@
 
 # OkHttp
 -keep class okhttp3.** { *; }
+-keep class okio.** { *; }
 -dontwarn okhttp3.**
 -dontwarn okio.**
 -dontnote okio.**
@@ -46,3 +48,7 @@
 
 # SQLCipher
 -keep class net.sqlcipher.** { *; }
+
+# RxJava
+-keep class io.reactivex.** { *; }
+-dontwarn io.reactivex.**
