@@ -295,6 +295,9 @@ public class LoginActivity extends Activity {
         stringBuilder.append("Device deregistered.");
         new DeregistrationUtil(this).onDeviceDeregistered();
         break;
+      case OneginiAuthenticationError.DATA_STORAGE_NOT_AVAILABLE:
+        stringBuilder.append("Data storage not available.");
+        break;
       case OneginiAuthenticationError.GENERAL_ERROR:
       default:
         // Just display the error for other, less relevant errors

@@ -91,6 +91,7 @@ public class SplashScreenActivity extends Activity {
         onDeviceDeregistered();
         break;
       case OneginiInitializationError.DEVICE_REGISTRATION_ERROR:
+      case OneginiInitializationError.DATA_STORAGE_NOT_AVAILABLE:
       case OneginiInitializationError.GENERAL_ERROR:
       default:
         // Just display the error for other, less relevant errors
