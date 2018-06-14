@@ -162,6 +162,9 @@ public class RegistrationActivity extends Activity {
       case OneginiRegistrationError.CUSTOM_REGISTRATION_FAILURE:
         showToast("Custom registration request has failed, see logcat for more details.");
         break;
+      case OneginiRegistrationError.DATA_STORAGE_NOT_AVAILABLE:
+        showToast("Data storage is not available, see logcat for more details.");
+        break;
       case OneginiRegistrationError.GENERAL_ERROR:
       default:
         // General error handling for other, less relevant errors
