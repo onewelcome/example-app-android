@@ -61,3 +61,6 @@
 -keep class retrofit.* { *; }
 -dontwarn retrofit.**
 -dontnote retrofit.**
+
+#RxJava 1
+-dontnote rx.**
