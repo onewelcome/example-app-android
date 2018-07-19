@@ -60,7 +60,7 @@ android {
   buildTypes {
     release {
       minifyEnabled true
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-onegini-sdk.pro', 'proguard-rules-example-app.pro'
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-example-app.pro'
     }
   }
   dexOptions {
