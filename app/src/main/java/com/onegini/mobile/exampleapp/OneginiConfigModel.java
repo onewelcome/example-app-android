@@ -25,7 +25,7 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   private final String appIdentifier = "ExampleApp";
   private final String appPlatform = "android";
   private final String redirectionUri = "oneginiexample://loginsuccess";
-  private final String appVersion = "5.0.0";
+  private final String appVersion = "5.1.0";
   private final String baseURL = "https://demo-msp.onegini.com";
   private final String resourceBaseURL = "https://demo-msp.onegini.com/resources";
   private final String keystoreHash = "910638c3e6c17ec9ab2a74969abab06b34470d29c21d8ad8a65af243a1ccb69f";
