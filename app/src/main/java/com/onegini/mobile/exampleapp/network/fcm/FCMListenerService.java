@@ -25,10 +25,9 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.helper.AppLifecycleListener;
-import com.onegini.mobile.sdk.android.client.OneginiClient;
+import com.onegini.mobile.exampleapp.view.helper.OneginiClientInitializer;
 import com.onegini.mobile.sdk.android.exception.OneginiInitializationException;
 import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiRefreshMobileAuthPushTokenHandler;
@@ -68,33 +67,18 @@ public class FCMListenerService extends FirebaseMessagingService {
   }
 
   private void setupOneginiSDK(final String newToken) {
-    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    oneginiClient.start(new OneginiInitializationHandler() {
+    final OneginiClientInitializer oneginiClientInitializer = new OneginiClientInitializer(this);
+    oneginiClientInitializer.startOneginiClient(new OneginiInitializationHandler() {
       @Override
       public void onSuccess(final Set<UserProfile> removedUserProfiles) {
-        if (removedUserProfiles.isEmpty()) {
           handleTokenUpdate(newToken);
-        } else {
-          removeUserProfiles(removedUserProfiles, newToken);
-        }
       }
 
       @Override
       public void onError(final OneginiInitializationError error) {
-        @OneginiInitializationError.InitializationErrorType final int errorType = error.getErrorType();
-        if (errorType == OneginiInitializationError.DEVICE_DEREGISTERED) {
-          new DeregistrationUtil(getApplicationContext()).onDeviceDeregistered();
-        }
+        Log.w(TAG, "Onegini client initialization error", error);
       }
     });
-  }
-
-  private void removeUserProfiles(final Set<UserProfile> removedUserProfiles, final String newToken) {
-    final DeregistrationUtil deregistrationUtil = new DeregistrationUtil(this);
-    for (UserProfile removedUserProfile : removedUserProfiles) {
-      deregistrationUtil.onUserDeregistered(removedUserProfile);
-    }
-    handleTokenUpdate(newToken);
   }
 
   private void handleTokenUpdate(final String newToken) {

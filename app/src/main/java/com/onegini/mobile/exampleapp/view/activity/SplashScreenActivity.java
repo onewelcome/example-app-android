@@ -22,13 +22,10 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
-import com.onegini.mobile.exampleapp.storage.UserStorage;
-import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
-import com.onegini.mobile.sdk.android.client.OneginiClient;
+import com.onegini.mobile.exampleapp.view.helper.OneginiClientInitializer;
 import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiInitializationError;
@@ -36,12 +33,9 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class SplashScreenActivity extends Activity {
 
-  private UserStorage userStorage;
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    this.userStorage = new UserStorage(this);
 
     setContentView(R.layout.activity_splashscreen);
     setupOneginiSDK();
@@ -49,14 +43,10 @@ public class SplashScreenActivity extends Activity {
   }
 
   private void setupOneginiSDK() {
-    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    oneginiClient.start(new OneginiInitializationHandler() {
+    final OneginiClientInitializer oneginiClientInitializer = new OneginiClientInitializer(this);
+    oneginiClientInitializer.startOneginiClient(new OneginiInitializationHandler() {
       @Override
       public void onSuccess(final Set<UserProfile> removedUserProfiles) {
-        boolean removedProfiles = !removedUserProfiles.isEmpty();
-        if (removedProfiles) {
-          removeUserProfiles(removedUserProfiles);
-        }
         startLoginActivity();
       }
 
@@ -88,7 +78,7 @@ public class SplashScreenActivity extends Activity {
         break;
       case OneginiInitializationError.DEVICE_DEREGISTERED:
         // in this case clear the local storage from the device and all user related data
-        onDeviceDeregistered();
+        showError(OneginiInitializationError.DEVICE_DEREGISTERED + ": Device deregistered");
         break;
       case OneginiInitializationError.DEVICE_REGISTRATION_ERROR:
       case OneginiInitializationError.GENERAL_ERROR:
@@ -99,11 +89,6 @@ public class SplashScreenActivity extends Activity {
     }
   }
 
-  private void onDeviceDeregistered() {
-    new DeregistrationUtil(this).onDeviceDeregistered();
-    showError(OneginiInitializationError.DEVICE_DEREGISTERED + ": Device deregistered");
-  }
-
   private void displayError(final OneginiError error) {
     final StringBuilder stringBuilder = new StringBuilder(error.getMessage());
     stringBuilder.append(" Check logcat for more details.");
@@ -111,12 +96,6 @@ public class SplashScreenActivity extends Activity {
     error.printStackTrace();
 
     showError(stringBuilder.toString());
-  }
-
-  private void removeUserProfiles(final Set<UserProfile> removedUserProfiles) {
-    for (final UserProfile userProfile : removedUserProfiles) {
-      userStorage.removeUser(userProfile);
-    }
   }
 
   private void startLoginActivity() {

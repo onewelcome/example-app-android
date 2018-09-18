@@ -25,7 +25,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
-import com.onegini.mobile.sdk.android.client.OneginiClient;
+import com.onegini.mobile.exampleapp.view.helper.OneginiClientInitializer;
 import com.onegini.mobile.sdk.android.exception.OneginiInitializationException;
 import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationHandler;
@@ -77,23 +77,16 @@ public class MobileAuthenticationService extends IntentService {
   }
 
   private void setupOneginiSDK(final OneginiMobileAuthWithPushRequest request) {
-    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    oneginiClient.start(new OneginiInitializationHandler() {
+    final OneginiClientInitializer oneginiClientInitializer = new OneginiClientInitializer(this);
+    oneginiClientInitializer.startOneginiClient(new OneginiInitializationHandler() {
       @Override
       public void onSuccess(final Set<UserProfile> removedUserProfiles) {
-        if (removedUserProfiles.isEmpty()) {
           handleMobileAuthenticationRequest(request);
-        } else {
-          removeUserProfiles(removedUserProfiles, request);
-        }
       }
 
       @Override
       public void onError(final OneginiInitializationError error) {
-        @OneginiInitializationError.InitializationErrorType final int errorType = error.getErrorType();
-        if (errorType == OneginiInitializationError.DEVICE_DEREGISTERED) {
-          new DeregistrationUtil(getApplicationContext()).onDeviceDeregistered();
-        }
+        Log.w(TAG, "Onegini client initialization error", error);
       }
     });
   }
@@ -115,14 +108,5 @@ public class MobileAuthenticationService extends IntentService {
         }
       }
     });
-  }
-
-
-  private void removeUserProfiles(final Set<UserProfile> removedUserProfiles, final OneginiMobileAuthWithPushRequest request) {
-    final DeregistrationUtil deregistrationUtil = new DeregistrationUtil(this);
-    for (UserProfile removedUserProfile : removedUserProfiles) {
-      deregistrationUtil.onUserDeregistered(removedUserProfile);
-    }
-    handleMobileAuthenticationRequest(request);
   }
 }
