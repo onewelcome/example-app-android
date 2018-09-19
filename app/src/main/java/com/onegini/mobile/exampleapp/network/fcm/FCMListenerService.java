@@ -16,8 +16,6 @@
 
 package com.onegini.mobile.exampleapp.network.fcm;
 
-import java.util.Set;
-
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -26,15 +24,12 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.handler.InitializationHandler;
 import com.onegini.mobile.exampleapp.view.helper.AppLifecycleListener;
 import com.onegini.mobile.exampleapp.view.helper.OneginiClientInitializer;
-import com.onegini.mobile.sdk.android.exception.OneginiInitializationException;
-import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiRefreshMobileAuthPushTokenHandler;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiInitializationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiRefreshMobileAuthPushTokenError;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
-import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class FCMListenerService extends FirebaseMessagingService {
 
@@ -58,30 +53,25 @@ public class FCMListenerService extends FirebaseMessagingService {
   @Override
   public void onNewToken(final String newToken) {
     super.onNewToken(newToken);
-
-    try {
-      handleTokenUpdate(newToken);
-    } catch (final OneginiInitializationException exception) {
-      setupOneginiSDK(newToken);
-    }
+    handleTokenUpdate(newToken);
   }
 
-  private void setupOneginiSDK(final String newToken) {
+  private void handleTokenUpdate(final String newToken) {
     final OneginiClientInitializer oneginiClientInitializer = new OneginiClientInitializer(this);
-    oneginiClientInitializer.startOneginiClient(new OneginiInitializationHandler() {
+    oneginiClientInitializer.startOneginiClient(new InitializationHandler() {
       @Override
-      public void onSuccess(final Set<UserProfile> removedUserProfiles) {
-          handleTokenUpdate(newToken);
+      public void onSuccess() {
+          updateToken(newToken);
       }
 
       @Override
-      public void onError(final OneginiInitializationError error) {
-        Log.w(TAG, "Onegini client initialization error", error);
+      public void onError(final String errorMessage) {
+        Log.w(TAG, errorMessage);
       }
     });
   }
 
-  private void handleTokenUpdate(final String newToken) {
+  private void updateToken(final String newToken) {
     final FCMRegistrationService fcmRegistrationService = new FCMRegistrationService(this);
     if (fcmRegistrationService.shouldUpdateRefreshToken(newToken)) {
       // the token was updated, notify the SDK

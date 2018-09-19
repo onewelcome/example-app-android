@@ -16,20 +16,15 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
-import java.util.Set;
-
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
+import com.onegini.mobile.exampleapp.view.handler.InitializationHandler;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
 import com.onegini.mobile.exampleapp.view.helper.OneginiClientInitializer;
-import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiInitializationError;
-import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class SplashScreenActivity extends Activity {
 
@@ -44,58 +39,21 @@ public class SplashScreenActivity extends Activity {
 
   private void setupOneginiSDK() {
     final OneginiClientInitializer oneginiClientInitializer = new OneginiClientInitializer(this);
-    oneginiClientInitializer.startOneginiClient(new OneginiInitializationHandler() {
+    oneginiClientInitializer.startOneginiClient(new InitializationHandler() {
       @Override
-      public void onSuccess(final Set<UserProfile> removedUserProfiles) {
+      public void onSuccess() {
         startLoginActivity();
       }
 
       @Override
-      public void onError(final OneginiInitializationError error) {
-        handleInitializationErrors(error);
+      public void onError(final String errorMessage) {
+        showError(errorMessage);
       }
     });
   }
 
   private void cancelAllNotifications() {
     NotificationHelper.getInstance(this).cancelAllNotifications();
-  }
-
-  private void handleInitializationErrors(final OneginiInitializationError error) {
-    @OneginiInitializationError.InitializationErrorType int errorType = error.getErrorType();
-    switch (errorType) {
-      case OneginiInitializationError.NETWORK_CONNECTIVITY_PROBLEM:
-        showError("No internet connection.");
-        break;
-      case OneginiInitializationError.SERVER_NOT_REACHABLE:
-        showError("The server is not reachable.");
-        break;
-      case OneginiInitializationError.OUTDATED_APP:
-        showError("Please update this application in order to use it.");
-        break;
-      case OneginiInitializationError.OUTDATED_OS:
-        showError("Please update your Android version to use this application.");
-        break;
-      case OneginiInitializationError.DEVICE_DEREGISTERED:
-        // in this case clear the local storage from the device and all user related data
-        showError(OneginiInitializationError.DEVICE_DEREGISTERED + ": Device deregistered");
-        break;
-      case OneginiInitializationError.DEVICE_REGISTRATION_ERROR:
-      case OneginiInitializationError.GENERAL_ERROR:
-      default:
-        // Just display the error for other, less relevant errors
-        displayError(error);
-        break;
-    }
-  }
-
-  private void displayError(final OneginiError error) {
-    final StringBuilder stringBuilder = new StringBuilder(error.getMessage());
-    stringBuilder.append(" Check logcat for more details.");
-
-    error.printStackTrace();
-
-    showError(stringBuilder.toString());
   }
 
   private void startLoginActivity() {

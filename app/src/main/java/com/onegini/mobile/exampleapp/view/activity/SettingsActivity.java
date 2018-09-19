@@ -40,7 +40,6 @@ import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.network.fcm.FCMRegistrationService;
 import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
-import com.onegini.mobile.exampleapp.view.handler.ExtendedOneginiMobileAuthWithPushEnrollmentHandler;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiChangePinHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthEnrollmentHandler;
@@ -164,7 +163,7 @@ public class SettingsActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_mobile_authentication_push)
   public void enrollMobileAuthenticationWithPush() {
-    final ExtendedOneginiMobileAuthWithPushEnrollmentHandler mobileAuthWithPushEnrollmentHandler = new ExtendedOneginiMobileAuthWithPushEnrollmentHandler() {
+    final FCMRegistrationService.PushEnrollmentHandler mobileAuthWithPushEnrollmentHandler = new FCMRegistrationService.PushEnrollmentHandler() {
 
       @Override
       public void onSuccess() {
@@ -173,21 +172,19 @@ public class SettingsActivity extends AppCompatActivity {
       }
 
       @Override
-      public void onError(final OneginiMobileAuthWithPushEnrollmentError error) {
-        @OneginiMobileAuthWithPushEnrollmentError.MobileAuthWithPushEnrollmentErrorType final int errorType = error.getErrorType();
-        if (errorType == OneginiMobileAuthWithPushEnrollmentError.DEVICE_DEREGISTERED) {
-          new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
-          startLoginActivity(parseErrorMessage(error));
-        }
-
-        resultTextView.setText(parseErrorMessage(error));
-      }
-
-      @Override
       public void onError(final Throwable throwable) {
-        resultTextView.setText(throwable.getMessage());
+        if (throwable instanceof OneginiMobileAuthWithPushEnrollmentError) {
+          final OneginiMobileAuthWithPushEnrollmentError error = (OneginiMobileAuthWithPushEnrollmentError) throwable;
+          @OneginiMobileAuthWithPushEnrollmentError.MobileAuthWithPushEnrollmentErrorType final int errorType = error.getErrorType();
+          if (errorType == OneginiMobileAuthWithPushEnrollmentError.DEVICE_DEREGISTERED) {
+            new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
+            startLoginActivity(parseErrorMessage(error));
+          }
+          resultTextView.setText(parseErrorMessage(error));
+        } else {
+          resultTextView.setText(throwable.getMessage());
+        }
       }
-
     };
 
     final FCMRegistrationService fcmRegistrationService = new FCMRegistrationService(this);

@@ -16,8 +16,6 @@
 
 package com.onegini.mobile.exampleapp.network.fcm;
 
-import java.util.Set;
-
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,15 +23,12 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.handler.InitializationHandler;
 import com.onegini.mobile.exampleapp.view.helper.OneginiClientInitializer;
-import com.onegini.mobile.sdk.android.exception.OneginiInitializationException;
-import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthenticationHandler;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiInitializationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationError;
 import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
-import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class MobileAuthenticationService extends IntentService {
 
@@ -52,13 +47,7 @@ public class MobileAuthenticationService extends IntentService {
     final OneginiMobileAuthWithPushRequest request = parseRequest(intent);
     if (request != null) {
       Log.d(TAG, "Mobile authentication request " + request.getTransactionId() + " received");
-      try {
-        handleMobileAuthenticationRequest(request);
-      } catch (final OneginiInitializationException exception) {
-        // Onegini SDK hasn't been started yet so we have to do it
-        // before handling the mobile authentication request
-        setupOneginiSDK(request);
-      }
+      handleRequest(request);
     }
   }
 
@@ -76,17 +65,17 @@ public class MobileAuthenticationService extends IntentService {
     return null;
   }
 
-  private void setupOneginiSDK(final OneginiMobileAuthWithPushRequest request) {
+  private void handleRequest(final OneginiMobileAuthWithPushRequest request) {
     final OneginiClientInitializer oneginiClientInitializer = new OneginiClientInitializer(this);
-    oneginiClientInitializer.startOneginiClient(new OneginiInitializationHandler() {
+    oneginiClientInitializer.startOneginiClient(new InitializationHandler() {
       @Override
-      public void onSuccess(final Set<UserProfile> removedUserProfiles) {
+      public void onSuccess() {
           handleMobileAuthenticationRequest(request);
       }
 
       @Override
-      public void onError(final OneginiInitializationError error) {
-        Log.w(TAG, "Onegini client initialization error", error);
+      public void onError(final String errorMessage) {
+        Log.e(TAG, errorMessage);
       }
     });
   }
