@@ -18,14 +18,22 @@ package com.onegini.mobile.exampleapp.network.fcm;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.handler.InitializationHandler;
 import com.onegini.mobile.exampleapp.view.helper.AppLifecycleListener;
+import com.onegini.mobile.exampleapp.view.helper.OneginiClientInitializer;
+import com.onegini.mobile.sdk.android.handlers.OneginiRefreshMobileAuthPushTokenHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiRefreshMobileAuthPushTokenError;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
 
 public class FCMListenerService extends FirebaseMessagingService {
+
+  private static final String TAG = FCMListenerService.class.getSimpleName();
 
   private final Gson gson = new Gson();
 
@@ -39,6 +47,38 @@ public class FCMListenerService extends FirebaseMessagingService {
       } else {
         NotificationHelper.getInstance(this).showNotification(serviceIntent, mobileAuthWithPushRequest.getMessage());
       }
+    }
+  }
+
+  @Override
+  public void onNewToken(final String newToken) {
+    super.onNewToken(newToken);
+    handleTokenUpdate(newToken);
+  }
+
+  private void handleTokenUpdate(final String newToken) {
+    final OneginiClientInitializer oneginiClientInitializer = new OneginiClientInitializer(this);
+    oneginiClientInitializer.startOneginiClient(new InitializationHandler() {
+      @Override
+      public void onSuccess() {
+          updateToken(newToken);
+      }
+
+      @Override
+      public void onError(final String errorMessage) {
+        Log.w(TAG, errorMessage);
+      }
+    });
+  }
+
+  private void updateToken(final String newToken) {
+    final FCMRegistrationService fcmRegistrationService = new FCMRegistrationService(this);
+    if (fcmRegistrationService.shouldUpdateRefreshToken(newToken)) {
+      // the token was updated, notify the SDK
+      fcmRegistrationService.updateRefreshToken(newToken, new TokenUpdateHandler(newToken));
+    } else {
+      // the token is created for the first time
+      fcmRegistrationService.storeNewRefreshToken(newToken);
     }
   }
 
@@ -62,5 +102,28 @@ public class FCMListenerService extends FirebaseMessagingService {
     intent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE, mobileAuthWithPushRequest.getMessage());
     intent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID, mobileAuthWithPushRequest.getUserProfileId());
     return intent;
+  }
+
+  private class TokenUpdateHandler implements OneginiRefreshMobileAuthPushTokenHandler {
+
+    private final String token;
+
+    TokenUpdateHandler(final String token) {
+      this.token = token;
+    }
+
+    @Override
+    public void onSuccess() {
+      Log.d(TAG, "The token has been updated: " + token);
+    }
+
+    @Override
+    public void onError(final OneginiRefreshMobileAuthPushTokenError error) {
+      Log.e(TAG, "The push token update has failed: " + error.getMessage());
+      @OneginiRefreshMobileAuthPushTokenError.RefreshMobileAuthPushTokenErrorType final int errorType = error.getErrorType();
+      if (errorType == OneginiRefreshMobileAuthPushTokenError.DEVICE_DEREGISTERED) {
+        new DeregistrationUtil(FCMListenerService.this).onDeviceDeregistered();
+      }
+    }
   }
 }

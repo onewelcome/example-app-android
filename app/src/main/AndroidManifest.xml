@@ -144,14 +144,10 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
-        <service android:name=".network.fcm.FCMListenerService">
+        <service android:name=".network.fcm.FCMListenerService"
+            android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
-        <service android:name=".network.fcm.FCMInstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
         <service

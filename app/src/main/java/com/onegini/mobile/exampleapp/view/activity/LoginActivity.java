@@ -172,7 +172,7 @@ public class LoginActivity extends Activity {
   private void showAvailableIdentityProvidersPopup() {
     final Set<OneginiIdentityProvider> identityProviders = OneginiSDK.getOneginiClient(this).getUserClient().getIdentityProviders();
     final AvailableIdentityProvidersMenu menu = new AvailableIdentityProvidersMenu(new PopupMenu(this, registerButton), identityProviders);
-    menu.setOnClickListener(identityProvider -> registerUser(identityProvider)).show();
+    menu.setOnClickListener(this::registerUser).show();
   }
 
   @SuppressWarnings("unused")
@@ -320,6 +320,7 @@ public class LoginActivity extends Activity {
 
     registerButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     layoutLoginContent.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+    usePreferredIdentityProviderSwitchCompat.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     if (isRegisteredAtLeastOneUser()) {
       loginButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
       usePreferredAuthenticatorSwitchCompat.setVisibility(isVisible ? View.GONE : View.VISIBLE);
