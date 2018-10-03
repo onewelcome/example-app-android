@@ -63,10 +63,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".view.activity.FidoActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
-        <activity
             android:name=".view.activity.CustomAuthActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"/>
