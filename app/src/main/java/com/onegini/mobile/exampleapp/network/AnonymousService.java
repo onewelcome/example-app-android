@@ -21,9 +21,9 @@ import com.onegini.mobile.exampleapp.model.ApplicationDetails;
 import com.onegini.mobile.exampleapp.network.client.AnonymousClient;
 import com.onegini.mobile.exampleapp.network.client.AnonymousClient2;
 import com.onegini.mobile.exampleapp.network.client.SecureResourceClient;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class AnonymousService {
 
@@ -46,14 +46,14 @@ public class AnonymousService {
     applicationDetailsRetrofit2Client = SecureResourceClient.prepareSecuredAnonymousRetrofit2Client(AnonymousClient2.class, context);
   }
 
-  public Observable<ApplicationDetails> getApplicationDetails(final boolean useRetrofit2) {
-    return getObservable(useRetrofit2)
+  public Single<ApplicationDetails> getApplicationDetails(final boolean useRetrofit2) {
+    return getSingle(useRetrofit2)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .unsubscribeOn(Schedulers.io());
   }
 
-  private Observable<ApplicationDetails> getObservable(final boolean useRetrofit2) {
+  private Single<ApplicationDetails> getSingle(final boolean useRetrofit2) {
     if (useRetrofit2) {
       return applicationDetailsRetrofit2Client.getApplicationDetails();
     } else {

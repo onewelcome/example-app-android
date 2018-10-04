@@ -35,7 +35,9 @@ import com.onegini.mobile.exampleapp.model.Device;
 import com.onegini.mobile.exampleapp.network.UserService;
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
 import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
-import rx.Subscription;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 public class DevicesListActivity extends AppCompatActivity {
 
@@ -50,7 +52,7 @@ public class DevicesListActivity extends AppCompatActivity {
   ProgressBar progressBar;
 
   private DeviceSettingsStorage deviceSettingsStorage;
-  private Subscription subscription;
+  private CompositeDisposable disposables = new CompositeDisposable();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -64,21 +66,33 @@ public class DevicesListActivity extends AppCompatActivity {
 
   private void fetchUserDevices() {
     final boolean useRetrofit2 = deviceSettingsStorage.shouldUseRetrofit2();
-    subscription = UserService.getInstance(this)
+    UserService.getInstance(this)
         .getDevices(useRetrofit2)
-        .subscribe(this::onDevicesFetched, throwable -> onDevicesFetchFailed(), this::onFetchComplete);
+        .subscribe(new SingleObserver<DevicesResponse>() {
+          @Override
+          public void onSubscribe(final Disposable d) {
+            disposables.add(d);
+          }
+
+          @Override
+          public void onSuccess(final DevicesResponse devicesResponse) {
+            onDevicesFetched(devicesResponse);
+          }
+
+          @Override
+          public void onError(final Throwable e) {
+            onDevicesFetchFailed();
+          }
+        });
   }
 
   private void onDevicesFetched(final DevicesResponse devicesResponse) {
     displayFetchedDevices(devicesResponse.getDevices());
+    progressBar.setVisibility(View.INVISIBLE);
   }
 
   private void onDevicesFetchFailed() {
     showToast("onDevicesFetchFailed");
-  }
-
-  private void onFetchComplete() {
-    progressBar.setVisibility(View.INVISIBLE);
   }
 
   private void displayFetchedDevices(final List<Device> devices) {
@@ -93,9 +107,7 @@ public class DevicesListActivity extends AppCompatActivity {
 
   @Override
   public void onDestroy() {
-    if (subscription != null) {
-      subscription.unsubscribe();
-    }
+    disposables.clear();
     super.onDestroy();
   }
 

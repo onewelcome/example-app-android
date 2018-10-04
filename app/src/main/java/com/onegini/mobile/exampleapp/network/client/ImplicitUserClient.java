@@ -17,11 +17,11 @@
 package com.onegini.mobile.exampleapp.network.client;
 
 import com.onegini.mobile.exampleapp.model.ImplicitUserDetails;
+import io.reactivex.Single;
 import retrofit.http.GET;
-import rx.Observable;
 
 public interface ImplicitUserClient {
 
   @GET("/user-id-decorated")
-  Observable<ImplicitUserDetails> getImplicitUserDetails();
+  Single<ImplicitUserDetails> getImplicitUserDetails();
 }

@@ -21,9 +21,9 @@ import com.onegini.mobile.exampleapp.network.client.SecureResourceClient;
 import com.onegini.mobile.exampleapp.network.client.UserClient;
 import com.onegini.mobile.exampleapp.network.client.UserClient2;
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class UserService {
 
@@ -46,14 +46,14 @@ public class UserService {
     userRetrofit2Client = SecureResourceClient.prepareSecuredUserRetrofit2Client(UserClient2.class, context);
   }
 
-  public Observable<DevicesResponse> getDevices(final boolean useRetrofit2) {
-    return getObservable(useRetrofit2)
+  public Single<DevicesResponse> getDevices(final boolean useRetrofit2) {
+    return getSingle(useRetrofit2)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .unsubscribeOn(Schedulers.io());
   }
 
-  private Observable<DevicesResponse> getObservable(final boolean useRetrofit2) {
+  private Single<DevicesResponse> getSingle(final boolean useRetrofit2) {
     if (useRetrofit2) {
       return userRetrofit2Client.getDevices();
     } else {
