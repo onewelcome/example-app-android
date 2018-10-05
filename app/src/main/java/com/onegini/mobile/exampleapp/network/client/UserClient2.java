@@ -17,11 +17,11 @@
 package com.onegini.mobile.exampleapp.network.client;
 
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
+import io.reactivex.Single;
 import retrofit2.http.GET;
-import rx.Observable;
 
 public interface UserClient2 {
 
   @GET("devices")
-  Observable<DevicesResponse> getDevices();
+  Single<DevicesResponse> getDevices();
 }

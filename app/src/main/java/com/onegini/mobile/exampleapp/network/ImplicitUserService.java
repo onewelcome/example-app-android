@@ -21,9 +21,9 @@ import com.onegini.mobile.exampleapp.model.ImplicitUserDetails;
 import com.onegini.mobile.exampleapp.network.client.ImplicitUserClient;
 import com.onegini.mobile.exampleapp.network.client.ImplicitUserClient2;
 import com.onegini.mobile.exampleapp.network.client.SecureResourceClient;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class ImplicitUserService {
 
@@ -46,13 +46,13 @@ public class ImplicitUserService {
     applicationDetailsRetrofit2Client = SecureResourceClient.prepareSecuredImplicitUserRetrofit2Client(ImplicitUserClient2.class, context);
   }
 
-  public Observable<ImplicitUserDetails> getImplicitUserDetails(final boolean useRetrofit2) {
-    return getObservable(useRetrofit2)
+  public Single<ImplicitUserDetails> getImplicitUserDetails(final boolean useRetrofit2) {
+    return getSingle(useRetrofit2)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread());
   }
 
-  private Observable<ImplicitUserDetails> getObservable(final boolean useRetrofit2) {
+  private Single<ImplicitUserDetails> getSingle(final boolean useRetrofit2) {
     if (useRetrofit2) {
       return applicationDetailsRetrofit2Client.getImplicitUserDetails();
     } else {
