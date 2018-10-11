@@ -23,6 +23,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.handler.InitializationHandler;
 import com.onegini.mobile.exampleapp.view.helper.AppLifecycleListener;
@@ -53,10 +54,14 @@ public class FCMListenerService extends FirebaseMessagingService {
   @Override
   public void onNewToken(final String newToken) {
     super.onNewToken(newToken);
-    handleTokenUpdate(newToken);
+    if(OneginiSDK.getOneginiClient(this).isInitialized()) {
+      updateToken(newToken);
+    } else {
+      handleTokenUpdateAfterInitialization(newToken);
+    }
   }
 
-  private void handleTokenUpdate(final String newToken) {
+  private void handleTokenUpdateAfterInitialization(final String newToken) {
     final OneginiClientInitializer oneginiClientInitializer = new OneginiClientInitializer(this);
     oneginiClientInitializer.startOneginiClient(new InitializationHandler() {
       @Override

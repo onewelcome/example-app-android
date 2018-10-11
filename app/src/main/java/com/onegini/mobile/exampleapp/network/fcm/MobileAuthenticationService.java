@@ -47,7 +47,11 @@ public class MobileAuthenticationService extends IntentService {
     final OneginiMobileAuthWithPushRequest request = parseRequest(intent);
     if (request != null) {
       Log.d(TAG, "Mobile authentication request " + request.getTransactionId() + " received");
-      handleRequest(request);
+      if(OneginiSDK.getOneginiClient(this).isInitialized()) {
+        handleMobileAuthenticationRequest(request);
+      } else {
+        handleRequestAfterInitialization(request);
+      }
     }
   }
 
@@ -65,7 +69,7 @@ public class MobileAuthenticationService extends IntentService {
     return null;
   }
 
-  private void handleRequest(final OneginiMobileAuthWithPushRequest request) {
+  private void handleRequestAfterInitialization(final OneginiMobileAuthWithPushRequest request) {
     final OneginiClientInitializer oneginiClientInitializer = new OneginiClientInitializer(this);
     oneginiClientInitializer.startOneginiClient(new InitializationHandler() {
       @Override
