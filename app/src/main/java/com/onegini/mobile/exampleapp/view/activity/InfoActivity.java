@@ -21,7 +21,6 @@ import com.onegini.mobile.exampleapp.model.ImplicitUserDetails;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.network.AnonymousService;
 import com.onegini.mobile.exampleapp.network.ImplicitUserService;
-import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeviceAuthenticationHandler;
@@ -65,7 +64,6 @@ public class InfoActivity extends AppCompatActivity {
   BottomNavigationView bottomNavigationView;
 
 
-  private DeviceSettingsStorage deviceSettingsStorage;
   private Subscription subscription;
 
   @Override
@@ -74,7 +72,6 @@ public class InfoActivity extends AppCompatActivity {
     setContentView(R.layout.activity_info);
     ButterKnife.bind(this);
     setupUi();
-    deviceSettingsStorage = new DeviceSettingsStorage(this);
   }
 
   @Override
@@ -182,9 +179,8 @@ public class InfoActivity extends AppCompatActivity {
   }
 
   private void callAnonymousResourceCallToFetchApplicationDetails() {
-    final boolean useRetrofit2 = deviceSettingsStorage.shouldUseRetrofit2();
     subscription = AnonymousService.getInstance(this)
-        .getApplicationDetails(useRetrofit2)
+        .getApplicationDetails()
         .subscribe(this::onApplicationDetailsFetched, throwable -> onApplicationDetailsFetchFailed());
   }
 
@@ -228,9 +224,8 @@ public class InfoActivity extends AppCompatActivity {
   }
 
   private void callImplicitResourceCallToFetchImplicitUserDetails() {
-    final boolean useRetrofit2 = deviceSettingsStorage.shouldUseRetrofit2();
     subscription = ImplicitUserService.getInstance(this)
-        .getImplicitUserDetails(useRetrofit2)
+        .getImplicitUserDetails()
         .subscribe(this::onImplicitUserDetailsFetched, this::onImplicitDetailsFetchFailed);
   }
 
