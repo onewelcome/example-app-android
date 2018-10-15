@@ -48,7 +48,7 @@ public class SecureResourceClient {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(context);
     final Retrofit retrofit = new Retrofit.Builder()
         .client(okHttpClient)
-        .baseUrl(oneginiClient.getConfigModel().getResourceBaseUrl() + "/") // In Retrofit 2.X the base URL should end with '/'
+        .baseUrl(oneginiClient.getConfigModel().getResourceBaseUrl())
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
         .build();
