@@ -54,7 +54,7 @@ public class FCMListenerService extends FirebaseMessagingService {
   @Override
   public void onNewToken(final String newToken) {
     super.onNewToken(newToken);
-    if(OneginiSDK.getOneginiClient(this).isInitialized()) {
+    if (OneginiSDK.getOneginiClient(this).isInitialized()) {
       updateToken(newToken);
     } else {
       handleTokenUpdateAfterInitialization(newToken);
@@ -66,7 +66,7 @@ public class FCMListenerService extends FirebaseMessagingService {
     oneginiClientInitializer.startOneginiClient(new InitializationHandler() {
       @Override
       public void onSuccess() {
-          updateToken(newToken);
+        updateToken(newToken);
       }
 
       @Override
