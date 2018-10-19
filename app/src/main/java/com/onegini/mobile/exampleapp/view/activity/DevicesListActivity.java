@@ -34,9 +34,7 @@ import com.onegini.mobile.exampleapp.adapter.DevicesAdapter;
 import com.onegini.mobile.exampleapp.model.Device;
 import com.onegini.mobile.exampleapp.network.UserService;
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
-import io.reactivex.SingleObserver;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 
 public class DevicesListActivity extends AppCompatActivity {
 
@@ -62,26 +60,12 @@ public class DevicesListActivity extends AppCompatActivity {
   }
 
   private void fetchUserDevices() {
-    UserService.getInstance(this)
-        .getDevices()
-        .subscribe(new SingleObserver<DevicesResponse>() {
-          @Override
-          public void onSubscribe(final Disposable d) {
-            disposables.add(d);
-          }
-
-          @Override
-          public void onSuccess(final DevicesResponse devicesResponse) {
-            onDevicesFetched(devicesResponse);
-            onFetchComplete();
-          }
-
-          @Override
-          public void onError(final Throwable throwable) {
-            onDevicesFetchFailed();
-            onFetchComplete();
-          }
-        });
+    disposables.add(
+        UserService.getInstance(this)
+            .getDevices()
+            .doFinally(this::onFetchComplete)
+            .subscribe(this::onDevicesFetched, throwable -> onDevicesFetchFailed())
+    );
   }
 
   private void onDevicesFetched(final DevicesResponse devicesResponse) {

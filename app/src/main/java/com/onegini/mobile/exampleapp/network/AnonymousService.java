@@ -44,7 +44,6 @@ public class AnonymousService {
   public Single<ApplicationDetails> getApplicationDetails() {
     return applicationDetailsRetrofitClient.getApplicationDetails()
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .unsubscribeOn(Schedulers.io());
+        .observeOn(AndroidSchedulers.mainThread());
   }
 }

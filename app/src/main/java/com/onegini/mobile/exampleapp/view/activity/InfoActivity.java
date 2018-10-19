@@ -29,9 +29,7 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiDeviceAuthentication
 import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiImplicitTokenRequestError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
-import io.reactivex.SingleObserver;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 
 public class InfoActivity extends AppCompatActivity {
 
@@ -179,24 +177,11 @@ public class InfoActivity extends AppCompatActivity {
   }
 
   private void callAnonymousResourceCallToFetchApplicationDetails() {
-    AnonymousService.getInstance(this)
-        .getApplicationDetails()
-        .subscribe(new SingleObserver<ApplicationDetails>() {
-          @Override
-          public void onSubscribe(final Disposable d) {
-            disposables.add(d);
-          }
-
-          @Override
-          public void onSuccess(final ApplicationDetails applicationDetails) {
-            onApplicationDetailsFetched(applicationDetails);
-          }
-
-          @Override
-          public void onError(final Throwable e) {
-            onApplicationDetailsFetchFailed();
-          }
-        });
+    disposables.add(
+        AnonymousService.getInstance(this)
+            .getApplicationDetails()
+            .subscribe(this::onApplicationDetailsFetched, throwable -> onApplicationDetailsFetchFailed())
+    );
   }
 
   private void onApplicationDetailsFetched(final ApplicationDetails details) {
@@ -239,24 +224,11 @@ public class InfoActivity extends AppCompatActivity {
   }
 
   private void callImplicitResourceCallToFetchImplicitUserDetails() {
-    ImplicitUserService.getInstance(this)
-        .getImplicitUserDetails()
-        .subscribe(new SingleObserver<ImplicitUserDetails>() {
-          @Override
-          public void onSubscribe(final Disposable d) {
-            disposables.add(d);
-          }
-
-          @Override
-          public void onSuccess(final ImplicitUserDetails implicitUserDetails) {
-            onImplicitUserDetailsFetched(implicitUserDetails);
-          }
-
-          @Override
-          public void onError(final Throwable throwable) {
-            onImplicitDetailsFetchFailed(throwable);
-          }
-        });
+    disposables.add(
+        ImplicitUserService.getInstance(this)
+            .getImplicitUserDetails()
+            .subscribe(this::onImplicitUserDetailsFetched, this::onImplicitDetailsFetchFailed)
+    );
   }
 
   private void onImplicitUserDetailsFetched(final ImplicitUserDetails implicitUserDetails) {

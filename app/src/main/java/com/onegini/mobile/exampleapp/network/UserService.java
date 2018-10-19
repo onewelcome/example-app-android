@@ -44,7 +44,6 @@ public class UserService {
   public Single<DevicesResponse> getDevices() {
     return userRetrofitClient.getDevices()
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .unsubscribeOn(Schedulers.io());
+        .observeOn(AndroidSchedulers.mainThread());
   }
 }
