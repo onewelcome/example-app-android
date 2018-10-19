@@ -21,7 +21,7 @@ import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SecureResourceClient {
@@ -50,7 +50,7 @@ public class SecureResourceClient {
         .client(okHttpClient)
         .baseUrl(oneginiClient.getConfigModel().getResourceBaseUrl())
         .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build();
 
     return retrofit.create(clazz);

@@ -29,7 +29,7 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiDeviceAuthentication
 import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiImplicitTokenRequestError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
-import rx.Subscription;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class InfoActivity extends AppCompatActivity {
 
@@ -64,7 +64,7 @@ public class InfoActivity extends AppCompatActivity {
   BottomNavigationView bottomNavigationView;
 
 
-  private Subscription subscription;
+  private CompositeDisposable disposables = new CompositeDisposable();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +91,7 @@ public class InfoActivity extends AppCompatActivity {
 
   @Override
   public void onDestroy() {
-    if (subscription != null) {
-      subscription.unsubscribe();
-    }
+    disposables.clear();
     super.onDestroy();
   }
 
@@ -179,9 +177,11 @@ public class InfoActivity extends AppCompatActivity {
   }
 
   private void callAnonymousResourceCallToFetchApplicationDetails() {
-    subscription = AnonymousService.getInstance(this)
-        .getApplicationDetails()
-        .subscribe(this::onApplicationDetailsFetched, throwable -> onApplicationDetailsFetchFailed());
+    disposables.add(
+        AnonymousService.getInstance(this)
+            .getApplicationDetails()
+            .subscribe(this::onApplicationDetailsFetched, throwable -> onApplicationDetailsFetchFailed())
+    );
   }
 
   private void onApplicationDetailsFetched(final ApplicationDetails details) {
@@ -224,9 +224,11 @@ public class InfoActivity extends AppCompatActivity {
   }
 
   private void callImplicitResourceCallToFetchImplicitUserDetails() {
-    subscription = ImplicitUserService.getInstance(this)
-        .getImplicitUserDetails()
-        .subscribe(this::onImplicitUserDetailsFetched, this::onImplicitDetailsFetchFailed);
+    disposables.add(
+        ImplicitUserService.getInstance(this)
+            .getImplicitUserDetails()
+            .subscribe(this::onImplicitUserDetailsFetched, this::onImplicitDetailsFetchFailed)
+    );
   }
 
   private void onImplicitUserDetailsFetched(final ImplicitUserDetails implicitUserDetails) {
