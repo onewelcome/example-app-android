@@ -34,7 +34,7 @@ import com.onegini.mobile.exampleapp.adapter.DevicesAdapter;
 import com.onegini.mobile.exampleapp.model.Device;
 import com.onegini.mobile.exampleapp.network.UserService;
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 public class DevicesListActivity extends AppCompatActivity {
 
@@ -48,7 +48,7 @@ public class DevicesListActivity extends AppCompatActivity {
   @BindView(R.id.progress_bar)
   ProgressBar progressBar;
 
-  private CompositeDisposable disposables = new CompositeDisposable();
+  private Disposable disposable;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +60,10 @@ public class DevicesListActivity extends AppCompatActivity {
   }
 
   private void fetchUserDevices() {
-    disposables.add(
-        UserService.getInstance(this)
-            .getDevices()
-            .doFinally(this::onFetchComplete)
-            .subscribe(this::onDevicesFetched, throwable -> onDevicesFetchFailed())
-    );
+    disposable = UserService.getInstance(this)
+        .getDevices()
+        .doFinally(this::onFetchComplete)
+        .subscribe(this::onDevicesFetched, throwable -> onDevicesFetchFailed());
   }
 
   private void onDevicesFetched(final DevicesResponse devicesResponse) {
@@ -92,7 +90,9 @@ public class DevicesListActivity extends AppCompatActivity {
 
   @Override
   public void onDestroy() {
-    disposables.clear();
+    if (disposable != null) {
+      disposable.dispose();
+    }
     super.onDestroy();
   }
 
