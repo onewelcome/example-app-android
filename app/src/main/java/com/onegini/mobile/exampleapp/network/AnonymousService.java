@@ -20,9 +20,9 @@ import android.content.Context;
 import com.onegini.mobile.exampleapp.model.ApplicationDetails;
 import com.onegini.mobile.exampleapp.network.client.AnonymousClient;
 import com.onegini.mobile.exampleapp.network.client.SecureResourceClient;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class AnonymousService {
 
@@ -41,7 +41,7 @@ public class AnonymousService {
     applicationDetailsRetrofitClient = SecureResourceClient.prepareSecuredAnonymousRetrofitClient(AnonymousClient.class, context);
   }
 
-  public Observable<ApplicationDetails> getApplicationDetails() {
+  public Single<ApplicationDetails> getApplicationDetails() {
     return applicationDetailsRetrofitClient.getApplicationDetails()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())

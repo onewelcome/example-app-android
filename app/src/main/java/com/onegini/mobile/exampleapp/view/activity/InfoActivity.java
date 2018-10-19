@@ -29,7 +29,9 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiDeviceAuthentication
 import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiImplicitTokenRequestError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
-import rx.Subscription;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 public class InfoActivity extends AppCompatActivity {
 
@@ -64,7 +66,7 @@ public class InfoActivity extends AppCompatActivity {
   BottomNavigationView bottomNavigationView;
 
 
-  private Subscription subscription;
+  private CompositeDisposable disposables = new CompositeDisposable();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +93,7 @@ public class InfoActivity extends AppCompatActivity {
 
   @Override
   public void onDestroy() {
-    if (subscription != null) {
-      subscription.unsubscribe();
-    }
+    disposables.clear();
     super.onDestroy();
   }
 
@@ -179,9 +179,24 @@ public class InfoActivity extends AppCompatActivity {
   }
 
   private void callAnonymousResourceCallToFetchApplicationDetails() {
-    subscription = AnonymousService.getInstance(this)
+    AnonymousService.getInstance(this)
         .getApplicationDetails()
-        .subscribe(this::onApplicationDetailsFetched, throwable -> onApplicationDetailsFetchFailed());
+        .subscribe(new SingleObserver<ApplicationDetails>() {
+          @Override
+          public void onSubscribe(final Disposable d) {
+            disposables.add(d);
+          }
+
+          @Override
+          public void onSuccess(final ApplicationDetails applicationDetails) {
+            onApplicationDetailsFetched(applicationDetails);
+          }
+
+          @Override
+          public void onError(final Throwable e) {
+            onApplicationDetailsFetchFailed();
+          }
+        });
   }
 
   private void onApplicationDetailsFetched(final ApplicationDetails details) {
@@ -224,9 +239,24 @@ public class InfoActivity extends AppCompatActivity {
   }
 
   private void callImplicitResourceCallToFetchImplicitUserDetails() {
-    subscription = ImplicitUserService.getInstance(this)
+    ImplicitUserService.getInstance(this)
         .getImplicitUserDetails()
-        .subscribe(this::onImplicitUserDetailsFetched, this::onImplicitDetailsFetchFailed);
+        .subscribe(new SingleObserver<ImplicitUserDetails>() {
+          @Override
+          public void onSubscribe(final Disposable d) {
+            disposables.add(d);
+          }
+
+          @Override
+          public void onSuccess(final ImplicitUserDetails implicitUserDetails) {
+            onImplicitUserDetailsFetched(implicitUserDetails);
+          }
+
+          @Override
+          public void onError(final Throwable throwable) {
+            onImplicitDetailsFetchFailed(throwable);
+          }
+        });
   }
 
   private void onImplicitUserDetailsFetched(final ImplicitUserDetails implicitUserDetails) {
