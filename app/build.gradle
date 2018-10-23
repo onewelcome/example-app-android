@@ -80,7 +80,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:9.1.1-SNAPSHOT@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:9.2.1-SNAPSHOT@aar') {
     transitive = true
   }
 
@@ -95,11 +95,11 @@ dependencies {
   implementation 'com.android.support:support-core-ui:27.1.1'
 
   // QR code reader
-  implementation 'com.google.android.gms:play-services-vision:15.0.0'
+  implementation 'com.google.android.gms:play-services-vision:17.0.2'
   // Google Play Services availability check
-  implementation 'com.google.android.gms:play-services-base:15.0.1'
+  implementation 'com.google.android.gms:play-services-base:16.0.1'
   //Firebase Cloud Messaging (FCM)
-  implementation 'com.google.firebase:firebase-messaging:17.3.1'
+  implementation 'com.google.firebase:firebase-messaging:17.3.4'
   // Support for multidex
   implementation 'com.android.support:multidex:1.0.2'
   // DI for views
