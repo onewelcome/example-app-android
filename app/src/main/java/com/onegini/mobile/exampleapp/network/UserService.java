@@ -19,11 +19,10 @@ package com.onegini.mobile.exampleapp.network;
 import android.content.Context;
 import com.onegini.mobile.exampleapp.network.client.SecureResourceClient;
 import com.onegini.mobile.exampleapp.network.client.UserClient;
-import com.onegini.mobile.exampleapp.network.client.UserClient2;
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class UserService {
 
@@ -36,28 +35,15 @@ public class UserService {
     return INSTANCE;
   }
 
-  // the client using Retrofit 1.9
   private final UserClient userRetrofitClient;
-  // the client using Retrofit 2.X
-  private final UserClient2 userRetrofit2Client;
 
   private UserService(final Context context) {
     userRetrofitClient = SecureResourceClient.prepareSecuredUserRetrofitClient(UserClient.class, context);
-    userRetrofit2Client = SecureResourceClient.prepareSecuredUserRetrofit2Client(UserClient2.class, context);
   }
 
-  public Observable<DevicesResponse> getDevices(final boolean useRetrofit2) {
-    return getObservable(useRetrofit2)
+  public Single<DevicesResponse> getDevices() {
+    return userRetrofitClient.getDevices()
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .unsubscribeOn(Schedulers.io());
-  }
-
-  private Observable<DevicesResponse> getObservable(final boolean useRetrofit2) {
-    if (useRetrofit2) {
-      return userRetrofit2Client.getDevices();
-    } else {
-      return userRetrofitClient.getDevices();
-    }
+        .observeOn(AndroidSchedulers.mainThread());
   }
 }

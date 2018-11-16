@@ -21,7 +21,6 @@ import com.onegini.mobile.exampleapp.model.ImplicitUserDetails;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.network.AnonymousService;
 import com.onegini.mobile.exampleapp.network.ImplicitUserService;
-import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeviceAuthenticationHandler;
@@ -30,7 +29,7 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiDeviceAuthentication
 import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiImplicitTokenRequestError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
-import rx.Subscription;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class InfoActivity extends AppCompatActivity {
 
@@ -65,8 +64,7 @@ public class InfoActivity extends AppCompatActivity {
   BottomNavigationView bottomNavigationView;
 
 
-  private DeviceSettingsStorage deviceSettingsStorage;
-  private Subscription subscription;
+  private CompositeDisposable disposables = new CompositeDisposable();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +72,6 @@ public class InfoActivity extends AppCompatActivity {
     setContentView(R.layout.activity_info);
     ButterKnife.bind(this);
     setupUi();
-    deviceSettingsStorage = new DeviceSettingsStorage(this);
   }
 
   @Override
@@ -94,9 +91,7 @@ public class InfoActivity extends AppCompatActivity {
 
   @Override
   public void onDestroy() {
-    if (subscription != null) {
-      subscription.unsubscribe();
-    }
+    disposables.clear();
     super.onDestroy();
   }
 
@@ -182,10 +177,11 @@ public class InfoActivity extends AppCompatActivity {
   }
 
   private void callAnonymousResourceCallToFetchApplicationDetails() {
-    final boolean useRetrofit2 = deviceSettingsStorage.shouldUseRetrofit2();
-    subscription = AnonymousService.getInstance(this)
-        .getApplicationDetails(useRetrofit2)
-        .subscribe(this::onApplicationDetailsFetched, throwable -> onApplicationDetailsFetchFailed());
+    disposables.add(
+        AnonymousService.getInstance(this)
+            .getApplicationDetails()
+            .subscribe(this::onApplicationDetailsFetched, throwable -> onApplicationDetailsFetchFailed())
+    );
   }
 
   private void onApplicationDetailsFetched(final ApplicationDetails details) {
@@ -228,10 +224,11 @@ public class InfoActivity extends AppCompatActivity {
   }
 
   private void callImplicitResourceCallToFetchImplicitUserDetails() {
-    final boolean useRetrofit2 = deviceSettingsStorage.shouldUseRetrofit2();
-    subscription = ImplicitUserService.getInstance(this)
-        .getImplicitUserDetails(useRetrofit2)
-        .subscribe(this::onImplicitUserDetailsFetched, this::onImplicitDetailsFetchFailed);
+    disposables.add(
+        ImplicitUserService.getInstance(this)
+            .getImplicitUserDetails()
+            .subscribe(this::onImplicitUserDetailsFetched, this::onImplicitDetailsFetchFailed)
+    );
   }
 
   private void onImplicitUserDetailsFetched(final ImplicitUserDetails implicitUserDetails) {

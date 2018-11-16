@@ -17,11 +17,11 @@
 package com.onegini.mobile.exampleapp.network.client;
 
 import com.onegini.mobile.exampleapp.model.ApplicationDetails;
-import retrofit.http.GET;
-import rx.Observable;
+import io.reactivex.Single;
+import retrofit2.http.GET;
 
 public interface AnonymousClient {
 
-  @GET("/application-details")
-  Observable<ApplicationDetails> getApplicationDetails();
+  @GET("application-details")
+  Single<ApplicationDetails> getApplicationDetails();
 }

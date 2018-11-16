@@ -18,7 +18,6 @@ package com.onegini.mobile.exampleapp.network.fcm;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -27,6 +26,7 @@ import com.onegini.mobile.exampleapp.storage.FCMStorage;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithPushEnrollmentHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiRefreshMobileAuthPushTokenHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithPushEnrollmentError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiRefreshMobileAuthPushTokenError;
 
 public class FCMRegistrationService {
@@ -41,15 +41,31 @@ public class FCMRegistrationService {
     storage = new FCMStorage(context);
   }
 
-  public void enrollForPush(final OneginiMobileAuthWithPushEnrollmentHandler enrollmentHandler) {
+  public void enrollForPush(final PushEnrollmentHandler enrollmentHandler) {
     FirebaseApp.initializeApp(context);
-    final String fcmRefreshToken = FirebaseInstanceId.getInstance().getToken();
-    if (fcmRefreshToken == null) {
-      Toast.makeText(context, context.getString(R.string.push_token_is_null_error_message), Toast.LENGTH_LONG).show();
-    } else {
-      final UserClient userClient = OneginiSDK.getOneginiClient(context).getUserClient();
-      userClient.enrollUserForMobileAuthWithPush(fcmRefreshToken, enrollmentHandler);
-    }
+    FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
+      final String fcmRefreshToken = instanceIdResult.getToken();
+      if (fcmRefreshToken.isEmpty()) {
+        enrollmentHandler.onError(new Exception(context.getString(R.string.push_token_is_null_error_message)));
+      } else {
+        enrollUserForMobileAuthWithPush(enrollmentHandler, fcmRefreshToken);
+      }
+    }).addOnFailureListener(enrollmentHandler::onError);
+  }
+
+  private void enrollUserForMobileAuthWithPush(final PushEnrollmentHandler enrollmentHandler, final String fcmRefreshToken) {
+    final UserClient userClient = OneginiSDK.getOneginiClient(context).getUserClient();
+    userClient.enrollUserForMobileAuthWithPush(fcmRefreshToken, new OneginiMobileAuthWithPushEnrollmentHandler() {
+      @Override
+      public void onSuccess() {
+        enrollmentHandler.onSuccess();
+      }
+
+      @Override
+      public void onError(final OneginiMobileAuthWithPushEnrollmentError oneginiMobileAuthWithPushEnrollmentError) {
+        enrollmentHandler.onError(oneginiMobileAuthWithPushEnrollmentError);
+      }
+    });
   }
 
   public boolean shouldUpdateRefreshToken(final String refreshToken) {
@@ -95,5 +111,12 @@ public class FCMRegistrationService {
       return "";
     }
     return registrationId;
+  }
+
+  public interface PushEnrollmentHandler {
+
+    void onSuccess();
+
+    void onError(final Throwable throwable);
   }
 }

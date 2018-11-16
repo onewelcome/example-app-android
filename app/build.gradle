@@ -27,6 +27,10 @@ allprojects {
     google()
     if (project.hasProperty('artifactory_user') && project.hasProperty('artifactory_password')) {
       maven {
+        /*
+        Before the release please change the url below to: https://repo.onegini.com/artifactory/onegini-sdk
+        Please change it back to https://repo.onegini.com/artifactory/public after the release
+        */
         url "https://repo.onegini.com/artifactory/onegini-sdk"
         credentials {
           username artifactory_user
@@ -53,8 +57,8 @@ android {
     applicationId "com.onegini.mobile.exampleapp"
     minSdkVersion 16
     targetSdkVersion 27
-    versionCode 14
-    versionName "5.1.0"
+    versionCode 15
+    versionName "5.3.0"
     multiDexEnabled true
   }
   buildTypes {
@@ -76,15 +80,12 @@ android {
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:9.1.0@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:9.3.0@aar') {
     transitive = true
   }
 
   // Rest Client
-  implementation 'com.squareup.retrofit:retrofit:1.9.0'
   implementation 'com.squareup.retrofit2:adapter-rxjava:2.4.0'
-  // we have to use this wrapper for Retrofit 1 + OkHttp 3 usage
-  implementation 'com.jakewharton.retrofit:retrofit1-okhttp3-client:1.1.0'
 
   // Google Support
   implementation 'com.android.support:appcompat-v7:27.1.1'
@@ -94,19 +95,19 @@ dependencies {
   implementation 'com.android.support:support-core-ui:27.1.1'
 
   // QR code reader
-  implementation 'com.google.android.gms:play-services-vision:15.0.0'
+  implementation 'com.google.android.gms:play-services-vision:17.0.2'
   // Google Play Services availability check
-  implementation 'com.google.android.gms:play-services-base:15.0.1'
+  implementation 'com.google.android.gms:play-services-base:16.0.1'
   //Firebase Cloud Messaging (FCM)
-  implementation 'com.google.firebase:firebase-messaging:15.0.2'
+  implementation 'com.google.firebase:firebase-messaging:17.3.4'
   // Support for multidex
   implementation 'com.android.support:multidex:1.0.2'
   // DI for views
   implementation 'com.jakewharton:butterknife:8.8.1'
   annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
   // RxJava
-  implementation 'io.reactivex:rxandroid:1.2.1'
-  implementation 'io.reactivex:rxjava:1.2.3'
+  implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+  implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
 }
 
 //according to google documentation, this plugin has to be applied at the end of the file

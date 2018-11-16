@@ -28,7 +28,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,12 +37,10 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.network.fcm.FCMRegistrationService;
-import com.onegini.mobile.exampleapp.storage.DeviceSettingsStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiChangePinHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthEnrollmentHandler;
-import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithPushEnrollmentHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiChangePinError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthEnrollmentError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithPushEnrollmentError;
@@ -66,14 +63,10 @@ public class SettingsActivity extends AppCompatActivity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.button_change_authentication)
   Button changeAuthentication;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.retrofit_radio)
-  RadioGroup retrofitRadio;
   @BindView(R.id.result)
   TextView resultTextView;
   @SuppressWarnings({ "unused", "WeakerAccess" })
 
-  private DeviceSettingsStorage deviceSettingsStorage;
   private UserProfile authenticatedUserProfile;
 
   @Override
@@ -82,11 +75,7 @@ public class SettingsActivity extends AppCompatActivity {
     setContentView(R.layout.activity_settings);
     ButterKnife.bind(this);
 
-    deviceSettingsStorage = new DeviceSettingsStorage(this);
     authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
-
-    retrofitRadio.check(deviceSettingsStorage.shouldUseRetrofit2() ? R.id.retrofit_2 : R.id.retrofit_1);
-    retrofitRadio.setOnCheckedChangeListener((group, checkedId) -> deviceSettingsStorage.setShouldUseRetrofit2(checkedId == R.id.retrofit_2));
   }
 
   @Override
@@ -164,7 +153,8 @@ public class SettingsActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_mobile_authentication_push)
   public void enrollMobileAuthenticationWithPush() {
-    final OneginiMobileAuthWithPushEnrollmentHandler mobileAuthWithPushEnrollmentHandler = new OneginiMobileAuthWithPushEnrollmentHandler() {
+    final FCMRegistrationService.PushEnrollmentHandler mobileAuthWithPushEnrollmentHandler = new FCMRegistrationService.PushEnrollmentHandler() {
+
       @Override
       public void onSuccess() {
         mobileAuthPushButton.setText(R.string.settings_mobile_push_enrollment_on);
@@ -172,18 +162,23 @@ public class SettingsActivity extends AppCompatActivity {
       }
 
       @Override
-      public void onError(final OneginiMobileAuthWithPushEnrollmentError error) {
-        @OneginiMobileAuthWithPushEnrollmentError.MobileAuthWithPushEnrollmentErrorType final int errorType = error.getErrorType();
-        if (errorType == OneginiMobileAuthWithPushEnrollmentError.DEVICE_DEREGISTERED) {
-          new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
-          startLoginActivity(parseErrorMessage(error));
+      public void onError(final Throwable throwable) {
+        if (throwable instanceof OneginiMobileAuthWithPushEnrollmentError) {
+          final OneginiMobileAuthWithPushEnrollmentError error = (OneginiMobileAuthWithPushEnrollmentError) throwable;
+          @OneginiMobileAuthWithPushEnrollmentError.MobileAuthWithPushEnrollmentErrorType final int errorType = error.getErrorType();
+          if (errorType == OneginiMobileAuthWithPushEnrollmentError.DEVICE_DEREGISTERED) {
+            new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
+            startLoginActivity(parseErrorMessage(error));
+          }
+          resultTextView.setText(parseErrorMessage(error));
+        } else {
+          resultTextView.setText(throwable.getMessage());
         }
-
-        resultTextView.setText(parseErrorMessage(error));
       }
     };
-    final FCMRegistrationService FCMRegistrationService = new FCMRegistrationService(this);
-    FCMRegistrationService.enrollForPush(mobileAuthWithPushEnrollmentHandler);
+
+    final FCMRegistrationService fcmRegistrationService = new FCMRegistrationService(this);
+    fcmRegistrationService.enrollForPush(mobileAuthWithPushEnrollmentHandler);
   }
 
   @SuppressWarnings("unused")
