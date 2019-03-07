@@ -85,7 +85,7 @@ dependencies {
   }
 
   // Rest Client
-  implementation 'com.squareup.retrofit2:adapter-rxjava:2.4.0'
+  implementation 'com.squareup.retrofit2:adapter-rxjava:2.5.0'
 
   // Google Support
   implementation 'com.android.support:appcompat-v7:27.1.1'
