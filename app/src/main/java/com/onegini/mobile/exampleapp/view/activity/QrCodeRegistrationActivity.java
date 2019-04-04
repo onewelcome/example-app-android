@@ -5,7 +5,9 @@ import java.io.IOException;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -78,7 +80,7 @@ public class QrCodeRegistrationActivity extends AppCompatActivity {
       if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         startCamera();
       } else {
-        cancelQrCodeScanning(new Exception("Camera permission denied by the user"));
+        onScanningCanceled(new Exception("Camera permission denied by the user"));
       }
     }
   }
@@ -96,12 +98,25 @@ public class QrCodeRegistrationActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.qr_code_cancel_button)
   public void onCancelButtonClicked() {
-    cancelQrCodeScanning(new Exception("Registration canceled"));
+    onScanningCanceled(new Exception("Registration canceled"));
   }
 
-  private void cancelQrCodeScanning(final Exception exception) {
+  private void onScanningCanceled(final Exception exception) {
     if (QrCodeRegistrationAction.CALLBACK != null) {
       QrCodeRegistrationAction.CALLBACK.returnError(exception);
+    } else {
+      setResult(RESULT_CANCELED);
+    }
+    finish();
+  }
+
+  private void onScanningCompleated(final String qrCode) {
+    if (QrCodeRegistrationAction.CALLBACK != null) {
+      QrCodeRegistrationAction.CALLBACK.returnSuccess(qrCode);
+    } else {
+      final Intent intent = new Intent();
+      intent.setData(Uri.parse(qrCode));
+      setResult(RESULT_OK, intent);
     }
     finish();
   }
@@ -128,12 +143,8 @@ public class QrCodeRegistrationActivity extends AppCompatActivity {
     @Override
     public void receiveDetections(final Detector.Detections<Barcode> detections) {
       final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
-      if (qrCodes.size() != 0) {
-        if (QrCodeRegistrationAction.CALLBACK != null) {
-          final String qrCode = qrCodes.valueAt(0).displayValue;
-          QrCodeRegistrationAction.CALLBACK.returnSuccess(qrCode);
-        }
-        finish();
+      if (qrCodes.size() > 0) {
+        onScanningCompleated(qrCodes.valueAt(0).displayValue);
       }
     }
   }
