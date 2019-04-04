@@ -28,9 +28,9 @@ import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.action.qrcodeidentityprovider.QrCodeRegistrationAction;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
 
-public class QrCodeRegistrationActivity extends AppCompatActivity {
+public class QrCodeScanActivity extends AppCompatActivity {
 
-  private static final String TAG = QrCodeRegistrationActivity.class.getSimpleName();
+  private static final String TAG = QrCodeScanActivity.class.getSimpleName();
 
   private static final int CAMERA_PERMISSION_REQUEST_CODE = 12345;
 
@@ -153,8 +153,8 @@ public class QrCodeRegistrationActivity extends AppCompatActivity {
 
     @Override
     public void surfaceCreated(final SurfaceHolder surfaceHolder) {
-      if (ActivityCompat.checkSelfPermission(QrCodeRegistrationActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(QrCodeRegistrationActivity.this, new String[]{ Manifest.permission.CAMERA }, CAMERA_PERMISSION_REQUEST_CODE);
+      if (ActivityCompat.checkSelfPermission(QrCodeScanActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(QrCodeScanActivity.this, new String[]{ Manifest.permission.CAMERA }, CAMERA_PERMISSION_REQUEST_CODE);
       } else {
         startCamera();
       }

@@ -91,7 +91,7 @@ public class DashboardActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_auth_with_otp)
   public void mobileAuthWithOtp() {
-    final Intent intent = new Intent(this, QrCodeRegistrationActivity.class);
+    final Intent intent = new Intent(this, QrCodeScanActivity.class);
     startActivityForResult(intent, QR_LOGIN_REQUEST_CODE);
   }
 
