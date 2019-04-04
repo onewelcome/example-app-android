@@ -110,7 +110,7 @@ public class QrCodeScanActivity extends AppCompatActivity {
     finish();
   }
 
-  private void onScanningCompleated(final String qrCode) {
+  private void onScanningCompleted(final String qrCode) {
     if (QrCodeRegistrationAction.CALLBACK != null) {
       QrCodeRegistrationAction.CALLBACK.returnSuccess(qrCode);
     } else {
@@ -144,7 +144,7 @@ public class QrCodeScanActivity extends AppCompatActivity {
     public void receiveDetections(final Detector.Detections<Barcode> detections) {
       final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
       if (qrCodes.size() > 0) {
-        onScanningCompleated(qrCodes.valueAt(0).displayValue);
+        onScanningCompleted(qrCodes.valueAt(0).displayValue);
       }
     }
   }
