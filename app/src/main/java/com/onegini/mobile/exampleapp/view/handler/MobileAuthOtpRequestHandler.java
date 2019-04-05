@@ -16,20 +16,59 @@
 
 package com.onegini.mobile.exampleapp.view.handler;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
+import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_MESSAGE;
+import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_USER_PROFILE_ID;
+
+import android.content.Context;
+import android.content.Intent;
+
+import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationOTPActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithOtpRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiAcceptDenyCallback;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
 
 public class MobileAuthOtpRequestHandler implements OneginiMobileAuthWithOtpRequestHandler {
 
+  public static OneginiAcceptDenyCallback CALLBACK;
+
+  private final Context context;
+
+  private String userProfileId;
+  private String message;
+
+  public MobileAuthOtpRequestHandler(final Context context) {
+    this.context = context;
+  }
+
   @Override
   public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest,
                                   final OneginiAcceptDenyCallback oneginiAcceptDenyCallback) {
-    // You can simply accept request like we did or use OneginiMobileAuthenticationRequest object to display some info for user and ask for his permission.
-    oneginiAcceptDenyCallback.acceptAuthenticationRequest();
+    CALLBACK = oneginiAcceptDenyCallback;
+    userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
+    message = oneginiMobileAuthenticationRequest.getMessage();
+    notifyActivity(COMMAND_START);
   }
 
   @Override
   public void finishAuthentication() {
+    notifyActivity(COMMAND_FINISH);
+  }
+
+  private void notifyActivity(final String command) {
+    final Intent intent = prepareActivityIntent(command);
+    context.startActivity(intent);
+  }
+
+  private Intent prepareActivityIntent(final String command) {
+    final Intent intent = new Intent(context, MobileAuthenticationOTPActivity.class);
+    intent.putExtra(EXTRA_COMMAND, command);
+    intent.putExtra(EXTRA_MESSAGE, message);
+    intent.putExtra(EXTRA_USER_PROFILE_ID, userProfileId);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+    return intent;
   }
 }

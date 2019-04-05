@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,7 +32,6 @@ import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
-import com.onegini.mobile.exampleapp.view.helper.AskForOtpDialog;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeregisterUserProfileHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiLogoutHandler;
@@ -42,6 +42,8 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithOtpErr
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class DashboardActivity extends AppCompatActivity {
+
+  private static final int QR_LOGIN_REQUEST_CODE = 24;
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.toolbar)
@@ -62,23 +64,35 @@ public class DashboardActivity extends AppCompatActivity {
     setupUserInterface();
   }
 
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == QR_LOGIN_REQUEST_CODE) {
+      if (resultCode == RESULT_OK) {
+        OneginiSDK.getOneginiClient(this)
+            .getUserClient()
+            .handleMobileAuthWithOtp(data.getDataString(), new OneginiMobileAuthWithOtpHandler() {
+              @Override
+              public void onSuccess() {
+                showToast("Mobile auth with OTP succeeded");
+              }
+
+              @Override
+              public void onError(final OneginiMobileAuthWithOtpError oneginiMobileAuthWithOtpError) {
+                showToast("Mobile auth with OTP error:" + oneginiMobileAuthWithOtpError.getMessage());
+              }
+            });
+      } else {
+        showToast("Mobile auth with OTP error");
+      }
+    }
+  }
+
+
   @SuppressWarnings("unused")
   @OnClick(R.id.button_auth_with_otp)
   public void mobileAuthWithOtp() {
-    final OneginiMobileAuthWithOtpHandler oneginiMobileAuthWithOtpHandler = new OneginiMobileAuthWithOtpHandler() {
-      @Override
-      public void onSuccess() {
-        showToast("Mobile auth with OTP succeeded");
-      }
-
-      @Override
-      public void onError(final OneginiMobileAuthWithOtpError oneginiMobileAuthWithOtpError) {
-        showToast("Mobile auth with OTP error:" + oneginiMobileAuthWithOtpError.getMessage());
-      }
-    };
-
-    AskForOtpDialog askForOtpDialog = new AskForOtpDialog(this, oneginiMobileAuthWithOtpHandler);
-    askForOtpDialog.show();
+    final Intent intent = new Intent(this, QrCodeScanActivity.class);
+    startActivityForResult(intent, QR_LOGIN_REQUEST_CODE);
   }
 
   @SuppressWarnings("unused")
