@@ -65,7 +65,7 @@ public class OneginiSDK {
         .setMobileAuthWithPushPinRequestHandler(new MobileAuthenticationPinRequestHandler(applicationContext))
         .setMobileAuthWithPushFingerprintRequestHandler(new MobileAuthenticationFingerprintRequestHandler(applicationContext))
         .setMobileAuthWithPushCustomRequestHandler(new MobileAuthenticationBasicCustomRequestHandler(applicationContext))
-        .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler())
+        .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler(applicationContext))
         // add custom authenticators
         .setCustomAuthenticators(prepareCustomAuthenticators(applicationContext))
         // add a custom identity provider

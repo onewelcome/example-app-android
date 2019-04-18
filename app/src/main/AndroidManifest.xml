@@ -82,6 +82,12 @@
             android:screenOrientation="portrait"
             android:taskAffinity=""/>
         <activity
+            android:name=".view.activity.MobileAuthenticationOTPActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity=""/>
+        <activity
             android:name=".view.activity.MobileAuthenticationPinActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
@@ -140,8 +146,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".view.activity.QrCodeRegistrationActivity"
-            android:launchMode="singleTask"
+            android:name=".view.activity.QrCodeScanActivity"
             android:screenOrientation="portrait"/>
 
         <service android:name=".network.fcm.FCMListenerService"
