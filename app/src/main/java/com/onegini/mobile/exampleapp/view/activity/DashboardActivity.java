@@ -42,6 +42,7 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiDeregistrationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiLogoutError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithOtpError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiSingleSignOnError;
+import com.onegini.mobile.sdk.android.model.OneginiAppToWebSingleSignOn;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -89,7 +90,6 @@ public class DashboardActivity extends AppCompatActivity {
       }
     }
   }
-
 
   @SuppressWarnings("unused")
   @OnClick(R.id.button_auth_with_otp)
@@ -196,10 +196,10 @@ public class DashboardActivity extends AppCompatActivity {
     final Uri targetUri = Uri.parse("https://demo-cim.onegini.com/personal/dashboard");
 
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    oneginiClient.getUserClient().getSingleSignOnUri(targetUri, new OneginiSingleSignOnHandler() {
+    oneginiClient.getUserClient().getAppToWebSingleSignOn(targetUri, new OneginiSingleSignOnHandler() {
       @Override
-      public void onSuccess(final Uri uri) {
-        final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+      public void onSuccess(final OneginiAppToWebSingleSignOn oneginiAppToWebSingleSignOn) {
+        final Intent intent = new Intent(Intent.ACTION_VIEW, oneginiAppToWebSingleSignOn.getRedirectUrl());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
