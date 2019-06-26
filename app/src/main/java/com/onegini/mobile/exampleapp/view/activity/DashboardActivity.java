@@ -17,13 +17,13 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,12 +33,15 @@ import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
+import com.onegini.mobile.sdk.android.handlers.OneginiAppToWebSingleSignOnHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeregisterUserProfileHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiLogoutHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithOtpHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiAppToWebSingleSignOnError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiDeregistrationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiLogoutError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithOtpError;
+import com.onegini.mobile.sdk.android.model.OneginiAppToWebSingleSignOn;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -86,7 +89,6 @@ public class DashboardActivity extends AppCompatActivity {
       }
     }
   }
-
 
   @SuppressWarnings("unused")
   @OnClick(R.id.button_auth_with_otp)
@@ -187,6 +189,34 @@ public class DashboardActivity extends AppCompatActivity {
     startActivity(new Intent(this, SettingsActivity.class));
   }
 
+  @SuppressWarnings("unused")
+  @OnClick(R.id.button_single_sign_on)
+  public void startSingleSignOn() {
+    final Uri targetUri = Uri.parse("https://demo-cim.onegini.com/personal/dashboard");
+
+    final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
+    oneginiClient.getUserClient().getAppToWebSingleSignOn(targetUri, new OneginiAppToWebSingleSignOnHandler() {
+      @Override
+      public void onSuccess(final OneginiAppToWebSingleSignOn oneginiAppToWebSingleSignOn) {
+        final Intent intent = new Intent(Intent.ACTION_VIEW, oneginiAppToWebSingleSignOn.getRedirectUrl());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+      }
+
+      @Override
+      public void onError(final OneginiAppToWebSingleSignOnError oneginiAppToWebSingleSignOnError) {
+        @OneginiAppToWebSingleSignOnError.AppToWebSingleSignOnErrorType int errorType = oneginiAppToWebSingleSignOnError.getErrorType();
+        if (errorType == OneginiDeregistrationError.DEVICE_DEREGISTERED) {
+          // Deregistration failed due to missing device credentials. Register app once again.
+          new DeregistrationUtil(DashboardActivity.this).onDeviceDeregistered();
+        }
+
+        // other errors don't really require our reaction, but you might consider displaying some message to the user
+        showToast("App To Web Single Sign-On error: " + oneginiAppToWebSingleSignOnError.getMessage());
+      }
+    });
+  }
 
   private void showToast(final String message) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
