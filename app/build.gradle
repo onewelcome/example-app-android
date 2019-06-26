@@ -57,8 +57,8 @@ android {
     applicationId "com.onegini.mobile.exampleapp"
     minSdkVersion 16
     targetSdkVersion 28
-    versionCode 16
-    versionName "5.5.0"
+    versionCode 17
+    versionName "5.6.0"
     multiDexEnabled true
   }
   buildTypes {
@@ -80,7 +80,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:9.5.2-SNAPSHOT@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:9.6.0@aar') {
     transitive = true
   }
 
@@ -109,7 +109,7 @@ dependencies {
   annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
   // RxJava
   implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-  implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
+  implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
 }
 
 //according to google documentation, this plugin has to be applied at the end of the file
