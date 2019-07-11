@@ -112,5 +112,14 @@ dependencies {
   implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
 }
 
+configurations.all {
+  resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+    def requested = details.requested
+    if (requested.group == "com.android.support" && !requested.name.startsWith("multidex")) {
+      details.useVersion "27.+"
+    }
+  }
+}
+
 //according to google documentation, this plugin has to be applied at the end of the file
 apply plugin: 'com.google.gms.google-services'
