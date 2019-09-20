@@ -54,7 +54,7 @@ android {
 
   defaultConfig {
     applicationId "com.onegini.mobile.exampleapp"
-    minSdkVersion 16
+    minSdkVersion 19
     targetSdkVersion 28
     versionCode 17
     versionName "5.6.0"
@@ -79,7 +79,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:9.6.2-SNAPSHOT@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:10.0.0-SNAPSHOT@aar') {
     transitive = true
   }
 
