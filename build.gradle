@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018 Onegini B.V.
+ * Copyright (c) 2016-2019 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,8 @@ buildscript {
     google()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.1.4'
-    classpath 'me.tatarka:gradle-retrolambda:3.7.0'
-    classpath 'com.google.gms:google-services:3.3.0'
+    classpath 'com.android.tools.build:gradle:3.4.2'
+    classpath 'com.google.gms:google-services:4.3.0'
     // NOTE: Do not place your application dependencies here; they belong
     // in the individual module build.gradle files
   }

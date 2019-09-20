@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018 Onegini B.V.
+ * Copyright (c) 2016-2019 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 
 allprojects {
   apply plugin: 'maven'
@@ -57,8 +56,8 @@ android {
     applicationId "com.onegini.mobile.exampleapp"
     minSdkVersion 16
     targetSdkVersion 28
-    versionCode 17
-    versionName "5.6.0"
+    versionCode 18
+    versionName "5.7.0"
     multiDexEnabled true
   }
   buildTypes {
@@ -80,7 +79,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:9.6.0@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:9.7.0@aar') {
     transitive = true
   }
 
@@ -103,13 +102,22 @@ dependencies {
   //Firebase Cloud Messaging (FCM)
   implementation 'com.google.firebase:firebase-messaging:17.6.0'
   // Support for multidex
-  implementation 'com.android.support:multidex:1.0.2'
+  implementation 'com.android.support:multidex:1.0.3'
   // DI for views
   implementation 'com.jakewharton:butterknife:8.8.1'
   annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
   // RxJava
   implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-  implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
+  implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+}
+
+configurations.all {
+  resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+    def requested = details.requested
+    if (requested.group == "com.android.support" && !requested.name.startsWith("multidex")) {
+      details.useVersion "27.+"
+    }
+  }
 }
 
 //according to google documentation, this plugin has to be applied at the end of the file
