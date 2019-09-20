@@ -30,7 +30,7 @@ allprojects {
         Before the release please change the url below to: https://repo.onegini.com/artifactory/onegini-sdk
         Please change it back to https://repo.onegini.com/artifactory/public after the release
         */
-        url "https://repo.onegini.com/artifactory/public"
+        url "https://repo.onegini.com/artifactory/onegini-sdk"
         credentials {
           username artifactory_user
           password artifactory_password
@@ -56,8 +56,8 @@ android {
     applicationId "com.onegini.mobile.exampleapp"
     minSdkVersion 16
     targetSdkVersion 28
-    versionCode 17
-    versionName "5.6.0"
+    versionCode 18
+    versionName "5.7.0"
     multiDexEnabled true
   }
   buildTypes {
@@ -79,7 +79,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:9.6.2-SNAPSHOT@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:9.7.0@aar') {
     transitive = true
   }
 
