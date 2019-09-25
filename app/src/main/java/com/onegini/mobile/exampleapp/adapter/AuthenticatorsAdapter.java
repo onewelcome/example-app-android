@@ -19,7 +19,7 @@ package com.onegini.mobile.exampleapp.adapter;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

@@ -6,7 +6,7 @@
                 android:layout_height="match_parent"
                 tools:context="com.onegini.mobile.exampleapp.view.activity.InfoActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -26,7 +26,7 @@
             android:layout_gravity="center"
             android:id="@+id/toolbar_title"/>
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <TextView
         android:id="@+id/user_details_label"
@@ -173,7 +173,7 @@
         android:layout_margin="@dimen/activity_margin"
         android:text="@string/fetch_application_details_exception"/>
 
-    <android.support.design.widget.BottomNavigationView
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

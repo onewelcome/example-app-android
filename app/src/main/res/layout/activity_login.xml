@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:text="@string/btn_login_label"/>
 
-        <android.support.v7.widget.SwitchCompat
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/login_with_preferred_authenticator"
             android:checked="true"
             android:visibility="gone"
@@ -98,7 +98,7 @@
         android:layout_above="@+id/register_with_preferred_identity_provider"
         android:layout_centerHorizontal="true"/>
 
-    <android.support.v7.widget.SwitchCompat
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/register_with_preferred_identity_provider"
         android:checked="true"
         android:text="@string/use_default_identity_provider_label"
@@ -106,7 +106,7 @@
         android:layout_marginBottom="40dp"
         style="@style/SwitchCompatStyle"/>
 
-    <android.support.design.widget.BottomNavigationView
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -24,7 +24,7 @@
     android:layout_height="match_parent">
 
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -44,7 +44,7 @@
             android:layout_gravity="center"
             android:id="@+id/toolbar_title"/>
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout
         android:id="@+id/settings_authenticator_selector"
@@ -102,7 +102,7 @@
         android:textStyle="bold"
         android:textColor="@color/blue"/>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/authenticators_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

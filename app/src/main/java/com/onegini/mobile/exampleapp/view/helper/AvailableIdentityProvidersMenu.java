@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.PopupMenu;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import android.view.Menu;
 import com.onegini.mobile.sdk.android.model.OneginiIdentityProvider;
 
