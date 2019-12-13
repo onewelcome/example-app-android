@@ -16,7 +16,7 @@
 
 package com.onegini.mobile.exampleapp;
 
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 import com.onegini.mobile.exampleapp.view.helper.AppLifecycleListener;
 
 public class ExampleApplication extends MultiDexApplication {

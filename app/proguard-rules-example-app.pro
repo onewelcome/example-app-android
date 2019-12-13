@@ -64,3 +64,8 @@
 
 #RxJava 1
 -dontnote rx.**
+
+# https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md#member-in-a-data-object-is-always
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
