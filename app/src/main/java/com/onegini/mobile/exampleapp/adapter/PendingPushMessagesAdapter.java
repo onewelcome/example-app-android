@@ -16,9 +16,13 @@
 
 package com.onegini.mobile.exampleapp.adapter;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -39,7 +43,10 @@ import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.network.fcm.MobileAuthenticationService;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
+import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.activity.LoginActivity;
 import com.onegini.mobile.sdk.android.handlers.OneginiDenyMobileAuthWithPushRequestHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorDeregistrationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiDenyMobileAuthWithPushRequestError;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
@@ -97,15 +104,42 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
             new OneginiDenyMobileAuthWithPushRequestHandler() {
               @Override
               public void onSuccess(final String transactionId) {
-                list.remove(oneginiMobileAuthWithPushRequest);
+                removeRequestFromList(transactionId);
                 notifyDataSetChanged();
               }
 
               @Override
-              public void onError(final OneginiDenyMobileAuthWithPushRequestError oneginiDenyMobileAuthWithPushRequestError) {
-                Toast.makeText(context, oneginiDenyMobileAuthWithPushRequestError.getMessage(), Toast.LENGTH_SHORT).show();
+              public void onError(final OneginiDenyMobileAuthWithPushRequestError error) {
+                @OneginiDenyMobileAuthWithPushRequestError.DenyMobileAuthWithPushRequestErrorType int errorType = error.getErrorType();
+                if (errorType == OneginiAuthenticatorDeregistrationError.USER_DEREGISTERED) {
+                  final UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(context).getUserClient().getAuthenticatedUserProfile();
+                  new DeregistrationUtil(context).onUserDeregistered(authenticatedUserProfile);
+                  startLoginActivity(error.getMessage());
+                } else if (errorType == OneginiAuthenticatorDeregistrationError.DEVICE_DEREGISTERED) {
+                  new DeregistrationUtil(context).onDeviceDeregistered();
+                  startLoginActivity(error.getMessage());
+                } else {
+                  Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
               }
             }));
+  }
+
+  private void removeRequestFromList(final String transactionId) {
+    final Iterator<OneginiMobileAuthWithPushRequest> iterator = list.iterator();
+    while (iterator.hasNext()) {
+      final OneginiMobileAuthWithPushRequest request = iterator.next();
+      if (request.getTransactionId().equals(transactionId)) {
+        iterator.remove();
+      }
+    }
+  }
+
+  private void startLoginActivity(final String errorMessage) {
+    final Intent intent = new Intent(context, LoginActivity.class);
+    intent.putExtra(LoginActivity.ERROR_MESSAGE_EXTRA, errorMessage);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
+    context.startActivity(intent);
   }
 
   @Override
