@@ -16,25 +16,38 @@
 
 package com.onegini.mobile.exampleapp.adapter;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
+import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.network.fcm.MobileAuthenticationService;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
+import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.activity.LoginActivity;
+import com.onegini.mobile.sdk.android.handlers.OneginiDenyMobileAuthWithPushRequestHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorDeregistrationError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiDenyMobileAuthWithPushRequestError;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
@@ -82,6 +95,51 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
     viewHolder.expiresTextView.setText(context.getString(R.string.notification_expires_at, sdf.format(calendar.getTime())));
 
     viewHolder.onClickListener = v -> context.startService(getServiceIntent(oneginiMobileAuthWithPushRequest));
+    setDenyButtonListener(viewHolder, oneginiMobileAuthWithPushRequest);
+  }
+
+  private void setDenyButtonListener(final ViewHolder viewHolder, final OneginiMobileAuthWithPushRequest oneginiMobileAuthWithPushRequest) {
+    viewHolder.denyButton
+        .setOnClickListener(v -> OneginiSDK.getOneginiClient(context).getUserClient().denyMobileAuthWithPushRequest(oneginiMobileAuthWithPushRequest,
+            new OneginiDenyMobileAuthWithPushRequestHandler() {
+              @Override
+              public void onSuccess(final String transactionId) {
+                removeRequestFromList(transactionId);
+                notifyDataSetChanged();
+              }
+
+              @Override
+              public void onError(final OneginiDenyMobileAuthWithPushRequestError error) {
+                @OneginiDenyMobileAuthWithPushRequestError.DenyMobileAuthWithPushRequestErrorType int errorType = error.getErrorType();
+                if (errorType == OneginiAuthenticatorDeregistrationError.USER_DEREGISTERED) {
+                  final UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(context).getUserClient().getAuthenticatedUserProfile();
+                  new DeregistrationUtil(context).onUserDeregistered(authenticatedUserProfile);
+                  startLoginActivity(error.getMessage());
+                } else if (errorType == OneginiAuthenticatorDeregistrationError.DEVICE_DEREGISTERED) {
+                  new DeregistrationUtil(context).onDeviceDeregistered();
+                  startLoginActivity(error.getMessage());
+                } else {
+                  Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+              }
+            }));
+  }
+
+  private void removeRequestFromList(final String transactionId) {
+    final Iterator<OneginiMobileAuthWithPushRequest> iterator = list.iterator();
+    while (iterator.hasNext()) {
+      final OneginiMobileAuthWithPushRequest request = iterator.next();
+      if (request.getTransactionId().equals(transactionId)) {
+        iterator.remove();
+      }
+    }
+  }
+
+  private void startLoginActivity(final String errorMessage) {
+    final Intent intent = new Intent(context, LoginActivity.class);
+    intent.putExtra(LoginActivity.ERROR_MESSAGE_EXTRA, errorMessage);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
+    context.startActivity(intent);
   }
 
   @Override
@@ -103,6 +161,7 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
     final TextView dateTextView;
     final TextView profileTextView;
     final TextView expiresTextView;
+    final ImageView denyButton;
 
     OnClickListener onClickListener;
 
@@ -113,6 +172,7 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
       dateTextView = itemView.findViewById(R.id.pending_message_timestamp);
       profileTextView = itemView.findViewById(R.id.pending_message_profile);
       expiresTextView = itemView.findViewById(R.id.pending_message_expires);
+      denyButton = itemView.findViewById(R.id.pending_message_deny);
       itemView.setOnClickListener(v -> {
         if (onClickListener != null) {
           onClickListener.onClick(v);
