@@ -103,8 +103,8 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
         .setOnClickListener(v -> OneginiSDK.getOneginiClient(context).getUserClient().denyMobileAuthWithPushRequest(oneginiMobileAuthWithPushRequest,
             new OneginiDenyMobileAuthWithPushRequestHandler() {
               @Override
-              public void onSuccess(final String transactionId) {
-                removeRequestFromList(transactionId);
+              public void onSuccess() {
+                removeRequestFromList(oneginiMobileAuthWithPushRequest.getTransactionId());
                 notifyDataSetChanged();
               }
 
