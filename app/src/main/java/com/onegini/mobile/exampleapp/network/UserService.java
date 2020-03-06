@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018 Onegini B.V.
+ * Copyright (c) 2016-2020 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ import android.content.Context;
 import com.onegini.mobile.exampleapp.network.client.SecureResourceClient;
 import com.onegini.mobile.exampleapp.network.client.UserClient;
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class UserService {
 
