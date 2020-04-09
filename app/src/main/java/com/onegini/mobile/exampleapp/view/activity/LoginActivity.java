@@ -26,11 +26,6 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.appcompat.widget.SwitchCompat;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -39,11 +34,17 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.SwitchCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
@@ -178,7 +179,7 @@ public class LoginActivity extends Activity {
   @SuppressWarnings("unused")
   @OnClick(R.id.register_button)
   public void registerButtonClicked() {
-    if(usePreferredIdentityProviderSwitchCompat.isChecked()) {
+    if (usePreferredIdentityProviderSwitchCompat.isChecked()) {
       registerUser(null);
     } else {
       showAvailableIdentityProvidersPopup();
@@ -295,6 +296,14 @@ public class LoginActivity extends Activity {
         stringBuilder.append("Device deregistered.");
         new DeregistrationUtil(this).onDeviceDeregistered();
         break;
+      case OneginiAuthenticationError.AUTHENTICATOR_DEREGISTERED:
+      case OneginiAuthenticationError.AUTHENTICATOR_NOT_REGISTERED:
+      case OneginiAuthenticationError.CONFIGURATION_ERROR:
+      case OneginiAuthenticationError.CUSTOM_AUTHENTICATION_DISABLED:
+      case OneginiAuthenticationError.CUSTOM_AUTHENTICATOR_FAILURE:
+      case OneginiAuthenticationError.INVALID_AUTHENTICATOR:
+      case OneginiAuthenticationError.ACTION_ALREADY_IN_PROGRESS:
+      case OneginiAuthenticationError.DATA_STORAGE_NOT_AVAILABLE:
       case OneginiAuthenticationError.GENERAL_ERROR:
       default:
         // Just display the error for other, less relevant errors
@@ -395,6 +404,8 @@ public class LoginActivity extends Activity {
         stringBuilder.append("Device deregistered");
         new DeregistrationUtil(this).onDeviceDeregistered();
         break;
+      case OneginiPendingMobileAuthWithPushRequestError.DATA_STORAGE_NOT_AVAILABLE:
+      case OneginiPendingMobileAuthWithPushRequestError.ACTION_ALREADY_IN_PROGRESS:
       case OneginiPendingMobileAuthWithPushRequestError.GENERAL_ERROR:
       case OneginiPendingMobileAuthWithPushRequestError.CONFIGURATION_ERROR:
       default:
