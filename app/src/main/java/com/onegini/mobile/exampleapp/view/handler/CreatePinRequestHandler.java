@@ -29,6 +29,7 @@ import java.util.Arrays;
 
 import android.content.Context;
 import android.content.Intent;
+
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
@@ -114,7 +115,7 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
       }
     }
 
-    public void pinCancelled(){
+    public void pinCancelled() {
       nullifyPinArray();
       originalHandler.denyAuthenticationRequest();
     }
@@ -153,6 +154,8 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
         new DeregistrationUtil(context).onDeviceDeregistered();
         startLoginActivity(parseErrorMessage(oneginiPinValidationError));
         break;
+      case OneginiPinValidationError.DATA_STORAGE_NOT_AVAILABLE:
+      case OneginiPinValidationError.ACTION_ALREADY_IN_PROGRESS:
       case OneginiPinValidationError.GENERAL_ERROR:
       default:
         notifyActivity(context.getString(R.string.pin_title_choose_pin), oneginiPinValidationError.getMessage());

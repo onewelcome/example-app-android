@@ -45,7 +45,7 @@ allprojects {
 
 android {
   compileSdkVersion 29
-  buildToolsVersion '29.0.2'
+  buildToolsVersion '29.0.3'
 
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
@@ -54,10 +54,10 @@ android {
 
   defaultConfig {
     applicationId "com.onegini.mobile.exampleapp"
-    minSdkVersion 19
+    minSdkVersion 21
     targetSdkVersion 29
     versionCode 19
-    versionName "6.0.0"
+    versionName "6.1.0"
     multiDexEnabled true
   }
   buildTypes {
@@ -79,12 +79,12 @@ android {
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:10.0.1-SNAPSHOT@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:11.0.0-SNAPSHOT@aar') {
     transitive = true
   }
 
   // Rest Client
-  implementation 'com.squareup.retrofit2:adapter-rxjava:2.6.4'
+  implementation 'com.squareup.retrofit2:adapter-rxjava:2.9.0'
 
   // Google Support
   implementation 'androidx.appcompat:appcompat:1.1.0'

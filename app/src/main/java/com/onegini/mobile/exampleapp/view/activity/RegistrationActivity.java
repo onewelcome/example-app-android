@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -162,6 +163,12 @@ public class RegistrationActivity extends Activity {
       case OneginiRegistrationError.CUSTOM_REGISTRATION_FAILURE:
         showToast("Custom registration request has failed, see logcat for more details.");
         break;
+      case OneginiRegistrationError.ACTION_ALREADY_IN_PROGRESS:
+      case OneginiRegistrationError.CONFIGURATION_ERROR:
+      case OneginiRegistrationError.DEVICE_REGISTRATION_ERROR:
+      case OneginiRegistrationError.INVALID_REQUEST:
+      case OneginiRegistrationError.INVALID_STATE:
+      case OneginiRegistrationError.DATA_STORAGE_NOT_AVAILABLE:
       case OneginiRegistrationError.GENERAL_ERROR:
       default:
         // General error handling for other, less relevant errors
