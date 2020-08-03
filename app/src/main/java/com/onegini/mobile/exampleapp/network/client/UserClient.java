@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018 Onegini B.V.
+ * Copyright (c) 2016-2020 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package com.onegini.mobile.exampleapp.network.client;
 
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
-import io.reactivex.Single;
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.http.GET;
 
 public interface UserClient {
