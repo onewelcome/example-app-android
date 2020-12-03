@@ -79,7 +79,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:10.2.0@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:10.2.2@aar') {
     transitive = true
   }
 
