@@ -150,7 +150,8 @@
             android:screenOrientation="portrait"/>
 
         <service android:name=".network.fcm.FCMListenerService"
-            android:stopWithTask="false">
+            android:stopWithTask="false"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
