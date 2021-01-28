@@ -19,9 +19,8 @@ package com.onegini.mobile.exampleapp.network.fcm;
 import android.content.Context;
 import android.util.Log;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.onegini.mobile.exampleapp.OneginiSDK;
-import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.storage.FCMStorage;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithPushEnrollmentHandler;
@@ -43,14 +42,9 @@ public class FCMRegistrationService {
 
   public void enrollForPush(final PushEnrollmentHandler enrollmentHandler) {
     FirebaseApp.initializeApp(context);
-    FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
-      final String fcmRefreshToken = instanceIdResult.getToken();
-      if (fcmRefreshToken.isEmpty()) {
-        enrollmentHandler.onError(new Exception(context.getString(R.string.push_token_is_null_error_message)));
-      } else {
-        enrollUserForMobileAuthWithPush(enrollmentHandler, fcmRefreshToken);
-      }
-    }).addOnFailureListener(enrollmentHandler::onError);
+    FirebaseMessaging.getInstance().getToken()
+        .addOnSuccessListener(token -> enrollUserForMobileAuthWithPush(enrollmentHandler, token))
+        .addOnFailureListener(enrollmentHandler::onError);
   }
 
   private void enrollUserForMobileAuthWithPush(final PushEnrollmentHandler enrollmentHandler, final String fcmRefreshToken) {
