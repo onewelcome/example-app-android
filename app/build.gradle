@@ -44,8 +44,8 @@ allprojects {
 }
 
 android {
-  compileSdkVersion 30
-  buildToolsVersion '30.0.3'
+  compileSdkVersion 31
+  buildToolsVersion '31.0.0'
 
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
@@ -55,9 +55,9 @@ android {
   defaultConfig {
     applicationId "com.onegini.mobile.exampleapp"
     minSdkVersion 23
-    targetSdkVersion 30
+    targetSdkVersion 31
     versionCode 22
-    versionName "7.2.0"
+    versionName "7.3.0"
     multiDexEnabled true
   }
   buildTypes {
@@ -79,7 +79,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:11.3.0-SNAPSHOT@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:11.4.1-SNAPSHOT@aar') {
     transitive = true
   }
 
