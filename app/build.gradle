@@ -17,7 +17,6 @@
 apply plugin: 'com.android.application'
 
 allprojects {
-  apply plugin: 'maven'
   repositories {
     mavenLocal()
     mavenCentral()
@@ -65,9 +64,6 @@ android {
       minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-example-app.pro'
     }
-  }
-  dexOptions {
-    javaMaxHeapSize "4g"
   }
   packagingOptions {
     exclude 'META-INF/rxjava.properties'
