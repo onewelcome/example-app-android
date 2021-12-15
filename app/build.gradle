@@ -97,7 +97,7 @@ dependencies {
   // QR code reader
   implementation 'com.google.android.gms:play-services-vision:20.1.3'
   // Google Play Services availability check
-  implementation 'com.google.android.gms:play-services-base:17.6.0'
+  implementation 'com.google.android.gms:play-services-base:18.0.0'
   //Firebase Cloud Messaging (FCM)
   implementation 'com.google.firebase:firebase-messaging:22.0.0'
   // Support for multidex
