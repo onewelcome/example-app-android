@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright (c) 2016-2018 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,84 +14,94 @@
   limitations under the License.
   -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:background="@color/background_for_activity_with_card_views"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" tools:targetApi="lollipop">
+  <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="?attr/colorPrimary"
+      app:contentInsetLeft="0dp"
+      app:contentInsetStart="0dp"
+      android:elevation="4dp"
+      android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+      app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+      tools:targetApi="lollipop">
 
-        <TextView
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:id="@+id/toolbar_title" />
+
+  </androidx.appcompat.widget.Toolbar>
+
+  <androidx.cardview.widget.CardView
+      android:id="@+id/card_view"
+      android:layout_margin="@dimen/activity_margin"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:cardCornerRadius="4dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_margin="@dimen/activity_margin"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+        <include
+            layout="@layout/view_welcome_user_text"
+            android:id="@+id/dashboard_welcome_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            android:text="@string/app_name"
-            android:textColor="@color/white"
-            android:layout_gravity="center"
-            android:id="@+id/toolbar_title"/>
+            android:layout_marginTop="0dp"
+            android:text="@string/welcome_user_text" />
 
-    </androidx.appcompat.widget.Toolbar>
+        <Button
+            android:id="@+id/button_your_devices"
+            style="@style/ButtonStyle"
+            android:text="@string/btn_your_devices"
+            android:layout_marginTop="32dp" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
-        android:layout_margin="@dimen/activity_margin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp">
-        <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_margin="@dimen/activity_margin"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+        <Button
+            android:id="@+id/button_auth_with_otp"
+            style="@style/ButtonStyle"
+            android:text="@string/btn_mobile_auth_with_otp_label" />
 
-                <include
-                    layout="@layout/view_welcome_user_text"
-                    android:id="@+id/dashboard_welcome_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:text="@string/welcome_user_text"/>
+        <Button
+            android:id="@+id/button_single_sign_on"
+            style="@style/ButtonStyle"
+            android:text="@string/btn_single_sign_on_label" />
 
-                <Button
-                    android:id="@+id/button_your_devices"
-                    style="@style/ButtonStyle"
-                    android:text="@string/btn_your_devices"
-                    android:layout_marginTop="32dp"/>
-                <Button
-                    android:id="@+id/button_auth_with_otp"
-                    style="@style/ButtonStyle"
-                    android:text="@string/btn_mobile_auth_with_otp_label"/>
-                <Button
-                    android:id="@+id/button_single_sign_on"
-                    style="@style/ButtonStyle"
-                    android:text="@string/btn_single_sign_on_label"/>
-                <Button
-                    android:id="@+id/button_settings"
-                    style="@style/ButtonStyle"
-                    android:text="@string/btn_settings_label"/>
-                <Button
-                    android:id="@+id/button_logout"
-                    style="@style/ButtonStyle"
-                    android:text="@string/btn_logout_label"/>
-                <Button
-                    android:id="@+id/button_deregister_user"
-                    style="@style/ButtonStyle"
-                    android:layout_marginBottom="32dp"
-                    android:text="@string/btn_deregister_user_label"/>
-            </LinearLayout>
-        </ScrollView>
-    </androidx.cardview.widget.CardView>
+        <Button
+            android:id="@+id/button_settings"
+            style="@style/ButtonStyle"
+            android:text="@string/btn_settings_label" />
+
+        <Button
+            android:id="@+id/button_logout"
+            style="@style/ButtonStyle"
+            android:text="@string/btn_logout_label" />
+
+        <Button
+            android:id="@+id/button_deregister_user"
+            style="@style/ButtonStyle"
+            android:layout_marginBottom="32dp"
+            android:text="@string/btn_deregister_user_label" />
+      </LinearLayout>
+    </ScrollView>
+  </androidx.cardview.widget.CardView>
 </LinearLayout>

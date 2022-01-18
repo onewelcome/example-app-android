@@ -18,10 +18,6 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import static com.onegini.mobile.exampleapp.view.activity.RegistrationActivity.IDENTITY_PROVIDER_EXTRA;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -34,7 +30,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
@@ -64,8 +59,14 @@ import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 public class LoginActivity extends Activity {
 
+  public static final String ERROR_MESSAGE_EXTRA = "error_message";
+  public static User selectedUser;
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.label)
   TextView label;
@@ -92,11 +93,6 @@ public class LoginActivity extends Activity {
   SwitchCompat usePreferredIdentityProviderSwitchCompat;
   @BindView(R.id.bottom_navigation)
   BottomNavigationView bottomNavigationView;
-
-  public static final String ERROR_MESSAGE_EXTRA = "error_message";
-
-  public static User selectedUser;
-
   private List<User> listOfUsers = new ArrayList<>();
   private boolean userIsLoggingIn = false;
   private String lastErrorMessage;
@@ -165,7 +161,8 @@ public class LoginActivity extends Activity {
   }
 
   private void showRegisteredAuthenticatorsPopup(@NonNull final UserProfile userProfile) {
-    final Set<OneginiAuthenticator> registeredAuthenticators = OneginiSDK.getOneginiClient(this).getUserClient().getRegisteredAuthenticators(userProfile);
+    final Set<OneginiAuthenticator> registeredAuthenticators =
+        OneginiSDK.getOneginiClient(this).getUserClient().getRegisteredAuthenticators(userProfile);
     final RegisteredAuthenticatorsMenu menu = new RegisteredAuthenticatorsMenu(new PopupMenu(this, loginButton), registeredAuthenticators);
     menu.setOnClickListener(authenticator -> authenticate(userProfile, authenticator)).show();
   }
@@ -366,26 +363,27 @@ public class LoginActivity extends Activity {
       return true;
     });
 
-    OneginiSDK.getOneginiClient(this).getUserClient().getPendingMobileAuthWithPushRequests(new OneginiPendingMobileAuthWithPushRequestsHandler() {
-      @Override
-      public void onSuccess(final Set<OneginiMobileAuthWithPushRequest> set) {
-        final MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_notifications);
-        if (set.isEmpty()) {
-          menuItem.setIcon(R.drawable.ic_notifications_white_24dp);
-          menuItem.setTitle(getString(R.string.no_notifications));
-        } else {
-          menuItem.setIcon(R.drawable.ic_notifications_active_white_24dp);
-          menuItem.setTitle(getString(R.string.multiple_notifications, set.size()));
-        }
-      }
+    OneginiSDK.getOneginiClient(this).getUserClient()
+        .getPendingMobileAuthWithPushRequests(new OneginiPendingMobileAuthWithPushRequestsHandler() {
+          @Override
+          public void onSuccess(final Set<OneginiMobileAuthWithPushRequest> set) {
+            final MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_notifications);
+            if (set.isEmpty()) {
+              menuItem.setIcon(R.drawable.ic_notifications_white_24dp);
+              menuItem.setTitle(getString(R.string.no_notifications));
+            } else {
+              menuItem.setIcon(R.drawable.ic_notifications_active_white_24dp);
+              menuItem.setTitle(getString(R.string.multiple_notifications, set.size()));
+            }
+          }
 
-      @Override
-      public void onError(final OneginiPendingMobileAuthWithPushRequestError error) {
-        if (isNoErrorMessagePending()) {
-          LoginActivity.this.handlePendingMobileRequestsErrors(error);
-        }
-      }
-    });
+          @Override
+          public void onError(final OneginiPendingMobileAuthWithPushRequestError error) {
+            if (isNoErrorMessagePending()) {
+              LoginActivity.this.handlePendingMobileRequestsErrors(error);
+            }
+          }
+        });
   }
 
   private void handlePendingMobileRequestsErrors(final OneginiPendingMobileAuthWithPushRequestError error) {

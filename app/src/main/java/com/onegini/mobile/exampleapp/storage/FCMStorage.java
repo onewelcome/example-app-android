@@ -35,12 +35,12 @@ public class FCMStorage {
     editor = sharedPreferences.edit();
   }
 
-  public void setRegistrationId(final String regId) {
-    editor.putString(KEY_REGISTRATION_ID, regId);
-  }
-
   public String getRegistrationId() {
     return sharedPreferences.getString(KEY_REGISTRATION_ID, "");
+  }
+
+  public void setRegistrationId(final String regId) {
+    editor.putString(KEY_REGISTRATION_ID, regId);
   }
 
   public void save() {

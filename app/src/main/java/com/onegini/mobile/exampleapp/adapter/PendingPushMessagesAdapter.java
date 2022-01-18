@@ -19,14 +19,6 @@ package com.onegini.mobile.exampleapp.adapter;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -36,7 +28,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.recyclerview.widget.RecyclerView;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
@@ -50,6 +41,14 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorDeregis
 import com.onegini.mobile.sdk.android.handlers.error.OneginiDenyMobileAuthWithPushRequestError;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPushMessagesAdapter.ViewHolder> {
 
@@ -100,29 +99,31 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
 
   private void setDenyButtonListener(final ViewHolder viewHolder, final OneginiMobileAuthWithPushRequest oneginiMobileAuthWithPushRequest) {
     viewHolder.denyButton
-        .setOnClickListener(v -> OneginiSDK.getOneginiClient(context).getUserClient().denyMobileAuthWithPushRequest(oneginiMobileAuthWithPushRequest,
-            new OneginiDenyMobileAuthWithPushRequestHandler() {
-              @Override
-              public void onSuccess() {
-                removeRequestFromList(oneginiMobileAuthWithPushRequest.getTransactionId());
-                notifyDataSetChanged();
-              }
+        .setOnClickListener(
+            v -> OneginiSDK.getOneginiClient(context).getUserClient().denyMobileAuthWithPushRequest(oneginiMobileAuthWithPushRequest,
+                new OneginiDenyMobileAuthWithPushRequestHandler() {
+                  @Override
+                  public void onSuccess() {
+                    removeRequestFromList(oneginiMobileAuthWithPushRequest.getTransactionId());
+                    notifyDataSetChanged();
+                  }
 
-              @Override
-              public void onError(final OneginiDenyMobileAuthWithPushRequestError error) {
-                @OneginiDenyMobileAuthWithPushRequestError.DenyMobileAuthWithPushRequestErrorType int errorType = error.getErrorType();
-                if (errorType == OneginiAuthenticatorDeregistrationError.USER_DEREGISTERED) {
-                  final UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(context).getUserClient().getAuthenticatedUserProfile();
-                  new DeregistrationUtil(context).onUserDeregistered(authenticatedUserProfile);
-                  startLoginActivity(error.getMessage());
-                } else if (errorType == OneginiAuthenticatorDeregistrationError.DEVICE_DEREGISTERED) {
-                  new DeregistrationUtil(context).onDeviceDeregistered();
-                  startLoginActivity(error.getMessage());
-                } else {
-                  Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-              }
-            }));
+                  @Override
+                  public void onError(final OneginiDenyMobileAuthWithPushRequestError error) {
+                    @OneginiDenyMobileAuthWithPushRequestError.DenyMobileAuthWithPushRequestErrorType int errorType = error.getErrorType();
+                    if (errorType == OneginiAuthenticatorDeregistrationError.USER_DEREGISTERED) {
+                      final UserProfile authenticatedUserProfile =
+                          OneginiSDK.getOneginiClient(context).getUserClient().getAuthenticatedUserProfile();
+                      new DeregistrationUtil(context).onUserDeregistered(authenticatedUserProfile);
+                      startLoginActivity(error.getMessage());
+                    } else if (errorType == OneginiAuthenticatorDeregistrationError.DEVICE_DEREGISTERED) {
+                      new DeregistrationUtil(context).onDeviceDeregistered();
+                      startLoginActivity(error.getMessage());
+                    } else {
+                      Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                  }
+                }));
   }
 
   private void removeRequestFromList(final String transactionId) {

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright (c) 2016-2018 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,14 +15,14 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="red">#F00</color>
-    <color name="white">#FFF</color>
-    <color name="dark_text">#262626</color>
-    <color name="blue">#008FCE</color>
-    <color name="light_blue">#00A3EA</color>
-    <color name="background_for_activity_with_card_views">#F2F2F2</color>
-    <color name="switcher_light">#FAFAFA</color>
-    <color name="switcher_dark">#F0F0F0</color>
+  <color name="colorPrimary">#3F51B5</color>
+  <color name="colorPrimaryDark">#303F9F</color>
+  <color name="red">#F00</color>
+  <color name="white">#FFF</color>
+  <color name="dark_text">#262626</color>
+  <color name="blue">#008FCE</color>
+  <color name="light_blue">#00A3EA</color>
+  <color name="background_for_activity_with_card_views">#F2F2F2</color>
+  <color name="switcher_light">#FAFAFA</color>
+  <color name="switcher_dark">#F0F0F0</color>
 </resources>

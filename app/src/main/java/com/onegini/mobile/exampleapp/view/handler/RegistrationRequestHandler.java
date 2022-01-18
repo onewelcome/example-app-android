@@ -25,6 +25,11 @@ import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiBrowserRe
 public class RegistrationRequestHandler implements OneginiBrowserRegistrationRequestHandler {
 
   private static OneginiBrowserRegistrationCallback CALLBACK;
+  private final Context context;
+
+  public RegistrationRequestHandler(final Context context) {
+    this.context = context;
+  }
 
   /**
    * Finish registration action with result from web browser
@@ -44,12 +49,6 @@ public class RegistrationRequestHandler implements OneginiBrowserRegistrationReq
       CALLBACK.denyRegistration();
       CALLBACK = null;
     }
-  }
-
-  private final Context context;
-
-  public RegistrationRequestHandler(final Context context) {
-    this.context = context;
   }
 
   @Override

@@ -38,25 +38,20 @@ public class PinActivity extends AuthenticationActivity {
   public static final String EXTRA_MAX_FAILED_ATTEMPTS = "max_failed_attempts";
 
   protected static final int MAX_DIGITS = 5;
-
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.pin_error_message)
-  TextView errorTextView;
-
-
+  private static boolean isCreatePinFlow = false;
+  private final ImageView[] pinInputs = new ImageView[MAX_DIGITS];
   protected int failedAttemptsCount;
   protected int maxFailedAttempts;
   protected PinInputFields.PinProvidedListener pinProvidedListener;
-
-  private static boolean isCreatePinFlow = false;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @BindView(R.id.pin_error_message)
+  TextView errorTextView;
+  private PinKeyboard pinKeyboard;
+  private PinInputFields pinInputFields;
 
   public static void setIsCreatePinFlow(final boolean isCreatePinFlow) {
     PinActivity.isCreatePinFlow = isCreatePinFlow;
   }
-
-  private final ImageView[] pinInputs = new ImageView[MAX_DIGITS];
-  private PinKeyboard pinKeyboard;
-  private PinInputFields pinInputFields;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {

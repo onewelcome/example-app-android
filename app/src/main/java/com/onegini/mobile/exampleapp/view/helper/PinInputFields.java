@@ -31,10 +31,6 @@ public class PinInputFields {
   private int cursorIndex;
   private char[] pin;
 
-  public interface PinProvidedListener {
-    void onPinProvided(char[] pin);
-  }
-
   public PinInputFields(final PinProvidedListener listener, final ImageView[] pinInputs) {
     pinProvidedListener = listener;
     this.pinInputs = pinInputs;
@@ -89,5 +85,9 @@ public class PinInputFields {
       pin[index] = '\0';
     }
     pin = new char[pinLength];
+  }
+
+  public interface PinProvidedListener {
+    void onPinProvided(char[] pin);
   }
 }

@@ -22,13 +22,13 @@ import static com.onegini.mobile.exampleapp.view.helper.ErrorMessageParser.parse
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.core.app.NavUtils;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -153,29 +153,30 @@ public class SettingsActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_mobile_authentication_push)
   public void enrollMobileAuthenticationWithPush() {
-    final FCMRegistrationService.PushEnrollmentHandler mobileAuthWithPushEnrollmentHandler = new FCMRegistrationService.PushEnrollmentHandler() {
+    final FCMRegistrationService.PushEnrollmentHandler mobileAuthWithPushEnrollmentHandler =
+        new FCMRegistrationService.PushEnrollmentHandler() {
 
-      @Override
-      public void onSuccess() {
-        mobileAuthPushButton.setText(R.string.settings_mobile_push_enrollment_on);
-        resultTextView.setText(R.string.enable_mobile_authentication_with_push_finished_successfully);
-      }
-
-      @Override
-      public void onError(final Throwable throwable) {
-        if (throwable instanceof OneginiMobileAuthWithPushEnrollmentError) {
-          final OneginiMobileAuthWithPushEnrollmentError error = (OneginiMobileAuthWithPushEnrollmentError) throwable;
-          @OneginiMobileAuthWithPushEnrollmentError.MobileAuthWithPushEnrollmentErrorType final int errorType = error.getErrorType();
-          if (errorType == OneginiMobileAuthWithPushEnrollmentError.DEVICE_DEREGISTERED) {
-            new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
-            startLoginActivity(parseErrorMessage(error));
+          @Override
+          public void onSuccess() {
+            mobileAuthPushButton.setText(R.string.settings_mobile_push_enrollment_on);
+            resultTextView.setText(R.string.enable_mobile_authentication_with_push_finished_successfully);
           }
-          resultTextView.setText(parseErrorMessage(error));
-        } else {
-          resultTextView.setText(throwable.getMessage());
-        }
-      }
-    };
+
+          @Override
+          public void onError(final Throwable throwable) {
+            if (throwable instanceof OneginiMobileAuthWithPushEnrollmentError) {
+              final OneginiMobileAuthWithPushEnrollmentError error = (OneginiMobileAuthWithPushEnrollmentError) throwable;
+              @OneginiMobileAuthWithPushEnrollmentError.MobileAuthWithPushEnrollmentErrorType final int errorType = error.getErrorType();
+              if (errorType == OneginiMobileAuthWithPushEnrollmentError.DEVICE_DEREGISTERED) {
+                new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
+                startLoginActivity(parseErrorMessage(error));
+              }
+              resultTextView.setText(parseErrorMessage(error));
+            } else {
+              resultTextView.setText(throwable.getMessage());
+            }
+          }
+        };
 
     final FCMRegistrationService fcmRegistrationService = new FCMRegistrationService(this);
     fcmRegistrationService.enrollForPush(mobileAuthWithPushEnrollmentHandler);

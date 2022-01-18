@@ -20,25 +20,24 @@ import android.content.Context;
 import com.onegini.mobile.exampleapp.model.ImplicitUserDetails;
 import com.onegini.mobile.exampleapp.network.client.ImplicitUserClient;
 import com.onegini.mobile.exampleapp.network.client.SecureResourceClient;
-import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ImplicitUserService {
 
   private static ImplicitUserService INSTANCE;
+  private final ImplicitUserClient applicationDetailsRetrofitClient;
+
+  private ImplicitUserService(final Context context) {
+    applicationDetailsRetrofitClient = SecureResourceClient.prepareSecuredImplicitUserRetrofitClient(ImplicitUserClient.class, context);
+  }
 
   public static ImplicitUserService getInstance(final Context context) {
     if (INSTANCE == null) {
       INSTANCE = new ImplicitUserService(context);
     }
     return INSTANCE;
-  }
-
-  private final ImplicitUserClient applicationDetailsRetrofitClient;
-
-  private ImplicitUserService(final Context context) {
-    applicationDetailsRetrofitClient = SecureResourceClient.prepareSecuredImplicitUserRetrofitClient(ImplicitUserClient.class, context);
   }
 
   public Single<ImplicitUserDetails> getImplicitUserDetails() {

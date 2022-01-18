@@ -16,16 +16,16 @@
 
 package com.onegini.mobile.exampleapp.adapter;
 
-import java.util.List;
-
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.recyclerview.widget.RecyclerView;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.Device;
+
+import java.util.List;
 
 public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHolder> {
 
@@ -33,17 +33,6 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
 
   public DevicesAdapter(List<Device> contacts) {
     devices = contacts;
-  }
-
-  static class ViewHolder extends RecyclerView.ViewHolder {
-
-    final TextView nameTextView;
-
-    ViewHolder(View itemView) {
-      super(itemView);
-
-      nameTextView = itemView.findViewById(R.id.textView);
-    }
   }
 
   @Override
@@ -67,5 +56,16 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
   @Override
   public int getItemCount() {
     return devices.size();
+  }
+
+  static class ViewHolder extends RecyclerView.ViewHolder {
+
+    final TextView nameTextView;
+
+    ViewHolder(View itemView) {
+      super(itemView);
+
+      nameTextView = itemView.findViewById(R.id.textView);
+    }
   }
 }
