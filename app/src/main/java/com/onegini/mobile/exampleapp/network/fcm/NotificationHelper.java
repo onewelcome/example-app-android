@@ -31,17 +31,8 @@ import com.onegini.mobile.exampleapp.model.NotificationId;
 
 public class NotificationHelper {
 
-  private static NotificationHelper INSTANCE;
-
-  public static NotificationHelper getInstance(final Context context) {
-    if (INSTANCE == null) {
-      INSTANCE = new NotificationHelper(context.getApplicationContext());
-    }
-    return INSTANCE;
-  }
-
   private static final String CHANNEL_ID = "transactions";
-
+  private static NotificationHelper INSTANCE;
   private final Context context;
 
   private NotificationHelper(final Context context) {
@@ -49,6 +40,13 @@ public class NotificationHelper {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       registerNotificationChannel();
     }
+  }
+
+  public static NotificationHelper getInstance(final Context context) {
+    if (INSTANCE == null) {
+      INSTANCE = new NotificationHelper(context.getApplicationContext());
+    }
+    return INSTANCE;
   }
 
   public void cancelAllNotifications() {

@@ -65,6 +65,8 @@ import java.util.Set;
 
 public class LoginActivity extends Activity {
 
+  public static final String ERROR_MESSAGE_EXTRA = "error_message";
+  public static User selectedUser;
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.label)
   TextView label;
@@ -91,11 +93,6 @@ public class LoginActivity extends Activity {
   SwitchCompat usePreferredIdentityProviderSwitchCompat;
   @BindView(R.id.bottom_navigation)
   BottomNavigationView bottomNavigationView;
-
-  public static final String ERROR_MESSAGE_EXTRA = "error_message";
-
-  public static User selectedUser;
-
   private List<User> listOfUsers = new ArrayList<>();
   private boolean userIsLoggingIn = false;
   private String lastErrorMessage;

@@ -27,18 +27,17 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class AnonymousService {
 
   private static AnonymousService INSTANCE;
+  private final AnonymousClient applicationDetailsRetrofitClient;
+
+  private AnonymousService(final Context context) {
+    applicationDetailsRetrofitClient = SecureResourceClient.prepareSecuredAnonymousRetrofitClient(AnonymousClient.class, context);
+  }
 
   public static AnonymousService getInstance(final Context context) {
     if (INSTANCE == null) {
       INSTANCE = new AnonymousService(context);
     }
     return INSTANCE;
-  }
-
-  private final AnonymousClient applicationDetailsRetrofitClient;
-
-  private AnonymousService(final Context context) {
-    applicationDetailsRetrofitClient = SecureResourceClient.prepareSecuredAnonymousRetrofitClient(AnonymousClient.class, context);
   }
 
   public Single<ApplicationDetails> getApplicationDetails() {

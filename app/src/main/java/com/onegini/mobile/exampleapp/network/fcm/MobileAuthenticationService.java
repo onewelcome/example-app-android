@@ -32,11 +32,10 @@ import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequ
 
 public class MobileAuthenticationService extends IntentService {
 
-  private static final String TAG = MobileAuthenticationService.class.getSimpleName();
-
   public static final String EXTRA_TRANSACTION_ID = "transaction_id";
   public static final String EXTRA_PROFILE_ID = "profile_id";
   public static final String EXTRA_MESSAGE = "message";
+  private static final String TAG = MobileAuthenticationService.class.getSimpleName();
 
   public MobileAuthenticationService() {
     super(TAG);

@@ -49,6 +49,7 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class RegistrationActivity extends Activity {
 
+  public static final String IDENTITY_PROVIDER_EXTRA = "identity_provider_id";
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.name_edit_text)
   EditText nameEditText;
@@ -67,9 +68,6 @@ public class RegistrationActivity extends Activity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.user_profile_debug)
   TextView userProfileDebugText;
-
-  public static final String IDENTITY_PROVIDER_EXTRA = "identity_provider_id";
-
   private UserProfile registeredProfile;
 
   final OneginiRegistrationHandler registrationHandler = new OneginiRegistrationHandler() {

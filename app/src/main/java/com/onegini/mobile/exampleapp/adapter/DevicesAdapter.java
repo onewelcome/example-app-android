@@ -35,17 +35,6 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
     devices = contacts;
   }
 
-  static class ViewHolder extends RecyclerView.ViewHolder {
-
-    final TextView nameTextView;
-
-    ViewHolder(View itemView) {
-      super(itemView);
-
-      nameTextView = itemView.findViewById(R.id.textView);
-    }
-  }
-
   @Override
   public DevicesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     Context context = parent.getContext();
@@ -67,5 +56,16 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
   @Override
   public int getItemCount() {
     return devices.size();
+  }
+
+  static class ViewHolder extends RecyclerView.ViewHolder {
+
+    final TextView nameTextView;
+
+    ViewHolder(View itemView) {
+      super(itemView);
+
+      nameTextView = itemView.findViewById(R.id.textView);
+    }
   }
 }

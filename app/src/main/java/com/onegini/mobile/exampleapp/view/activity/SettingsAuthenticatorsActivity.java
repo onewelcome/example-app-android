@@ -260,6 +260,14 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     }
   }
 
+  private void startLoginActivity(final String errorMessage) {
+    final Intent intent = new Intent(this, LoginActivity.class);
+    intent.putExtra(LoginActivity.ERROR_MESSAGE_EXTRA, errorMessage);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
+    startActivity(intent);
+    finish();
+  }
+
   public class AuthenticatorClickListener {
 
     public void onAuthenticatorItemClick(final int position) {
@@ -278,13 +286,5 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
         registerAuthenticator(clickedAuthenticatorItem.getAuthenticator(), position);
       }
     }
-  }
-
-  private void startLoginActivity(final String errorMessage) {
-    final Intent intent = new Intent(this, LoginActivity.class);
-    intent.putExtra(LoginActivity.ERROR_MESSAGE_EXTRA, errorMessage);
-    intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
-    startActivity(intent);
-    finish();
   }
 }
