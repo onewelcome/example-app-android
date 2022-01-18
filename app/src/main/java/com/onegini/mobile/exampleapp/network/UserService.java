@@ -20,8 +20,8 @@ import android.content.Context;
 import com.onegini.mobile.exampleapp.network.client.SecureResourceClient;
 import com.onegini.mobile.exampleapp.network.client.UserClient;
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
-import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class UserService {

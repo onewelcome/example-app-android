@@ -1,8 +1,8 @@
 package com.onegini.mobile.exampleapp.view.helper;
 
-import java.util.Locale;
-
 import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
+
+import java.util.Locale;
 
 public class ErrorMessageParser {
 

@@ -18,14 +18,14 @@ package com.onegini.mobile.exampleapp.view.helper;
 
 import static android.view.Menu.NONE;
 
+import android.view.Menu;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
+import com.onegini.mobile.sdk.android.model.OneginiIdentityProvider;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
-import android.view.Menu;
-import com.onegini.mobile.sdk.android.model.OneginiIdentityProvider;
 
 public class AvailableIdentityProvidersMenu {
 

@@ -25,11 +25,8 @@ import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity
 import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity.EXTRA_MESSAGE;
 import static com.onegini.mobile.exampleapp.view.helper.ErrorMessageParser.parseErrorMessage;
 
-import java.util.Arrays;
-
 import android.content.Context;
 import android.content.Intent;
-
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
@@ -40,6 +37,8 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiPinValidationError;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiCreatePinRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiPinCallback;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
+
+import java.util.Arrays;
 
 public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
 

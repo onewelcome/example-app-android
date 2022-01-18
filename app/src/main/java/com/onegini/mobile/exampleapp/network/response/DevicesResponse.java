@@ -16,11 +16,11 @@
 
 package com.onegini.mobile.exampleapp.network.response;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gson.annotations.SerializedName;
 import com.onegini.mobile.exampleapp.model.Device;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class DevicesResponse {

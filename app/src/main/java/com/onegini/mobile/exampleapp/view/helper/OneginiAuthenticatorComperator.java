@@ -16,9 +16,9 @@
 
 package com.onegini.mobile.exampleapp.view.helper;
 
-import java.util.Comparator;
-
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
+
+import java.util.Comparator;
 
 /**
  * Order provided authenticators in following order:

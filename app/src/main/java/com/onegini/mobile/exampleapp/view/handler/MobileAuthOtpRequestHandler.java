@@ -25,7 +25,6 @@ import static com.onegini.mobile.exampleapp.view.activity.AuthenticationActivity
 
 import android.content.Context;
 import android.content.Intent;
-
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationOTPActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithOtpRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiAcceptDenyCallback;

@@ -20,8 +20,8 @@ import android.content.Context;
 import com.onegini.mobile.exampleapp.model.ApplicationDetails;
 import com.onegini.mobile.exampleapp.network.client.AnonymousClient;
 import com.onegini.mobile.exampleapp.network.client.SecureResourceClient;
-import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class AnonymousService {

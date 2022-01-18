@@ -18,10 +18,6 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import static com.onegini.mobile.exampleapp.view.activity.RegistrationActivity.IDENTITY_PROVIDER_EXTRA;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -34,7 +30,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
@@ -63,6 +58,10 @@ import com.onegini.mobile.sdk.android.model.OneginiIdentityProvider;
 import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class LoginActivity extends Activity {
 

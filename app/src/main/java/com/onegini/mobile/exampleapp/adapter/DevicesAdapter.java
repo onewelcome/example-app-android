@@ -16,16 +16,16 @@
 
 package com.onegini.mobile.exampleapp.adapter;
 
-import java.util.List;
-
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.recyclerview.widget.RecyclerView;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.Device;
+
+import java.util.List;
 
 public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHolder> {
 
