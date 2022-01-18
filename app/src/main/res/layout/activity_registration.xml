@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright (c) 2016-2018 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +14,7 @@
   limitations under the License.
   -->
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
@@ -24,57 +22,57 @@
     android:background="@color/white"
     tools:context=".view.activity.LoginActivity">
 
-    <LinearLayout
-        android:id="@+id/layout_register_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_margin"
-        android:visibility="visible">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_marginTop="64dp"
-            android:layout_height="wrap_content"
-            android:text="@string/name_edit_text_label"/>
-
-        <EditText
-            android:id="@+id/name_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="@string/name_edit_text_hint"/>
-
-        <Button
-            android:id="@+id/create_profile_button"
-            style="@style/ButtonStyle"
-            android:text="@string/create_profile_submit"
-            android:layout_marginTop="32dp"
-            android:visibility="visible"/>
-
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progress_bar_register"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="visible"/>
-
-    <Button
-        android:id="@+id/cancel_registration_button"
-        style="@style/ButtonStyle"
-        android:text="@string/cancel_registration"
-        android:visibility="visible"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"/>
+  <LinearLayout
+      android:id="@+id/layout_register_content"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="@dimen/activity_margin"
+      android:visibility="visible">
 
     <TextView
-        android:id="@+id/user_profile_debug"
         android:layout_width="wrap_content"
+        android:layout_marginTop="64dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:text="@string/name_edit_text_label" />
+
+    <EditText
+        android:id="@+id/name_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="@string/name_edit_text_hint" />
+
+    <Button
+        android:id="@+id/create_profile_button"
+        style="@style/ButtonStyle"
+        android:text="@string/create_profile_submit"
+        android:layout_marginTop="32dp"
+        android:visibility="visible" />
+
+  </LinearLayout>
+
+  <ProgressBar
+      android:id="@+id/progress_bar_register"
+      style="@style/Widget.AppCompat.ProgressBar"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:visibility="visible" />
+
+  <Button
+      android:id="@+id/cancel_registration_button"
+      style="@style/ButtonStyle"
+      android:text="@string/cancel_registration"
+      android:visibility="visible"
+      android:layout_alignParentBottom="true"
+      android:layout_centerHorizontal="true"
+      android:layout_marginBottom="20dp" />
+
+  <TextView
+      android:id="@+id/user_profile_debug"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_centerHorizontal="true" />
 </RelativeLayout>

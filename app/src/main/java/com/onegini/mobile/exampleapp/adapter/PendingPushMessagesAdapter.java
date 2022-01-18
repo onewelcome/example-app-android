@@ -99,29 +99,31 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
 
   private void setDenyButtonListener(final ViewHolder viewHolder, final OneginiMobileAuthWithPushRequest oneginiMobileAuthWithPushRequest) {
     viewHolder.denyButton
-        .setOnClickListener(v -> OneginiSDK.getOneginiClient(context).getUserClient().denyMobileAuthWithPushRequest(oneginiMobileAuthWithPushRequest,
-            new OneginiDenyMobileAuthWithPushRequestHandler() {
-              @Override
-              public void onSuccess() {
-                removeRequestFromList(oneginiMobileAuthWithPushRequest.getTransactionId());
-                notifyDataSetChanged();
-              }
+        .setOnClickListener(
+            v -> OneginiSDK.getOneginiClient(context).getUserClient().denyMobileAuthWithPushRequest(oneginiMobileAuthWithPushRequest,
+                new OneginiDenyMobileAuthWithPushRequestHandler() {
+                  @Override
+                  public void onSuccess() {
+                    removeRequestFromList(oneginiMobileAuthWithPushRequest.getTransactionId());
+                    notifyDataSetChanged();
+                  }
 
-              @Override
-              public void onError(final OneginiDenyMobileAuthWithPushRequestError error) {
-                @OneginiDenyMobileAuthWithPushRequestError.DenyMobileAuthWithPushRequestErrorType int errorType = error.getErrorType();
-                if (errorType == OneginiAuthenticatorDeregistrationError.USER_DEREGISTERED) {
-                  final UserProfile authenticatedUserProfile = OneginiSDK.getOneginiClient(context).getUserClient().getAuthenticatedUserProfile();
-                  new DeregistrationUtil(context).onUserDeregistered(authenticatedUserProfile);
-                  startLoginActivity(error.getMessage());
-                } else if (errorType == OneginiAuthenticatorDeregistrationError.DEVICE_DEREGISTERED) {
-                  new DeregistrationUtil(context).onDeviceDeregistered();
-                  startLoginActivity(error.getMessage());
-                } else {
-                  Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-              }
-            }));
+                  @Override
+                  public void onError(final OneginiDenyMobileAuthWithPushRequestError error) {
+                    @OneginiDenyMobileAuthWithPushRequestError.DenyMobileAuthWithPushRequestErrorType int errorType = error.getErrorType();
+                    if (errorType == OneginiAuthenticatorDeregistrationError.USER_DEREGISTERED) {
+                      final UserProfile authenticatedUserProfile =
+                          OneginiSDK.getOneginiClient(context).getUserClient().getAuthenticatedUserProfile();
+                      new DeregistrationUtil(context).onUserDeregistered(authenticatedUserProfile);
+                      startLoginActivity(error.getMessage());
+                    } else if (errorType == OneginiAuthenticatorDeregistrationError.DEVICE_DEREGISTERED) {
+                      new DeregistrationUtil(context).onDeviceDeregistered();
+                      startLoginActivity(error.getMessage());
+                    } else {
+                      Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                  }
+                }));
   }
 
   private void removeRequestFromList(final String transactionId) {

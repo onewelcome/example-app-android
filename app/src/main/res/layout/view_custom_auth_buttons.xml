@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright (c) 2016-2018 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,26 +14,25 @@
   limitations under the License.
   -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginTop="@dimen/activity_login_logo_margin_top">
 
-    <Button
-        android:id="@+id/custom_auth_positive_button"
-        style="@style/ButtonStyle"
-        android:text="@string/custom_auth_positive_action"/>
+  <Button
+      android:id="@+id/custom_auth_positive_button"
+      style="@style/ButtonStyle"
+      android:text="@string/custom_auth_positive_action" />
 
-    <Button
-        android:id="@+id/custom_auth_negative_button"
-        style="@style/ButtonStyle"
-        android:text="@string/custom_auth_negative_action"/>
+  <Button
+      android:id="@+id/custom_auth_negative_button"
+      style="@style/ButtonStyle"
+      android:text="@string/custom_auth_negative_action" />
 
-    <Button
-        android:id="@+id/custom_auth_error_button"
-        style="@style/ButtonStyle"
-        android:text="@string/custom_auth_error_action"/>
+  <Button
+      android:id="@+id/custom_auth_error_button"
+      style="@style/ButtonStyle"
+      android:text="@string/custom_auth_error_action" />
 
 </LinearLayout>

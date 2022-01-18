@@ -15,5 +15,5 @@
   -->
 
 <resources>
-    <dimen name="activity_login_logo_margin_top">40dp</dimen>
+  <dimen name="activity_login_logo_margin_top">40dp</dimen>
 </resources>

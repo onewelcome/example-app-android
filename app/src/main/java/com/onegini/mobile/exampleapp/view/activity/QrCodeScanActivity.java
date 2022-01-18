@@ -154,7 +154,8 @@ public class QrCodeScanActivity extends AppCompatActivity {
     @Override
     public void surfaceCreated(final SurfaceHolder surfaceHolder) {
       if (ActivityCompat.checkSelfPermission(QrCodeScanActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(QrCodeScanActivity.this, new String[]{ Manifest.permission.CAMERA }, CAMERA_PERMISSION_REQUEST_CODE);
+        final String[] permissions = { Manifest.permission.CAMERA };
+        ActivityCompat.requestPermissions(QrCodeScanActivity.this, permissions, CAMERA_PERMISSION_REQUEST_CODE);
       } else {
         startCamera();
       }

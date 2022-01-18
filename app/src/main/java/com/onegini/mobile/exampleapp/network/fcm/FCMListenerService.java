@@ -61,7 +61,7 @@ public class FCMListenerService extends FirebaseMessagingService {
     oneginiClientInitializer.startOneginiClient(new InitializationHandler() {
       @Override
       public void onSuccess() {
-          updateToken(newToken);
+        updateToken(newToken);
       }
 
       @Override

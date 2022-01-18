@@ -71,7 +71,8 @@ public class NotificationHelper {
 
   @RequiresApi(api = Build.VERSION_CODES.O)
   private void registerNotificationChannel() {
-    final NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "Transactions", NotificationManager.IMPORTANCE_HIGH);
+    final NotificationChannel notificationChannel =
+        new NotificationChannel(CHANNEL_ID, "Transactions", NotificationManager.IMPORTANCE_HIGH);
     notificationChannel.setDescription("Onegini SDK");
     notificationChannel.enableLights(true);
     notificationChannel.setLightColor(Color.BLUE);

@@ -56,7 +56,8 @@ public class AlertDialogFragment extends DialogFragment {
     return new AlertDialog.Builder(getActivity())
         .setTitle(title)
         .setMessage(message)
-        .setPositiveButton("OK", (dialog, which) -> { })
+        .setPositiveButton("OK", (dialog, which) -> {
+        })
         .create();
   }
 }

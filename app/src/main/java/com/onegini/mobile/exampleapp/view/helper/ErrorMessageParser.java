@@ -6,9 +6,10 @@ import java.util.Locale;
 
 public class ErrorMessageParser {
 
-  private ErrorMessageParser(){}
+  private ErrorMessageParser() {
+  }
 
-  public static String parseErrorMessage(final OneginiError error){
+  public static String parseErrorMessage(final OneginiError error) {
     return String.format(Locale.getDefault(), "%d: %s", error.getErrorType(), error.getMessage());
   }
 }

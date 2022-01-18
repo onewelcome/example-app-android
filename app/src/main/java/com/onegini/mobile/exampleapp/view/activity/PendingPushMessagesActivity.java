@@ -112,19 +112,20 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
     swipeRefreshLayout.setRefreshing(true);
     recyclerView.setVisibility(View.GONE);
     errorTextView.setVisibility(View.GONE);
-    OneginiSDK.getOneginiClient(this).getUserClient().getPendingMobileAuthWithPushRequests(new OneginiPendingMobileAuthWithPushRequestsHandler() {
-      @Override
-      public void onSuccess(final Set<OneginiMobileAuthWithPushRequest> set) {
-        swipeRefreshLayout.setRefreshing(false);
-        displayFetchedMessages(set);
-      }
+    OneginiSDK.getOneginiClient(this).getUserClient()
+        .getPendingMobileAuthWithPushRequests(new OneginiPendingMobileAuthWithPushRequestsHandler() {
+          @Override
+          public void onSuccess(final Set<OneginiMobileAuthWithPushRequest> set) {
+            swipeRefreshLayout.setRefreshing(false);
+            displayFetchedMessages(set);
+          }
 
-      @Override
-      public void onError(final OneginiPendingMobileAuthWithPushRequestError oneginiPendingMobileAuthWithPushRequestError) {
-        swipeRefreshLayout.setRefreshing(false);
-        showError(ErrorMessageParser.parseErrorMessage(oneginiPendingMobileAuthWithPushRequestError));
-      }
-    });
+          @Override
+          public void onError(final OneginiPendingMobileAuthWithPushRequestError oneginiPendingMobileAuthWithPushRequestError) {
+            swipeRefreshLayout.setRefreshing(false);
+            showError(ErrorMessageParser.parseErrorMessage(oneginiPendingMobileAuthWithPushRequestError));
+          }
+        });
   }
 
   private void displayFetchedMessages(final Set<OneginiMobileAuthWithPushRequest> set) {

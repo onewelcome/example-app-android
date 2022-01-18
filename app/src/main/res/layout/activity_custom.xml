@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright (c) 2016-2018 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,34 +14,33 @@
   limitations under the License.
   -->
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/welcome_user_text"
-        layout="@layout/view_welcome_user_text"/>
+  <include
+      android:id="@+id/welcome_user_text"
+      layout="@layout/view_welcome_user_text" />
 
-    <TextView
-        android:id="@+id/authenticator_message"
-        android:text="@string/do_you_want_to_confirm_with_custom_auth"
-        android:layout_below="@id/welcome_user_text"
-        style="@style/AuthenticatorMessageStyle"/>
+  <TextView
+      android:id="@+id/authenticator_message"
+      android:text="@string/do_you_want_to_confirm_with_custom_auth"
+      android:layout_below="@id/welcome_user_text"
+      style="@style/AuthenticatorMessageStyle" />
 
-    <include
-        layout="@layout/view_auth_accept_deny_buttons"
-        android:layout_below="@+id/authenticator_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+  <include
+      layout="@layout/view_auth_accept_deny_buttons"
+      android:layout_below="@+id/authenticator_message"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/fallback_to_pin_button"
-        style="@style/ButtonStyle"
-        android:layout_marginBottom="24dp"
-        android:text="@string/use_pin_authentication"
-        android:layout_alignParentBottom="true"/>
+  <Button
+      android:id="@+id/fallback_to_pin_button"
+      style="@style/ButtonStyle"
+      android:layout_marginBottom="24dp"
+      android:text="@string/use_pin_authentication"
+      android:layout_alignParentBottom="true" />
 
-    <include layout="@layout/cancel_button"/>
+  <include layout="@layout/cancel_button" />
 
 </RelativeLayout>

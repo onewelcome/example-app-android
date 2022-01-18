@@ -20,6 +20,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.onegini.mobile.exampleapp.view.helper.ErrorMessageParser.parseErrorMessage;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -114,7 +115,8 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
     final AlertDialog.Builder builder = new AlertDialog.Builder(this);
     builder.setTitle(R.string.pick_authenticator);
-    builder.setItems(authenticatorNames.toArray(authenticatorsToSelect), (dialog, which) -> updatePreferredAuthenticator(which, registeredAuthenticators));
+    final DialogInterface.OnClickListener listener = (dialog, which) -> updatePreferredAuthenticator(which, registeredAuthenticators);
+    builder.setItems(authenticatorNames.toArray(authenticatorsToSelect), listener);
     builder.show();
   }
 

@@ -164,7 +164,8 @@ public class LoginActivity extends Activity {
   }
 
   private void showRegisteredAuthenticatorsPopup(@NonNull final UserProfile userProfile) {
-    final Set<OneginiAuthenticator> registeredAuthenticators = OneginiSDK.getOneginiClient(this).getUserClient().getRegisteredAuthenticators(userProfile);
+    final Set<OneginiAuthenticator> registeredAuthenticators =
+        OneginiSDK.getOneginiClient(this).getUserClient().getRegisteredAuthenticators(userProfile);
     final RegisteredAuthenticatorsMenu menu = new RegisteredAuthenticatorsMenu(new PopupMenu(this, loginButton), registeredAuthenticators);
     menu.setOnClickListener(authenticator -> authenticate(userProfile, authenticator)).show();
   }
@@ -365,26 +366,27 @@ public class LoginActivity extends Activity {
       return true;
     });
 
-    OneginiSDK.getOneginiClient(this).getUserClient().getPendingMobileAuthWithPushRequests(new OneginiPendingMobileAuthWithPushRequestsHandler() {
-      @Override
-      public void onSuccess(final Set<OneginiMobileAuthWithPushRequest> set) {
-        final MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_notifications);
-        if (set.isEmpty()) {
-          menuItem.setIcon(R.drawable.ic_notifications_white_24dp);
-          menuItem.setTitle(getString(R.string.no_notifications));
-        } else {
-          menuItem.setIcon(R.drawable.ic_notifications_active_white_24dp);
-          menuItem.setTitle(getString(R.string.multiple_notifications, set.size()));
-        }
-      }
+    OneginiSDK.getOneginiClient(this).getUserClient()
+        .getPendingMobileAuthWithPushRequests(new OneginiPendingMobileAuthWithPushRequestsHandler() {
+          @Override
+          public void onSuccess(final Set<OneginiMobileAuthWithPushRequest> set) {
+            final MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_notifications);
+            if (set.isEmpty()) {
+              menuItem.setIcon(R.drawable.ic_notifications_white_24dp);
+              menuItem.setTitle(getString(R.string.no_notifications));
+            } else {
+              menuItem.setIcon(R.drawable.ic_notifications_active_white_24dp);
+              menuItem.setTitle(getString(R.string.multiple_notifications, set.size()));
+            }
+          }
 
-      @Override
-      public void onError(final OneginiPendingMobileAuthWithPushRequestError error) {
-        if (isNoErrorMessagePending()) {
-          LoginActivity.this.handlePendingMobileRequestsErrors(error);
-        }
-      }
-    });
+          @Override
+          public void onError(final OneginiPendingMobileAuthWithPushRequestError error) {
+            if (isNoErrorMessagePending()) {
+              LoginActivity.this.handlePendingMobileRequestsErrors(error);
+            }
+          }
+        });
   }
 
   private void handlePendingMobileRequestsErrors(final OneginiPendingMobileAuthWithPushRequestError error) {

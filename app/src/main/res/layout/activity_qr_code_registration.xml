@@ -19,25 +19,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-        <TextView
-            android:text="@string/qr_code_message"
-            android:layout_width="match_parent"
-            android:textAlignment="center"
-            android:layout_margin="@dimen/activity_login_logo_margin_top"
-            android:layout_height="wrap_content"
-            style="@style/Base.TextAppearance.AppCompat.Headline"/>
+  <TextView
+      android:text="@string/qr_code_message"
+      android:layout_width="match_parent"
+      android:textAlignment="center"
+      android:layout_margin="@dimen/activity_login_logo_margin_top"
+      android:layout_height="wrap_content"
+      style="@style/Base.TextAppearance.AppCompat.Headline" />
 
-        <SurfaceView
-            android:id="@+id/qr_code_scanner"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+  <SurfaceView
+      android:id="@+id/qr_code_scanner"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/qr_code_cancel_button"
-            style="@style/ButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:textAlignment="center"
-            android:text="@string/btn_cancel_label"/>
+  <Button
+      android:id="@+id/qr_code_cancel_button"
+      style="@style/ButtonStyle"
+      android:layout_width="match_parent"
+      android:layout_height="90dp"
+      android:textAlignment="center"
+      android:text="@string/btn_cancel_label" />
 </LinearLayout>
