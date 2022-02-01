@@ -37,7 +37,8 @@ public abstract class AuthenticationActivity extends Activity {
   public static final String EXTRA_MESSAGE = "message";
   public static final String EXTRA_ERROR_MESSAGE = "error_message";
   public static final String EXTRA_USER_PROFILE_ID = "user_profile_id";
-
+  protected String errorMessage;
+  protected String command;
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.welcome_user_text)
   TextView welcomeTextView;
@@ -47,9 +48,6 @@ public abstract class AuthenticationActivity extends Activity {
   @SuppressWarnings({ "unused" })
   @BindView(R.id.auth_cancel_button)
   Button cancelButton;
-
-  protected String errorMessage;
-  protected String command;
   private String message;
   private String userName;
 

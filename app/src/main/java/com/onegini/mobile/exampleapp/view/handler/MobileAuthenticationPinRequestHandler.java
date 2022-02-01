@@ -49,7 +49,8 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthW
   }
 
   @Override
-  public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest, final OneginiPinCallback oneginiPinCallback,
+  public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest,
+                                  final OneginiPinCallback oneginiPinCallback,
                                   final AuthenticationAttemptCounter authenticationAttemptCounter,
                                   final OneginiMobileAuthenticationError oneginiMobileAuthenticationError) {
     CALLBACK = oneginiPinCallback;

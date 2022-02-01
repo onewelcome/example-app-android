@@ -1,7 +1,6 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
 import android.os.Bundle;
-
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;

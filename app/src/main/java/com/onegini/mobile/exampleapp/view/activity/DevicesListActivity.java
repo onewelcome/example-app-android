@@ -16,17 +16,15 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
-import java.util.List;
-
 import android.os.Bundle;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.R;
@@ -35,6 +33,8 @@ import com.onegini.mobile.exampleapp.model.Device;
 import com.onegini.mobile.exampleapp.network.UserService;
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
 import io.reactivex.rxjava3.disposables.Disposable;
+
+import java.util.List;
 
 public class DevicesListActivity extends AppCompatActivity {
 

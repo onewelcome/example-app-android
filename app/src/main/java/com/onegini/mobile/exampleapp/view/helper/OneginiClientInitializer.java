@@ -1,7 +1,5 @@
 package com.onegini.mobile.exampleapp.view.helper;
 
-import java.util.Set;
-
 import android.content.Context;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
@@ -11,6 +9,8 @@ import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiInitializationError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
+
+import java.util.Set;
 
 public class OneginiClientInitializer {
 

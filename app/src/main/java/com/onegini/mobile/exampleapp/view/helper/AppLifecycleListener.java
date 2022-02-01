@@ -29,10 +29,12 @@ public class AppLifecycleListener implements Application.ActivityLifecycleCallba
   }
 
   @Override
-  public void onActivityCreated(final Activity activity, final Bundle bundle) { }
+  public void onActivityCreated(final Activity activity, final Bundle bundle) {
+  }
 
   @Override
-  public void onActivityStarted(final Activity activity) { }
+  public void onActivityStarted(final Activity activity) {
+  }
 
   @Override
   public void onActivityResumed(final Activity activity) {
@@ -45,11 +47,14 @@ public class AppLifecycleListener implements Application.ActivityLifecycleCallba
   }
 
   @Override
-  public void onActivityStopped(final Activity activity) { }
+  public void onActivityStopped(final Activity activity) {
+  }
 
   @Override
-  public void onActivitySaveInstanceState(final Activity activity, final Bundle bundle) { }
+  public void onActivitySaveInstanceState(final Activity activity, final Bundle bundle) {
+  }
 
   @Override
-  public void onActivityDestroyed(final Activity activity) { }
+  public void onActivityDestroyed(final Activity activity) {
+  }
 }

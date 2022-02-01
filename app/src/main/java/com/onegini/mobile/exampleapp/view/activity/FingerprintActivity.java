@@ -100,7 +100,7 @@ public class FingerprintActivity extends AuthenticationActivity {
 
   @Override
   protected void cancelRequest() {
-    if(FingerprintAuthenticationRequestHandler.CALLBACK != null) {
+    if (FingerprintAuthenticationRequestHandler.CALLBACK != null) {
       FingerprintAuthenticationRequestHandler.CALLBACK.denyAuthenticationRequest();
       finish();
     }

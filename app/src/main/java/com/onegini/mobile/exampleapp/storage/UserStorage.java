@@ -16,14 +16,14 @@
 
 package com.onegini.mobile.exampleapp.storage;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class UserStorage {
   private static final String PREFS_NAME = "user_storage";

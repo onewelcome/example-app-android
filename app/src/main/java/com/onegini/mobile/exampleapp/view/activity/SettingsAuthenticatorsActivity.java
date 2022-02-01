@@ -20,23 +20,19 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.onegini.mobile.exampleapp.view.helper.ErrorMessageParser.parseErrorMessage;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.core.app.NavUtils;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -54,6 +50,11 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorRegistr
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
 import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
@@ -114,7 +115,8 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
     final AlertDialog.Builder builder = new AlertDialog.Builder(this);
     builder.setTitle(R.string.pick_authenticator);
-    builder.setItems(authenticatorNames.toArray(authenticatorsToSelect), (dialog, which) -> updatePreferredAuthenticator(which, registeredAuthenticators));
+    final DialogInterface.OnClickListener listener = (dialog, which) -> updatePreferredAuthenticator(which, registeredAuthenticators);
+    builder.setItems(authenticatorNames.toArray(authenticatorsToSelect), listener);
     builder.show();
   }
 
@@ -258,6 +260,14 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     }
   }
 
+  private void startLoginActivity(final String errorMessage) {
+    final Intent intent = new Intent(this, LoginActivity.class);
+    intent.putExtra(LoginActivity.ERROR_MESSAGE_EXTRA, errorMessage);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
+    startActivity(intent);
+    finish();
+  }
+
   public class AuthenticatorClickListener {
 
     public void onAuthenticatorItemClick(final int position) {
@@ -276,13 +286,5 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
         registerAuthenticator(clickedAuthenticatorItem.getAuthenticator(), position);
       }
     }
-  }
-
-  private void startLoginActivity(final String errorMessage) {
-    final Intent intent = new Intent(this, LoginActivity.class);
-    intent.putExtra(LoginActivity.ERROR_MESSAGE_EXTRA, errorMessage);
-    intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
-    startActivity(intent);
-    finish();
   }
 }

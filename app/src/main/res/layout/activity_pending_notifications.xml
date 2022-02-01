@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright (c) 2016-2018 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +14,7 @@
   limitations under the License.
   -->
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -24,60 +22,60 @@
     android:layout_height="match_parent"
     tools:context=".view.activity.PendingPushMessagesActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            android:text="@string/toolbar_name_pending_notifications"
-            android:textColor="@color/white"
-            android:layout_gravity="center"
-            android:id="@+id/toolbar_title"/>
-
-    </androidx.appcompat.widget.Toolbar>
+  <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="?attr/colorPrimary"
+      app:contentInsetLeft="0dp"
+      app:contentInsetStart="0dp"
+      android:elevation="4dp"
+      android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+      app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
     <TextView
-        android:id="@+id/pending_notifications_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:visibility="gone" />
+        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:text="@string/toolbar_name_pending_notifications"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:id="@+id/toolbar_title" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/notifications_refresh_layout"
-        android:layout_below="@id/toolbar"
-        android:layout_above="@+id/bottom_navigation"
+  </androidx.appcompat.widget.Toolbar>
+
+  <TextView
+      android:id="@+id/pending_notifications_error"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/toolbar"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="20dp"
+      android:visibility="gone" />
+
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/notifications_refresh_layout"
+      android:layout_below="@id/toolbar"
+      android:layout_above="@+id/bottom_navigation"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:listitem="@layout/row_item_device" />
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            tools:listitem="@layout/row_item_device" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:itemBackground="@color/colorPrimary"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
-        app:menu="@menu/bottom_navigation_menu" />
+  <com.google.android.material.bottomnavigation.BottomNavigationView
+      android:id="@+id/bottom_navigation"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      app:itemBackground="@color/colorPrimary"
+      app:itemIconTint="@color/white"
+      app:itemTextColor="@color/white"
+      app:menu="@menu/bottom_navigation_menu" />
 
 </RelativeLayout>

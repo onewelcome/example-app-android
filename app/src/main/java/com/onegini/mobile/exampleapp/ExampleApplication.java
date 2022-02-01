@@ -22,7 +22,7 @@ import com.onegini.mobile.exampleapp.view.helper.AppLifecycleListener;
 public class ExampleApplication extends MultiDexApplication {
 
   @Override
-  public void onCreate () {
+  public void onCreate() {
     super.onCreate();
     registerActivityLifecycleCallbacks(new AppLifecycleListener());
   }

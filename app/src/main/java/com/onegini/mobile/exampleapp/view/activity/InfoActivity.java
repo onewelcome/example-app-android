@@ -21,15 +21,15 @@ import static com.onegini.mobile.exampleapp.view.helper.ErrorMessageParser.parse
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.ApplicationDetails;
@@ -172,24 +172,25 @@ public class InfoActivity extends AppCompatActivity {
   }
 
   private void authenticateDevice() {
-    OneginiSDK.getOneginiClient(this).getDeviceClient().authenticateDevice(new String[]{ "application-details" }, new OneginiDeviceAuthenticationHandler() {
-          @Override
-          public void onSuccess() {
-            callAnonymousResourceCallToFetchApplicationDetails();
-          }
+    OneginiSDK.getOneginiClient(this).getDeviceClient()
+        .authenticateDevice(new String[]{ "application-details" }, new OneginiDeviceAuthenticationHandler() {
+              @Override
+              public void onSuccess() {
+                callAnonymousResourceCallToFetchApplicationDetails();
+              }
 
-          @Override
-          public void onError(final OneginiDeviceAuthenticationError error) {
-            onApplicationDetailsFetchFailed();
-            final @OneginiDeviceAuthenticationError.DeviceAuthenticationErrorType int errorType = error.getErrorType();
+              @Override
+              public void onError(final OneginiDeviceAuthenticationError error) {
+                onApplicationDetailsFetchFailed();
+                final @OneginiDeviceAuthenticationError.DeviceAuthenticationErrorType int errorType = error.getErrorType();
 
-            if (errorType == OneginiDeviceAuthenticationError.DEVICE_DEREGISTERED) {
-              new DeregistrationUtil(InfoActivity.this).onDeviceDeregistered();
+                if (errorType == OneginiDeviceAuthenticationError.DEVICE_DEREGISTERED) {
+                  new DeregistrationUtil(InfoActivity.this).onDeviceDeregistered();
+                }
+                InfoActivity.this.onError(error);
+              }
             }
-            InfoActivity.this.onError(error);
-          }
-        }
-    );
+        );
   }
 
   private void callAnonymousResourceCallToFetchApplicationDetails() {

@@ -17,8 +17,8 @@
 package com.onegini.mobile.exampleapp.network.fcm;
 
 import android.content.Intent;
-import androidx.annotation.Nullable;
 import android.util.Log;
+import androidx.annotation.Nullable;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
@@ -61,7 +61,7 @@ public class FCMListenerService extends FirebaseMessagingService {
     oneginiClientInitializer.startOneginiClient(new InitializationHandler() {
       @Override
       public void onSuccess() {
-          updateToken(newToken);
+        updateToken(newToken);
       }
 
       @Override

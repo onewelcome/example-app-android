@@ -19,12 +19,12 @@ package com.onegini.mobile.exampleapp.adapter;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Switch;
+import androidx.recyclerview.widget.RecyclerView;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.AuthenticatorListItem;
 import com.onegini.mobile.exampleapp.view.activity.SettingsAuthenticatorsActivity;

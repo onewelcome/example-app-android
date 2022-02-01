@@ -1,7 +1,5 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
-import java.io.IOException;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
@@ -9,14 +7,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Button;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -27,6 +25,8 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.action.qrcodeidentityprovider.QrCodeRegistrationAction;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
+
+import java.io.IOException;
 
 public class QrCodeScanActivity extends AppCompatActivity {
 
@@ -154,7 +154,8 @@ public class QrCodeScanActivity extends AppCompatActivity {
     @Override
     public void surfaceCreated(final SurfaceHolder surfaceHolder) {
       if (ActivityCompat.checkSelfPermission(QrCodeScanActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(QrCodeScanActivity.this, new String[]{ Manifest.permission.CAMERA }, CAMERA_PERMISSION_REQUEST_CODE);
+        final String[] permissions = { Manifest.permission.CAMERA };
+        ActivityCompat.requestPermissions(QrCodeScanActivity.this, permissions, CAMERA_PERMISSION_REQUEST_CODE);
       } else {
         startCamera();
       }

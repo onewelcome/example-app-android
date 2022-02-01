@@ -19,8 +19,8 @@ package com.onegini.mobile.exampleapp.network.fcm;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.util.Log;
+import androidx.annotation.Nullable;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.handler.InitializationHandler;
@@ -32,11 +32,10 @@ import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequ
 
 public class MobileAuthenticationService extends IntentService {
 
-  private static final String TAG = MobileAuthenticationService.class.getSimpleName();
-
   public static final String EXTRA_TRANSACTION_ID = "transaction_id";
   public static final String EXTRA_PROFILE_ID = "profile_id";
   public static final String EXTRA_MESSAGE = "message";
+  private static final String TAG = MobileAuthenticationService.class.getSimpleName();
 
   public MobileAuthenticationService() {
     super(TAG);
@@ -70,7 +69,7 @@ public class MobileAuthenticationService extends IntentService {
     oneginiClientInitializer.startOneginiClient(new InitializationHandler() {
       @Override
       public void onSuccess() {
-          handleMobileAuthenticationRequest(request);
+        handleMobileAuthenticationRequest(request);
       }
 
       @Override
@@ -91,7 +90,8 @@ public class MobileAuthenticationService extends IntentService {
       public void onError(final OneginiMobileAuthenticationError oneginiMobileAuthenticationError) {
         Log.e(TAG, "The mobile authentication request  " + request.getTransactionId() +
             " has finished with error: " + oneginiMobileAuthenticationError.getMessage());
-        @OneginiMobileAuthenticationError.MobileAuthenticationErrorType final int errorType = oneginiMobileAuthenticationError.getErrorType();
+        @OneginiMobileAuthenticationError.MobileAuthenticationErrorType final int errorType =
+            oneginiMobileAuthenticationError.getErrorType();
         if (errorType == OneginiMobileAuthenticationError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(getApplicationContext()).onDeviceDeregistered();
         }

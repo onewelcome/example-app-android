@@ -16,10 +16,6 @@
 
 package com.onegini.mobile.exampleapp;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
 import android.content.Context;
 import com.onegini.mobile.exampleapp.model.BasicCustomAuthenticator;
 import com.onegini.mobile.exampleapp.model.PasswordCustomAuthenticator;
@@ -38,6 +34,10 @@ import com.onegini.mobile.exampleapp.view.handler.RegistrationRequestHandler;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.client.OneginiClientBuilder;
 import com.onegini.mobile.sdk.android.model.OneginiCustomAuthenticator;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class OneginiSDK {
 
