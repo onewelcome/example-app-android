@@ -29,7 +29,7 @@ allprojects {
         Before the release please change the url below to: https://repo.onegini.com/artifactory/onegini-sdk
         Please change it back to https://repo.onegini.com/artifactory/public after the release
         */
-        url "https://repo.onegini.com/artifactory/public"
+        url "https://repo.onegini.com/artifactory/onegini-sdk"
         credentials {
           username artifactory_user
           password artifactory_password
@@ -56,7 +56,7 @@ android {
     minSdkVersion 23
     targetSdkVersion 31
     versionCode 23
-    versionName "7.4.0"
+    versionName "7.4.1"
     multiDexEnabled true
   }
   buildTypes {
@@ -75,7 +75,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:11.6.0@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:11.7.0@aar') {
     transitive = true
   }
 
@@ -98,7 +98,7 @@ dependencies {
   implementation 'com.jakewharton:butterknife:10.2.0'
   annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
   // RxJava
-  implementation 'io.reactivex.rxjava3:rxjava:3.1.2'
+  implementation 'io.reactivex.rxjava3:rxjava:3.1.3'
   implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 }
 
