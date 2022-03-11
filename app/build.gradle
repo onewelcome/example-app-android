@@ -55,7 +55,7 @@ android {
     applicationId "com.onegini.mobile.exampleapp"
     minSdkVersion 23
     targetSdkVersion 31
-    versionCode 23
+    versionCode 24
     versionName "7.4.1"
     multiDexEnabled true
   }
