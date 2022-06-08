@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2021 Onegini B.V.
+ * Copyright (c) 2016-2022 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,8 +43,8 @@ allprojects {
 }
 
 android {
-  compileSdkVersion 31
-  buildToolsVersion '31.0.0'
+  compileSdkVersion 32
+  buildToolsVersion '32.0.0'
 
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
@@ -54,9 +54,9 @@ android {
   defaultConfig {
     applicationId "com.onegini.mobile.exampleapp"
     minSdkVersion 23
-    targetSdkVersion 31
+    targetSdkVersion 32
     versionCode 24
-    versionName "7.4.1"
+    versionName "7.5.0"
     multiDexEnabled true
   }
   buildTypes {
@@ -75,7 +75,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:11.7.0@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:11.8.0@aar') {
     transitive = true
   }
 
