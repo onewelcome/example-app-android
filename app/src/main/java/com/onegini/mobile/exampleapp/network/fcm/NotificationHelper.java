@@ -26,6 +26,7 @@ import android.graphics.Color;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.NotificationId;
 
@@ -60,7 +61,7 @@ public class NotificationHelper {
         .setSmallIcon(R.mipmap.ic_launcher)
         .setContentTitle("Confirm the transaction")
         .setContentText(message)
-        .setContentIntent(PendingIntent.getService(context, uniqueId, intent, 0))
+        .setContentIntent(PendingIntent.getActivity(context, uniqueId, intent, PendingIntent.FLAG_IMMUTABLE))
         .setPriority(NotificationCompat.PRIORITY_MAX)
         .setAutoCancel(true);
 

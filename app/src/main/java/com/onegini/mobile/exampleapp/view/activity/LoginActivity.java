@@ -43,6 +43,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
+import com.onegini.mobile.exampleapp.network.fcm.MobileAuthenticationService;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
@@ -115,6 +116,18 @@ public class LoginActivity extends Activity {
         .findItem(R.id.action_home)
         .setChecked(true);
     showError();
+  }
+
+  @Override
+  protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    final Intent serviceIntent = new Intent(this, MobileAuthenticationService.class);
+    serviceIntent.putExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID,
+        intent.getStringExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID));
+    serviceIntent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE, intent.getStringExtra(MobileAuthenticationService.EXTRA_MESSAGE));
+    serviceIntent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID,
+        intent.getStringExtra(MobileAuthenticationService.EXTRA_PROFILE_ID));
+    startService(serviceIntent);
   }
 
   @Override

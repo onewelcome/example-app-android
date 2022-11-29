@@ -24,6 +24,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.activity.LoginActivity;
 import com.onegini.mobile.exampleapp.view.handler.InitializationHandler;
 import com.onegini.mobile.exampleapp.view.helper.AppLifecycleListener;
 import com.onegini.mobile.exampleapp.view.helper.OneginiClientInitializer;
@@ -41,11 +42,11 @@ public class FCMListenerService extends FirebaseMessagingService {
   public void onMessageReceived(final RemoteMessage message) {
     final OneginiMobileAuthWithPushRequest mobileAuthWithPushRequest = parseOneginiMobileAuthRequest(message);
     if (mobileAuthWithPushRequest != null) {
-      final Intent serviceIntent = getServiceIntent(mobileAuthWithPushRequest);
+      final Intent intent = getIntent(mobileAuthWithPushRequest);
       if (AppLifecycleListener.isAppInForeground()) {
-        startService(serviceIntent);
+        startService(intent);
       } else {
-        NotificationHelper.getInstance(this).showNotification(serviceIntent, mobileAuthWithPushRequest.getMessage());
+        NotificationHelper.getInstance(this).showNotification(intent, mobileAuthWithPushRequest.getMessage());
       }
     }
   }
@@ -96,8 +97,8 @@ public class FCMListenerService extends FirebaseMessagingService {
     }
   }
 
-  private Intent getServiceIntent(final OneginiMobileAuthWithPushRequest mobileAuthWithPushRequest) {
-    final Intent intent = new Intent(this, MobileAuthenticationService.class);
+  private Intent getIntent(final OneginiMobileAuthWithPushRequest mobileAuthWithPushRequest) {
+    final Intent intent = new Intent(this, LoginActivity.class);
     intent.putExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID, mobileAuthWithPushRequest.getTransactionId());
     intent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE, mobileAuthWithPushRequest.getMessage());
     intent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID, mobileAuthWithPushRequest.getUserProfileId());
