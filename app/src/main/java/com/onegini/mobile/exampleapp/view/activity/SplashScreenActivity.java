@@ -43,6 +43,7 @@ public class SplashScreenActivity extends Activity {
     oneginiClientInitializer.startOneginiClient(new InitializationHandler() {
       @Override
       public void onSuccess() {
+        handleNotification();
         startLoginActivity();
       }
 
@@ -59,20 +60,22 @@ public class SplashScreenActivity extends Activity {
 
   private void startLoginActivity() {
     Intent intent = new Intent(this, LoginActivity.class);
-    boolean hasNotificationData = getIntent().hasExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID);
-    if (hasNotificationData) {
-      addNotificationData(intent);
-    }
     startActivity(intent);
     finish();
   }
 
-  private void addNotificationData(Intent intent) {
-    intent.putExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID,
-        getIntent().getStringExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID));
-    intent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE, getIntent().getStringExtra(MobileAuthenticationService.EXTRA_MESSAGE));
-    intent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID,
-        getIntent().getStringExtra(MobileAuthenticationService.EXTRA_PROFILE_ID));
+  private void handleNotification() {
+    boolean hasNotificationData = getIntent().hasExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID);
+    if (hasNotificationData) {
+      final Intent serviceIntent = new Intent(this, MobileAuthenticationService.class);
+      serviceIntent.putExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID,
+          getIntent().getStringExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID));
+      serviceIntent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE,
+          getIntent().getStringExtra(MobileAuthenticationService.EXTRA_MESSAGE));
+      serviceIntent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID,
+          getIntent().getStringExtra(MobileAuthenticationService.EXTRA_PROFILE_ID));
+      startService(serviceIntent);
+    }
   }
 
   private void showError(final String message) {

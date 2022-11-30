@@ -104,7 +104,6 @@ public class LoginActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
     ButterKnife.bind(this);
-    handleNotification();
   }
 
   @Override
@@ -117,20 +116,6 @@ public class LoginActivity extends Activity {
         .findItem(R.id.action_home)
         .setChecked(true);
     showError();
-  }
-
-  private void handleNotification() {
-    boolean hasNotificationData = getIntent().hasExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID);
-    if (hasNotificationData) {
-      final Intent serviceIntent = new Intent(this, MobileAuthenticationService.class);
-      serviceIntent.putExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID,
-          getIntent().getStringExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID));
-      serviceIntent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE,
-          getIntent().getStringExtra(MobileAuthenticationService.EXTRA_MESSAGE));
-      serviceIntent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID,
-          getIntent().getStringExtra(MobileAuthenticationService.EXTRA_PROFILE_ID));
-      startService(serviceIntent);
-    }
   }
 
   @Override
