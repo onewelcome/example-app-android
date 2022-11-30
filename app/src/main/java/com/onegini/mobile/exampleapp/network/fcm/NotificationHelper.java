@@ -60,7 +60,8 @@ public class NotificationHelper {
         .setSmallIcon(R.mipmap.ic_launcher)
         .setContentTitle("Confirm the transaction")
         .setContentText(message)
-        .setContentIntent(PendingIntent.getActivity(context, uniqueId, intent, PendingIntent.FLAG_IMMUTABLE))
+        .setContentIntent(
+            PendingIntent.getActivity(context, uniqueId, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE))
         .setPriority(NotificationCompat.PRIORITY_MAX)
         .setAutoCancel(true);
 
