@@ -106,22 +106,6 @@ public class FCMListenerService extends FirebaseMessagingService {
     }
   }
 
-  private Intent getActivityIntent(final OneginiMobileAuthWithPushRequest mobileAuthWithPushRequest) {
-    final Intent intent = new Intent(this, LoginActivity.class);
-    intent.putExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID, mobileAuthWithPushRequest.getTransactionId());
-    intent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE, mobileAuthWithPushRequest.getMessage());
-    intent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID, mobileAuthWithPushRequest.getUserProfileId());
-    return intent;
-  }
-
-  private Intent getServiceIntent(final OneginiMobileAuthWithPushRequest mobileAuthWithPushRequest) {
-    final Intent intent = new Intent(this, MobileAuthenticationService.class);
-    intent.putExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID, mobileAuthWithPushRequest.getTransactionId());
-    intent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE, mobileAuthWithPushRequest.getMessage());
-    intent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID, mobileAuthWithPushRequest.getUserProfileId());
-    return intent;
-  }
-
   private class TokenUpdateHandler implements OneginiRefreshMobileAuthPushTokenHandler {
 
     private final String token;
