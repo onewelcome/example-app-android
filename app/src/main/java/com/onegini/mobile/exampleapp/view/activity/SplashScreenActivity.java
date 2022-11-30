@@ -21,6 +21,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import com.onegini.mobile.exampleapp.R;
+import com.onegini.mobile.exampleapp.network.fcm.MobileAuthenticationService;
 import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.view.handler.InitializationHandler;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
@@ -57,8 +58,21 @@ public class SplashScreenActivity extends Activity {
   }
 
   private void startLoginActivity() {
-    startActivity(new Intent(this, LoginActivity.class));
+    Intent intent = new Intent(this, LoginActivity.class);
+    boolean hasNotificationData = getIntent().hasExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID);
+    if (hasNotificationData) {
+      addNotificationData(intent);
+    }
+    startActivity(intent);
     finish();
+  }
+
+  private void addNotificationData(Intent intent) {
+    intent.putExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID,
+        getIntent().getStringExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID));
+    intent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE, getIntent().getStringExtra(MobileAuthenticationService.EXTRA_MESSAGE));
+    intent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID,
+        getIntent().getStringExtra(MobileAuthenticationService.EXTRA_PROFILE_ID));
   }
 
   private void showError(final String message) {

@@ -26,7 +26,6 @@ import android.graphics.Color;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.TaskStackBuilder;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.NotificationId;
 

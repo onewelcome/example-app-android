@@ -104,6 +104,7 @@ public class LoginActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
     ButterKnife.bind(this);
+    handleNotification();
   }
 
   @Override
@@ -118,16 +119,18 @@ public class LoginActivity extends Activity {
     showError();
   }
 
-  @Override
-  protected void onNewIntent(Intent intent) {
-    super.onNewIntent(intent);
-    final Intent serviceIntent = new Intent(this, MobileAuthenticationService.class);
-    serviceIntent.putExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID,
-        intent.getStringExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID));
-    serviceIntent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE, intent.getStringExtra(MobileAuthenticationService.EXTRA_MESSAGE));
-    serviceIntent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID,
-        intent.getStringExtra(MobileAuthenticationService.EXTRA_PROFILE_ID));
-    startService(serviceIntent);
+  private void handleNotification() {
+    boolean hasNotificationData = getIntent().hasExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID);
+    if (hasNotificationData) {
+      final Intent serviceIntent = new Intent(this, MobileAuthenticationService.class);
+      serviceIntent.putExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID,
+          getIntent().getStringExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID));
+      serviceIntent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE,
+          getIntent().getStringExtra(MobileAuthenticationService.EXTRA_MESSAGE));
+      serviceIntent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID,
+          getIntent().getStringExtra(MobileAuthenticationService.EXTRA_PROFILE_ID));
+      startService(serviceIntent);
+    }
   }
 
   @Override
