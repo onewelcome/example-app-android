@@ -29,6 +29,8 @@ import androidx.core.app.NotificationCompat;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.NotificationId;
 
+import java.util.Random;
+
 public class NotificationHelper {
 
   private static final String CHANNEL_ID = "transactions";
@@ -61,7 +63,7 @@ public class NotificationHelper {
         .setContentTitle("Confirm the transaction")
         .setContentText(message)
         .setContentIntent(
-            PendingIntent.getActivity(context, uniqueId, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE))
+            PendingIntent.getActivity(context, new Random().nextInt(), intent, PendingIntent.FLAG_IMMUTABLE))
         .setPriority(NotificationCompat.PRIORITY_MAX)
         .setAutoCancel(true);
 

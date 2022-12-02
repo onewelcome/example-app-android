@@ -43,7 +43,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
-import com.onegini.mobile.exampleapp.network.fcm.MobileAuthenticationService;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
