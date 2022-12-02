@@ -20,7 +20,9 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.onegini.mobile.exampleapp.view.helper.ErrorMessageParser.parseErrorMessage;
 
+import android.Manifest;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -153,6 +155,10 @@ public class SettingsActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_mobile_authentication_push)
   public void enrollMobileAuthenticationWithPush() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      requestPermissions(new String[]{ Manifest.permission.POST_NOTIFICATIONS }, 1);
+    }
+
     final FCMRegistrationService.PushEnrollmentHandler mobileAuthWithPushEnrollmentHandler =
         new FCMRegistrationService.PushEnrollmentHandler() {
 

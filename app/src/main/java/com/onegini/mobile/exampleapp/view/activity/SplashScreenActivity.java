@@ -21,6 +21,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import com.onegini.mobile.exampleapp.R;
+import com.onegini.mobile.exampleapp.network.fcm.MobileAuthenticationService;
 import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.view.handler.InitializationHandler;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
@@ -42,6 +43,7 @@ public class SplashScreenActivity extends Activity {
     oneginiClientInitializer.startOneginiClient(new InitializationHandler() {
       @Override
       public void onSuccess() {
+        handleNotification();
         startLoginActivity();
       }
 
@@ -57,8 +59,23 @@ public class SplashScreenActivity extends Activity {
   }
 
   private void startLoginActivity() {
-    startActivity(new Intent(this, LoginActivity.class));
+    Intent intent = new Intent(this, LoginActivity.class);
+    startActivity(intent);
     finish();
+  }
+
+  private void handleNotification() {
+    boolean hasNotificationData = getIntent().hasExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID);
+    if (hasNotificationData) {
+      final Intent serviceIntent = new Intent(this, MobileAuthenticationService.class);
+      serviceIntent.putExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID,
+          getIntent().getStringExtra(MobileAuthenticationService.EXTRA_TRANSACTION_ID));
+      serviceIntent.putExtra(MobileAuthenticationService.EXTRA_MESSAGE,
+          getIntent().getStringExtra(MobileAuthenticationService.EXTRA_MESSAGE));
+      serviceIntent.putExtra(MobileAuthenticationService.EXTRA_PROFILE_ID,
+          getIntent().getStringExtra(MobileAuthenticationService.EXTRA_PROFILE_ID));
+      startService(serviceIntent);
+    }
   }
 
   private void showError(final String message) {
