@@ -25,11 +25,11 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   private final String appIdentifier = "ExampleApp";
   private final String appPlatform = "android";
   private final String redirectionUri = "oneginiexample://loginsuccess";
-  private final String appVersion = "7.5.0";
+  private final String appVersion = "7.6.0";
   private final String baseURL = "https://demo-msp.onegini.com";
   private final String resourceBaseURL = "https://demo-msp.onegini.com/resources/";
-  private final String keystoreHash = "cdf78d87c0077247448535103aa333fecac18ae6a074e051ed8c331ee9581061";
-  private final String serverPublicKey = "BBFFCC164C1AC014069B6C2C96E012E434D064F1EB736EF0E2470EFF15410D9D";
+  private final String keystoreHash = "22d561f71686e14ed039931c5433f7f08bc250ec7580ce25e76c9f86e8e54a4e";
+  private final String serverPublicKey = "090B49997E629BA51A8811E6854378B6547C1FD47EDEEBFD72A3218681FE8FE4";
 
   @Override
   public String getAppIdentifier() {
