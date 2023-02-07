@@ -20,6 +20,6 @@ public class QrCodeIdentityProvider implements OneginiCustomIdentityProvider {
 
   @Override
   public String getId() {
-    return "qr-code-api";
+    return "qr_registration";
   }
 }
