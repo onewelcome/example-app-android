@@ -107,7 +107,6 @@ public class QrCodeScanActivity extends AppCompatActivity {
     } else {
       setResult(RESULT_CANCELED);
     }
-    barcodeDetector.release();
     finish();
   }
 
@@ -119,6 +118,7 @@ public class QrCodeScanActivity extends AppCompatActivity {
       intent.setData(Uri.parse(qrCode));
       setResult(RESULT_OK, intent);
     }
+    barcodeDetector.release();
     finish();
   }
 
