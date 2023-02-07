@@ -42,6 +42,7 @@ public class QrCodeScanActivity extends AppCompatActivity {
   Button cancelButton;
 
   private CameraSource cameraSource;
+  private BarcodeDetector barcodeDetector;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -52,10 +53,9 @@ public class QrCodeScanActivity extends AppCompatActivity {
   }
 
   private void initQrCodeScanner() {
-    final BarcodeDetector barcodeDetector = buildBarcodeDetector();
-    cameraSource = buildCameraSource(barcodeDetector);
-
+    barcodeDetector = buildBarcodeDetector();
     barcodeDetector.setProcessor(new QrCodeDetectorProcessor());
+    cameraSource = buildCameraSource(barcodeDetector);
     qrCodeScanner.getHolder().addCallback(new QrCodeSurfaceHolderCallback());
   }
 
@@ -107,6 +107,7 @@ public class QrCodeScanActivity extends AppCompatActivity {
     } else {
       setResult(RESULT_CANCELED);
     }
+    barcodeDetector.release();
     finish();
   }
 
