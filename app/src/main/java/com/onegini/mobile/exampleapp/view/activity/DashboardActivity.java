@@ -19,6 +19,7 @@ package com.onegini.mobile.exampleapp.view.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
@@ -42,7 +43,10 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiDeregistrationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiLogoutError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithOtpError;
 import com.onegini.mobile.sdk.android.model.OneginiAppToWebSingleSignOn;
+import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
+
+import java.util.Set;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -231,6 +235,8 @@ public class DashboardActivity extends AppCompatActivity {
     final UserProfile userProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
     final User user = userStorage.loadUser(userProfile);
     dashboardWelcomeText.setText(getString(R.string.welcome_user_text, user.getName()));
+    Set<OneginiAuthenticator> test = OneginiSDK.getOneginiClient(this).getUserClient().getAllAuthenticators(userProfile);
+    Log.d("PKPK", "get All auths: " + test);
   }
 
   private void setupActionBar() {
