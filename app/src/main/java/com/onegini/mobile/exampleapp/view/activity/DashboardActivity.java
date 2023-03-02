@@ -235,8 +235,6 @@ public class DashboardActivity extends AppCompatActivity {
     final UserProfile userProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
     final User user = userStorage.loadUser(userProfile);
     dashboardWelcomeText.setText(getString(R.string.welcome_user_text, user.getName()));
-    Set<OneginiAuthenticator> test = OneginiSDK.getOneginiClient(this).getUserClient().getAllAuthenticators(userProfile);
-    Log.d("PKPK", "get All auths: " + test);
   }
 
   private void setupActionBar() {
