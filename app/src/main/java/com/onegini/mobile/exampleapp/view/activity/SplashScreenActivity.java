@@ -20,14 +20,12 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.network.fcm.MobileAuthenticationService;
 import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.view.handler.InitializationHandler;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
 import com.onegini.mobile.exampleapp.view.helper.OneginiClientInitializer;
-import com.onegini.mobile.sdk.android.client.OneginiClient;
 
 public class SplashScreenActivity extends Activity {
 
