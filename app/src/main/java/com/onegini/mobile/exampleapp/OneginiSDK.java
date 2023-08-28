@@ -18,6 +18,7 @@ package com.onegini.mobile.exampleapp;
 
 import android.content.Context;
 import com.onegini.mobile.exampleapp.model.BasicCustomAuthenticator;
+import com.onegini.mobile.exampleapp.model.OneTimeIdentityProvider;
 import com.onegini.mobile.exampleapp.model.PasswordCustomAuthenticator;
 import com.onegini.mobile.exampleapp.model.QrCodeIdentityProvider;
 import com.onegini.mobile.exampleapp.model.TwoWayOtpIdentityProvider;
@@ -55,7 +56,7 @@ public class OneginiSDK {
     final CreatePinRequestHandler createPinRequestHandler = new CreatePinRequestHandler(applicationContext);
     final PinAuthenticationRequestHandler pinAuthenticationRequestHandler = new PinAuthenticationRequestHandler(applicationContext);
 
-    // will throw OneginiConfigNotFoundException if OneginiConfigModel class can't be found
+    // will throw OneginiConfigNotFoundException if com.onegini.mobile.exampleapp.com.onegini.mobile.exampleapp.OneginiConfigModel class can't be found
     return new OneginiClientBuilder(applicationContext, createPinRequestHandler, pinAuthenticationRequestHandler)
         // handlers for optional functionalities
         .setBrowserRegistrationRequestHandler(registrationRequestHandler)
@@ -71,6 +72,7 @@ public class OneginiSDK {
         // add a custom identity provider
         .addCustomIdentityProvider(new TwoWayOtpIdentityProvider(applicationContext))
         .addCustomIdentityProvider(new QrCodeIdentityProvider(applicationContext))
+        .addCustomIdentityProvider(new OneTimeIdentityProvider())
         // Set http connect / read timeout
         .setHttpConnectTimeout((int) TimeUnit.SECONDS.toMillis(5))
         .setHttpReadTimeout((int) TimeUnit.SECONDS.toMillis(20))
