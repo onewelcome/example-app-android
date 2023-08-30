@@ -1,4 +1,4 @@
-package com.onegini.mobile.exampleapp.view.action.onetimeidentityprovider;
+package com.onegini.mobile.exampleapp.view.action.statelessidentityprovider;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -6,7 +6,7 @@ import com.onegini.mobile.sdk.android.handlers.action.OneginiCustomTwoStepRegist
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomRegistrationCallback;
 import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 
-public class OneTimeRegistrationAction implements OneginiCustomTwoStepRegistrationAction {
+public class StatelessRegistrationAction implements OneginiCustomTwoStepRegistrationAction {
   @Override
   public void initRegistration(@NonNull OneginiCustomRegistrationCallback oneginiCustomRegistrationCallback,
                                @Nullable CustomInfo customInfo) {
@@ -17,5 +17,10 @@ public class OneTimeRegistrationAction implements OneginiCustomTwoStepRegistrati
   public void finishRegistration(@NonNull OneginiCustomRegistrationCallback oneginiCustomRegistrationCallback,
                                  @Nullable CustomInfo customInfo) {
     oneginiCustomRegistrationCallback.returnSuccess(null);
+  }
+
+  @Override
+  public boolean isStatelessRegistration() {
+    return true;
   }
 }

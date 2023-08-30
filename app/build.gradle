@@ -75,7 +75,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:12.0.0-SNAPSHOT-bio-reg@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:12.0.0-SNAPSHOT-onetime-5@aar') {
     transitive = true
   }
   // Rest Client

@@ -48,4 +48,9 @@ public class TwoWayOtpRegistrationAction implements OneginiCustomTwoStepRegistra
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }
+
+  @Override
+  public boolean isStatelessRegistration() {
+    return false;
+  }
 }
