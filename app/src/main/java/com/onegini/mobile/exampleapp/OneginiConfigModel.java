@@ -9,11 +9,11 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
 
   private final String appIdentifier = "stateless";
   private final String appPlatform = "android";
-  private final String redirectionUri = "https://www.onewelcome.com/";
+  private final String redirectionUri = "oneginiexample://loginsuccess";
   private final String appVersion = "1.0";
   private final String baseURL = "https://mobile-security-proxy.test.onegini.com";
   private final String resourceBaseURL = "https://mobile-security-proxy.test.onegini.com/resources/";
-  private final String keystoreHash = "e4173c0191d6a7dfb3d3150b49a79999eb75c3c0bbe65c85dccec6a8e07cc77c";
+  private final String keystoreHash = "6fbaf7de0e46950ba9358fc5178b1c75409be3bc3461088c1ba3e523b0da9b2f";
   private final int maxPinFailures = 3;
   private final String serverPublicKey = "A764F364707C74796967C38CD8A6418E2A82F2BAC0BFFF85B11A993BA4836B56";
 
