@@ -16,6 +16,6 @@ public class StatelessActionProvider implements OneginiCustomIdentityProvider {
   @NonNull
   @Override
   public OneginiCustomRegistrationAction getRegistrationAction() {
-    return new StatelessAction();
+    return new StatelessRegistrationAction();
   }
 }
