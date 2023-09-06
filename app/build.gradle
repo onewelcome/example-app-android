@@ -99,6 +99,9 @@ dependencies {
   // RxJava
   implementation 'io.reactivex.rxjava3:rxjava:3.1.6'
   implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+
+  //Biometric
+  implementation "androidx.biometric:biometric:1.1.0"
 }
 
 //according to google documentation, this plugin has to be applied at the end of the file

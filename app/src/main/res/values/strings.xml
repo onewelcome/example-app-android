@@ -102,4 +102,7 @@
   <string name="two_way_otp_challenge_code_label">Challenge code</string>
   <string name="two_way_otp_response_code_label">Response code</string>
   <string name="qr_code_message">Scan QR code</string>
+  <string name="biometric_authentication_title">Biometric authentication</string>
+  <string name="biometric_authentication_subtitle">Log in to the app using biometrics</string>
+  <string name="biometric_authentication_cancel">Cancel</string>
 </resources>

@@ -22,6 +22,7 @@ import com.onegini.mobile.exampleapp.model.PasswordCustomAuthenticator;
 import com.onegini.mobile.exampleapp.model.QrCodeIdentityProvider;
 import com.onegini.mobile.exampleapp.model.TwoWayOtpIdentityProvider;
 import com.onegini.mobile.exampleapp.view.handler.BasicCustomAuthenticationRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.BiometricAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthOtpRequestHandler;
@@ -60,6 +61,7 @@ public class OneginiSDK {
         // handlers for optional functionalities
         .setBrowserRegistrationRequestHandler(registrationRequestHandler)
         .setFingerprintAuthenticationRequestHandler(new FingerprintAuthenticationRequestHandler(applicationContext))
+        .setBiometricAuthenticationRequestHandler(new BiometricAuthenticationRequestHandler(applicationContext))
         .setCustomAuthenticationRequestHandler(new BasicCustomAuthenticationRequestHandler(applicationContext))
         .setMobileAuthWithPushRequestHandler(new MobileAuthenticationRequestHandler(applicationContext))
         .setMobileAuthWithPushPinRequestHandler(new MobileAuthenticationPinRequestHandler(applicationContext))

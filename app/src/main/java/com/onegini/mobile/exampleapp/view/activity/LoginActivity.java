@@ -16,9 +16,10 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
+import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
+import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
 import static com.onegini.mobile.exampleapp.view.activity.RegistrationActivity.IDENTITY_PROVIDER_EXTRA;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +35,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -45,6 +49,7 @@ import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.handler.BiometricAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
 import com.onegini.mobile.exampleapp.view.helper.AvailableIdentityProvidersMenu;
 import com.onegini.mobile.exampleapp.view.helper.RegisteredAuthenticatorsMenu;
@@ -63,7 +68,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends FragmentActivity {
 
   public static final String ERROR_MESSAGE_EXTRA = "error_message";
   public static User selectedUser;
@@ -122,6 +127,34 @@ public class LoginActivity extends Activity {
     super.onPause();
     isAppVisible = false;
     overridePendingTransition(0, 0);
+  }
+
+  @Override
+  protected void onNewIntent(final Intent intent) {
+    super.onNewIntent(intent);
+    setIntent(intent);
+    handleIntent();
+  }
+
+  private void handleIntent() {
+    final Bundle extras = getIntent().getExtras();
+    String command = extras.getString(EXTRA_COMMAND);
+    if (COMMAND_START.equals(command)) {
+      startBiometricAuthentication();
+    }
+  }
+
+  private void startBiometricAuthentication() {
+    final BiometricPrompt biometricPrompt =
+        new BiometricPrompt(this, ContextCompat.getMainExecutor(this), new BiometricPromptAuthenticationCallback());
+
+    final BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+        .setTitle(getString(R.string.biometric_authentication_title))
+        .setSubtitle(getString(R.string.biometric_authentication_subtitle))
+        .setNegativeButtonText(getString(R.string.btn_cancel_label))
+        .build();
+
+    biometricPrompt.authenticate(promptInfo, BiometricAuthenticationRequestHandler.CRYPTO_OBJECT);
   }
 
   private void getErrorMessage() {
@@ -426,5 +459,29 @@ public class LoginActivity extends Activity {
 
   private boolean isErrorMessagePending() {
     return !isNoErrorMessagePending();
+  }
+
+  private static class BiometricPromptAuthenticationCallback extends BiometricPrompt.AuthenticationCallback {
+
+    @Override
+    public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+      super.onAuthenticationError(errorCode, errString);
+      if (errorCode == BiometricPrompt.ERROR_CANCELED || errorCode == BiometricPrompt.ERROR_USER_CANCELED || errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
+        BiometricAuthenticationRequestHandler.CALLBACK.fallbackToPin();
+      }
+      //TODO handle error in scope of SDKAND-1543
+    }
+
+    @Override
+    public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+      super.onAuthenticationSucceeded(result);
+      BiometricAuthenticationRequestHandler.CALLBACK.userAuthenticatedSuccessfully();
+    }
+
+    @Override
+    public void onAuthenticationFailed() {
+      super.onAuthenticationFailed();
+      //TODO handle error in scope of SDKAND-1543
+    }
   }
 }
