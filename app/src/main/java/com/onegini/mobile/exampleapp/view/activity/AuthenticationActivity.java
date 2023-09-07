@@ -20,19 +20,19 @@ import static com.onegini.mobile.exampleapp.Constants.COMMAND_FINISH;
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
 import static com.onegini.mobile.exampleapp.Constants.EXTRA_COMMAND;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import androidx.fragment.app.FragmentActivity;
 import butterknife.BindView;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
-public abstract class AuthenticationActivity extends Activity {
+public abstract class AuthenticationActivity extends FragmentActivity {
 
   public static final String EXTRA_MESSAGE = "message";
   public static final String EXTRA_ERROR_MESSAGE = "error_message";

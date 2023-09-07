@@ -9,7 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.biometric.BiometricPrompt;
-import com.onegini.mobile.exampleapp.view.activity.LoginActivity;
+import com.onegini.mobile.exampleapp.view.activity.BiometricAuthenticationActivity;
 import com.onegini.mobile.sdk.android.handlers.request.OneginiBiometricAuthenticationRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiBiometricCallback;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
@@ -30,6 +30,7 @@ public class BiometricAuthenticationRequestHandler implements OneginiBiometricAu
                                   @NonNull OneginiBiometricCallback oneginiBiometricCallback) {
     CALLBACK = oneginiBiometricCallback;
     CRYPTO_OBJECT = cryptoObject;
+    userProfileId = userProfile.getProfileId();
     notifyActivity(COMMAND_START);
   }
 
@@ -41,7 +42,7 @@ public class BiometricAuthenticationRequestHandler implements OneginiBiometricAu
   }
 
   private void notifyActivity(final String command) {
-    final Intent intent = new Intent(context, LoginActivity.class);
+    final Intent intent = new Intent(context, BiometricAuthenticationActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
     intent.putExtra(EXTRA_COMMAND, command);

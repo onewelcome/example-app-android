@@ -105,4 +105,5 @@
   <string name="biometric_authentication_title">Biometric authentication</string>
   <string name="biometric_authentication_subtitle">Log in to the app using biometrics</string>
   <string name="biometric_authentication_cancel">Cancel</string>
+  <string name="confirm_with_biometrics">Confirm with biometrics</string>
 </resources>

@@ -64,6 +64,10 @@
         android:launchMode="singleTask"
         android:screenOrientation="portrait" />
     <activity
+        android:name=".view.activity.BiometricAuthenticationActivity"
+        android:launchMode="singleTask"
+        android:screenOrientation="portrait" />
+    <activity
         android:name=".view.activity.CustomAuthActivity"
         android:launchMode="singleTask"
         android:screenOrientation="portrait" />
