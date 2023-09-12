@@ -50,6 +50,7 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 public class RegistrationActivity extends Activity {
 
   public static final String IDENTITY_PROVIDER_EXTRA = "identity_provider_id";
+  public static final String STATELESS_REGISTRATION_EXTRA = "should_use_stateless_registration";
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.name_edit_text)
   EditText nameEditText;
@@ -93,7 +94,8 @@ public class RegistrationActivity extends Activity {
 
     setupUserInterface();
     final OneginiIdentityProvider oneginiIdentityProvider = getIntent().getParcelableExtra(IDENTITY_PROVIDER_EXTRA);
-    registerUser(oneginiIdentityProvider);
+    final Boolean isStatelessRegistration = getIntent().getBooleanExtra(STATELESS_REGISTRATION_EXTRA, false);
+    registerUser(oneginiIdentityProvider, isStatelessRegistration);
   }
 
   private void setupUserInterface() {
@@ -123,9 +125,13 @@ public class RegistrationActivity extends Activity {
     }
   }
 
-  private void registerUser(final OneginiIdentityProvider identityProvider) {
+  private void registerUser(final OneginiIdentityProvider identityProvider, Boolean isStatelessRegistration) {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    oneginiClient.getUserClient().registerUser(identityProvider, Constants.DEFAULT_SCOPES, registrationHandler);
+    if (isStatelessRegistration) {
+      oneginiClient.getUserClient().registerStatelessUser(identityProvider, Constants.DEFAULT_SCOPES, registrationHandler);
+    } else {
+      oneginiClient.getUserClient().registerUser(identityProvider, Constants.DEFAULT_SCOPES, registrationHandler);
+    }
   }
 
   private void handleRegistrationErrors(final OneginiRegistrationError oneginiRegistrationError) {
