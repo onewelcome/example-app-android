@@ -53,10 +53,7 @@ public class BiometricAuthenticationActivity extends AuthenticationActivity {
     @Override
     public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
       super.onAuthenticationError(errorCode, errString);
-      if (errorCode == BiometricPrompt.ERROR_CANCELED || errorCode == BiometricPrompt.ERROR_USER_CANCELED || errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
-        BiometricAuthenticationRequestHandler.CALLBACK.fallbackToPin();
-      }
-      //TODO handle error in scope of SDKAND-1543
+      BiometricAuthenticationRequestHandler.CALLBACK.onBiometricAuthenticationError(errorCode);
     }
 
     @Override
@@ -68,7 +65,7 @@ public class BiometricAuthenticationActivity extends AuthenticationActivity {
     @Override
     public void onAuthenticationFailed() {
       super.onAuthenticationFailed();
-      //TODO handle error in scope of SDKAND-1543
+      BiometricAuthenticationRequestHandler.CALLBACK.fallbackToPin();
     }
   }
 }
