@@ -174,7 +174,7 @@ public class RegistrationActivity extends Activity {
         showToast("Please update your Android version to use this application.");
         break;
       case OneginiRegistrationError.INVALID_IDENTITY_PROVIDER:
-        showToast("The Identity provider you were trying to use is invalid.");
+        showToast(oneginiRegistrationError.getMessage());
         break;
       case OneginiRegistrationError.CUSTOM_REGISTRATION_EXPIRED:
         showToast("Custom registration request has expired. Please retry.");
