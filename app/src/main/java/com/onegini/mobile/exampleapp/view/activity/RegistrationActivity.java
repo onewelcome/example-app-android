@@ -29,6 +29,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -41,6 +43,7 @@ import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.handler.RegistrationRequestHandler;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiRegistrationHandler;
+import com.onegini.mobile.sdk.android.handlers.OneginiStatelessRegistrationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiRegistrationError;
 import com.onegini.mobile.sdk.android.model.OneginiIdentityProvider;
@@ -81,7 +84,20 @@ public class RegistrationActivity extends Activity {
     }
 
     @Override
-    public void onError(final OneginiRegistrationError oneginiRegistrationError) {
+    public void onError(@NonNull final OneginiRegistrationError oneginiRegistrationError) {
+      handleRegistrationErrors(oneginiRegistrationError);
+    }
+  };
+
+  final OneginiStatelessRegistrationHandler statelessRegistrationHandler = new OneginiStatelessRegistrationHandler() {
+
+    @Override
+    public void onSuccess(@Nullable CustomInfo customInfo) {
+      startDashboardActivity();
+    }
+
+    @Override
+    public void onError(@NonNull OneginiRegistrationError oneginiRegistrationError) {
       handleRegistrationErrors(oneginiRegistrationError);
     }
   };
@@ -128,7 +144,7 @@ public class RegistrationActivity extends Activity {
   private void registerUser(final OneginiIdentityProvider identityProvider, Boolean isStatelessRegistration) {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
     if (isStatelessRegistration) {
-      oneginiClient.getUserClient().registerStatelessUser(identityProvider, Constants.DEFAULT_SCOPES, registrationHandler);
+      oneginiClient.getUserClient().registerStatelessUser(identityProvider, Constants.DEFAULT_SCOPES, statelessRegistrationHandler);
     } else {
       oneginiClient.getUserClient().registerUser(identityProvider, Constants.DEFAULT_SCOPES, registrationHandler);
     }
