@@ -52,20 +52,16 @@ public class BiometricAuthenticationActivity extends AuthenticationActivity {
 
     @Override
     public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-      super.onAuthenticationError(errorCode, errString);
       BiometricAuthenticationRequestHandler.CALLBACK.onBiometricAuthenticationError(errorCode);
     }
 
     @Override
     public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-      super.onAuthenticationSucceeded(result);
       BiometricAuthenticationRequestHandler.CALLBACK.userAuthenticatedSuccessfully();
     }
 
     @Override
     public void onAuthenticationFailed() {
-      super.onAuthenticationFailed();
-      BiometricAuthenticationRequestHandler.CALLBACK.fallbackToPin();
     }
   }
 }
