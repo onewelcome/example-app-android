@@ -15,36 +15,36 @@
  */
 package com.onegini.mobile.exampleapp.view.action.twowayotpidentityprovider;
 
-import static com.onegini.mobile.exampleapp.view.activity.TwoWayOtpRegistrationActivity.OTP_CHALLENGE_EXTRA;
+import static com.onegini.mobile.exampleapp.view.activity.TwoStepRegistrationActivity.OTP_CHALLENGE_EXTRA;
 
 import android.content.Context;
 import android.content.Intent;
-import com.onegini.mobile.exampleapp.view.activity.TwoWayOtpRegistrationActivity;
+import com.onegini.mobile.exampleapp.view.activity.TwoStepRegistrationActivity;
 import com.onegini.mobile.sdk.android.handlers.action.OneginiCustomTwoStepRegistrationAction;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomRegistrationCallback;
 import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 
-public class TwoWayOtpRegistrationAction implements OneginiCustomTwoStepRegistrationAction {
+public class TwoStepRegistrationAction implements OneginiCustomTwoStepRegistrationAction {
 
   public static OneginiCustomRegistrationCallback CALLBACK;
 
   private final Context context;
 
-  public TwoWayOtpRegistrationAction(final Context context) {
+  public TwoStepRegistrationAction(final Context context) {
     this.context = context;
   }
 
   @Override
   public void initRegistration(final OneginiCustomRegistrationCallback callback, final CustomInfo customInfo) {
-    callback.returnSuccess(null);
+    callback.returnSuccess("12345");
   }
 
   @Override
   public void finishRegistration(final OneginiCustomRegistrationCallback callback, final CustomInfo customInfo) {
     CALLBACK = callback;
 
-    final Intent intent = new Intent(context, TwoWayOtpRegistrationActivity.class);
-    intent.putExtra(OTP_CHALLENGE_EXTRA, customInfo.getData());
+    final Intent intent = new Intent(context, TwoStepRegistrationActivity.class);
+    intent.putExtra(OTP_CHALLENGE_EXTRA, "12345");
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }
