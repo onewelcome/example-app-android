@@ -24,6 +24,14 @@ import com.onegini.mobile.sdk.android.handlers.action.OneginiCustomTwoStepRegist
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiCustomRegistrationCallback;
 import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 
+/**
+ * In case of two step registration the SDK asks the app for optional initial registration data.
+ * The data is sent to the Token Server where the custom registration is initialized.
+ * The optional initialization result is send back to the SDK.
+ * Then the SDK asks the app for a registration data, providing the optional initialization data provided by the Token Server.
+ * The registration data is sent to the Token Server where the custom registration script is executed.
+ * The result of the custom script (status code and optional data) is send back to the SDK and the registration result is propagated to the app.
+ */
 public class TwoStepRegistrationAction implements OneginiCustomTwoStepRegistrationAction {
 
   public static OneginiCustomRegistrationCallback CALLBACK;
