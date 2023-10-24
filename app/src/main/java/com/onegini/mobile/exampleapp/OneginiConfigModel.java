@@ -57,24 +57,6 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
     return serverPublicKey;
   }
 
-  /**
-   * @Deprecated Since Android SDK 8.0.0 this attribute is not required.
-   */
-  public boolean shouldGetIdToken() {
-    return false;
-  }
-
-  /**
-   * Get the max PIN failures. This attribute is just used for visual representation towards the end-user.
-   *
-   * @Deprecated Since Android SDK 6.01.00 this attribute is fetched from the Device config.
-   *
-   * @return The max PIN failures
-   */
-  public int getMaxPinFailures() {
-    return maxPinFailures;
-  }
-
   @Override
   public String toString() {
     return "ConfigModel{" +
