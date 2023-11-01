@@ -9,7 +9,7 @@ public class StatelessIdentityProvider implements OneginiCustomIdentityProvider 
   @NonNull
   @Override
   public String getId() {
-    return "stateless";
+    return "stateless-test";
   }
 
   @NonNull
