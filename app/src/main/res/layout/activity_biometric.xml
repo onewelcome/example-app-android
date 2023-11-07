@@ -33,4 +33,16 @@
     <include layout="@layout/cancel_button" />
   </FrameLayout>
 
+  <FrameLayout
+      android:id="@+id/content_accept_deny"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent">
+
+    <include layout="@layout/view_auth_accept_deny_buttons" />
+  </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

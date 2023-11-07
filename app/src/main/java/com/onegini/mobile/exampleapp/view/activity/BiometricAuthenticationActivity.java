@@ -3,14 +3,20 @@ package com.onegini.mobile.exampleapp.view.activity;
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_START;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.BiometricAuthenticationRequestHandler;
 
 public class BiometricAuthenticationActivity extends AuthenticationActivity {
+
+  @BindView(R.id.content_accept_deny)
+  FrameLayout layoutAcceptDeny;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -25,14 +31,23 @@ public class BiometricAuthenticationActivity extends AuthenticationActivity {
   protected void initialize() {
     parseIntent();
     updateTexts();
+    setFingerprintAuthenticationPermissionVisibility(false);
+    setCancelButtonVisibility();
+    setupUi();
   }
 
-  @Override
-  protected void parseIntent() {
-    super.parseIntent();
+  protected void setupUi() {
     if (COMMAND_START.equals(command)) {
       startBiometricAuthentication();
     }
+  }
+
+  protected void setFingerprintAuthenticationPermissionVisibility(final boolean isVisible) {
+    layoutAcceptDeny.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+  }
+
+  protected void setCancelButtonVisibility() {
+    cancelButton.setVisibility(View.VISIBLE);
   }
 
   private void startBiometricAuthentication() {
