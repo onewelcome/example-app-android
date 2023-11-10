@@ -77,6 +77,7 @@ public class BiometricAuthenticationActivity extends AuthenticationActivity {
 
     @Override
     public void onAuthenticationFailed() {
+      //no-op
     }
   }
 }

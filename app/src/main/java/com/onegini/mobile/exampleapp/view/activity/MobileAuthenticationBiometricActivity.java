@@ -13,7 +13,6 @@ import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationBiometricR
 
 public class MobileAuthenticationBiometricActivity extends BiometricAuthenticationActivity {
 
-
   protected void setupUi() {
     if (COMMAND_ASK_TO_ACCEPT_OR_DENY.equals(command)) {
       setFingerprintAuthenticationPermissionVisibility(true);
@@ -76,6 +75,7 @@ public class MobileAuthenticationBiometricActivity extends BiometricAuthenticati
 
     @Override
     public void onAuthenticationFailed() {
+      //no-op
     }
   }
 }
