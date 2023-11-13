@@ -20,7 +20,8 @@ import android.content.Context;
 import com.onegini.mobile.exampleapp.model.BasicCustomAuthenticator;
 import com.onegini.mobile.exampleapp.model.PasswordCustomAuthenticator;
 import com.onegini.mobile.exampleapp.model.QrCodeIdentityProvider;
-import com.onegini.mobile.exampleapp.model.TwoWayOtpIdentityProvider;
+import com.onegini.mobile.exampleapp.model.StatelessIdentityProvider;
+import com.onegini.mobile.exampleapp.model.TwoStepIdentityProvider;
 import com.onegini.mobile.exampleapp.view.handler.BasicCustomAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.BiometricAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
@@ -73,8 +74,9 @@ public class OneginiSDK {
         // add custom authenticators
         .setCustomAuthenticators(prepareCustomAuthenticators(applicationContext))
         // add a custom identity provider
-        .addCustomIdentityProvider(new TwoWayOtpIdentityProvider(applicationContext))
+        .addCustomIdentityProvider(new TwoStepIdentityProvider(applicationContext))
         .addCustomIdentityProvider(new QrCodeIdentityProvider(applicationContext))
+        .addCustomIdentityProvider(new StatelessIdentityProvider())
         // Set http connect / read timeout
         .setHttpConnectTimeout((int) TimeUnit.SECONDS.toMillis(5))
         .setHttpReadTimeout((int) TimeUnit.SECONDS.toMillis(20))

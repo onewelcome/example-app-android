@@ -29,6 +29,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -41,6 +43,7 @@ import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.handler.RegistrationRequestHandler;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiRegistrationHandler;
+import com.onegini.mobile.sdk.android.handlers.OneginiStatelessRegistrationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiRegistrationError;
 import com.onegini.mobile.sdk.android.model.OneginiIdentityProvider;
@@ -50,6 +53,7 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 public class RegistrationActivity extends Activity {
 
   public static final String IDENTITY_PROVIDER_EXTRA = "identity_provider_id";
+  public static final String STATELESS_REGISTRATION_EXTRA = "should_use_stateless_registration";
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.name_edit_text)
   EditText nameEditText;
@@ -80,7 +84,20 @@ public class RegistrationActivity extends Activity {
     }
 
     @Override
-    public void onError(final OneginiRegistrationError oneginiRegistrationError) {
+    public void onError(@NonNull final OneginiRegistrationError oneginiRegistrationError) {
+      handleRegistrationErrors(oneginiRegistrationError);
+    }
+  };
+
+  final OneginiStatelessRegistrationHandler statelessRegistrationHandler = new OneginiStatelessRegistrationHandler() {
+
+    @Override
+    public void onSuccess(@Nullable CustomInfo customInfo) {
+      startDashboardActivity();
+    }
+
+    @Override
+    public void onError(@NonNull OneginiRegistrationError oneginiRegistrationError) {
       handleRegistrationErrors(oneginiRegistrationError);
     }
   };
@@ -93,7 +110,8 @@ public class RegistrationActivity extends Activity {
 
     setupUserInterface();
     final OneginiIdentityProvider oneginiIdentityProvider = getIntent().getParcelableExtra(IDENTITY_PROVIDER_EXTRA);
-    registerUser(oneginiIdentityProvider);
+    final Boolean isStatelessRegistration = getIntent().getBooleanExtra(STATELESS_REGISTRATION_EXTRA, false);
+    registerUser(oneginiIdentityProvider, isStatelessRegistration);
   }
 
   private void setupUserInterface() {
@@ -123,9 +141,13 @@ public class RegistrationActivity extends Activity {
     }
   }
 
-  private void registerUser(final OneginiIdentityProvider identityProvider) {
+  private void registerUser(final OneginiIdentityProvider identityProvider, Boolean isStatelessRegistration) {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    oneginiClient.getUserClient().registerUser(identityProvider, Constants.DEFAULT_SCOPES, registrationHandler);
+    if (isStatelessRegistration) {
+      oneginiClient.getUserClient().registerStatelessUser(identityProvider, Constants.DEFAULT_SCOPES, statelessRegistrationHandler);
+    } else {
+      oneginiClient.getUserClient().registerUser(identityProvider, Constants.DEFAULT_SCOPES, registrationHandler);
+    }
   }
 
   private void handleRegistrationErrors(final OneginiRegistrationError oneginiRegistrationError) {
@@ -152,7 +174,7 @@ public class RegistrationActivity extends Activity {
         showToast("Please update your Android version to use this application.");
         break;
       case OneginiRegistrationError.INVALID_IDENTITY_PROVIDER:
-        showToast("The Identity provider you were trying to use is invalid.");
+        showToast(oneginiRegistrationError.getMessage());
         break;
       case OneginiRegistrationError.CUSTOM_REGISTRATION_EXPIRED:
         showToast("Custom registration request has expired. Please retry.");

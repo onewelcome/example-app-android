@@ -155,7 +155,7 @@
         android:launchMode="singleTask"
         android:screenOrientation="portrait" />
     <activity
-        android:name=".view.activity.TwoWayOtpRegistrationActivity"
+        android:name=".view.activity.TwoStepRegistrationActivity"
         android:launchMode="singleTask"
         android:screenOrientation="portrait" />
     <activity

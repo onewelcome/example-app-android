@@ -23,42 +23,42 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
-import com.onegini.mobile.exampleapp.view.action.twowayotpidentityprovider.TwoWayOtpRegistrationAction;
+import com.onegini.mobile.exampleapp.view.action.twowayotpidentityprovider.TwoStepRegistrationAction;
 
-public class TwoWayOtpRegistrationActivity extends AppCompatActivity {
+public class TwoStepRegistrationActivity extends AppCompatActivity {
 
   public static final String OTP_CHALLENGE_EXTRA = "otp_challenge_extra";
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.two_way_otp_response_code)
+  @BindView(R.id.two_step_response_code)
   EditText responseCodeEditText;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.two_way_otp_challenge_code)
+  @BindView(R.id.two_step_challenge_code)
   TextView challengeCodeTextView;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_two_way_otp_registration);
+    setContentView(R.layout.activity_two_step_registration);
     ButterKnife.bind(this);
     initChallengeCode();
   }
 
   @SuppressWarnings("unused")
-  @OnClick(R.id.two_way_otp_ok_button)
+  @OnClick(R.id.two_step_ok_button)
   public void onOkButtonClicked() {
-    if (TwoWayOtpRegistrationAction.CALLBACK != null) {
+    if (TwoStepRegistrationAction.CALLBACK != null) {
       final String responseCode = responseCodeEditText.getText().toString();
-      TwoWayOtpRegistrationAction.CALLBACK.returnSuccess(responseCode);
+      TwoStepRegistrationAction.CALLBACK.returnSuccess(responseCode);
     }
     finish();
   }
 
   @SuppressWarnings("unused")
-  @OnClick(R.id.two_way_otp_cancel_button)
+  @OnClick(R.id.two_step_cancel_button)
   public void onCancelButtonClicked() {
-    if (TwoWayOtpRegistrationAction.CALLBACK != null) {
-      TwoWayOtpRegistrationAction.CALLBACK.returnError(new Exception("Registration canceled"));
+    if (TwoStepRegistrationAction.CALLBACK != null) {
+      TwoStepRegistrationAction.CALLBACK.returnError(new Exception("Registration canceled"));
     }
     finish();
   }
