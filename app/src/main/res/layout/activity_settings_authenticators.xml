@@ -62,7 +62,7 @@
         android:layout_marginLeft="16dp"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@color/blue" />
+        android:textColor="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/settings_authenticator_selector_text"
@@ -98,7 +98,7 @@
       android:layout_margin="16dp"
       android:textSize="16sp"
       android:textStyle="bold"
-      android:textColor="@color/blue" />
+      android:textColor="@color/colorPrimary" />
 
   <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/authenticators_list"

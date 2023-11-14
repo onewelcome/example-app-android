@@ -15,13 +15,11 @@
   -->
 
 <resources>
-  <color name="colorPrimary">#3F51B5</color>
-  <color name="colorPrimaryDark">#303F9F</color>
-  <color name="red">#F00</color>
+  <color name="colorPrimary">#041295</color>
+  <color name="colorPrimaryDark">#020B59</color>
+  <color name="red">#E01E00</color>
   <color name="white">#FFF</color>
   <color name="dark_text">#262626</color>
-  <color name="blue">#008FCE</color>
-  <color name="light_blue">#00A3EA</color>
   <color name="background_for_activity_with_card_views">#F2F2F2</color>
   <color name="switcher_light">#FAFAFA</color>
   <color name="switcher_dark">#F0F0F0</color>

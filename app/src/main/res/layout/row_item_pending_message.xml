@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:textColor="@color/blue"
+        android:textColor="@color/colorPrimary"
         tools:text="Transaction message"
         android:layout_below="@+id/pending_message_profile"
         android:layout_alignParentLeft="true"
