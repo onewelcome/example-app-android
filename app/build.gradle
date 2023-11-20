@@ -43,8 +43,6 @@ allprojects {
 }
 
 android {
-  compileSdkVersion 33
-
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
@@ -53,7 +51,8 @@ android {
   defaultConfig {
     applicationId "com.onegini.mobile.exampleapp"
     minSdkVersion 23
-    targetSdkVersion 33
+    targetSdk 34
+    compileSdk 34
     versionCode 25
     versionName "7.7.0"
     multiDexEnabled true
