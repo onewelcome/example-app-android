@@ -67,8 +67,6 @@ public class LoginActivity extends Activity {
 
   public static final String ERROR_MESSAGE_EXTRA = "error_message";
   public static User selectedUser;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.label)
   TextView label;
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.users_spinner)
