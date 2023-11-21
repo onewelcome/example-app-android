@@ -26,7 +26,7 @@
       android:id="@+id/img_logo"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:src="@drawable/logo_onegini"
+      android:src="@drawable/thales_logo"
       tools:ignore="contentDescription"
       android:layout_centerVertical="true"
       android:layout_centerHorizontal="true" />

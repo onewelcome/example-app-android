@@ -33,30 +33,19 @@
         android:id="@+id/img_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/logo_onegini"
+        android:src="@drawable/thales_logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/activity_login_logo_margin_top"
         tools:ignore="contentDescription" />
 
-    <TextView
-        android:id="@+id/label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/activity_margin"
-        android:textSize="18sp"
-        android:text="@string/app_name"
-        android:layout_alignBottom="@+id/img_logo"
-        android:layout_alignRight="@+id/img_logo"
-        android:layout_alignEnd="@+id/img_logo" />
-
     <Spinner
         android:id="@+id/users_spinner"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="140dp"
         android:layout_marginLeft="60dp"
+        android:layout_below="@id/img_logo"
         android:layout_marginRight="60dp"
         android:visibility="invisible"
         android:layout_width="fill_parent"
-        android:layout_below="@+id/label"
         android:layout_height="wrap_content" />
 
     <Button
