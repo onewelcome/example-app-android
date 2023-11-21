@@ -13,11 +13,11 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   private final String appVersion = "1.0.0";
   private final String baseURL = "https://mobile-security-proxy.test.onegini.com";
   private final String resourceBaseURL = "https://mobile-security-proxy.test.onegini.com/resources/";
-  private final String keystoreHash = "c444036a85f4ce201f83af0de1a2cc9389406bc4b90bd935a37fbd28b92608af";
+  private final String keystoreHash = "0775acfd9aa76af34df94449c57ead3a27c4869f0469c8dfcba1fa491b19d6e3";
   private final int maxPinFailures = 3;
   private final String serverPublicKey = "C5FC81EDF132BA5305F24A85F459FA85948EC1E8D696CA23FE90A008C7124AA5";
   private final String serverType = "access";
-  private final String serverVersion = "a67aded";
+  private final String serverVersion = "96d7391";
 
   public String getAppIdentifier() {
     return appIdentifier;
