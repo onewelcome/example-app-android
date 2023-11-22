@@ -102,7 +102,7 @@ public class DevicesListActivity extends AppCompatActivity {
     final ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {
       actionBar.setDisplayHomeAsUpEnabled(true);
-      actionBar.setLogo(R.mipmap.ic_launcher);
+      actionBar.setLogo(R.drawable.thales_icon_white);
       actionBar.setDisplayUseLogoEnabled(true);
       actionBar.setDisplayShowTitleEnabled(false);
     }

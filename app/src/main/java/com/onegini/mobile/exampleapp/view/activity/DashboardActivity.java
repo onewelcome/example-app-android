@@ -239,7 +239,7 @@ public class DashboardActivity extends AppCompatActivity {
     final ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {
       actionBar.setDisplayShowHomeEnabled(true);
-      actionBar.setLogo(R.mipmap.ic_launcher);
+      actionBar.setLogo(R.drawable.thales_icon_white);
       actionBar.setDisplayUseLogoEnabled(true);
       actionBar.setDisplayShowTitleEnabled(false);
     }

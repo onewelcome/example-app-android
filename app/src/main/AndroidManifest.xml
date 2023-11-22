@@ -24,7 +24,7 @@
   <application
       android:name=".ExampleApplication"
       android:allowBackup="false"
-      android:icon="@mipmap/ic_launcher"
+      android:icon="@drawable/thales_icon"
       android:label="@string/app_name"
       android:supportsRtl="true"
       android:theme="@style/AppTheme"

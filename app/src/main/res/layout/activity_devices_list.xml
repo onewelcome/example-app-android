@@ -30,7 +30,7 @@
       app:contentInsetLeft="0dp"
       app:contentInsetStart="0dp"
       android:elevation="4dp"
-      android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+      android:theme="@style/ToolbarTheme"
       app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
     <TextView

@@ -59,7 +59,7 @@ public class NotificationHelper {
     final int uniqueId = NotificationId.getId();
 
     final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-        .setSmallIcon(R.mipmap.ic_launcher)
+        .setSmallIcon(R.drawable.thales_icon)
         .setContentTitle("Confirm the transaction")
         .setContentText(message)
         .setContentIntent(
