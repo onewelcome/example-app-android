@@ -1,39 +1,512 @@
 {
   "project_info": {
-    "project_number": "project-number",
-    "firebase_url": "https://my_project.firebaseio.com",
-    "project_id": "project-id",
-    "storage_bucket": "storage_bucket"
+    "project_number": "586427927998",
+    "firebase_url": "https://onegini-sdk-android-401.firebaseio.com",
+    "project_id": "onegini-sdk-android-401",
+    "storage_bucket": "onegini-sdk-android-401.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:000000000000:android:0000000000000000",
+        "mobilesdk_app_id": "1:586427927998:android:1372628cd01d0305",
+        "android_client_info": {
+          "package_name": "com.onegini.ExampleAppCordova"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF8WFnHz1HSw7v1uULIEomBEw2-YP6Gq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "586427927998-b17ifvne3msid312qd9idmml9ae4k8vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onegini.czpoc"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586427927998:android:fc744e2cbeeb3333bfbdef",
+        "android_client_info": {
+          "package_name": "com.onegini.authenticator.salesforce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF8WFnHz1HSw7v1uULIEomBEw2-YP6Gq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "586427927998-b17ifvne3msid312qd9idmml9ae4k8vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onegini.czpoc"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586427927998:android:2d61366c814a9905bfbdef",
+        "android_client_info": {
+          "package_name": "com.onegini.authenticator.v2.demo2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF8WFnHz1HSw7v1uULIEomBEw2-YP6Gq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "586427927998-b17ifvne3msid312qd9idmml9ae4k8vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onegini.czpoc"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586427927998:android:eb904af3e85eaa5cbfbdef",
+        "android_client_info": {
+          "package_name": "com.onegini.authenticator.v2.demo5"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF8WFnHz1HSw7v1uULIEomBEw2-YP6Gq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "586427927998-b17ifvne3msid312qd9idmml9ae4k8vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onegini.czpoc"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586427927998:android:c5d2afd711d9864bbfbdef",
+        "android_client_info": {
+          "package_name": "com.onegini.authenticator.v2.example"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF8WFnHz1HSw7v1uULIEomBEw2-YP6Gq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "586427927998-b17ifvne3msid312qd9idmml9ae4k8vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onegini.czpoc"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586427927998:android:2656ea32788d26f8bfbdef",
+        "android_client_info": {
+          "package_name": "com.onegini.authenticator.v2.insurgroup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF8WFnHz1HSw7v1uULIEomBEw2-YP6Gq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "586427927998-b17ifvne3msid312qd9idmml9ae4k8vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onegini.czpoc"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586427927998:android:fd385f935e56ef17bfbdef",
+        "android_client_info": {
+          "package_name": "com.onegini.authenticator.v2.roadhelp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF8WFnHz1HSw7v1uULIEomBEw2-YP6Gq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "586427927998-b17ifvne3msid312qd9idmml9ae4k8vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onegini.czpoc"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586427927998:android:4b656792a11eb246bfbdef",
+        "android_client_info": {
+          "package_name": "com.onegini.authenticator.v2.superiordemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF8WFnHz1HSw7v1uULIEomBEw2-YP6Gq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "586427927998-b17ifvne3msid312qd9idmml9ae4k8vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onegini.czpoc"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586427927998:android:e38f73147a5be729",
         "android_client_info": {
           "package_name": "com.onegini.mobile.exampleapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "client_id",
+          "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "current_key"
+          "current_key": "AIzaSyAF8WFnHz1HSw7v1uULIEomBEw2-YP6Gq8"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "586427927998-b17ifvne3msid312qd9idmml9ae4k8vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onegini.czpoc"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586427927998:android:3c822a7119295d4ebfbdef",
+        "android_client_info": {
+          "package_name": "com.onegini.mobile.flutterExample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF8WFnHz1HSw7v1uULIEomBEw2-YP6Gq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "586427927998-b17ifvne3msid312qd9idmml9ae4k8vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onegini.czpoc"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586427927998:android:bdb579ec49888d72",
+        "android_client_info": {
+          "package_name": "com.onegini.mobile.rabobankpoc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF8WFnHz1HSw7v1uULIEomBEw2-YP6Gq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "586427927998-b17ifvne3msid312qd9idmml9ae4k8vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onegini.czpoc"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586427927998:android:5a6ec9a5d7d1d9b8",
+        "android_client_info": {
+          "package_name": "com.onegini.oneginiauthenticator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF8WFnHz1HSw7v1uULIEomBEw2-YP6Gq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "586427927998-b17ifvne3msid312qd9idmml9ae4k8vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onegini.czpoc"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586427927998:android:1fa251f3225e68d6",
+        "android_client_info": {
+          "package_name": "com.outsystemscloud.outsystemsdev39.CZpoc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF8WFnHz1HSw7v1uULIEomBEw2-YP6Gq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "586427927998-b17ifvne3msid312qd9idmml9ae4k8vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onegini.czpoc"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586427927998:android:b9e165a2320b4d70",
+        "android_client_info": {
+          "package_name": "com.outsystemscloud.outsystemsdev39.CloneCZpoc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF8WFnHz1HSw7v1uULIEomBEw2-YP6Gq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586427927998-4fhoq79d7i08b2h8ecp4dt4ponbep5bi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "586427927998-b17ifvne3msid312qd9idmml9ae4k8vu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.onegini.czpoc"
+              }
+            }
+          ]
         }
       }
     }
