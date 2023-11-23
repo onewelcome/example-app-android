@@ -23,11 +23,11 @@ import com.onegini.mobile.exampleapp.model.QrCodeIdentityProvider;
 import com.onegini.mobile.exampleapp.model.StatelessIdentityProvider;
 import com.onegini.mobile.exampleapp.model.TwoStepIdentityProvider;
 import com.onegini.mobile.exampleapp.view.handler.BasicCustomAuthenticationRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.BiometricAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
-import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthOtpRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationBasicCustomRequestHandler;
-import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFingerprintRequestHandler;
+import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationBiometricRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.PinAuthenticationRequestHandler;
@@ -60,11 +60,11 @@ public class OneginiSDK {
     return new OneginiClientBuilder(applicationContext, createPinRequestHandler, pinAuthenticationRequestHandler)
         // handlers for optional functionalities
         .setBrowserRegistrationRequestHandler(registrationRequestHandler)
-        .setFingerprintAuthenticationRequestHandler(new FingerprintAuthenticationRequestHandler(applicationContext))
+        .setBiometricAuthenticationRequestHandler(new BiometricAuthenticationRequestHandler(applicationContext))
         .setCustomAuthenticationRequestHandler(new BasicCustomAuthenticationRequestHandler(applicationContext))
         .setMobileAuthWithPushRequestHandler(new MobileAuthenticationRequestHandler(applicationContext))
         .setMobileAuthWithPushPinRequestHandler(new MobileAuthenticationPinRequestHandler(applicationContext))
-        .setMobileAuthWithPushFingerprintRequestHandler(new MobileAuthenticationFingerprintRequestHandler(applicationContext))
+        .setMobileAuthWithPushBiometricRequestHandler(new MobileAuthenticationBiometricRequestHandler(applicationContext))
         .setMobileAuthWithPushCustomRequestHandler(new MobileAuthenticationBasicCustomRequestHandler(applicationContext))
         .setMobileAuthWithOtpRequestHandler(new MobileAuthOtpRequestHandler(applicationContext))
         // add custom authenticators

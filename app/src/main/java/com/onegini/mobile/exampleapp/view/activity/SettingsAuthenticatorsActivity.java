@@ -41,7 +41,7 @@ import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.adapter.AuthenticatorsAdapter;
 import com.onegini.mobile.exampleapp.model.AuthenticatorListItem;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
-import com.onegini.mobile.exampleapp.view.helper.OneginiAuthenticatorComperator;
+import com.onegini.mobile.exampleapp.view.helper.OneginiAuthenticatorComparator;
 import com.onegini.mobile.sdk.android.client.UserClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticatorDeregistrationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticatorRegistrationHandler;
@@ -164,7 +164,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
   private OneginiAuthenticator[] sortLists(final Set<OneginiAuthenticator> allAuthenticators) {
     final List<OneginiAuthenticator> authenticatorList = new ArrayList<>(allAuthenticators);
-    Collections.sort(authenticatorList, new OneginiAuthenticatorComperator());
+    Collections.sort(authenticatorList, new OneginiAuthenticatorComparator());
     return authenticatorList.toArray(new OneginiAuthenticator[authenticatorList.size()]);
   }
 

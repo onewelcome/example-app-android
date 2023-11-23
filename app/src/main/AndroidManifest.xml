@@ -60,7 +60,7 @@
         android:name=".view.activity.PinActivity"
         android:screenOrientation="portrait" />
     <activity
-        android:name=".view.activity.FingerprintActivity"
+        android:name=".view.activity.BiometricAuthenticationActivity"
         android:launchMode="singleTask"
         android:screenOrientation="portrait" />
     <activity
@@ -97,7 +97,7 @@
         android:screenOrientation="portrait"
         android:taskAffinity="" />
     <activity
-        android:name=".view.activity.MobileAuthenticationFingerprintActivity"
+        android:name=".view.activity.MobileAuthenticationBiometricActivity"
         android:excludeFromRecents="true"
         android:launchMode="singleTask"
         android:screenOrientation="portrait"

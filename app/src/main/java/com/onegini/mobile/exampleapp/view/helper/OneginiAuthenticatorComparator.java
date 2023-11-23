@@ -23,10 +23,10 @@ import java.util.Comparator;
 /**
  * Order provided authenticators in following order:
  * 1. PIN authenticator
- * 2. Android fingerprint authenticator
+ * 2. Android biometric authenticator
  * 3. Custom authenticators ordered by name
  */
-public class OneginiAuthenticatorComperator implements Comparator<OneginiAuthenticator> {
+public class OneginiAuthenticatorComparator implements Comparator<OneginiAuthenticator> {
 
   @Override
   public int compare(final OneginiAuthenticator o1, final OneginiAuthenticator o2) {
@@ -43,22 +43,22 @@ public class OneginiAuthenticatorComperator implements Comparator<OneginiAuthent
       return 0;
     }
 
-    // o1 == PIN && o2 == FINGERPRINT || CUSTOM
+    // o1 == PIN && o2 == BIOMETRIC || CUSTOM
     if (o1 == OneginiAuthenticator.PIN) {
       return -1;
     }
 
-    // o2 == PIN && o1 == FINGERPRINT || CUSTOM
+    // o2 == PIN && o1 == BIOMETRIC || CUSTOM
     if (o2 == OneginiAuthenticator.PIN) {
       return 1;
     }
 
-    // o1 == FINGERPRINT && o2 == CUSTOM
-    if (o1 == OneginiAuthenticator.FINGERPRINT) {
+    // o1 == BIOMETRIC && o2 == CUSTOM
+    if (o1 == OneginiAuthenticator.BIOMETRIC) {
       return -1;
     }
 
-    // o2 == FINGERPRINT && o1 == CUSTOM
+    // o2 == BIOMETRIC && o1 == CUSTOM
     return 1;
   }
 
