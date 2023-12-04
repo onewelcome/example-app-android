@@ -219,6 +219,7 @@ public class LoginActivity extends Activity {
       usersSpinner.setVisibility(View.INVISIBLE);
       loginButton.setVisibility(View.INVISIBLE);
       usePreferredAuthenticatorSwitchCompat.setVisibility(View.INVISIBLE);
+      selectedUser = null;
     }
     setupNavigationDrawer();
   }
