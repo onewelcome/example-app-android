@@ -42,8 +42,8 @@ public class PinInputFields {
 
   public void onPinDigitRemoved() {
     if (cursorIndex > 0) {
-      pinInputs[cursorIndex].setImageResource(EMPTY_FIELD_RESOURCE_ID);
       pin[--cursorIndex] = '\0';
+      pinInputs[cursorIndex].setImageResource(EMPTY_FIELD_RESOURCE_ID);
     }
 
     pinInputs[cursorIndex].setImageResource(FOCUSED_FIELD_RESOURCE_ID);
