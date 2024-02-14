@@ -89,7 +89,7 @@ dependencies {
   // Google Play Services availability check
   implementation 'com.google.android.gms:play-services-base:18.2.0'
   //Firebase Cloud Messaging (FCM)
-  implementation 'com.google.firebase:firebase-messaging:23.3.1'
+  implementation 'com.google.firebase:firebase-messaging:23.4.1'
   // Support for multidex
   implementation 'androidx.multidex:multidex:2.0.1'
   // DI for views
