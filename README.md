@@ -8,7 +8,7 @@ this example app.
 
 Before you can compile the application it must be able to resolve it's dependencies. The Onegini Android SDK is one of those dependencies.
 We have an Artifactory repository that distributes the required dependencies. Make sure that you have access to the Onegini Artifactory
-repository (https://repo.onegini.com). If you don't have access, no problem just go to
+repository (https://repo.onewelcome.com). If you don't have access, no problem just go to
 the [App developer quickstart](https://docs.onegini.com/app-developer-quickstart.html#step1) and perform the first step. Access to
 Artifactory is required to let Gradle download the Onegini Android SDK library.
 

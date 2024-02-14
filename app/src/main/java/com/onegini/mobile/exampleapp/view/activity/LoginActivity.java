@@ -17,6 +17,7 @@
 package com.onegini.mobile.exampleapp.view.activity;
 
 import static com.onegini.mobile.exampleapp.view.activity.RegistrationActivity.IDENTITY_PROVIDER_EXTRA;
+import static com.onegini.mobile.exampleapp.view.activity.RegistrationActivity.STATELESS_REGISTRATION_EXTRA;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -88,6 +89,8 @@ public class LoginActivity extends Activity {
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.login_with_preferred_authenticator)
   SwitchCompat usePreferredAuthenticatorSwitchCompat;
+  @BindView(R.id.stateless_registration_switch)
+  SwitchCompat statelessRegistrationSwitch;
   @SuppressWarnings({ "unused", "WeakerAccess" })
   @BindView(R.id.register_with_preferred_identity_provider)
   SwitchCompat usePreferredIdentityProviderSwitchCompat;
@@ -185,6 +188,7 @@ public class LoginActivity extends Activity {
 
   private void registerUser(final OneginiIdentityProvider identityProvider) {
     final Intent intent = new Intent(this, RegistrationActivity.class);
+    intent.putExtra(STATELESS_REGISTRATION_EXTRA, statelessRegistrationSwitch.isChecked());
     if (identityProvider != null) {
       intent.putExtra(IDENTITY_PROVIDER_EXTRA, identityProvider);
     }
@@ -215,6 +219,7 @@ public class LoginActivity extends Activity {
       usersSpinner.setVisibility(View.INVISIBLE);
       loginButton.setVisibility(View.INVISIBLE);
       usePreferredAuthenticatorSwitchCompat.setVisibility(View.INVISIBLE);
+      selectedUser = null;
     }
     setupNavigationDrawer();
   }

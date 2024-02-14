@@ -14,8 +14,7 @@
   limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.onegini.mobile.exampleapp">
+    xmlns:tools="http://schemas.android.com/tools">
 
   <uses-permission android:name="android.permission.CAMERA" />
 
@@ -61,7 +60,7 @@
         android:name=".view.activity.PinActivity"
         android:screenOrientation="portrait" />
     <activity
-        android:name=".view.activity.FingerprintActivity"
+        android:name=".view.activity.BiometricAuthenticationActivity"
         android:launchMode="singleTask"
         android:screenOrientation="portrait" />
     <activity
@@ -98,7 +97,7 @@
         android:screenOrientation="portrait"
         android:taskAffinity="" />
     <activity
-        android:name=".view.activity.MobileAuthenticationFingerprintActivity"
+        android:name=".view.activity.MobileAuthenticationBiometricActivity"
         android:excludeFromRecents="true"
         android:launchMode="singleTask"
         android:screenOrientation="portrait"
@@ -146,7 +145,7 @@
         android:launchMode="singleTask"
         android:screenOrientation="portrait" />
     <activity
-        android:name=".view.activity.TwoWayOtpRegistrationActivity"
+        android:name=".view.activity.TwoStepRegistrationActivity"
         android:launchMode="singleTask"
         android:screenOrientation="portrait" />
     <activity

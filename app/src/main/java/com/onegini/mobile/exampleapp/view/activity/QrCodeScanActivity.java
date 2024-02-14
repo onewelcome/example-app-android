@@ -145,6 +145,7 @@ public class QrCodeScanActivity extends AppCompatActivity {
     public void receiveDetections(final Detector.Detections<Barcode> detections) {
       final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
       if (qrCodes.size() > 0) {
+        barcodeDetector.release();
         onScanningCompleted(qrCodes.valueAt(0).displayValue);
       }
     }

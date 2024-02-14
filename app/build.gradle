@@ -26,10 +26,10 @@ allprojects {
     if (project.hasProperty('artifactory_user') && project.hasProperty('artifactory_password')) {
       maven {
         /*
-        Before the release please change the url below to: https://repo.onegini.com/artifactory/onegini-sdk
-        Please change it back to https://repo.onegini.com/artifactory/public after the release
+        Before the release please change the url below to: https://repo.onewelcome.com/artifactory/onegini-sdk
+        Please change it back to https://repo.onewelcome.com/artifactory/public after the release
         */
-        url "https://repo.onegini.com/artifactory/onegini-sdk"
+        url "https://repo.onewelcome.com/artifactory/onegini-sdk"
         credentials {
           username artifactory_user
           password artifactory_password
@@ -43,8 +43,6 @@ allprojects {
 }
 
 android {
-  compileSdkVersion 33
-
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
@@ -53,9 +51,10 @@ android {
   defaultConfig {
     applicationId "com.onegini.mobile.exampleapp"
     minSdkVersion 23
-    targetSdkVersion 33
+    targetSdk 34
+    compileSdk 34
     versionCode 25
-    versionName "7.6.0"
+    versionName "7.8.0"
     multiDexEnabled true
   }
   buildTypes {
@@ -70,35 +69,38 @@ android {
   lintOptions {
     abortOnError false
   }
+  namespace 'com.onegini.mobile.exampleapp'
 }
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:11.9.0@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:12.0.0@aar') {
     transitive = true
   }
-
   // Rest Client
   implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
 
   // Google Support libraries for UI
-  implementation 'com.google.android.material:material:1.5.0'
+  implementation 'com.google.android.material:material:1.10.0'
   implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
   // QR code reader
   implementation 'com.google.android.gms:play-services-vision:20.1.3'
   // Google Play Services availability check
-  implementation 'com.google.android.gms:play-services-base:18.0.1'
+  implementation 'com.google.android.gms:play-services-base:18.2.0'
   //Firebase Cloud Messaging (FCM)
-  implementation 'com.google.firebase:firebase-messaging:23.0.0'
+  implementation 'com.google.firebase:firebase-messaging:23.3.1'
   // Support for multidex
   implementation 'androidx.multidex:multidex:2.0.1'
   // DI for views
   implementation 'com.jakewharton:butterknife:10.2.0'
   annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
   // RxJava
-  implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
+  implementation 'io.reactivex.rxjava3:rxjava:3.1.8'
   implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+
+  //Biometric
+  implementation "androidx.biometric:biometric:1.1.0"
 }
 
 //according to google documentation, this plugin has to be applied at the end of the file

@@ -71,6 +71,7 @@
   <string name="push_token_is_null_error_message">The push token is null, check if your Firebase configuration in google-services.json file is valid.</string>
   <string name="use_preferred_authenticator_label">USE PREFERRED AUTHENTICATOR</string>
   <string name="use_default_identity_provider_label">USE DEFAULT IDENTITY PROVIDER</string>
+  <string name="stateless_registration_switch">STATELESS REGISTRATION</string>
   <string name="implicit_user_details_fetch_failed_label">failed to fetch</string>
   <string name="custom_auth_positive_action">Return success</string>
   <string name="custom_auth_negative_action">Return failure</string>
@@ -102,4 +103,8 @@
   <string name="two_way_otp_challenge_code_label">Challenge code</string>
   <string name="two_way_otp_response_code_label">Response code</string>
   <string name="qr_code_message">Scan QR code</string>
+  <string name="biometric_authentication_title">Biometric authentication</string>
+  <string name="biometric_authentication_subtitle">Authenticate using biometrics</string>
+  <string name="biometric_authentication_cancel">Cancel</string>
+  <string name="confirm_with_biometrics">Confirm with biometrics</string>
 </resources>
