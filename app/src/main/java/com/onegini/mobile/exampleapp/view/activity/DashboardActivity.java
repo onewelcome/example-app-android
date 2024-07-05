@@ -184,6 +184,12 @@ public class DashboardActivity extends AppCompatActivity {
   }
 
   @SuppressWarnings("unused")
+  @OnClick(R.id.button_id_token)
+  public void startIdTokenActivity() {
+    startActivity(new Intent(this, IdTokenActivity.class));
+  }
+
+  @SuppressWarnings("unused")
   @OnClick(R.id.button_settings)
   public void startSettingsActivity() {
     startActivity(new Intent(this, SettingsActivity.class));
