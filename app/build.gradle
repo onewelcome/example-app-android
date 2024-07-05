@@ -74,7 +74,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:12.1.0@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:12.2.0-SNAPSHOT@aar') {
     transitive = true
   }
   // Rest Client
