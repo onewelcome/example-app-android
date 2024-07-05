@@ -17,7 +17,7 @@
 package com.onegini.mobile.exampleapp;
 
 public interface Constants {
-  String[] DEFAULT_SCOPES = { "read" };
+  String[] DEFAULT_SCOPES = { "read", "openid", "profile", "phone", "email" };
   String NEW_LINE = "\n";
   String FCM_SENDER_ID = "586427927998";
   String EXTRA_COMMAND = "command";
