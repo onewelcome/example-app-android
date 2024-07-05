@@ -32,6 +32,7 @@
   <string name="btn_logout_label">Logout</string>
   <string name="btn_deregister_user_label">Deregister user</string>
   <string name="btn_your_devices">Your devices</string>
+  <string name="btn_id_token">ID Token</string>
   <string name="confirm">Confirm</string>
   <string name="confirm_with_fingerprint">Confirm with fingerprint</string>
   <string name="scan_fingerprint">Touch sensor</string>
@@ -107,4 +108,6 @@
   <string name="biometric_authentication_subtitle">Authenticate using biometrics</string>
   <string name="biometric_authentication_cancel">Cancel</string>
   <string name="confirm_with_biometrics">Confirm with biometrics</string>
+  <string name="id_token_title">ID Token</string>
+  <string name="id_token_null_description">There\'s no ID token. Please make sure to use openid scope during registration.</string>
 </resources>
