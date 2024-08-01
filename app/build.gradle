@@ -54,7 +54,7 @@ android {
     targetSdk 34
     compileSdk 34
     versionCode 25
-    versionName "7.9.1"
+    versionName "7.9.2"
     multiDexEnabled true
   }
   buildTypes {
