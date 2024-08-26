@@ -38,23 +38,23 @@ public class OneginiAuthenticatorComparator implements Comparator<OneginiAuthent
     }
   }
 
-  private int compareByType(final int o1, final int o2) {
+  private int compareByType(final OneginiAuthenticator.OneginiAuthenticatorType o1, final OneginiAuthenticator.OneginiAuthenticatorType o2) {
     if (o1 == o2) {
       return 0;
     }
 
     // o1 == PIN && o2 == BIOMETRIC || CUSTOM
-    if (o1 == OneginiAuthenticator.PIN) {
+    if (o1 == OneginiAuthenticator.OneginiAuthenticatorType.PIN) {
       return -1;
     }
 
     // o2 == PIN && o1 == BIOMETRIC || CUSTOM
-    if (o2 == OneginiAuthenticator.PIN) {
+    if (o2 == OneginiAuthenticator.OneginiAuthenticatorType.PIN) {
       return 1;
     }
 
     // o1 == BIOMETRIC && o2 == CUSTOM
-    if (o1 == OneginiAuthenticator.BIOMETRIC) {
+    if (o1 == OneginiAuthenticator.OneginiAuthenticatorType.BIOMETRIC) {
       return -1;
     }
 

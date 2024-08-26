@@ -254,7 +254,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   private void setPinAsPreferredAuthenticator() {
     final Set<OneginiAuthenticator> allAuthenticators = userClient.getAllAuthenticators(authenticatedUserProfile);
     for (final OneginiAuthenticator auth : allAuthenticators) {
-      if (auth.getType() == OneginiAuthenticator.PIN) {
+      if (auth.getType() == OneginiAuthenticator.OneginiAuthenticatorType.PIN) {
         setPreferredAuthenticator(auth);
       }
     }
@@ -274,7 +274,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
       final AuthenticatorListItem clickedAuthenticatorItem = authenticators[position];
       final OneginiAuthenticator clickedAuthenticator = clickedAuthenticatorItem.getAuthenticator();
 
-      if (clickedAuthenticatorItem.isProcessed() || clickedAuthenticator.getType() == OneginiAuthenticator.PIN) {
+      if (clickedAuthenticatorItem.isProcessed() || clickedAuthenticator.getType() == OneginiAuthenticator.OneginiAuthenticatorType.PIN) {
         return;
       }
       clickedAuthenticatorItem.setIsProcessed(true);
