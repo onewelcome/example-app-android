@@ -64,7 +64,7 @@ public class AuthenticatorsAdapter extends
 
     holder.authenticatorSwitch.setText(authenticator.getName());
 
-    if (authenticator.getType() == OneginiAuthenticator.PIN) {
+    if (authenticator.getType() == OneginiAuthenticator.Type.PIN) {
       holder.authenticatorSwitch.setChecked(true);
       holder.authenticatorSwitch.setEnabled(false);
       return;
