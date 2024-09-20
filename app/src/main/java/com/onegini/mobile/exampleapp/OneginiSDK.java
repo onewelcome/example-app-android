@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 public class OneginiSDK {
 
   public static OneginiClient getOneginiClient(final Context context) {
-    OneginiClient oneginiClient = OneginiClient.Companion.getInstance();
+    OneginiClient oneginiClient = OneginiClient.getInstance();
     if (oneginiClient == null) {
       oneginiClient = buildSDK(context);
     }
