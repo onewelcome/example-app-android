@@ -246,7 +246,7 @@ public class DashboardActivity extends AppCompatActivity {
             new Handler(Looper.getMainLooper()).post(() ->
                 Toast.makeText(
                         getBaseContext(),
-                        getString(R.string.refresh_token_error, oneginiRefreshStatelessSessionError),
+                        getString(R.string.refresh_token_error),
                         Toast.LENGTH_SHORT)
                     .show());
             Log.e("RefreshStatelessSession error:", oneginiRefreshStatelessSessionError.toString());
