@@ -21,6 +21,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -248,6 +249,7 @@ public class DashboardActivity extends AppCompatActivity {
                         getString(R.string.refresh_token_error, oneginiRefreshStatelessSessionError),
                         Toast.LENGTH_SHORT)
                     .show());
+            Log.e("RefreshStatelessSession error:", oneginiRefreshStatelessSessionError.toString());
           }
         }
     );
