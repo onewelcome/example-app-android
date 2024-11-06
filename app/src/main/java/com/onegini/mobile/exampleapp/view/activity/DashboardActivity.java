@@ -237,19 +237,17 @@ public class DashboardActivity extends AppCompatActivity {
         new OneginiRefreshStatelessSessionHandler() {
           @Override
           public void onSuccess() {
-            new Handler(Looper.getMainLooper()).post(()
-                -> Toast.makeText(getBaseContext(), getString(R.string.refresh_token_success), Toast.LENGTH_SHORT).show());
+            Toast.makeText(getBaseContext(), getString(R.string.refresh_token_success), Toast.LENGTH_SHORT).show();
           }
 
           @Override
           public void onError(@NonNull OneginiRefreshStatelessSessionError oneginiRefreshStatelessSessionError) {
-            new Handler(Looper.getMainLooper()).post(() ->
-                Toast.makeText(
-                        getBaseContext(),
-                        getString(R.string.refresh_token_error),
-                        Toast.LENGTH_SHORT)
-                    .show());
             Log.e("RefreshStatelessSession error:", oneginiRefreshStatelessSessionError.toString());
+            Toast.makeText(
+                    getBaseContext(),
+                    getString(R.string.refresh_token_error),
+                    Toast.LENGTH_SHORT)
+                .show();
           }
         }
     );
