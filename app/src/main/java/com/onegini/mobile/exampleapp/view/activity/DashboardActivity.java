@@ -19,8 +19,12 @@ package com.onegini.mobile.exampleapp.view.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -37,10 +41,12 @@ import com.onegini.mobile.sdk.android.handlers.OneginiAppToWebSingleSignOnHandle
 import com.onegini.mobile.sdk.android.handlers.OneginiDeregisterUserProfileHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiLogoutHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithOtpHandler;
+import com.onegini.mobile.sdk.android.handlers.OneginiRefreshStatelessSessionHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAppToWebSingleSignOnError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiDeregistrationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiLogoutError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithOtpError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiRefreshStatelessSessionError;
 import com.onegini.mobile.sdk.android.model.OneginiAppToWebSingleSignOn;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
@@ -222,6 +228,29 @@ public class DashboardActivity extends AppCompatActivity {
         showToast("App To Web Single Sign-On error: " + oneginiAppToWebSingleSignOnError.getMessage());
       }
     });
+  }
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.button_refresh_stateless_session)
+  public void refreshStatelessSession() {
+    OneginiClient.getInstance().getUserClient().refreshStatelessSession(
+        new OneginiRefreshStatelessSessionHandler() {
+          @Override
+          public void onSuccess() {
+            Toast.makeText(getBaseContext(), getString(R.string.refresh_token_success), Toast.LENGTH_SHORT).show();
+          }
+
+          @Override
+          public void onError(@NonNull OneginiRefreshStatelessSessionError oneginiRefreshStatelessSessionError) {
+            Log.e("RefreshStatelessSession error:", oneginiRefreshStatelessSessionError.toString());
+            Toast.makeText(
+                    getBaseContext(),
+                    getString(R.string.refresh_token_error),
+                    Toast.LENGTH_SHORT)
+                .show();
+          }
+        }
+    );
   }
 
   private void showToast(final String message) {
