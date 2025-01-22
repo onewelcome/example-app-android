@@ -22,6 +22,7 @@ import static com.onegini.mobile.exampleapp.view.activity.RegistrationActivity.S
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,6 +62,7 @@ import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequ
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -96,6 +98,10 @@ public class LoginActivity extends Activity {
   SwitchCompat usePreferredIdentityProviderSwitchCompat;
   @BindView(R.id.bottom_navigation)
   BottomNavigationView bottomNavigationView;
+  @BindView(R.id.text_old_signature)
+  TextView oldSignatureText;
+  @BindView(R.id.text_new_signature)
+  TextView newSignatureText;
   private List<User> listOfUsers = new ArrayList<>();
   private boolean userIsLoggingIn = false;
   private String lastErrorMessage;
@@ -118,6 +124,25 @@ public class LoginActivity extends Activity {
         .findItem(R.id.action_home)
         .setChecked(true);
     showError();
+    Signature[] oldSignatures = OneginiSDK.getOneginiClient(this).getUserClient().getOldSignature();
+    byte[] oldSignature = new byte[0];
+    for (Signature signature : oldSignatures) {
+      oldSignature = signature.toByteArray();
+    }
+    final byte[] newSignature = OneginiSDK.getOneginiClient(this).getUserClient().getNewSignature();
+    final String oldValue = Arrays.toString(oldSignature);
+    final String newValue = Arrays.toString(newSignature);
+    if (oldValue.length() > 400) {
+      oldSignatureText.setText("Old signature " + oldValue.substring(0, 400));
+    } else {
+      oldSignatureText.setText("Old signature " + oldValue);
+    }
+
+    if (newValue.length() > 400) {
+      newSignatureText.setText("New signature " + newValue.substring(0, 400));
+    } else {
+      newSignatureText.setText("New signature " + newValue);
+    }
   }
 
   @Override

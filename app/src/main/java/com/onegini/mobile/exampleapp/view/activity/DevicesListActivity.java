@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.adapter.DevicesAdapter;
 import com.onegini.mobile.exampleapp.model.Device;
+import com.onegini.mobile.exampleapp.network.AnonymousService;
 import com.onegini.mobile.exampleapp.network.UserService;
 import com.onegini.mobile.exampleapp.network.response.DevicesResponse;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -59,11 +60,22 @@ public class DevicesListActivity extends AppCompatActivity {
     fetchUserDevices();
   }
 
+//  private void fetchUserDevices() {
+//    disposable = UserService.getInstance(this)
+//        .getDevices()
+//        .doFinally(this::onFetchComplete)
+//        .subscribe(this::onDevicesFetched, throwable -> onDevicesFetchFailed());
+//  }
+
   private void fetchUserDevices() {
-    disposable = UserService.getInstance(this)
+    /*disposable = UserService.getInstance(this)
         .getDevices()
         .doFinally(this::onFetchComplete)
-        .subscribe(this::onDevicesFetched, throwable -> onDevicesFetchFailed());
+        .subscribe(this::onDevicesFetched, this::onDevicesFetchFailed);*/
+
+    disposable = AnonymousService.getInstance(this)
+        .getApplicationDetails()
+        .subscribe();
   }
 
   private void onDevicesFetched(final DevicesResponse devicesResponse) {
