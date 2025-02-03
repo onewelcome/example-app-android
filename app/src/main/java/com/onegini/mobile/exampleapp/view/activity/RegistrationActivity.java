@@ -44,7 +44,6 @@ import com.onegini.mobile.exampleapp.view.handler.RegistrationRequestHandler;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiRegistrationHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiStatelessRegistrationHandler;
-import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiRegistrationError;
 import com.onegini.mobile.sdk.android.model.OneginiIdentityProvider;
 import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
@@ -151,44 +150,43 @@ public class RegistrationActivity extends Activity {
   }
 
   private void handleRegistrationErrors(final OneginiRegistrationError oneginiRegistrationError) {
-    @OneginiRegistrationError.RegistrationErrorType final int errorType = oneginiRegistrationError.getErrorType();
+    OneginiRegistrationError.Type errorType = oneginiRegistrationError.getErrorType();
     switch (errorType) {
-      case OneginiRegistrationError.DEVICE_DEREGISTERED:
+      case DEVICE_DEREGISTERED:
         showToast("The device was deregistered, please try registering again");
-
         new DeregistrationUtil(this).onDeviceDeregistered();
         break;
-      case OneginiRegistrationError.ACTION_CANCELED:
+      case ACTION_CANCELED:
         showToast("Registration was cancelled");
         break;
-      case OneginiAuthenticationError.NETWORK_CONNECTIVITY_PROBLEM:
+      case NETWORK_CONNECTIVITY_PROBLEM:
         showToast("No internet connection.");
         break;
-      case OneginiAuthenticationError.SERVER_NOT_REACHABLE:
+      case SERVER_NOT_REACHABLE:
         showToast("The server is not reachable.");
         break;
-      case OneginiRegistrationError.OUTDATED_APP:
+      case OUTDATED_APP:
         showToast("Please update this application in order to use it.");
         break;
-      case OneginiRegistrationError.OUTDATED_OS:
+      case OUTDATED_OS:
         showToast("Please update your Android version to use this application.");
         break;
-      case OneginiRegistrationError.INVALID_IDENTITY_PROVIDER:
+      case INVALID_IDENTITY_PROVIDER:
         showToast(oneginiRegistrationError.getMessage());
         break;
-      case OneginiRegistrationError.CUSTOM_REGISTRATION_EXPIRED:
+      case CUSTOM_REGISTRATION_EXPIRED:
         showToast("Custom registration request has expired. Please retry.");
         break;
-      case OneginiRegistrationError.CUSTOM_REGISTRATION_FAILURE:
+      case CUSTOM_REGISTRATION_FAILURE:
         showToast("Custom registration request has failed, see logcat for more details.");
         break;
-      case OneginiRegistrationError.ACTION_ALREADY_IN_PROGRESS:
-      case OneginiRegistrationError.CONFIGURATION_ERROR:
-      case OneginiRegistrationError.DEVICE_REGISTRATION_ERROR:
-      case OneginiRegistrationError.INVALID_REQUEST:
-      case OneginiRegistrationError.INVALID_STATE:
-      case OneginiRegistrationError.DATA_STORAGE_NOT_AVAILABLE:
-      case OneginiRegistrationError.GENERAL_ERROR:
+      case ACTION_ALREADY_IN_PROGRESS:
+      case CONFIGURATION_ERROR:
+      case DEVICE_REGISTRATION_ERROR:
+      case INVALID_REQUEST:
+      case INVALID_STATE:
+      case DATA_STORAGE_NOT_AVAILABLE:
+      case GENERAL_ERROR:
       default:
         // General error handling for other, less relevant errors
         handleGeneralError(oneginiRegistrationError);
