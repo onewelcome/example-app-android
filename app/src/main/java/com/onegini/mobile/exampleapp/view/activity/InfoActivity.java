@@ -182,9 +182,9 @@ public class InfoActivity extends AppCompatActivity {
               @Override
               public void onError(final OneginiDeviceAuthenticationError error) {
                 onApplicationDetailsFetchFailed();
-                final @OneginiDeviceAuthenticationError.DeviceAuthenticationErrorType int errorType = error.getErrorType();
+                OneginiDeviceAuthenticationError.Type errorType = error.getErrorType();
 
-                if (errorType == OneginiDeviceAuthenticationError.DEVICE_DEREGISTERED) {
+                if (errorType == OneginiDeviceAuthenticationError.Type.DEVICE_DEREGISTERED) {
                   new DeregistrationUtil(InfoActivity.this).onDeviceDeregistered();
                 }
                 InfoActivity.this.onError(error);
@@ -230,10 +230,10 @@ public class InfoActivity extends AppCompatActivity {
           @Override
           public void onError(final OneginiImplicitTokenRequestError error) {
             onImplicitDetailsFetchFailed(error);
-            @OneginiImplicitTokenRequestError.ImplicitTokenRequestErrorType int errorType = error.getErrorType();
-            if (errorType == OneginiImplicitTokenRequestError.DEVICE_DEREGISTERED) {
+            OneginiImplicitTokenRequestError.Type errorType = error.getErrorType();
+            if (errorType == OneginiImplicitTokenRequestError.Type.DEVICE_DEREGISTERED) {
               new DeregistrationUtil(InfoActivity.this).onDeviceDeregistered();
-            } else if (errorType == OneginiImplicitTokenRequestError.USER_DEREGISTERED) {
+            } else if (errorType == OneginiImplicitTokenRequestError.Type.USER_DEREGISTERED) {
               new DeregistrationUtil(InfoActivity.this).onUserDeregistered(userProfile);
             }
           }

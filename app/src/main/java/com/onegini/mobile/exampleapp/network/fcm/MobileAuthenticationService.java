@@ -90,9 +90,9 @@ public class MobileAuthenticationService extends IntentService {
       public void onError(final OneginiMobileAuthenticationError oneginiMobileAuthenticationError) {
         Log.e(TAG, "The mobile authentication request  " + request.getTransactionId() +
             " has finished with error: " + oneginiMobileAuthenticationError.getMessage());
-        @OneginiMobileAuthenticationError.MobileAuthenticationErrorType final int errorType =
+        final OneginiMobileAuthenticationError.Type errorType =
             oneginiMobileAuthenticationError.getErrorType();
-        if (errorType == OneginiMobileAuthenticationError.DEVICE_DEREGISTERED) {
+        if (errorType == OneginiMobileAuthenticationError.Type.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(getApplicationContext()).onDeviceDeregistered();
         }
       }
