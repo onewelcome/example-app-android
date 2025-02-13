@@ -122,8 +122,8 @@ public class FCMListenerService extends FirebaseMessagingService {
     @Override
     public void onError(final OneginiRefreshMobileAuthPushTokenError error) {
       Log.e(TAG, "The push token update has failed: " + error.getMessage());
-      @OneginiRefreshMobileAuthPushTokenError.RefreshMobileAuthPushTokenErrorType final int errorType = error.getErrorType();
-      if (errorType == OneginiRefreshMobileAuthPushTokenError.DEVICE_DEREGISTERED) {
+      OneginiRefreshMobileAuthPushTokenError.Type errorType = error.getErrorType();
+      if (errorType == OneginiRefreshMobileAuthPushTokenError.Type.DEVICE_DEREGISTERED) {
         new DeregistrationUtil(FCMListenerService.this).onDeviceDeregistered();
       }
     }

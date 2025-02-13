@@ -48,8 +48,8 @@ public class OneginiClientInitializer {
 
       @Override
       public void onError(final OneginiInitializationError error) {
-        @OneginiInitializationError.InitializationErrorType final int errorType = error.getErrorType();
-        if (errorType == OneginiInitializationError.DEVICE_DEREGISTERED) {
+        final OneginiInitializationError.Type errorType = error.getErrorType();
+        if (errorType == OneginiInitializationError.Type.DEVICE_DEREGISTERED) {
           deregistrationUtil.onDeviceDeregistered();
         }
         initializationHandler.onError(error.getMessage());

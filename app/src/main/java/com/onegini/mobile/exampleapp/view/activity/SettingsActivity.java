@@ -137,12 +137,12 @@ public class SettingsActivity extends AppCompatActivity {
 
       @Override
       public void onError(final OneginiMobileAuthEnrollmentError error) {
-        @OneginiMobileAuthEnrollmentError.MobileAuthEnrollmentErrorType final int errorType = error.getErrorType();
+        final OneginiMobileAuthEnrollmentError.Type errorType = error.getErrorType();
         final String errorMessage = parseErrorMessage(error);
-        if (errorType == OneginiMobileAuthEnrollmentError.DEVICE_DEREGISTERED) {
+        if (errorType == OneginiMobileAuthEnrollmentError.Type.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
           startLoginActivity(errorMessage);
-        } else if (errorType == OneginiMobileAuthEnrollmentError.USER_NOT_AUTHENTICATED) {
+        } else if (errorType == OneginiMobileAuthEnrollmentError.Type.USER_NOT_AUTHENTICATED) {
           startLoginActivity(errorMessage);
         } else {
           resultTextView.setText(errorMessage);
@@ -172,8 +172,8 @@ public class SettingsActivity extends AppCompatActivity {
           public void onError(final Throwable throwable) {
             if (throwable instanceof OneginiMobileAuthWithPushEnrollmentError) {
               final OneginiMobileAuthWithPushEnrollmentError error = (OneginiMobileAuthWithPushEnrollmentError) throwable;
-              @OneginiMobileAuthWithPushEnrollmentError.MobileAuthWithPushEnrollmentErrorType final int errorType = error.getErrorType();
-              if (errorType == OneginiMobileAuthWithPushEnrollmentError.DEVICE_DEREGISTERED) {
+              final OneginiMobileAuthWithPushEnrollmentError.Type errorType = error.getErrorType();
+              if (errorType == OneginiMobileAuthWithPushEnrollmentError.Type.DEVICE_DEREGISTERED) {
                 new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
                 startLoginActivity(parseErrorMessage(error));
               }
@@ -199,12 +199,12 @@ public class SettingsActivity extends AppCompatActivity {
 
       @Override
       public void onError(final OneginiChangePinError oneginiChangePinError) {
-        @OneginiChangePinError.ChangePinErrorType int errorType = oneginiChangePinError.getErrorType();
+        final OneginiChangePinError.Type errorType = oneginiChangePinError.getErrorType();
         final String errorMessage = parseErrorMessage(oneginiChangePinError);
-        if (errorType == OneginiChangePinError.USER_DEREGISTERED) {
+        if (errorType == OneginiChangePinError.Type.USER_DEREGISTERED) {
           new DeregistrationUtil(SettingsActivity.this).onUserDeregistered(authenticatedUserProfile);
           startLoginActivity(errorMessage);
-        } else if (errorType == OneginiChangePinError.DEVICE_DEREGISTERED) {
+        } else if (errorType == OneginiChangePinError.Type.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsActivity.this).onDeviceDeregistered();
           startLoginActivity(errorMessage);
         }

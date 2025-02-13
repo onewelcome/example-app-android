@@ -110,13 +110,13 @@ public class PendingPushMessagesAdapter extends RecyclerView.Adapter<PendingPush
 
                   @Override
                   public void onError(final OneginiDenyMobileAuthWithPushRequestError error) {
-                    @OneginiDenyMobileAuthWithPushRequestError.DenyMobileAuthWithPushRequestErrorType int errorType = error.getErrorType();
-                    if (errorType == OneginiAuthenticatorDeregistrationError.USER_DEREGISTERED) {
+                    OneginiDenyMobileAuthWithPushRequestError.Type errorType = error.getErrorType();
+                    if (errorType == OneginiDenyMobileAuthWithPushRequestError.Type.USER_DEREGISTERED) {
                       final UserProfile authenticatedUserProfile =
                           OneginiSDK.getOneginiClient(context).getUserClient().getAuthenticatedUserProfile();
                       new DeregistrationUtil(context).onUserDeregistered(authenticatedUserProfile);
                       startLoginActivity(error.getMessage());
-                    } else if (errorType == OneginiAuthenticatorDeregistrationError.DEVICE_DEREGISTERED) {
+                    } else if (errorType == OneginiDenyMobileAuthWithPushRequestError.Type.DEVICE_DEREGISTERED) {
                       new DeregistrationUtil(context).onDeviceDeregistered();
                       startLoginActivity(error.getMessage());
                     } else {
