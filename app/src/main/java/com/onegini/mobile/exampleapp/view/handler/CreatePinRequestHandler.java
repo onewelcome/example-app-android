@@ -69,27 +69,27 @@ public class CreatePinRequestHandler implements OneginiCreatePinRequestHandler {
   }
 
   private void handlePinValidationError(final OneginiPinValidationError oneginiPinValidationError) {
-    @OneginiPinValidationError.PinValidationErrorType int errorType = oneginiPinValidationError.getErrorType();
+    OneginiPinValidationError.Type errorType = oneginiPinValidationError.getErrorType();
     switch (errorType) {
-      case OneginiPinValidationError.WRONG_PIN_LENGTH:
+      case WRONG_PIN_LENGTH:
         notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_invalid_length));
         break;
-      case OneginiPinValidationError.PIN_BLACKLISTED:
+      case PIN_BLACKLISTED:
         notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_blacklisted));
         break;
-      case OneginiPinValidationError.PIN_IS_A_SEQUENCE:
+      case PIN_IS_A_SEQUENCE:
         notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_sequence));
         break;
-      case OneginiPinValidationError.PIN_USES_SIMILAR_DIGITS:
+      case PIN_USES_SIMILAR_DIGITS:
         notifyActivity(context.getString(R.string.pin_title_choose_pin), context.getString(R.string.pin_error_similar));
         break;
-      case OneginiPinValidationError.DEVICE_DEREGISTERED:
+      case DEVICE_DEREGISTERED:
         new DeregistrationUtil(context).onDeviceDeregistered();
         startLoginActivity(parseErrorMessage(oneginiPinValidationError));
         break;
-      case OneginiPinValidationError.DATA_STORAGE_NOT_AVAILABLE:
-      case OneginiPinValidationError.ACTION_ALREADY_IN_PROGRESS:
-      case OneginiPinValidationError.GENERAL_ERROR:
+      case DATA_STORAGE_NOT_AVAILABLE:
+      case ACTION_ALREADY_IN_PROGRESS:
+      case GENERAL_ERROR:
       default:
         notifyActivity(context.getString(R.string.pin_title_choose_pin), oneginiPinValidationError.getMessage());
         break;

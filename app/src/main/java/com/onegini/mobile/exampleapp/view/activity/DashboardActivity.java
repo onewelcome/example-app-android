@@ -125,11 +125,11 @@ public class DashboardActivity extends AppCompatActivity {
   }
 
   private void handleLogoutError(final OneginiLogoutError oneginiLogoutError, final UserProfile userProfile) {
-    @OneginiLogoutError.LogoutErrorType final int errorType = oneginiLogoutError.getErrorType();
+    final OneginiLogoutError.Type errorType = oneginiLogoutError.getErrorType();
 
-    if (errorType == OneginiLogoutError.DEVICE_DEREGISTERED) {
+    if (errorType == OneginiLogoutError.Type.DEVICE_DEREGISTERED) {
       new DeregistrationUtil(this).onDeviceDeregistered();
-    } else if (errorType == OneginiLogoutError.USER_DEREGISTERED) {
+    } else if (errorType == OneginiLogoutError.Type.USER_DEREGISTERED) {
       new DeregistrationUtil(this).onUserDeregistered(userProfile);
     }
 
@@ -171,8 +171,8 @@ public class DashboardActivity extends AppCompatActivity {
   }
 
   private void onUserDeregistrationError(final OneginiDeregistrationError oneginiDeregistrationError) {
-    @OneginiDeregistrationError.DeregistrationErrorType final int errorType = oneginiDeregistrationError.getErrorType();
-    if (errorType == OneginiDeregistrationError.DEVICE_DEREGISTERED) {
+    final OneginiDeregistrationError.Type errorType = oneginiDeregistrationError.getErrorType();
+    if (errorType == OneginiDeregistrationError.Type.DEVICE_DEREGISTERED) {
       // Deregistration failed due to missing device credentials. Register app once again.
       new DeregistrationUtil(this).onDeviceDeregistered();
     }
@@ -218,8 +218,8 @@ public class DashboardActivity extends AppCompatActivity {
 
       @Override
       public void onError(final OneginiAppToWebSingleSignOnError oneginiAppToWebSingleSignOnError) {
-        @OneginiAppToWebSingleSignOnError.AppToWebSingleSignOnErrorType int errorType = oneginiAppToWebSingleSignOnError.getErrorType();
-        if (errorType == OneginiDeregistrationError.DEVICE_DEREGISTERED) {
+        final OneginiAppToWebSingleSignOnError.Type errorType = oneginiAppToWebSingleSignOnError.getErrorType();
+        if (errorType == OneginiAppToWebSingleSignOnError.Type.DEVICE_DEREGISTERED) {
           // Deregistration failed due to missing device credentials. Register app once again.
           new DeregistrationUtil(DashboardActivity.this).onDeviceDeregistered();
         }

@@ -270,43 +270,43 @@ public class LoginActivity extends Activity {
   }
 
   private void handleAuthenticationErrors(final OneginiAuthenticationError error, final UserProfile userProfile) {
-    @OneginiAuthenticationError.AuthenticationErrorType int errorType = error.getErrorType();
+    OneginiAuthenticationError.Type errorType = error.getErrorType();
     final StringBuilder stringBuilder = new StringBuilder()
         .append(errorType)
         .append(": ");
     switch (errorType) {
-      case OneginiAuthenticationError.ACTION_CANCELED:
+      case ACTION_CANCELED:
         stringBuilder.append("Authentication was cancelled.");
         break;
-      case OneginiAuthenticationError.NETWORK_CONNECTIVITY_PROBLEM:
+      case NETWORK_CONNECTIVITY_PROBLEM:
         stringBuilder.append("No internet connection.");
         break;
-      case OneginiAuthenticationError.SERVER_NOT_REACHABLE:
+      case SERVER_NOT_REACHABLE:
         stringBuilder.append("The server is not reachable.");
         break;
-      case OneginiAuthenticationError.OUTDATED_APP:
+      case OUTDATED_APP:
         stringBuilder.append("Please update this application in order to use it.");
         break;
-      case OneginiAuthenticationError.OUTDATED_OS:
+      case OUTDATED_OS:
         stringBuilder.append("Please update your Android version to use this application.");
         break;
-      case OneginiAuthenticationError.USER_DEREGISTERED:
+      case USER_DEREGISTERED:
         stringBuilder.append("User deregistered.");
         new DeregistrationUtil(this).onUserDeregistered(userProfile);
         break;
-      case OneginiAuthenticationError.DEVICE_DEREGISTERED:
+      case DEVICE_DEREGISTERED:
         stringBuilder.append("Device deregistered.");
         new DeregistrationUtil(this).onDeviceDeregistered();
         break;
-      case OneginiAuthenticationError.AUTHENTICATOR_DEREGISTERED:
-      case OneginiAuthenticationError.AUTHENTICATOR_NOT_REGISTERED:
-      case OneginiAuthenticationError.CONFIGURATION_ERROR:
-      case OneginiAuthenticationError.CUSTOM_AUTHENTICATION_DISABLED:
-      case OneginiAuthenticationError.CUSTOM_AUTHENTICATOR_FAILURE:
-      case OneginiAuthenticationError.INVALID_AUTHENTICATOR:
-      case OneginiAuthenticationError.ACTION_ALREADY_IN_PROGRESS:
-      case OneginiAuthenticationError.DATA_STORAGE_NOT_AVAILABLE:
-      case OneginiAuthenticationError.GENERAL_ERROR:
+      case AUTHENTICATOR_DEREGISTERED:
+      case AUTHENTICATOR_NOT_REGISTERED:
+      case CONFIGURATION_ERROR:
+      case CUSTOM_AUTHENTICATION_DISABLED:
+      case CUSTOM_AUTHENTICATOR_FAILURE:
+      case INVALID_AUTHENTICATOR:
+      case ACTION_ALREADY_IN_PROGRESS:
+      case DATA_STORAGE_NOT_AVAILABLE:
+      case GENERAL_ERROR:
       default:
         // Just display the error for other, less relevant errors
         error.printStackTrace();
@@ -392,25 +392,25 @@ public class LoginActivity extends Activity {
   }
 
   private void handlePendingMobileRequestsErrors(final OneginiPendingMobileAuthWithPushRequestError error) {
-    @OneginiPendingMobileAuthWithPushRequestError.OneginiFetchPendingMobileAuthMessagesErrorType int errorType = error.getErrorType();
+    OneginiPendingMobileAuthWithPushRequestError.Type errorType = error.getErrorType();
     final StringBuilder stringBuilder = new StringBuilder()
         .append(errorType)
         .append(": ");
     switch (errorType) {
-      case OneginiPendingMobileAuthWithPushRequestError.NETWORK_CONNECTIVITY_PROBLEM:
+      case NETWORK_CONNECTIVITY_PROBLEM:
         stringBuilder.append("No internet connection.");
         break;
-      case OneginiPendingMobileAuthWithPushRequestError.SERVER_NOT_REACHABLE:
+      case SERVER_NOT_REACHABLE:
         stringBuilder.append("The server is not reachable.");
         break;
-      case OneginiPendingMobileAuthWithPushRequestError.DEVICE_DEREGISTERED:
+      case DEVICE_DEREGISTERED:
         stringBuilder.append("Device deregistered");
         new DeregistrationUtil(this).onDeviceDeregistered();
         break;
-      case OneginiPendingMobileAuthWithPushRequestError.DATA_STORAGE_NOT_AVAILABLE:
-      case OneginiPendingMobileAuthWithPushRequestError.ACTION_ALREADY_IN_PROGRESS:
-      case OneginiPendingMobileAuthWithPushRequestError.GENERAL_ERROR:
-      case OneginiPendingMobileAuthWithPushRequestError.CONFIGURATION_ERROR:
+      case DATA_STORAGE_NOT_AVAILABLE:
+      case ACTION_ALREADY_IN_PROGRESS:
+      case GENERAL_ERROR:
+      case CONFIGURATION_ERROR:
       default:
         // Just display the error for other, less relevant errors
         error.printStackTrace();

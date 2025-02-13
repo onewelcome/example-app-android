@@ -196,12 +196,12 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
       @Override
       public void onError(final OneginiAuthenticatorRegistrationError error) {
-        @OneginiAuthenticatorRegistrationError.AuthenticatorRegistrationErrorType int errorType = error.getErrorType();
+        OneginiAuthenticatorRegistrationError.Type errorType = error.getErrorType();
         final String errorMessage = parseErrorMessage(error);
-        if (errorType == OneginiAuthenticatorRegistrationError.USER_DEREGISTERED) {
+        if (errorType == OneginiAuthenticatorRegistrationError.Type.USER_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onUserDeregistered(authenticatedUserProfile);
           startLoginActivity(errorMessage);
-        } else if (errorType == OneginiAuthenticatorRegistrationError.DEVICE_DEREGISTERED) {
+        } else if (errorType == OneginiAuthenticatorRegistrationError.Type.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onDeviceDeregistered();
           startLoginActivity(errorMessage);
         }
@@ -226,15 +226,15 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
       @Override
       public void onError(final OneginiAuthenticatorDeregistrationError error) {
-        @OneginiAuthenticatorDeregistrationError.AuthenticatorDeregistrationErrorType int errorType = error.getErrorType();
+        OneginiAuthenticatorDeregistrationError.Type errorType = error.getErrorType();
         final String errorMessage = parseErrorMessage(error);
         onErrorOccurred(position, errorMessage);
-        if (errorType == OneginiAuthenticatorDeregistrationError.USER_NOT_AUTHENTICATED) {
+        if (errorType == OneginiAuthenticatorDeregistrationError.Type.USER_NOT_AUTHENTICATED) {
           startLoginActivity(errorMessage);
-        } else if (errorType == OneginiAuthenticatorDeregistrationError.USER_DEREGISTERED) {
+        } else if (errorType == OneginiAuthenticatorDeregistrationError.Type.USER_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onUserDeregistered(authenticatedUserProfile);
           startLoginActivity(errorMessage);
-        } else if (errorType == OneginiAuthenticatorDeregistrationError.DEVICE_DEREGISTERED) {
+        } else if (errorType == OneginiAuthenticatorDeregistrationError.Type.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onDeviceDeregistered();
           startLoginActivity(errorMessage);
         }
@@ -254,7 +254,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   private void setPinAsPreferredAuthenticator() {
     final Set<OneginiAuthenticator> allAuthenticators = userClient.getAllAuthenticators(authenticatedUserProfile);
     for (final OneginiAuthenticator auth : allAuthenticators) {
-      if (auth.getType() == OneginiAuthenticator.PIN) {
+      if (auth.getType() == OneginiAuthenticator.Type.PIN) {
         setPreferredAuthenticator(auth);
       }
     }
@@ -274,7 +274,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
       final AuthenticatorListItem clickedAuthenticatorItem = authenticators[position];
       final OneginiAuthenticator clickedAuthenticator = clickedAuthenticatorItem.getAuthenticator();
 
-      if (clickedAuthenticatorItem.isProcessed() || clickedAuthenticator.getType() == OneginiAuthenticator.PIN) {
+      if (clickedAuthenticatorItem.isProcessed() || clickedAuthenticator.getType() == OneginiAuthenticator.Type.PIN) {
         return;
       }
       clickedAuthenticatorItem.setIsProcessed(true);
