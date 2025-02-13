@@ -65,7 +65,25 @@
 #RxJava 1
 -dontnote rx.**
 
-# https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md#member-in-a-data-object-is-always
--keepclassmembers,allowobfuscation class * {
+
+# Starting from AGP 8 R8 full mode is enabled by default. It uses more aggresive obfuscation than compatibility mode and removes data classes
+# that rely on Gson serialization/deserialization.
+# Below config is part of Gson built-in proguard rules. It's available starting from version 2.11.0, but we use version transitively provided
+# by retrofit which is 2.10.1. Therefore we manually include required rule
+
+# Keep fields annotated with @SerializedName for classes which are referenced.
+# If classes with fields annotated with @SerializedName have a no-args
+# constructor keep that as well. Based on
+# https://issuetracker.google.com/issues/150189783#comment11.
+# See also https://github.com/google/gson/pull/2420#discussion_r1241813541
+# for a more detailed explanation.
+-if class *
+-keepclasseswithmembers,allowobfuscation class <1> {
   @com.google.gson.annotations.SerializedName <fields>;
+}
+-if class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+-keepclassmembers,allowobfuscation,allowoptimization class <1> {
+  <init>();
 }
