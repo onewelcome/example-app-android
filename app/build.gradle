@@ -29,7 +29,7 @@ allprojects {
         Before the release please change the url below to: https://repo.onewelcome.com/artifactory/onegini-sdk
         Please change it back to https://repo.onewelcome.com/artifactory/public after the release
         */
-        url "https://repo.onewelcome.com/artifactory/onegini-sdk"
+        url "https://repo.onewelcome.com/artifactory/public"
         credentials {
           username artifactory_user
           password artifactory_password
@@ -74,7 +74,7 @@ android {
 
 dependencies {
   // Onegini SDK
-  api('com.onegini.mobile.sdk.android:onegini-sdk:12.2.0@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:12.3.0-SNAPSHOT@aar') {
     transitive = true
   }
   // Rest Client
@@ -89,14 +89,14 @@ dependencies {
   // Google Play Services availability check
   implementation 'com.google.android.gms:play-services-base:18.5.0'
   //Firebase Cloud Messaging (FCM)
-  implementation 'com.google.firebase:firebase-messaging:24.0.0'
+  implementation 'com.google.firebase:firebase-messaging:24.0.2'
   // Support for multidex
   implementation 'androidx.multidex:multidex:2.0.1'
   // DI for views
   implementation 'com.jakewharton:butterknife:10.2.0'
   annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
   // RxJava
-  implementation 'io.reactivex.rxjava3:rxjava:3.1.8'
+  implementation 'io.reactivex.rxjava3:rxjava:3.1.9'
   implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
 
   //Biometric
