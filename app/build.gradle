@@ -50,7 +50,7 @@ android {
 
   defaultConfig {
     applicationId "com.onegini.mobile.exampleapp"
-    minSdkVersion 23
+    minSdkVersion 24
     targetSdk 35
     compileSdk 35
     versionCode 25
