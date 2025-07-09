@@ -77,7 +77,7 @@ dependencies {
   debugApi('com.onegini.mobile.sdk.android:onegini-sdk-developer:13.1.0@aar') {
     transitive = true
   }
-  api('com.onegini.mobile.sdk.android:onegini-sdk-developer:13.1.0@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:13.1.0@aar') {
     transitive = true
   }
   // Rest Client
