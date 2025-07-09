@@ -19,8 +19,6 @@ package com.onegini.mobile.exampleapp.view.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -204,7 +202,7 @@ public class DashboardActivity extends AppCompatActivity {
   @SuppressWarnings("unused")
   @OnClick(R.id.button_single_sign_on)
   public void startSingleSignOn() {
-    final Uri targetUri = Uri.parse("https://demo-cim.onegini.com/personal/dashboard");
+    final Uri targetUri = Uri.parse("https://login-mobile.in.prod.onewelcome.net/personal/dashboard");
 
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
     oneginiClient.getUserClient().getAppToWebSingleSignOn(targetUri, new OneginiAppToWebSingleSignOnHandler() {

@@ -50,11 +50,11 @@ android {
 
   defaultConfig {
     applicationId "com.onegini.mobile.exampleapp"
-    minSdkVersion 23
-    targetSdk 35
-    compileSdk 35
+    minSdkVersion 24
+    targetSdk 36
+    compileSdk 36
     versionCode 25
-    versionName "7.10.0"
+    versionName "7.11.0"
     multiDexEnabled true
   }
   buildTypes {
@@ -74,10 +74,10 @@ android {
 
 dependencies {
   // Onegini SDK
-  debugApi('com.onegini.mobile.sdk.android:onegini-sdk-developer:13.0.0@aar') {
+  debugApi('com.onegini.mobile.sdk.android:onegini-sdk-developer:13.1.0@aar') {
     transitive = true
   }
-  releaseApi('com.onegini.mobile.sdk.android:onegini-sdk:13.0.0@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:13.1.0@aar') {
     transitive = true
   }
   // Rest Client
