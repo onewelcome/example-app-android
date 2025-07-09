@@ -29,7 +29,7 @@ allprojects {
         Before the release please change the url below to: https://repo.onewelcome.com/artifactory/onegini-sdk
         Please change it back to https://repo.onewelcome.com/artifactory/public after the release
         */
-        url "https://repo.onewelcome.com/artifactory/public"
+        url "https://repo.onewelcome.com/artifactory/onegini-sdk"
         credentials {
           username artifactory_user
           password artifactory_password
