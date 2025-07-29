@@ -29,7 +29,7 @@ allprojects {
         Before the release please change the url below to: https://thalescpliam.jfrog.io/artifactory/onegini-sdk
         Please change it back to https://thalescpliam.jfrog.io/artifactory/libs-snapshot-local after the release
         */
-        url "https://thalescpliam.jfrog.io/artifactory/libs-snapshot-local"
+        url "https://thalescpliam.jfrog.io/artifactory/onegini-sdk"
         credentials {
           username artifactory_user
           password artifactory_password
@@ -54,7 +54,7 @@ android {
     targetSdk 36
     compileSdk 36
     versionCode 25
-    versionName "7.11.0"
+    versionName "7.12.0"
     multiDexEnabled true
   }
   buildTypes {
@@ -74,10 +74,10 @@ android {
 
 dependencies {
   // Onegini SDK
-  debugApi('com.onegini.mobile.sdk.android:onegini-sdk-developer:13.2.0-SNAPSHOT@aar') {
+  debugApi('com.onegini.mobile.sdk.android:onegini-sdk-developer:13.1.0@aar') {
     transitive = true
   }
-  releaseApi('com.onegini.mobile.sdk.android:onegini-sdk:13.2.0-SNAPSHOT@aar') {
+  releaseApi('com.onegini.mobile.sdk.android:onegini-sdk:13.1.0@aar') {
     transitive = true
   }
   // Rest Client
