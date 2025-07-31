@@ -26,10 +26,10 @@ allprojects {
     if (project.hasProperty('artifactory_user') && project.hasProperty('artifactory_password')) {
       maven {
         /*
-        Before the release please change the url below to: https://repo.onewelcome.com/artifactory/onegini-sdk
-        Please change it back to https://repo.onewelcome.com/artifactory/public after the release
+        Before the release please change the url below to: https://thalescpliam.jfrog.io/artifactory/onegini-sdk
+        Please change it back to https://thalescpliam.jfrog.io/artifactory/libs-snapshot-local after the release
         */
-        url "https://repo.onewelcome.com/artifactory/onegini-sdk"
+        url "https://thalescpliam.jfrog.io/artifactory/onegini-sdk"
         credentials {
           username artifactory_user
           password artifactory_password
@@ -54,7 +54,7 @@ android {
     targetSdk 36
     compileSdk 36
     versionCode 25
-    versionName "7.11.0"
+    versionName "7.12.0"
     multiDexEnabled true
   }
   buildTypes {
@@ -77,7 +77,7 @@ dependencies {
   debugApi('com.onegini.mobile.sdk.android:onegini-sdk-developer:13.1.0@aar') {
     transitive = true
   }
-  api('com.onegini.mobile.sdk.android:onegini-sdk:13.1.0@aar') {
+  releaseApi('com.onegini.mobile.sdk.android:onegini-sdk:13.1.0@aar') {
     transitive = true
   }
   // Rest Client
