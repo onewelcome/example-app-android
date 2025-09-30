@@ -18,7 +18,14 @@ package com.onegini.mobile.exampleapp.view.helper;
 
 import android.app.Activity;
 import android.app.Application;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 public class AppLifecycleListener implements Application.ActivityLifecycleCallbacks {
 
@@ -30,6 +37,22 @@ public class AppLifecycleListener implements Application.ActivityLifecycleCallba
 
   @Override
   public void onActivityCreated(final Activity activity, final Bundle bundle) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+      View rootView = activity.getWindow().getDecorView().getRootView();
+      ViewCompat.setOnApplyWindowInsetsListener(rootView, (view, insets) -> {
+        activity.getWindow().setStatusBarColor(Color.TRANSPARENT);
+        activity.getWindow().setNavigationBarColor(Color.TRANSPARENT);
+
+        final WindowInsetsControllerCompat controller = ViewCompat.getWindowInsetsController(view);
+        if (controller != null) {
+          controller.setAppearanceLightStatusBars(true);
+          controller.setAppearanceLightNavigationBars(true);
+        }
+        Insets barsInsets = insets.getInsets(WindowInsetsCompat.Type.statusBars() | WindowInsetsCompat.Type.navigationBars());
+        view.setPadding(barsInsets.left, barsInsets.top, barsInsets.right, barsInsets.bottom);
+        return WindowInsetsCompat.CONSUMED;
+      });
+    }
   }
 
   @Override
@@ -58,3 +81,4 @@ public class AppLifecycleListener implements Application.ActivityLifecycleCallba
   public void onActivityDestroyed(final Activity activity) {
   }
 }
+
