@@ -81,7 +81,7 @@ dependencies {
     transitive = true
   }
   // Rest Client
-  implementation 'com.squareup.retrofit2:adapter-rxjava3:2.11.0'
+  implementation 'com.squareup.retrofit2:adapter-rxjava3:3.0.0'
 
   // Google Support libraries for UI
   implementation 'com.google.android.material:material:1.12.0'
